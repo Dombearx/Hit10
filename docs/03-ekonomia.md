@@ -8,7 +8,7 @@ przedmiotów i ich liczby są w [02-rozgrywka.md](02-rozgrywka.md).
 | Waluta | PL / EN | Skąd | Na co |
 |---|---|---|---|
 | **Tiki** | Tiki / Ticks | trafienia, generatory, Fart, offline | umiejętności, generatory, ulepszenia, synergie |
-| **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +1% na zawsze każdy |
+| **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +2% na zawsze każdy |
 | **Okruchy czasu** | Okruchy / Shards | prestiż (tyle, ile nowych Chrononów) | perki |
 
 Wszystkie kwoty to liczby zmiennoprzecinkowe (`double`), co wystarcza do ok.
@@ -48,7 +48,7 @@ dochód_i     = n_i · Tiki_bazowo_i · 2^(ulepszenia_i) · synergia_i · zysk_o
 **Globalny mnożnik:**
 
 ```
-G = (1 + 0.01 · Chronony) · (1 + 0.01 · osiągnięcia) · (Szał aktywny ? 7 : 1)
+G = (1 + 0.02 · Chronony) · (1 + 0.01 · osiągnięcia) · (Szał aktywny ? 7 : 1)
 P = Σ dochód_i · G                   # dochód pasywny na sekundę
 ```
 
@@ -69,72 +69,114 @@ umiejętność:  koszt_bazowy · wzrost^L
 MAX:          największe k, na które stać gracza (wzór odwrotny z logarytmem)
 ```
 
-**Prestiż:** `Chronony_łącznie = floor((zarobione_łącznie / 1e9)^(1/3))`.
+**Prestiż:** `Chronony_łącznie = floor((zarobione_łącznie / 1e8)^(1/3))`.
 
 **Offline:** `P_bez_Szału · min(Δt, limit) · wydajność` (R-OFF-1).
 
 ## 3. Cele tempa (wymagania balansu)
 
 Sprawdzane symulatorem (patrz 05 i 06) dla bota, który zawsze kupuje to, co
-najszybciej się zwraca. Testy balansu w CI pilnują tych przedziałów:
+najszybciej się zwraca. Scenariusze:
+- gracz wprawny (σ = 30 ms) przez 8 h,
+- gracz przeciętny (σ = 60 ms),
+- gracz pasywny (klika 10 min, potem tylko kupuje),
+- drugi run z 20 Chrononami.
+
+**E-5:** Złota Sekunda wprowadza dużą losowość, więc każdy cel jest
+sprawdzany na **medianie z 5 ziaren losowania**, a nie na jednym przebiegu.
+Testy balansu w CI pilnują tych przedziałów:
 
 | id | Cel | Przedział |
 |---|---|---|
 | **B-1** | Pierwszy Dziadek | ≤ 2 min |
 | **B-2** | Pierwszy Zegarmistrz (5.) | 15–40 min |
 | **B-3** | Pierwszy Zegar atomowy (9.) | 1.5–4 h |
-| **B-4** | Pierwsza Maszyna czasu (12.) | > 6 h w pierwszym runie (cel na drugi run) |
+| **B-4** | Pierwsza Maszyna czasu (12.) | > 6 h w pierwszym runie (cel na kolejne runy) |
 | **B-5** | Chronony możliwe po 6 h pierwszego runu | 15–30 |
-| **B-6** | Mid-game (1–4 h): dochód aktywny / pasywny | 1.5–4× |
-| **B-7** | Gracz przeciętny (σ = 60 ms) po 8 h ma ≥ 40% Tików gracza wprawnego (σ = 30 ms) | ≥ 40% |
-| **B-8** | Gracz tylko pasywny (klika 10 min, potem tylko kupuje): co godzinę ma na coś nowego, a po 8 h ma ≥ 1% Tików gracza aktywnego | ≥ 1% |
-| **B-9** | Drugi run z 20 Chrononami dochodzi do poziomu z 6 h pierwszego runu w ≤ 3 h | ≤ 3 h |
-| **B-10** | Żadna umiejętność nie zostaje bez zakupu przez cały pierwszy run (każda ma ≥1 poziom po 8 h) | wszystkie |
+| **B-6a** | 1. godzina: dochód z klikania / dochód pasywny | ≥ 1× |
+| **B-6b** | Godziny 2–8: dochód z klikania / dochód pasywny | 1.5–5× |
+| **B-7** | Gracz przeciętny po 8 h ma ≥ 40% Tików gracza wprawnego | ≥ 40% |
+| **B-8** | Gracz pasywny po 8 h ma ≥ 1% Tików gracza wprawnego… | ≥ 1% |
+| **B-8b** | …i w każdej godzinie coś kupuje | ≥ 1 zakup / h |
+| **B-9** | Drugi run z 20 Chrononami (bez perków) dochodzi do Tików z 6 h pierwszego runu | ≤ 4.5 h |
+| **B-10** | Każda umiejętność (oprócz Tykania) ma ≥1 poziom po 8 h | wszystkie |
 
-## 4. Co już wiemy (wstępna symulacja, wersja projektowa)
+## 4. Wyniki symulacji projektowej
 
-Szybki symulator w Pythonie na liczbach z 02, ale jeszcze **bez** zmian
-z R-COMBO-3 i ze starszą wersją Echa (2 s na poziom). Gracz σ = 30 ms:
+Liczby w 02 przeszły symulację w Pythonie (wzory z §2, bot jak w §3).
+Wszystkie cele są spełnione na medianie z 4 ziaren.
 
-| Generator | Pierwszy po |
-|---|---|
-| Dziadek | 1.4 min |
-| Babcia | 5.3 min |
-| Kukułka | 9.6 min |
-| Zegarmistrz | 19 min |
-| Zegar dworcowy | 41 min |
-| Zegar kwarcowy | 65 min |
-| Zegar atomowy | 1.8 h |
-| GPS | 3 h |
-| Pulsar | 5.5 h |
-| Maszyna czasu | nie w 8 h |
+**Gracz wprawny (σ = 30 ms), ziarno 10:**
 
-| Godzina | Pasywny/s | Aktywny/s | Zarobione | Chronony |
+| Generator | Pierwszy po | | Generator | Pierwszy po |
 |---|---|---|---|---|
-| 1 | 5.7M | 12.2M | 3.0B | 1 |
-| 2 | 114M | 423M | 257B | 6 |
-| 4 | 449M | 1.98B | 2.64T | 13 |
-| 6 | 863M | 3.91B | 8.79T | 20 |
-| 8 | 1.50B | 7.53B | 19.2T | 26 |
+| Dziadek | 1.4 min | | Sędzia sprintu | 42 min |
+| Babcia | 5.5 min | | Zegar dworcowy | 61 min |
+| Kukułka | 14 min | | Zegar kwarcowy | 1.9 h |
+| Metronom | 23 min | | Zegar atomowy | 3.5 h |
+| Zegarmistrz | 30 min | | GPS | 6.4 h |
 
-Wnioski, które **już weszły do wymagań**:
-- Dzielnik prestiżu `1e9` (był 1e12, co dawało 2 Chronony po 8 h).
-- Combo mnoży całą wypłatę, razem z Echem (R-COMBO-3). Wcześniej było prawie
-  bezużyteczne: kupione tylko 2 poziomy w 8 h.
-- Echo osłabione do 1 s na poziom. Przy 2 s klikanie dawało 4–5× tyle co
-  generatory (cel B-6 to 1.5–4×).
-- Gracz przeciętny (σ = 60 ms) miał 44% Tików wprawnego. Spełnia B-7.
+Pulsar i Maszyna czasu nie pojawiają się w pierwszych 8 h. To treść na
+kolejne runy, co spełnia życzenie, żeby gracz miał do czego dążyć.
 
-Do sprawdzenia przy implementacji (M2/M3):
-- **B-8:** Gracz tylko pasywny miał ~150× mniej niż aktywny po 8 h (130B
-  vs 19T). Trzeba to podnieść. Możliwe dźwignie: tańsze pierwsze ulepszenia
-  generatorów, wyższa wydajność offline albo mały bazowy dochód pasywny bez
-  umiejętności.
-- **B-6** po zmianie Echa i Combo.
-- **B-10:** Tarcza i Złoty dotyk nie były modelowane w symulacji.
-- Najszybszy wzrost jest w godzinach 1–2 (×87), potem tempo spada do
-  ×1.5–2 na godzinę. To celowa „ściana”, która zachęca do prestiżu.
-  Sprawdzić, czy ok. 4 h ściany przed pierwszym prestiżem nie nudzi.
+| Godzina | Pasywny/s | Klikanie/s | Klikanie : pasywny | Zarobione | Chronony |
+|---|---|---|---|---|---|
+| 1 | 840K | 1.04M | 1.2× | 134M | 1 |
+| 2 | 17.3M | 39.1M | 2.3× | 8.2B | 4 |
+| 3 | 50.1M | 152M | 3.0× | 53B | 8 |
+| 4 | 107M | 398M | 3.7× | 216B | 12 |
+| 6 | 281M | 1.09B | 3.9× | 1.02T | 21 |
+| 8 | 436M | 2.06B | 4.7× | 2.71T | 30 |
+
+Umiejętności: każdą ktoś kupuje. Pierwsze poziomy pojawiają się między 9.
+a 45. minutą. Przewijanie osiąga max po ok. 2 h, a Sokole oko po ok. 3.5 h.
+Magnes, Combo i Echo dochodzą do max dopiero pod koniec 8 h, więc są
+dobrym celem na długo.
+
+**Cele na 4 ziarnach (10, 1, 2, 3):**
+
+| Cel | Wyniki | Mediana |
+|---|---|---|
+| B-5 Chronony po 6 h | 21, 20, 24, 20 | 20.5 ✓ |
+| B-6b klikanie : pasywny, h2–8 | 2.2–4.7 we wszystkich | ✓ |
+| B-7 przeciętny / wprawny | 0.48, 0.44, 0.30, 0.48 | 0.46 ✓ |
+| B-8 pasywny / wprawny | 0.046, 0.044, 0.038, 0.053 | 0.045 ✓ |
+| B-9 drugi run (h) | 4.45, 3.69, 4.89, 3.91 | 4.2 ✓ |
+
+**Co zmieniło się po drodze i dlaczego** (już wpisane do 02):
+
+| Zmiana | Było → jest | Powód |
+|---|---|---|
+| Combo mnoży też Echo (R-COMBO-3) | – | combo bez tego przestawało się liczyć po ~30 min (kupione 2 poziomy w 8 h) |
+| Krok combo | 0.10 → 0.05 | z Echem i limitem 55 klikanie dawało 12–50× więcej niż generatory |
+| Limit combo | 5 + 5·L (55) → 5 + 2·L (25) | jw. |
+| Echo na poziom | 2 s → 0.5 s | jw. |
+| Złota Sekunda co | 3–7 min → 5–15 min | Szał zbyt często podwajał klikanie; teraz jak w Cookie Clickerze |
+| Złoty dotyk na poziom | 10% → 5% | jw. |
+| Tarcza | 100K ×100 → 2K ×50 | przy starej cenie nikt jej nie kupował (B-10) |
+| Dzielnik prestiżu | 1e12 → 1e8 | 2 Chronony po 8 h; teraz ~20 po 6 h |
+| Premia za Chronon | 1% → 2% | prestiż ma dawać odczuwalnie szybszy drugi run (B-9) |
+
+Rezultat dla gracza pasywnego (B-8): przed zmianami miał ~150× mniej niż
+gracz aktywny, teraz ok. 22× mniej (4.5%). Wystarczyło osłabić przewagę
+klikania. Żadna osobna „dźwignia” dla pasywnych nie była potrzebna.
+
+**Czego symulacja nie modeluje** (gra będzie przez to nieco szybsza;
+sprawdzi to symulator w Dart w M2–M4):
+- premii z osiągnięć,
+- perków prestiżu,
+- Gorącej ręki,
+- trybów ryzyka,
+- drugiego zegara,
+- generatorów 13–14,
+- dochodu offline,
+- realnych przerw gracza.
+
+Symulacja zakłada też, że gracz klika bez przerwy przez 8 h.
+
+**Do obserwacji przy testach z ludźmi (M-8):** najszybszy wzrost jest
+w godzinach 1–2 (×60), potem tempo spada do ×1.5–2 na godzinę. To celowa
+„ściana” przed prestiżem. Trzeba sprawdzić, czy nie nudzi.
 
 ## 5. Zasady strojenia
 

@@ -73,13 +73,13 @@ Te dwa czasy różnią się przez Przewijanie i bullet time.
 
 ## 3. Wypłata za trafienie i combo
 
-- **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + L_siła) · G + L_echo · 1 s · udział_echa · P) · combo · mnożnik_trybu`
+- **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + L_siła) · G + 0.5 s · L_echo · udział_echa · P) · combo · mnożnik_trybu`
   - `G` to globalny mnożnik (osiągnięcia, Chronony, Szał), patrz 03;
   - `P` to aktualny dochód pasywny na sekundę (już z `G`).
 - **R-COMBO-1:** `seria` rośnie o krok combo progu (tabela wyżej). Pudło zeruje
   serię, chyba że gracz ma ładunek Tarczy (zużywa go wtedy, a seria zostaje).
-- **R-COMBO-2:** `combo = 1 + 0.1 · min(seria, limit)`, a
-  `limit = 5 + 5·L_combo`, czyli od 5 do 55 (×1.5 do ×6.5).
+- **R-COMBO-2:** `combo = 1 + 0.05 · min(seria, limit)`, a
+  `limit = 5 + 2·L_combo`, czyli od 5 do 25 (×1.25 do ×2.25).
 - **R-COMBO-3:** Combo mnoży **całą** wypłatę, razem z Echem. Bez tego
   w późnej grze combo przestaje się liczyć (wyszło w symulacji).
 - **R-COMBO-4:** Licznik combo jest stale widoczny i rośnie wizualnie (kolor,
@@ -96,13 +96,13 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 | `fastForward` | Przewijanie / Fast Forward | 10 | 150 | ×5 | czas gry przed 9.0 ×(1+0.5L) |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
 | `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×6 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
-| `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +5 na poziom |
+| `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +2 na poziom (5 → 25) |
 | `magnet` | Magnes / Magnet | 10 | 2 000 | ×7 | okno PERFEKT +0.001 s na poziom, max ±0.015 |
-| `echo` | Echo / Echo | 10 | 5 000 | ×9 | trafienie płaci dodatkowo L s dochodu pasywnego × udział echa |
+| `echo` | Echo / Echo | 10 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 5 s) |
 | `bulletTime` | Bullet time / Bullet Time | 10 | 5 000 | ×7 | tempo w strefie 1−0.06L, min 0.4 |
 | `luck` | Szczęście / Luck | 10 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
-| `shield` | Tarcza / Shield | 3 | 100 000 | ×100 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
-| `goldenTouch` | Złoty dotyk / Golden Touch | 5 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.1L), czyli pojawia się częściej; jej efekt jest ×(1+0.1L) silniejszy |
+| `shield` | Tarcza / Shield | 3 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
+| `goldenTouch` | Złoty dotyk / Golden Touch | 5 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.05L), czyli pojawia się częściej; jej efekt jest ×(1+0.05L) silniejszy |
 
 - **R-UMIEJ-1:** Sokole oko i Magnes działają **także na generatory** (sekcja 5).
   Dzięki temu są przydatne przez całą grę.
@@ -180,7 +180,7 @@ Synergia odblokowuje się, gdy gracz ma choć 1 A i 1 B.
 
 ## 6. Złota Sekunda
 
-- **R-ZLOTA-1:** Co losowo `U(180, 420)` s czasu rzeczywistego gry
+- **R-ZLOTA-1:** Co losowo `U(300, 900)` s (5–15 min, jak w Cookie Clickerze) czasu rzeczywistego gry
   (× modyfikator Złotego dotyku) na brzegu ekranu pojawia się złoty zegarek
   i lata przez **12 s**. Dotknięcie go sprawia, że **następna runda jest
   złota**.
@@ -225,7 +225,7 @@ na wypłatę z dotknięć gracza.
 | Posiadane sztuki generatora | 1, 50, 100, 200 dla każdego z 14 | 56 |
 | PERFEKTY łącznie | 1, 10, 100, 1K, 10K, 100K | 6 |
 | PERFEKTY z rzędu | 3, 5, 10 | 3 |
-| Najwyższe combo | 10, 25, 55 (max) | 3 |
+| Najwyższe combo | 10, 15, 25 (max) | 3 |
 | Złapane Złote Sekundy | 1, 10, 50, 200 | 4 |
 | Prestiże | 1, 5, 10, 25 | 4 |
 | Tryby | PERFEKT na ślepo; PERFEKT w szybkim zegarze; PERFEKT w obu naraz | 3 |
@@ -238,9 +238,9 @@ na wypłatę z dotknięć gracza.
 - **R-PRES-1:** Prestiż jest dostępny, gdy dałby ≥1 nowy Chronon. Ekran
   prestiżu pokazuje, ile Chrononów gracz dostanie teraz i ile Tików brakuje do
   następnego.
-- **R-PRES-2:** Łączne Chronony = `floor((Tiki_zarobione_przez_całą_grę / 1e9)^(1/3))`.
+- **R-PRES-2:** Łączne Chronony = `floor((Tiki_zarobione_przez_całą_grę / 1e8)^(1/3))`.
   Prestiż daje różnicę między tą wartością a Chrononami już posiadanymi.
-- **R-PRES-3:** Każdy posiadany Chronon daje **+1%** do globalnego mnożnika
+- **R-PRES-3:** Każdy posiadany Chronon daje **+2%** do globalnego mnożnika
   na zawsze.
 - **R-PRES-4:** Prestiż daje też **Okruchy czasu** w liczbie równej nowym
   Chrononom. Okruchy wydaje się na perki. Wydawanie ich **nie** zmniejsza

@@ -30,6 +30,5 @@ klikanie w 10.00 jest uczciwe i czy daje frajdę.
 |---|---|
 | Biblioteka dźwięku (`flame_audio` vs `audioplayers`) | M1 |
 | Czy dodać kalibrację opóźnienia ekranu (T-13) | po M-1 i M-8 |
-| Jak spełnić B-8 (gracz pasywny) — wybór dźwigni | M2 |
 | Reklamy pełnoekranowe: tak/nie, jak często | M6 |
 | `applicationId`, nazwa w sklepie, domena dla polityki prywatności | M6 |

@@ -28,10 +28,13 @@ kryteria z sekcji 3, a `make check` przechodzi.
 ### 1.2 Balans (symulacja w CI)
 
 - `dart run tool/simulate.dart --check` uruchamia scenariusze z 03 §3 (gracz
-  σ = 30 ms, σ = 60 ms, pasywny po 10 min, drugi run z 20 Chrononami) ze
-  stałym ziarnem losowania i kończy się błędem, gdy któryś cel B-1…B-10
-  wypada poza przedział.
-- Symulacja 8 h gry ma trwać poniżej 30 s.
+  σ = 30 ms, σ = 60 ms, pasywny po 10 min, drugi run z 20 Chrononami) na
+  5 stałych ziarnach losowania i kończy się błędem, gdy mediana któregoś
+  celu B-1…B-10 wypada poza przedział (E-5).
+- Całe `--check` (4 scenariusze × 5 ziaren) ma trwać poniżej 60 s.
+- Wyniki dla ziarna 10 z balansem z repo zgadzają się z tabelami w 03 §4
+  (±10%), co potwierdza, że port do Dart liczy tak samo jak symulacja
+  projektowa.
 
 ### 1.3 Widżetowe (Flutter)
 
