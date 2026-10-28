@@ -1579,6 +1579,1506 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shall we tell you when your clocks are full?'**
   String get notificationAsk;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound effects'**
+  String get settingsSound;
+
+  /// No description provided for @settingsMusic.
+  ///
+  /// In en, this message translates to:
+  /// **'Music'**
+  String get settingsMusic;
+
+  /// No description provided for @settingsHaptics.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration'**
+  String get settingsHaptics;
+
+  /// No description provided for @settingsNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell me when the clocks are full'**
+  String get settingsNotifications;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @languageSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get languageSystem;
+
+  /// No description provided for @settingsNotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers'**
+  String get settingsNotation;
+
+  /// No description provided for @notationShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Short (12.4M)'**
+  String get notationShort;
+
+  /// No description provided for @notationScientific.
+  ///
+  /// In en, this message translates to:
+  /// **'Scientific (1.24e7)'**
+  String get notationScientific;
+
+  /// No description provided for @settingsReduceMotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduce motion'**
+  String get settingsReduceMotion;
+
+  /// No description provided for @settingsReduceMotionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No shakes or flashes, fewer particles'**
+  String get settingsReduceMotionHint;
+
+  /// No description provided for @settingsSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get settingsSave;
+
+  /// No description provided for @settingsExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get settingsExport;
+
+  /// No description provided for @settingsExportDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Save copied to the clipboard. Keep it somewhere safe.'**
+  String get settingsExportDone;
+
+  /// No description provided for @settingsImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get settingsImport;
+
+  /// No description provided for @settingsImportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the save text here'**
+  String get settingsImportHint;
+
+  /// No description provided for @settingsImportConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace the current game with this save?'**
+  String get settingsImportConfirm;
+
+  /// No description provided for @settingsImportBad.
+  ///
+  /// In en, this message translates to:
+  /// **'That doesn\'t look like a Hit10 save.'**
+  String get settingsImportBad;
+
+  /// No description provided for @settingsReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Start over'**
+  String get settingsReset;
+
+  /// No description provided for @settingsResetConfirm1.
+  ///
+  /// In en, this message translates to:
+  /// **'Sure? You lose everything: Tiki, clocks, Chronons and achievements. Settings stay.'**
+  String get settingsResetConfirm1;
+
+  /// No description provided for @settingsResetConfirm2.
+  ///
+  /// In en, this message translates to:
+  /// **'Type {word} to confirm.'**
+  String settingsResetConfirm2(String word);
+
+  /// No description provided for @resetWord.
+  ///
+  /// In en, this message translates to:
+  /// **'RESET'**
+  String get resetWord;
+
+  /// No description provided for @settingsCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Credits and licences'**
+  String get settingsCredits;
+
+  /// No description provided for @creditsLegalese.
+  ///
+  /// In en, this message translates to:
+  /// **'Art: Microsoft Fluent Emoji (MIT).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.'**
+  String get creditsLegalese;
+
+  /// No description provided for @settingsOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get settingsOther;
+
+  /// No description provided for @upg_grandpa_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Glasses'**
+  String get upg_grandpa_1;
+
+  /// No description provided for @upg_grandpa_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Finally sees the hands.'**
+  String get upg_grandpa_1_desc;
+
+  /// No description provided for @upg_grandpa_2.
+  ///
+  /// In en, this message translates to:
+  /// **'New Battery'**
+  String get upg_grandpa_2;
+
+  /// No description provided for @upg_grandpa_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'First one since cassette tapes.'**
+  String get upg_grandpa_2_desc;
+
+  /// No description provided for @upg_grandpa_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-slip Slippers'**
+  String get upg_grandpa_3;
+
+  /// No description provided for @upg_grandpa_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady feet, steady thumb.'**
+  String get upg_grandpa_3_desc;
+
+  /// No description provided for @upg_grandpa_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Crossword: TIME'**
+  String get upg_grandpa_4;
+
+  /// No description provided for @upg_grandpa_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Solved in exactly 10.00 s.'**
+  String get upg_grandpa_4_desc;
+
+  /// No description provided for @upg_grandpa_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Spa Retreat'**
+  String get upg_grandpa_5;
+
+  /// No description provided for @upg_grandpa_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Comes back rested and twice as sharp.'**
+  String get upg_grandpa_5_desc;
+
+  /// No description provided for @upg_grandpa_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Tech-savvy Grandson'**
+  String get upg_grandpa_6;
+
+  /// No description provided for @upg_grandpa_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced his watch to an atomic server.'**
+  String get upg_grandpa_6_desc;
+
+  /// No description provided for @upg_grandpa_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Punctuality Medal'**
+  String get upg_grandpa_7;
+
+  /// No description provided for @upg_grandpa_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned proudly to the waistcoat.'**
+  String get upg_grandpa_7_desc;
+
+  /// No description provided for @upg_grandpa_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Great-grandpa\'s Watch'**
+  String get upg_grandpa_8;
+
+  /// No description provided for @upg_grandpa_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticking in the family for three generations.'**
+  String get upg_grandpa_8_desc;
+
+  /// No description provided for @upg_grandma_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Hen Eggs'**
+  String get upg_grandma_1;
+
+  /// No description provided for @upg_grandma_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy hens, happy timers.'**
+  String get upg_grandma_1_desc;
+
+  /// No description provided for @upg_grandma_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Polka-dot Apron'**
+  String get upg_grandma_2;
+
+  /// No description provided for @upg_grandma_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Aerodynamic.'**
+  String get upg_grandma_2_desc;
+
+  /// No description provided for @upg_grandma_3.
+  ///
+  /// In en, this message translates to:
+  /// **'A Second Timer'**
+  String get upg_grandma_3;
+
+  /// No description provided for @upg_grandma_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'One for the eggs, one for the soup.'**
+  String get upg_grandma_3_desc;
+
+  /// No description provided for @upg_grandma_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Baking Club'**
+  String get upg_grandma_4;
+
+  /// No description provided for @upg_grandma_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Precision training. With cake.'**
+  String get upg_grandma_4_desc;
+
+  /// No description provided for @upg_grandma_5.
+  ///
+  /// In en, this message translates to:
+  /// **'“Ten-Second Recipes”'**
+  String get upg_grandma_5;
+
+  /// No description provided for @upg_grandma_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick dishes only.'**
+  String get upg_grandma_5_desc;
+
+  /// No description provided for @upg_grandma_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Induction Hob'**
+  String get upg_grandma_6;
+
+  /// No description provided for @upg_grandma_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Boils before you think.'**
+  String get upg_grandma_6_desc;
+
+  /// No description provided for @upg_grandma_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Influencer Granddaughter'**
+  String get upg_grandma_7;
+
+  /// No description provided for @upg_grandma_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Films every perfect 10.00.'**
+  String get upg_grandma_7_desc;
+
+  /// No description provided for @upg_grandma_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Rolling Pin'**
+  String get upg_grandma_8;
+
+  /// No description provided for @upg_grandma_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A neighbourhood legend.'**
+  String get upg_grandma_8_desc;
+
+  /// No description provided for @upg_cuckoo_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Diction Lessons'**
+  String get upg_cuckoo_1;
+
+  /// No description provided for @upg_cuckoo_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuck-oo. Crisp and on time.'**
+  String get upg_cuckoo_1_desc;
+
+  /// No description provided for @upg_cuckoo_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh Springs'**
+  String get upg_cuckoo_2;
+
+  /// No description provided for @upg_cuckoo_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pops out like a slingshot.'**
+  String get upg_cuckoo_2_desc;
+
+  /// No description provided for @upg_cuckoo_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Nest with a View'**
+  String get upg_cuckoo_3;
+
+  /// No description provided for @upg_cuckoo_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Better view, better cuckoos.'**
+  String get upg_cuckoo_3_desc;
+
+  /// No description provided for @upg_cuckoo_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuckoo Choir'**
+  String get upg_cuckoo_4;
+
+  /// No description provided for @upg_cuckoo_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuckooing in canon.'**
+  String get upg_cuckoo_4_desc;
+
+  /// No description provided for @upg_cuckoo_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Swiss Master Class'**
+  String get upg_cuckoo_5;
+
+  /// No description provided for @upg_cuckoo_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Precision straight from the Alps.'**
+  String get upg_cuckoo_5_desc;
+
+  /// No description provided for @upg_cuckoo_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Espresso Beans'**
+  String get upg_cuckoo_6;
+
+  /// No description provided for @upg_cuckoo_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuckoos faster than it means to.'**
+  String get upg_cuckoo_6_desc;
+
+  /// No description provided for @upg_cuckoo_7.
+  ///
+  /// In en, this message translates to:
+  /// **'A Proper Agent'**
+  String get upg_cuckoo_7;
+
+  /// No description provided for @upg_cuckoo_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed for a world tour.'**
+  String get upg_cuckoo_7_desc;
+
+  /// No description provided for @upg_cuckoo_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Black Forest Original'**
+  String get upg_cuckoo_8;
+
+  /// No description provided for @upg_cuckoo_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Certified, with a pedigree.'**
+  String get upg_cuckoo_8_desc;
+
+  /// No description provided for @upg_metronome_1.
+  ///
+  /// In en, this message translates to:
+  /// **'New Weight'**
+  String get upg_metronome_1;
+
+  /// No description provided for @upg_metronome_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Less wobble, more hits.'**
+  String get upg_metronome_1_desc;
+
+  /// No description provided for @upg_metronome_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pendulum Oil'**
+  String get upg_metronome_2;
+
+  /// No description provided for @upg_metronome_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Silence. Just tick-tock.'**
+  String get upg_metronome_2_desc;
+
+  /// No description provided for @upg_metronome_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Six-Eight Time'**
+  String get upg_metronome_3;
+
+  /// No description provided for @upg_metronome_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'For a change.'**
+  String get upg_metronome_3_desc;
+
+  /// No description provided for @upg_metronome_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Orchestra Gig'**
+  String get upg_metronome_4;
+
+  /// No description provided for @upg_metronome_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A hundred violins watch only him.'**
+  String get upg_metronome_4_desc;
+
+  /// No description provided for @upg_metronome_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Techno Mode'**
+  String get upg_metronome_5;
+
+  /// No description provided for @upg_metronome_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'140 beats a minute, not one off.'**
+  String get upg_metronome_5_desc;
+
+  /// No description provided for @upg_metronome_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital Twin'**
+  String get upg_metronome_6;
+
+  /// No description provided for @upg_metronome_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sibling rivalry.'**
+  String get upg_metronome_6_desc;
+
+  /// No description provided for @upg_metronome_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Jazz Quartet Tour'**
+  String get upg_metronome_7;
+
+  /// No description provided for @upg_metronome_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Swings, never late.'**
+  String get upg_metronome_7_desc;
+
+  /// No description provided for @upg_metronome_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Pendulum'**
+  String get upg_metronome_8;
+
+  /// No description provided for @upg_metronome_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect rhythm.'**
+  String get upg_metronome_8_desc;
+
+  /// No description provided for @upg_watchmaker_1.
+  ///
+  /// In en, this message translates to:
+  /// **'New Loupe'**
+  String get upg_watchmaker_1;
+
+  /// No description provided for @upg_watchmaker_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sees every gear. Even the mental ones.'**
+  String get upg_watchmaker_1_desc;
+
+  /// No description provided for @upg_watchmaker_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Screwdriver Set'**
+  String get upg_watchmaker_2;
+
+  /// No description provided for @upg_watchmaker_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'48 sizes, all of them tiny.'**
+  String get upg_watchmaker_2_desc;
+
+  /// No description provided for @upg_watchmaker_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Apprentice'**
+  String get upg_watchmaker_3;
+
+  /// No description provided for @upg_watchmaker_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Learns on your Tiki.'**
+  String get upg_watchmaker_3_desc;
+
+  /// No description provided for @upg_watchmaker_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Window Workbench'**
+  String get upg_watchmaker_4;
+
+  /// No description provided for @upg_watchmaker_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Daylight, daylight precision.'**
+  String get upg_watchmaker_4_desc;
+
+  /// No description provided for @upg_watchmaker_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Swiss Movement'**
+  String get upg_watchmaker_5;
+
+  /// No description provided for @upg_watchmaker_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered in a padlocked case.'**
+  String get upg_watchmaker_5_desc;
+
+  /// No description provided for @upg_watchmaker_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Tourbillon'**
+  String get upg_watchmaker_6;
+
+  /// No description provided for @upg_watchmaker_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Spins so it never errs.'**
+  String get upg_watchmaker_6_desc;
+
+  /// No description provided for @upg_watchmaker_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Watchmakers\' Guild'**
+  String get upg_watchmaker_7;
+
+  /// No description provided for @upg_watchmaker_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Secret knowledge, passed on in whispers.'**
+  String get upg_watchmaker_7_desc;
+
+  /// No description provided for @upg_watchmaker_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Grand Complication'**
+  String get upg_watchmaker_8;
+
+  /// No description provided for @upg_watchmaker_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody knows what it does. It works.'**
+  String get upg_watchmaker_8_desc;
+
+  /// No description provided for @upg_sprintJudge_1.
+  ///
+  /// In en, this message translates to:
+  /// **'New Whistle'**
+  String get upg_sprintJudge_1;
+
+  /// No description provided for @upg_sprintJudge_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tweet! Right on time.'**
+  String get upg_sprintJudge_1_desc;
+
+  /// No description provided for @upg_sprintJudge_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Finish'**
+  String get upg_sprintJudge_2;
+
+  /// No description provided for @upg_sprintJudge_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sees one hundredth of a second.'**
+  String get upg_sprintJudge_2_desc;
+
+  /// No description provided for @upg_sprintJudge_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Starter Pistol'**
+  String get upg_sprintJudge_3;
+
+  /// No description provided for @upg_sprintJudge_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'No bullets, all timing.'**
+  String get upg_sprintJudge_3_desc;
+
+  /// No description provided for @upg_sprintJudge_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Umpire\'s Chair'**
+  String get upg_sprintJudge_4;
+
+  /// No description provided for @upg_sprintJudge_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'With a view straight down the line.'**
+  String get upg_sprintJudge_4_desc;
+
+  /// No description provided for @upg_sprintJudge_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Olympic Licence'**
+  String get upg_sprintJudge_5;
+
+  /// No description provided for @upg_sprintJudge_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s official now.'**
+  String get upg_sprintJudge_5_desc;
+
+  /// No description provided for @upg_sprintJudge_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Video Replay'**
+  String get upg_sprintJudge_6;
+
+  /// No description provided for @upg_sprintJudge_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame by frame.'**
+  String get upg_sprintJudge_6_desc;
+
+  /// No description provided for @upg_sprintJudge_7.
+  ///
+  /// In en, this message translates to:
+  /// **'World-record Judging'**
+  String get upg_sprintJudge_7;
+
+  /// No description provided for @upg_sprintJudge_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'9.58 s? Too slow.'**
+  String get upg_sprintJudge_7_desc;
+
+  /// No description provided for @upg_sprintJudge_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Stopwatch'**
+  String get upg_sprintJudge_8;
+
+  /// No description provided for @upg_sprintJudge_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Times as if it invented time.'**
+  String get upg_sprintJudge_8_desc;
+
+  /// No description provided for @upg_stationClock_1.
+  ///
+  /// In en, this message translates to:
+  /// **'New Timetable'**
+  String get upg_stationClock_1;
+
+  /// No description provided for @upg_stationClock_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Now accounts for reality.'**
+  String get upg_stationClock_1_desc;
+
+  /// No description provided for @upg_stationClock_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Polished Face'**
+  String get upg_stationClock_2;
+
+  /// No description provided for @upg_stationClock_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible from platform five.'**
+  String get upg_stationClock_2_desc;
+
+  /// No description provided for @upg_stationClock_3.
+  ///
+  /// In en, this message translates to:
+  /// **'PA Announcement'**
+  String get upg_stationClock_3;
+
+  /// No description provided for @upg_stationClock_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'“The 10.00 will arrive on time.”'**
+  String get upg_stationClock_3_desc;
+
+  /// No description provided for @upg_stationClock_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Stationmaster'**
+  String get upg_stationClock_4;
+
+  /// No description provided for @upg_stationClock_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Peaked cap, dead serious.'**
+  String get upg_stationClock_4_desc;
+
+  /// No description provided for @upg_stationClock_5.
+  ///
+  /// In en, this message translates to:
+  /// **'High-speed Rail'**
+  String get upg_stationClock_5;
+
+  /// No description provided for @upg_stationClock_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer delays, more hits.'**
+  String get upg_stationClock_5_desc;
+
+  /// No description provided for @upg_stationClock_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Radio-controlled'**
+  String get upg_stationClock_6;
+
+  /// No description provided for @upg_stationClock_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The radio knows the time.'**
+  String get upg_stationClock_6_desc;
+
+  /// No description provided for @upg_stationClock_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Grand Central'**
+  String get upg_stationClock_7;
+
+  /// No description provided for @upg_stationClock_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A thousand commuters, one clock.'**
+  String get upg_stationClock_7_desc;
+
+  /// No description provided for @upg_stationClock_8.
+  ///
+  /// In en, this message translates to:
+  /// **'The Train That Was On Time'**
+  String get upg_stationClock_8;
+
+  /// No description provided for @upg_stationClock_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A legend nobody believed.'**
+  String get upg_stationClock_8_desc;
+
+  /// No description provided for @upg_quartz_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh Crystal'**
+  String get upg_quartz_1;
+
+  /// No description provided for @upg_quartz_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrates like new.'**
+  String get upg_quartz_1_desc;
+
+  /// No description provided for @upg_quartz_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Proper Soldering'**
+  String get upg_quartz_2;
+
+  /// No description provided for @upg_quartz_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'No cold joints, no excuses.'**
+  String get upg_quartz_2_desc;
+
+  /// No description provided for @upg_quartz_3.
+  ///
+  /// In en, this message translates to:
+  /// **'LCD Display'**
+  String get upg_quartz_3;
+
+  /// No description provided for @upg_quartz_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Digits straight from the 80s.'**
+  String get upg_quartz_3_desc;
+
+  /// No description provided for @upg_quartz_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature Compensation'**
+  String get upg_quartz_4;
+
+  /// No description provided for @upg_quartz_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Doesn\'t care about the weather.'**
+  String get upg_quartz_4_desc;
+
+  /// No description provided for @upg_quartz_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Dual Oscillator'**
+  String get upg_quartz_5;
+
+  /// No description provided for @upg_quartz_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Two times 32,768.'**
+  String get upg_quartz_5_desc;
+
+  /// No description provided for @upg_quartz_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Swiss Factory'**
+  String get upg_quartz_6;
+
+  /// No description provided for @upg_quartz_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The irony.'**
+  String get upg_quartz_6_desc;
+
+  /// No description provided for @upg_quartz_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Built-in Calculator'**
+  String get upg_quartz_7;
+
+  /// No description provided for @upg_quartz_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts Tiki on the fly.'**
+  String get upg_quartz_7_desc;
+
+  /// No description provided for @upg_quartz_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Rock Crystal'**
+  String get upg_quartz_8;
+
+  /// No description provided for @upg_quartz_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The one from the legends.'**
+  String get upg_quartz_8_desc;
+
+  /// No description provided for @upg_atomic_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Laser Cooling'**
+  String get upg_atomic_1;
+
+  /// No description provided for @upg_atomic_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Atoms almost stand still. Almost.'**
+  String get upg_atomic_1_desc;
+
+  /// No description provided for @upg_atomic_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Purer Caesium'**
+  String get upg_atomic_2;
+
+  /// No description provided for @upg_atomic_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Caesium-133, no additives.'**
+  String get upg_atomic_2_desc;
+
+  /// No description provided for @upg_atomic_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Atomic Fountain'**
+  String get upg_atomic_3;
+
+  /// No description provided for @upg_atomic_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Atoms bounce to the beat.'**
+  String get upg_atomic_3_desc;
+
+  /// No description provided for @upg_atomic_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Optical Clock'**
+  String get upg_atomic_4;
+
+  /// No description provided for @upg_atomic_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Measures time with light.'**
+  String get upg_atomic_4_desc;
+
+  /// No description provided for @upg_atomic_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Ion Trap'**
+  String get upg_atomic_5;
+
+  /// No description provided for @upg_atomic_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'One ion, zero excuses.'**
+  String get upg_atomic_5_desc;
+
+  /// No description provided for @upg_atomic_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Lab Network'**
+  String get upg_atomic_6;
+
+  /// No description provided for @upg_atomic_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Every second is put to a vote.'**
+  String get upg_atomic_6_desc;
+
+  /// No description provided for @upg_atomic_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Leap Second'**
+  String get upg_atomic_7;
+
+  /// No description provided for @upg_atomic_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Added while nobody was looking.'**
+  String get upg_atomic_7_desc;
+
+  /// No description provided for @upg_atomic_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Nuclear Clock'**
+  String get upg_atomic_8;
+
+  /// No description provided for @upg_atomic_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Thorium-229 doesn\'t do jokes.'**
+  String get upg_atomic_8_desc;
+
+  /// No description provided for @upg_gps_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Better Antenna'**
+  String get upg_gps_1;
+
+  /// No description provided for @upg_gps_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hears Earth more clearly.'**
+  String get upg_gps_1_desc;
+
+  /// No description provided for @upg_gps_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Relativity Fix'**
+  String get upg_gps_2;
+
+  /// No description provided for @upg_gps_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Einstein would be proud.'**
+  String get upg_gps_2_desc;
+
+  /// No description provided for @upg_gps_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Bigger Solar Panel'**
+  String get upg_gps_3;
+
+  /// No description provided for @upg_gps_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'More power, more ticks.'**
+  String get upg_gps_3_desc;
+
+  /// No description provided for @upg_gps_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Constellation'**
+  String get upg_gps_4;
+
+  /// No description provided for @upg_gps_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'31 friends in orbit.'**
+  String get upg_gps_4_desc;
+
+  /// No description provided for @upg_gps_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Ionosphere Correction'**
+  String get upg_gps_5;
+
+  /// No description provided for @upg_gps_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Through clouds and storms.'**
+  String get upg_gps_5_desc;
+
+  /// No description provided for @upg_gps_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground Station'**
+  String get upg_gps_6;
+
+  /// No description provided for @upg_gps_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone keeps watch from below.'**
+  String get upg_gps_6_desc;
+
+  /// No description provided for @upg_gps_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Laser Link'**
+  String get upg_gps_7;
+
+  /// No description provided for @upg_gps_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellites whispering in light.'**
+  String get upg_gps_7_desc;
+
+  /// No description provided for @upg_gps_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Geostationary Orbit'**
+  String get upg_gps_8;
+
+  /// No description provided for @upg_gps_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Always in the same place. Always on time.'**
+  String get upg_gps_8_desc;
+
+  /// No description provided for @upg_pulsar_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Bigger Dish'**
+  String get upg_pulsar_1;
+
+  /// No description provided for @upg_pulsar_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hears every pulse.'**
+  String get upg_pulsar_1_desc;
+
+  /// No description provided for @upg_pulsar_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Millisecond Pulsar'**
+  String get upg_pulsar_2;
+
+  /// No description provided for @upg_pulsar_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'700 spins a second.'**
+  String get upg_pulsar_2_desc;
+
+  /// No description provided for @upg_pulsar_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky Map'**
+  String get upg_pulsar_3;
+
+  /// No description provided for @upg_pulsar_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Finally we know where to look.'**
+  String get upg_pulsar_3_desc;
+
+  /// No description provided for @upg_pulsar_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Pulsar Timing Array'**
+  String get upg_pulsar_4;
+
+  /// No description provided for @upg_pulsar_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A cosmic metronome choir.'**
+  String get upg_pulsar_4_desc;
+
+  /// No description provided for @upg_pulsar_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational Waves'**
+  String get upg_pulsar_5;
+
+  /// No description provided for @upg_pulsar_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Spacetime wobbles on the beat.'**
+  String get upg_pulsar_5_desc;
+
+  /// No description provided for @upg_pulsar_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Magnetar'**
+  String get upg_pulsar_6;
+
+  /// No description provided for @upg_pulsar_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A pulsar with attitude.'**
+  String get upg_pulsar_6_desc;
+
+  /// No description provided for @upg_pulsar_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmic Lighthouse'**
+  String get upg_pulsar_7;
+
+  /// No description provided for @upg_pulsar_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Guides ships home. On time.'**
+  String get upg_pulsar_7_desc;
+
+  /// No description provided for @upg_pulsar_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart of the Galaxy'**
+  String get upg_pulsar_8;
+
+  /// No description provided for @upg_pulsar_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The whole Milky Way ticks along.'**
+  String get upg_pulsar_8_desc;
+
+  /// No description provided for @upg_timeMachine_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Flux Capacitor'**
+  String get upg_timeMachine_1;
+
+  /// No description provided for @upg_timeMachine_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'1.21 gigawatts, not a watt less.'**
+  String get upg_timeMachine_1_desc;
+
+  /// No description provided for @upg_timeMachine_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat Belts'**
+  String get upg_timeMachine_2;
+
+  /// No description provided for @upg_timeMachine_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'In case of paradox.'**
+  String get upg_timeMachine_2_desc;
+
+  /// No description provided for @upg_timeMachine_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Note from the Future'**
+  String get upg_timeMachine_3;
+
+  /// No description provided for @upg_timeMachine_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'“Tap now.”'**
+  String get upg_timeMachine_3_desc;
+
+  /// No description provided for @upg_timeMachine_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Loop'**
+  String get upg_timeMachine_4;
+
+  /// No description provided for @upg_timeMachine_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Practises the same ten seconds forever.'**
+  String get upg_timeMachine_4_desc;
+
+  /// No description provided for @upg_timeMachine_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Spare Timeline'**
+  String get upg_timeMachine_5;
+
+  /// No description provided for @upg_timeMachine_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Just in case.'**
+  String get upg_timeMachine_5_desc;
+
+  /// No description provided for @upg_timeMachine_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Tours to 10.00'**
+  String get upg_timeMachine_6;
+
+  /// No description provided for @upg_timeMachine_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Guided, of course.'**
+  String get upg_timeMachine_6_desc;
+
+  /// No description provided for @upg_timeMachine_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Meeting Yourself'**
+  String get upg_timeMachine_7;
+
+  /// No description provided for @upg_timeMachine_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Polite, but weird.'**
+  String get upg_timeMachine_7_desc;
+
+  /// No description provided for @upg_timeMachine_8.
+  ///
+  /// In en, this message translates to:
+  /// **'End of Time'**
+  String get upg_timeMachine_8;
+
+  /// No description provided for @upg_timeMachine_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'One-way ticket.'**
+  String get upg_timeMachine_8_desc;
+
+  /// No description provided for @upg_schrodinger_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Bigger Box'**
+  String get upg_schrodinger_1;
+
+  /// No description provided for @upg_schrodinger_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'More room for uncertainty.'**
+  String get upg_schrodinger_1_desc;
+
+  /// No description provided for @upg_schrodinger_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantum Kibble'**
+  String get upg_schrodinger_2;
+
+  /// No description provided for @upg_schrodinger_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Eaten and not eaten.'**
+  String get upg_schrodinger_2_desc;
+
+  /// No description provided for @upg_schrodinger_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Entangled Yarn'**
+  String get upg_schrodinger_3;
+
+  /// No description provided for @upg_schrodinger_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Entanglement on demand.'**
+  String get upg_schrodinger_3_desc;
+
+  /// No description provided for @upg_schrodinger_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Superposition Catnip'**
+  String get upg_schrodinger_4;
+
+  /// No description provided for @upg_schrodinger_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Purrs in two states at once.'**
+  String get upg_schrodinger_4_desc;
+
+  /// No description provided for @upg_schrodinger_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Observer on Holiday'**
+  String get upg_schrodinger_5;
+
+  /// No description provided for @upg_schrodinger_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'No one looks, everything hits.'**
+  String get upg_schrodinger_5_desc;
+
+  /// No description provided for @upg_schrodinger_6.
+  ///
+  /// In en, this message translates to:
+  /// **'A Second Cat'**
+  String get upg_schrodinger_6;
+
+  /// No description provided for @upg_schrodinger_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Now there are four states.'**
+  String get upg_schrodinger_6_desc;
+
+  /// No description provided for @upg_schrodinger_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Many Worlds'**
+  String get upg_schrodinger_7;
+
+  /// No description provided for @upg_schrodinger_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'In one of them it\'s always 10.00.'**
+  String get upg_schrodinger_7_desc;
+
+  /// No description provided for @upg_schrodinger_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Opened'**
+  String get upg_schrodinger_8;
+
+  /// No description provided for @upg_schrodinger_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'It hit. Definitely hit.'**
+  String get upg_schrodinger_8_desc;
+
+  /// No description provided for @upg_chronos_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharpened Scythe'**
+  String get upg_chronos_1;
+
+  /// No description provided for @upg_chronos_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Slices seconds into hundredths.'**
+  String get upg_chronos_1_desc;
+
+  /// No description provided for @upg_chronos_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Olympian Hourglass'**
+  String get upg_chronos_2;
+
+  /// No description provided for @upg_chronos_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sand straight from the gods.'**
+  String get upg_chronos_2_desc;
+
+  /// No description provided for @upg_chronos_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Temple'**
+  String get upg_chronos_3;
+
+  /// No description provided for @upg_chronos_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The faithful bring watches.'**
+  String get upg_chronos_3_desc;
+
+  /// No description provided for @upg_chronos_4.
+  ///
+  /// In en, this message translates to:
+  /// **'A Word with Kairos'**
+  String get upg_chronos_4;
+
+  /// No description provided for @upg_chronos_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'About the right moment.'**
+  String get upg_chronos_4_desc;
+
+  /// No description provided for @upg_chronos_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Throne of Gears'**
+  String get upg_chronos_5;
+
+  /// No description provided for @upg_chronos_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Comfy, if a bit ticky.'**
+  String get upg_chronos_5_desc;
+
+  /// No description provided for @upg_chronos_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Pantheon of Punctuality'**
+  String get upg_chronos_6;
+
+  /// No description provided for @upg_chronos_6_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Gods who are never late.'**
+  String get upg_chronos_6_desc;
+
+  /// No description provided for @upg_chronos_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Eternity'**
+  String get upg_chronos_7;
+
+  /// No description provided for @upg_chronos_7_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Has time. Literally.'**
+  String get upg_chronos_7_desc;
+
+  /// No description provided for @upg_chronos_8.
+  ///
+  /// In en, this message translates to:
+  /// **'The Absolute Second'**
+  String get upg_chronos_8;
+
+  /// No description provided for @upg_chronos_8_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'10.00. Always was, always will be.'**
+  String get upg_chronos_8_desc;
 }
 
 class _AppLocalizationsDelegate

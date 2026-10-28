@@ -33,7 +33,11 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
     widget.controller.addListener(_onChange);
   }
 
+  bool _zone = false;
+
   void _onChange() {
+    final zone = widget.controller.inBulletZone;
+    if (zone != _zone) setState(() => _zone = zone);
     final on = widget.controller.engine.frenzyLeft > 0;
     if (on && !_pulse.isAnimating) _pulse.repeat();
     if (!on && _pulse.isAnimating) {
@@ -57,7 +61,10 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
         if (_pulse.isAnimating) {
           _mix = math.min(1, _mix + 0.05);
         }
-        final p = 0.5 + 0.5 * math.sin(_pulse.value * math.pi * 2);
+        // "Reduce motion" (U-6): neon stays, the pulsing doesn't.
+        final p = widget.controller.settings.reduceMotion
+            ? 0.5
+            : 0.5 + 0.5 * math.sin(_pulse.value * math.pi * 2);
         final top = Color.lerp(
           Palette.bgTop,
           Color.lerp(Palette.neonMagenta, Palette.neonCyan, p),
@@ -68,18 +75,55 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
           Color.lerp(Palette.neonCyan, Palette.neonMagenta, p),
           _mix * 0.85,
         )!;
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [top, bottom],
-            ),
-          ),
+        // Bullet time: the world drains of colour, edges darken.
+        return TweenAnimationBuilder<double>(
+          tween: Tween(end: _zone ? 1 : 0),
+          duration: const Duration(milliseconds: 250),
           child: child,
+          builder: (context, z, child) => Stack(
+            fit: StackFit.expand,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [_grey(top, z), _grey(bottom, z)],
+                  ),
+                ),
+                child: child,
+              ),
+              if (z > 0)
+                IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        radius: 0.95,
+                        colors: [
+                          const Color(0x00000000),
+                          Palette.outline.withValues(alpha: 0.45 * z),
+                        ],
+                        stops: const [0.55, 1],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         );
       },
       child: widget.child,
     );
+  }
+
+  static Color _grey(Color c, double k) {
+    final l = c.computeLuminance();
+    final g = Color.fromARGB(
+      255,
+      (l * 255).round(),
+      (l * 255).round(),
+      (l * 255).round(),
+    );
+    return Color.lerp(c, Color.lerp(g, c, 0.25), k * 0.75)!;
   }
 }

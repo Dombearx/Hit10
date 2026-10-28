@@ -8,6 +8,7 @@ import '../achievement_text.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
+import 'burst.dart';
 import 'emoji_card.dart';
 
 /// Achievement toasts sliding in from the top (R-OSIAG-1), one at a time.
@@ -45,6 +46,20 @@ class _AchievementToastsState extends State<AchievementToasts> {
       burst ? _queue.clear() : _queue.removeAt(0);
     });
     final ms = _queue.isEmpty ? 2600 : 1600;
+    // Confetti from the toast once it has slid in (docs/04 §3).
+    Timer(const Duration(milliseconds: 250), () {
+      if (!mounted) return;
+      final box = context.findRenderObject();
+      if (box is! RenderBox || !box.hasSize) return;
+      showBurst(
+        context,
+        at: box.localToGlobal(Offset(box.size.width / 2, box.size.height)),
+        colors: confettiColors,
+        count: 24,
+        fall: true,
+        reduceMotion: widget.controller.settings.reduceMotion,
+      );
+    });
     _timer = Timer(Duration(milliseconds: ms), () {
       if (!mounted) return;
       setState(() => _current = null);

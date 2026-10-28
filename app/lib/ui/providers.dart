@@ -16,3 +16,6 @@ final gameControllerProvider = Provider<GameController>(
 );
 
 final rewardedAdsProvider = Provider<RewardedAds>((ref) => FakeRewardedAds());
+
+/// Restarts the app from the saved state (after an import or a reset).
+final restartProvider = Provider<Future<void> Function()>((ref) => () async {});

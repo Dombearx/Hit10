@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+: the save goes to the Google account backup and moves with
+     device-to-device transfer; nothing else does (docs/05 T-32). -->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="file" path="save.json"/>
+        <include domain="file" path="save.bak.json"/>
+    </cloud-backup>
+    <device-transfer>
+        <include domain="file" path="save.json"/>
+        <include domain="file" path="save.bak.json"/>
+    </device-transfer>
+</data-extraction-rules>

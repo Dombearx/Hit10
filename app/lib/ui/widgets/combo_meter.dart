@@ -4,6 +4,7 @@ import '../../l10n/gen/app_localizations.dart';
 import '../catalog.dart';
 import '../game_controller.dart';
 import '../theme.dart';
+import 'burst.dart';
 
 /// Always-visible combo (R-COMBO-4): multiplier, flame that grows with the
 /// streak, shield charges. Shakes red when the streak breaks.
@@ -27,7 +28,20 @@ class _ComboMeterState extends State<ComboMeter>
   void didUpdateWidget(ComboMeter old) {
     super.didUpdateWidget(old);
     final now = widget.controller.state.comboStreak;
-    if (now < _last && _last >= 3) _break.forward(from: 0);
+    if (now < _last && _last >= 3) {
+      _break.forward(from: 0);
+      // The counter "shatters" (docs/04 §3).
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        showBurst(
+          context,
+          colors: shardColors,
+          count: 12,
+          spread: 0.7,
+          reduceMotion: widget.controller.settings.reduceMotion,
+        );
+      });
+    }
     _last = now;
   }
 

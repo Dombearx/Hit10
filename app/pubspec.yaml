@@ -40,6 +40,8 @@ flutter:
     - assets/balance.json
     - assets/audio/
     - assets/emoji/
+    - assets/fonts/OFL-PaytoneOne.txt
+    - assets/fonts/OFL-Nunito.txt
 
   fonts:
     - family: PaytoneOne

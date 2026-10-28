@@ -32,4 +32,19 @@ void main() {
       );
     }
   });
+
+  test('every generator upgrade has a name and a one-liner (R-ULEP-2)', () {
+    final balance = jsonDecode(
+      File('assets/balance.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
+    for (final g in balance['generators'] as List<dynamic>) {
+      final id = (g as Map<String, dynamic>)['id'];
+      for (var i = 1; i <= 8; i++) {
+        for (final m in [en, pl]) {
+          expect(m['upg_${id}_$i'], isA<String>(), reason: '$id $i');
+          expect(m['upg_${id}_${i}_desc'], isA<String>(), reason: '$id $i');
+        }
+      }
+    }
+  });
 }

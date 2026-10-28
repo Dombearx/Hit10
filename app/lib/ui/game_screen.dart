@@ -15,6 +15,7 @@ import 'shop/skill_list.dart';
 import 'shop/upgrade_strip.dart';
 import 'catalog.dart';
 import 'screens/achievements_screen.dart';
+import 'screens/settings_screen.dart';
 import 'screens/prestige_screen.dart';
 import 'screens/stats_screen.dart';
 import 'theme.dart';
@@ -44,9 +45,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     onShow: _onShow,
   );
 
-  void _onHide() => controller.background(
-    title: AppLocalizations.of(context).notificationTitle,
-  );
+  void _onHide() {
+    controller.sfx.mute(true); // U-21
+    controller.background(
+      title: AppLocalizations.of(context).notificationTitle,
+    );
+  }
 
   /// The shop and the upgrade strip repaint at 4 Hz, not at every tick.
   late final ThrottledListenable _slow = ThrottledListenable(
@@ -98,6 +102,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   void _onShow() {
+    controller.sfx.mute(false);
     controller.resume();
     _maybeShowOffline();
   }
@@ -147,140 +152,151 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       body: FrenzyBackground(
         controller: controller,
         child: SafeArea(
-          child: Stack(
-            children: [
-              Column(
+          // Tablets (M-9): the game keeps a phone's proportions, centred;
+          // the background still fills the screen.
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: Stack(
                 children: [
-                  const SizedBox(height: 6),
-                  _Header(
-                    controller: controller,
-                    onSecretTap: _onSecretTap,
-                    onAchievements: () => showAchievements(context, controller),
-                    onStats: () => showStats(context, controller),
-                    onPrestige: () => showPrestige(context, controller),
-                  ),
-                  Expanded(
-                    flex: _shopCollapsed ? 8 : 5,
-                    child: Listener(
-                      key: const Key('arena'),
-                      behavior: HitTestBehavior.opaque,
-                      onPointerDown: (e) {
-                        final p = e.localPosition;
-                        // A tap on the flying golden clock is not a round
-                        // tap (R-ZLOTA-1).
-                        if (arena.isLoaded &&
-                            arena.tapGolden(Vector2(p.dx, p.dy))) {
-                          return;
-                        }
-                        // With two clocks each half of the arena is one clock
-                        // (R-DRUGI-1).
-                        final clock =
-                            controller.clocks.length > 1 &&
-                                p.dx > arena.size.x / 2
-                            ? 1
-                            : 0;
-                        controller.onPointerDown(e.timeStamp, clock: clock);
-                      },
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: RepaintBoundary(
-                              child: GameWidget(game: arena),
-                            ),
-                          ),
-                          // Offer tiles float over the arena's top corners but
-                          // swallow their own taps (U-22).
-                          Positioned(
-                            left: 8,
-                            right: 8,
-                            top: 4,
-                            child: ListenableBuilder(
-                              listenable: _slow,
-                              builder: (context, _) =>
-                                  AdCornerButtons(controller: controller),
-                            ),
-                          ),
-                          // A 5-second offer: floats over the arena's foot so
-                          // the shop below doesn't jump.
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: Center(
-                              child: ListenableBuilder(
-                                listenable: controller,
-                                builder: (context, _) =>
-                                    RescuePopup(controller: controller),
-                              ),
-                            ),
-                          ),
-                        ],
+                  Column(
+                    children: [
+                      const SizedBox(height: 6),
+                      _Header(
+                        controller: controller,
+                        onSecretTap: _onSecretTap,
+                        onAchievements: () =>
+                            showAchievements(context, controller),
+                        onStats: () => showStats(context, controller),
+                        onPrestige: () => showPrestige(context, controller),
+                        onSettings: () => showSettings(context, controller),
                       ),
-                    ),
-                  ),
-                  ListenableBuilder(
-                    listenable: controller,
-                    builder: (context, _) =>
-                        TutorialBubble(controller: controller),
-                  ),
-                  ListenableBuilder(
-                    listenable: controller,
-                    builder: (context, _) => ComboMeter(controller: controller),
-                  ),
-                  ListenableBuilder(
-                    listenable: _slow,
-                    builder: (context, _) => ModeRow(controller: controller),
-                  ),
-                  RepaintBoundary(
-                    child: ListenableBuilder(
-                      listenable: _slow,
-                      builder: (context, _) =>
-                          UpgradeStrip(controller: controller),
-                    ),
-                  ),
-                  _ShopHeader(
-                    tab: _tab,
-                    amount: _amount,
-                    collapsed: _shopCollapsed,
-                    onTab: (t) => setState(() {
-                      _tab = t;
-                      _shopCollapsed = false;
-                    }),
-                    onAmount: (a) => setState(() => _amount = a),
-                    onToggle: () =>
-                        setState(() => _shopCollapsed = !_shopCollapsed),
-                  ),
-                  if (!_shopCollapsed)
-                    Expanded(
-                      flex: 5,
-                      child: RepaintBoundary(
-                        child: ListenableBuilder(
-                          listenable: _slow,
-                          builder: (context, _) => _tab == 0
-                              ? GeneratorList(
-                                  controller: controller,
-                                  amount: _amount,
-                                )
-                              : SkillList(controller: controller),
+                      Expanded(
+                        flex: _shopCollapsed ? 8 : 5,
+                        child: Listener(
+                          key: const Key('arena'),
+                          behavior: HitTestBehavior.opaque,
+                          onPointerDown: (e) {
+                            final p = e.localPosition;
+                            // A tap on the flying golden clock is not a round
+                            // tap (R-ZLOTA-1).
+                            if (arena.isLoaded &&
+                                arena.tapGolden(Vector2(p.dx, p.dy))) {
+                              return;
+                            }
+                            // With two clocks each half of the arena is one clock
+                            // (R-DRUGI-1).
+                            final clock =
+                                controller.clocks.length > 1 &&
+                                    p.dx > arena.size.x / 2
+                                ? 1
+                                : 0;
+                            controller.onPointerDown(e.timeStamp, clock: clock);
+                          },
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: RepaintBoundary(
+                                  child: GameWidget(game: arena),
+                                ),
+                              ),
+                              // Offer tiles float over the arena's top corners but
+                              // swallow their own taps (U-22).
+                              Positioned(
+                                left: 8,
+                                right: 8,
+                                top: 4,
+                                child: ListenableBuilder(
+                                  listenable: _slow,
+                                  builder: (context, _) =>
+                                      AdCornerButtons(controller: controller),
+                                ),
+                              ),
+                              // A 5-second offer: floats over the arena's foot so
+                              // the shop below doesn't jump.
+                              Positioned(
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                child: Center(
+                                  child: ListenableBuilder(
+                                    listenable: controller,
+                                    builder: (context, _) =>
+                                        RescuePopup(controller: controller),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                      ListenableBuilder(
+                        listenable: controller,
+                        builder: (context, _) =>
+                            TutorialBubble(controller: controller),
+                      ),
+                      ListenableBuilder(
+                        listenable: controller,
+                        builder: (context, _) =>
+                            ComboMeter(controller: controller),
+                      ),
+                      ListenableBuilder(
+                        listenable: _slow,
+                        builder: (context, _) =>
+                            ModeRow(controller: controller),
+                      ),
+                      RepaintBoundary(
+                        child: ListenableBuilder(
+                          listenable: _slow,
+                          builder: (context, _) =>
+                              UpgradeStrip(controller: controller),
+                        ),
+                      ),
+                      _ShopHeader(
+                        tab: _tab,
+                        amount: _amount,
+                        collapsed: _shopCollapsed,
+                        onTab: (t) => setState(() {
+                          _tab = t;
+                          _shopCollapsed = false;
+                        }),
+                        onAmount: (a) => setState(() => _amount = a),
+                        onToggle: () =>
+                            setState(() => _shopCollapsed = !_shopCollapsed),
+                      ),
+                      if (!_shopCollapsed)
+                        Expanded(
+                          flex: 5,
+                          child: RepaintBoundary(
+                            child: ListenableBuilder(
+                              listenable: _slow,
+                              builder: (context, _) => _tab == 0
+                                  ? GeneratorList(
+                                      controller: controller,
+                                      amount: _amount,
+                                    )
+                                  : SkillList(controller: controller),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: 8,
+                    child: AchievementToasts(controller: controller),
+                  ),
+                  if (_diagnostics)
+                    Positioned(
+                      left: 12,
+                      right: 12,
+                      bottom: 12,
+                      child: DiagnosticsPanel(controller: controller),
                     ),
                 ],
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 8,
-                child: AchievementToasts(controller: controller),
-              ),
-              if (_diagnostics)
-                Positioned(
-                  left: 12,
-                  right: 12,
-                  bottom: 12,
-                  child: DiagnosticsPanel(controller: controller),
-                ),
-            ],
+            ),
           ),
         ),
       ),
@@ -295,12 +311,14 @@ class _Header extends StatelessWidget {
     required this.onAchievements,
     required this.onStats,
     required this.onPrestige,
+    required this.onSettings,
   });
   final GameController controller;
   final VoidCallback onSecretTap;
   final VoidCallback onAchievements;
   final VoidCallback onStats;
   final VoidCallback onPrestige;
+  final VoidCallback onSettings;
 
   Widget _icon(
     String emoji,
@@ -347,6 +365,8 @@ class _Header extends StatelessWidget {
                   const SizedBox(width: 6),
                   _icon('bar_chart', const Key('open-stats'), onStats),
                   const Spacer(),
+                  _icon('gear', const Key('open-settings'), onSettings),
+                  const SizedBox(width: 6),
                   _icon(
                     'cyclone',
                     const Key('open-prestige'),

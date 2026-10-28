@@ -82,11 +82,6 @@ class ArenaGame extends FlameGame {
         // A missing emoji just leaves the bubble without an icon.
       }
     }
-    try {
-      _goldenImage = await images.load('emoji/alarm_clock.png');
-    } on Object {
-      _goldenImage = null;
-    }
     stage = Stage(this);
     await add(stage);
     _warmUp();
@@ -132,7 +127,6 @@ class ArenaGame extends FlameGame {
   }
 
   StreamSubscription<(int, bool)>? _starts;
-  ui.Image? _goldenImage;
   GoldenClock? _golden;
   bool _goldenFromLeft = true;
 
@@ -162,7 +156,6 @@ class ArenaGame extends FlameGame {
         dialTop: stage.center.y - stage.radius,
         radius: stage.radius * 0.2,
         life: controller.engine.goldenVisibleLeft,
-        image: _goldenImage,
         fromLeft: _goldenFromLeft,
       );
       _golden = g;
@@ -176,6 +169,9 @@ class ArenaGame extends FlameGame {
   final Map<String, ui.Image> _emoji = {};
   final _rng = math.Random();
   bool _popupLeft = true;
+
+  /// The bubble currently shown on each side (left, right).
+  final _popups = <GeneratorPopup?>[null, null];
 
   @override
   void update(double dt) {
@@ -204,18 +200,19 @@ class ArenaGame extends FlameGame {
     // Spawn low on the dial: bubbles float up ~0.27 r and must never cover
     // the digits (U-7), whose lower edge is at about c.y + 0.22 r.
     final y = c.y + r * (0.55 + 0.35 * _rng.nextDouble());
-    stage.add(
-      GeneratorPopup(
-        emoji: _emoji[generatorArt[hit.generator]?.main],
-        time: formatStopwatch(hit.gameTime),
-        reward: hit.tier == Tier.miss
-            ? '—'
-            : '+${formatNumber(hit.reward, decimalSeparator: labels.decimalSeparator)}',
-        tier: hit.tier,
-        at: Vector2(x, y),
-        scale: scale,
-      ),
+    final side = _popupLeft ? 0 : 1;
+    _popups[side]?.dismiss();
+    final popup = _popups[side] = GeneratorPopup(
+      emoji: _emoji[generatorArt[hit.generator]?.main],
+      time: formatStopwatch(hit.gameTime),
+      reward: hit.tier == Tier.miss
+          ? '—'
+          : '+${formatNumber(hit.reward, decimalSeparator: labels.decimalSeparator)}',
+      tier: hit.tier,
+      at: Vector2(x, y),
+      scale: scale,
     );
+    stage.add(popup);
   }
 
   @override
@@ -273,7 +270,11 @@ class Stage extends Component {
     }
   }
 
+  /// "Reduce motion" (U-6): no shakes or flashes, a third of the particles.
+  bool get reduceMotion => game.controller.settings.reduceMotion;
+
   void shake(double amplitude, double seconds) {
+    if (reduceMotion) return;
     _shakeAmp = amplitude;
     _shake = seconds;
     _shakeDur = seconds;
@@ -286,6 +287,7 @@ class Stage extends Component {
   @override
   void update(double dt) {
     if (dials.length != _count) _syncDials();
+    particles.density = reduceMotion ? 1 / 3 : 1;
     if (_shake > 0) _shake = math.max(0, _shake - dt);
     if (_wobble > 0) _wobble = math.max(0, _wobble - dt);
   }
@@ -565,7 +567,7 @@ class Dial extends Component {
   double _subAlpha = -1;
 
   void flash(Tier tier) {
-    _flash = tier == Tier.miss ? 0 : 0.35;
+    _flash = tier == Tier.miss || stage.reduceMotion ? 0 : 0.35;
     _flashColor = switch (tier) {
       Tier.perfect => Palette.perfect,
       Tier.great => Palette.great,

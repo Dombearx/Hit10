@@ -9,11 +9,10 @@ import 'sheet.dart';
 
 /// R-STAT-1.
 Future<void> showStats(BuildContext context, GameController c) {
-  final l = AppLocalizations.of(context);
   return showGameSheet(
     context,
     c,
-    title: l.statsTitle,
+    title: (l) => l.statsTitle,
     builder: (context) => _Stats(controller: c),
   );
 }

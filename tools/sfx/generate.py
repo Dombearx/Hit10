@@ -155,10 +155,54 @@ def combo_break():
     return mix(*parts, (0, lowpass(noise(0.15), 2000) * env(int(SR * 0.15), 0.001, 25)))
 
 
+def heartbeat():
+    # Lub-dub for the bullet-time zone: two low thumps.
+    def thump(f0, dur):
+        x = t(dur)
+        f = f0 * np.exp(-8 * x) + 38
+        return np.sin(2 * np.pi * np.cumsum(f) / SR) * env(len(x), 0.004, 14)
+    return mix((0, thump(95, 0.25)), (0.17, thump(80, 0.3) * 0.75))
+
+
+def chimes():
+    # The golden clock appears: a falling run of small bells.
+    run = ["E7", "C7", "G6", "E6", "C7", "G7"]
+    return mix(*[(0.07 * i, bell(note(n), 0.6, 6) * (0.9 - 0.08 * i)) for i, n in enumerate(run)])
+
+
+def fanfare():
+    # New generator or achievement: a short brassy up-beat to a chord.
+    def brass(freq, dur):
+        x = t(dur)
+        w = sum(np.sin(2 * np.pi * freq * k * x) / k ** 1.2 for k in range(1, 7))
+        return w * np.clip(x / 0.02, 0, 1) * np.exp(-2.5 * x)
+    return mix(
+        (0.00, brass(note("G5"), 0.14) * 0.7),
+        (0.12, brass(note("G5"), 0.12) * 0.7),
+        (0.22, brass(note("C6"), 0.7)),
+        (0.22, brass(note("E5"), 0.7) * 0.6),
+        (0.22, brass(note("G5"), 0.7) * 0.5),
+        (0.25, bell(note("C7"), 0.6, 5) * 0.4),
+    )
+
+
+def rewind():
+    # Prestige: tape spun backwards — a rising warble over hiss.
+    dur = 1.6
+    x = t(dur)
+    f = 180 + 900 * (x / dur) ** 2 + 60 * np.sin(2 * np.pi * 7 * x)
+    tone = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.6
+    hiss = lowpass(noise(dur), 2500) * 0.5
+    shape = np.clip(x / 0.1, 0, 1) * np.clip((dur - x) / 0.25, 0, 1)
+    return (tone + hiss) * shape
+
+
 if __name__ == "__main__":
     for name, fn in [
         ("perfect", perfect), ("great", great), ("good", good), ("miss", miss),
         ("coins", coins), ("tick", tick), ("start", start), ("whoosh", whoosh),
         ("buy", buy), ("combo_break", combo_break),
+        ("heartbeat", heartbeat), ("chimes", chimes), ("fanfare", fanfare),
+        ("rewind", rewind),
     ]:
         save(name, fn())

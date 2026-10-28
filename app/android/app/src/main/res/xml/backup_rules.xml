@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 and older: Auto Backup keeps only the save (docs/05 T-32). -->
+<full-backup-content>
+    <include domain="file" path="save.json"/>
+    <include domain="file" path="save.bak.json"/>
+</full-backup-content>
