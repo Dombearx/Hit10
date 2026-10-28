@@ -290,6 +290,15 @@ na wypłatę z dotknięć gracza.
   Tików. W M6 dochodzi przycisk „×2 za reklamę”.
 - **R-OFF-3:** Ochrona przed cofnięciem zegara telefonu: ujemny czas
   nieobecności daje 0. Czas offline jest zawsze przycinany do limitu.
+- **R-OFF-4:** Przy wyjściu z gry planowane jest **jedno lokalne
+  powiadomienie** na moment, gdy dochód offline dojdzie do limitu, np.
+  „Dziadkowie uzbierali 2,4M Tików! Limit pełny.” Kwota jest liczona przy
+  wyjściu. Powrót do gry albo ponowne wyjście anuluje stare powiadomienie
+  i planuje nowe. Nigdy więcej niż jedno naraz, żadnych innych powiadomień.
+- **R-OFF-5:** O zgodę na powiadomienia (Android 13+) gra pyta dopiero przy
+  pierwszym oknie „Gdy cię nie było…”, z jednym zdaniem wyjaśnienia,
+  a nie przy starcie. Odmowa nic nie psuje. Powiadomienia da się wyłączyć
+  w ustawieniach gry.
 
 ## 11. Samouczek (pierwsze uruchomienie)
 

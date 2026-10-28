@@ -101,10 +101,11 @@ i balansu. Zmiany liczb wpisujemy do 02/03.
 - [ ] Prestiż, Chronony, Okruchy, drzewko perków, drugi zegar,
       generatory 13–14 (02 §9)
 - [ ] Statystyki (02 §12) i samouczek (02 §11)
+- [ ] Powiadomienie o pełnym limicie offline (R-OFF-4, R-OFF-5)
 - [ ] Logika 5 ofert reklamowych na atrapie, z przyciskami w UI (02 §13,
       04 §5a, T-29). `--check` sprawdza też A-1 i A-2.
 
-**Testy ręczne:** M-8, pierwsze podejście: 3 osoby grają 15 min.
+**Testy ręczne:** M-8, pierwsze podejście: 3 osoby grają 15 min; M-11 (powiadomienie).
 
 ## M5 — Oprawa
 

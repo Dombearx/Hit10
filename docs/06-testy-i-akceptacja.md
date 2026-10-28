@@ -17,7 +17,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | Ceny | pojedyncze, ×10, ×100, MAX (k = największe, na które stać; k+1 już nie) | R-GEN-1/2 |
 | Dochód | zysk okien dla σ = 0, małego i dużego σ; synergie; ulepszenia; G | 03 §2, R-GEN-6 |
 | Złota Sekunda | interwał (z Złotym dotykiem i perkiem), siła wg progu, limit Fartu do 10% konta, nakładanie efektów | R-ZLOTA-1…4 |
-| Offline | limit, wydajność, perki, ujemny czas → 0, bez Szału | R-OFF-1…3 |
+| Offline | limit, wydajność, perki, ujemny czas → 0, bez Szału; czas i treść powiadomienia, anulowanie przy powrocie | R-OFF-1…4 |
 | Prestiż | wzór Chrononów, przyrost, co się zeruje, a co zostaje, perki Pamięci mięśniowej | R-PRES-1…5 |
 | Osiągnięcia | każde osiągnięcie ma test warunku (generowany z tabeli) | R-OSIAG-1/2 |
 | Zapis | zapis → odczyt daje identyczny stan; migracja każdej wersji; uszkodzony plik → kopia; eksport/import | T-17…T-20 |
@@ -70,6 +70,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | **M-8** | „Czy to wciąga?” — 3 osoby spoza projektu grają 15 min bez instrukcji | każda rozumie zasadę w < 1 min, ≥2 z 3 chcą grać dalej; notujemy, co było niejasne |
 | **M-9** | Małe i duże ekrany (≈5" i tablet), tryb ciemny systemu | nic nie wychodzi poza ekran, cyfry czytelne |
 | **M-10** | Reklamy na telefonie (M6): testowe jednostki, zgoda UMP z adresu w UE (VPN albo ustawienia debug UMP), brak sieci, przerwanie reklamy w połowie | nagroda tylko po pełnym obejrzeniu, okno zgody pojawia się i da się je zmienić z ustawień, gra działa bez sieci |
+| **M-11** | Powiadomienie: wyjście z gry, odczekanie do limitu (z limitem skróconym w trybie diagnostycznym), odmowa zgody, wyłączenie w ustawieniach | przychodzi jedno powiadomienie z poprawną kwotą; po odmowie albo wyłączeniu żadnego; powrót do gry anuluje zaplanowane |
 
 ## 3. Kryteria akceptacji etapów
 

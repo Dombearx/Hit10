@@ -12,6 +12,10 @@
   zmiana wysokości dźwięku w locie (U-15) i filtry na żywo (U-19). Wibracje:
   `HapticFeedback` z Fluttera.
 - Zapis: plik JSON przez `path_provider`.
+- Powiadomienia: `flutter_local_notifications` (lokalne, planowane na
+  urządzeniu, bez backendu ani Firebase). Uprawnienie
+  `POST_NOTIFICATIONS`. Planowanie nie wymaga dokładnych alarmów
+  (`SCHEDULE_EXACT_ALARM`), bo kilkuminutowe przesunięcie nie przeszkadza.
 - Tłumaczenia: `flutter_localizations` + ARB (`gen-l10n`).
 - **T-1:** Szablon `MobileAppTemplate` nie jest używany. Projekt startuje
   z `flutter create`. Ze szablonu można później podejrzeć kroki podpisywania

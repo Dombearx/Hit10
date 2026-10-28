@@ -46,6 +46,7 @@ wyglądać, brzmieć i reagować.
 
 - Dźwięk efektów, muzyka (osobne suwaki).
 - Wibracje (wł./wył.).
+- Powiadomienie o pełnym limicie offline (wł./wył., R-OFF-4).
 - Język: systemowy / polski / angielski.
 - Zapis liczb: skrócony (12.4M) / naukowy (1.24e7).
 - **Ogranicz ruch:** bez wstrząsów ekranu i błysków, mniej cząsteczek.
