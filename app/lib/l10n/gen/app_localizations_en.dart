@@ -14,4 +14,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tagline => 'Tap at exactly 10.00';
+
+  @override
+  String get tikiLabel => 'Ticks';
+
+  @override
+  String get tierPerfect => 'PERFECT!';
+
+  @override
+  String get tierGreat => 'GREAT!';
+
+  @override
+  String get tierGood => 'GOOD';
+
+  @override
+  String get missEarly => 'TOO EARLY';
+
+  @override
+  String get missLate => 'TOO LATE';
+
+  @override
+  String get tapToStart => 'Tap to start';
+
+  @override
+  String get decimalSeparator => '.';
 }

@@ -12,6 +12,9 @@ abstract final class Palette {
   static const great = Color(0xFF2EC4B6);
   static const good = Color(0xFF6C9BFF);
   static const miss = Color(0xFF8D99AE);
+
+  /// Darker grey for miss labels drawn over the white dial.
+  static const missText = Color(0xFF5C6378);
   static const accent = Color(0xFFFF3D7F);
   static const neonCyan = Color(0xFF00F5FF);
   static const neonMagenta = Color(0xFFFF00E5);

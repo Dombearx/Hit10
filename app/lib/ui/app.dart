@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../l10n/gen/app_localizations.dart';
-import 'home_screen.dart';
+import 'game_screen.dart';
 import 'theme.dart';
 
 class Hit10App extends StatelessWidget {
@@ -25,7 +25,7 @@ class Hit10App extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const HomeScreen(),
+      home: const GameScreen(),
     );
   }
 }

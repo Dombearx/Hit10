@@ -134,9 +134,12 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
 - **T-31:** **CI w GitHub Actions** (darmowe minuty, bez stałych kosztów):
   - każdy push uruchamia `make check` i symulator `--check`, a potem buduje
     debug APK jako artefakt;
-  - tag `m0`…`m6` tworzy GitHub Release z APK, który właściciel pobiera
-    i instaluje prosto na telefonie (włączona „instalacja z nieznanych
-    źródeł”).
+  - po scaleniu etapu do `main` CI tworzy tag i GitHub Release z APK
+    (nazwa etapu z pliku `MILESTONE`). Właściciel pobiera APK i instaluje
+    prosto na telefonie (włączona „instalacja z nieznanych źródeł”);
+  - QA lokalne: build web z hakiem QA (`make web-qa`, `--dart-define=QA=true`)
+    pozwala testom w przeglądarce dotykać w dokładnym czasie gry; buildy
+    wydawane go nie zawierają.
 
 ## 8. Reklamy (M6, przygotowanie od początku)
 
