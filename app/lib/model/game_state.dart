@@ -54,6 +54,22 @@ class GameState {
   /// Play time (s) at which the next golden second appears (R-ZLOTA-1).
   double goldenNextAt = 0;
 
+  // -------------------------------------------------------- toggles (M4) --
+  bool modeBlind = false;
+  bool modeFast = false;
+  bool secondClockOn = false;
+  bool autoBuyerOn = false;
+
+  /// One-time tips already shown (R-TUT-2).
+  final Set<String> tipsSeen = {};
+
+  // ------------------------------------------------------- ad offers (M4) --
+  /// Wall-clock ms until which each rewarded offer is on cooldown (R-AD-1).
+  final Map<String, int> adCooldownUntil = {};
+
+  /// Turbo seconds left; only drains while playing (R-AD-1).
+  double turboLeft = 0;
+
   void earn(double amount) {
     if (amount <= 0 || amount.isNaN) return;
     tiki += amount;
@@ -115,4 +131,10 @@ class LifetimeStats {
   int missedInARow = 0;
   int goldenCaught = 0;
   double secondsPlayed = 0;
+
+  /// Perfects on the current 10th-of-month day ("Dziesiątka").
+  int tenthDayPerfects = 0;
+
+  /// yyyymmdd the counter above belongs to.
+  int tenthDayKey = 0;
 }

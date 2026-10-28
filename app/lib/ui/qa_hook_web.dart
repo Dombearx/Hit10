@@ -52,6 +52,15 @@ void registerQaHook(GameController c) {
         'goldenArmed': c.engine.goldenArmed,
         'goldenRound': c.engine.goldenRound,
         'goldenCaught': s.lifetime.goldenCaught,
+        'achievements': s.achievements.length,
+        'chronons': s.chronons,
+        'shards': s.shards,
+        'perks': s.perks.toList(),
+        'tutorial': c.tutorialStep.name,
+        'clocks': c.clocks.length,
+        'clockPhases': [for (final k in c.clocks) k.round.phase.name],
+        'turboLeft': s.turboLeft,
+        'tip': c.pendingTip,
       }).toJS;
     }).toJS,
   );
@@ -95,6 +104,21 @@ void registerQaHook(GameController c) {
       final v = seconds.toDartDouble;
       if (name.toDart == 'frenzy') c.engine.frenzyLeft = v;
       if (name.toDart == 'hotHand') c.engine.hotHandLeft = v;
+    }).toJS,
+  );
+  api.setProperty(
+    'setup'.toJS,
+    ((JSString json) {
+      final m = jsonDecode(json.toDart) as Map<String, dynamic>;
+      if (m['perks'] case final List<dynamic> p) {
+        c.state.perks.addAll(p.cast<String>());
+      }
+      if (m['shards'] case final num v) c.state.shards = v.toInt();
+      if (m['perfects'] case final num v) c.state.lifetime.perfects = v.toInt();
+      if (m['earnedTotal'] case final num v) c.state.earnedTotal = v.toDouble();
+      if (m['playSeconds'] case final num v) c.state.playSeconds = v.toDouble();
+      if (m['combo'] case final num v) c.state.comboStreak = v.toInt();
+      if (m['tutorialDone'] == true) c.finishTutorial();
     }).toJS,
   );
   api.setProperty('save'.toJS, (() => c.save().toJS).toJS);

@@ -343,6 +343,139 @@ class GameEngine {
     return BuyResult.ok;
   }
 
+  // ----------------------------------------------------------- risk modes --
+
+  bool blindUnlocked() =>
+      s.perks.contains('earlyModes') ||
+      s.lifetime.perfects >= b.blind.unlockPerfects;
+
+  bool fastUnlocked() =>
+      s.perks.contains('earlyModes') ||
+      s.lifetime.perfects >= b.fastClock.unlockPerfects;
+
+  bool get blindActive => s.modeBlind && blindUnlocked();
+  bool get fastActive => s.modeFast && fastUnlocked();
+
+  /// Reward multiplier of the modes switched on (R-TRYB-1: ×3 · ×2).
+  double modeMultiplier() =>
+      (blindActive ? b.blind.rewardMultiplier : 1) *
+      (fastActive ? b.fastClock.rewardMultiplier : 1);
+
+  double clockSpeed() => fastActive ? b.fastClock.clockSpeed : 1;
+
+  /// "Dziesiątka": counts perfects made on a 10th of the month.
+  void recordPerfectDate(DateTime local) {
+    final key = local.year * 10000 + local.month * 100 + local.day;
+    final l = s.lifetime;
+    if (l.tenthDayKey != key) {
+      l.tenthDayKey = key;
+      l.tenthDayPerfects = 0;
+    }
+    if (local.day == 10) l.tenthDayPerfects++;
+  }
+
+  // ------------------------------------------------------------- prestige --
+
+  bool canPrestige() => econ.prestigeGain() >= 1;
+
+  /// Time paradox (R-PRES-1…5): converts lifetime Tiki into Chronons and
+  /// Shards, resets the run, keeps what the perks keep. Returns the gain.
+  int prestige() {
+    final gain = econ.prestigeGain();
+    if (gain < 1) return 0;
+    s.chronons += gain;
+    s.shards += gain;
+    s.prestiges++;
+    final kept = <String, int>{};
+    final skills = Map<String, int>.of(s.skills);
+    if (s.perks.contains('muscleMemory1')) {
+      kept['fastForward'] = skills['fastForward'] ?? 0;
+    }
+    if (s.perks.contains('muscleMemory2')) {
+      kept['wideEye'] = skills['wideEye'] ?? 0;
+      kept['magnet'] = skills['magnet'] ?? 0;
+    }
+    if (s.perks.contains('muscleMemory3')) {
+      for (final e in skills.entries) {
+        kept.putIfAbsent(e.key, () => e.value ~/ 2);
+      }
+    }
+    s
+      ..tiki = 0
+      ..earnedThisRun = 0
+      ..peakTiki = 0
+      ..comboStreak = 0
+      ..shieldProgress = 0;
+    s.owned.clear();
+    s.upgrades.clear();
+    s.synergies.clear();
+    s.skills
+      ..clear()
+      ..addAll(kept..removeWhere((_, v) => v <= 0));
+    if (s.perks.contains('headStart')) {
+      final p = b.perk('headStart').params;
+      s.owned['grandpa'] = p['grandpas']!.round();
+      s.tiki = p['tiki']!;
+      s.peakTiki = s.tiki;
+    }
+    s.shieldCharges = maxShieldCharges();
+    goldenVisibleLeft = 0;
+    goldenArmed = false;
+    goldenRound = false;
+    frenzyLeft = 0;
+    hotHandLeft = 0;
+    frenzy = 1;
+    _scheduleGolden();
+    return gain;
+  }
+
+  /// Perk can be bought now: not owned, prerequisite owned, enough Shards.
+  bool perkAvailable(String id) {
+    final p = b.perk(id);
+    if (s.perks.contains(id)) return false;
+    if (p.requires != null && !s.perks.contains(p.requires)) return false;
+    return true;
+  }
+
+  BuyResult buyPerk(String id) {
+    if (!perkAvailable(id)) return BuyResult.unavailable;
+    final cost = b.perk(id).cost;
+    if (s.shards < cost) return BuyResult.tooExpensive;
+    s.shards -= cost;
+    s.perks.add(id);
+    if (id == 'startShield') s.shieldCharges = maxShieldCharges();
+    return BuyResult.ok;
+  }
+
+  // ----------------------------------------------------------- auto buyer --
+
+  double _autoBuyAcc = 0;
+
+  /// The "automatic buyer" perk buys the cheapest affordable generator
+  /// every few seconds when switched on. Returns the id bought, if any.
+  String? autoBuy(double dt) {
+    if (!s.perks.contains('autoBuyer') || !s.autoBuyerOn) return null;
+    _autoBuyAcc += dt;
+    final every = b.perk('autoBuyer').params['intervalSeconds']!;
+    if (_autoBuyAcc < every) return null;
+    _autoBuyAcc = 0;
+    String? best;
+    var bestCost = double.infinity;
+    for (var i = 0; i < b.generators.length; i++) {
+      final g = b.generators[i];
+      if (!econ.generatorUnlocked(g.id)) continue;
+      // Only what the shop shows: owned, or the next one in line.
+      if (i > 0 && econ.owned(b.generators[i - 1].id) == 0) break;
+      final c = econ.generatorCost(g.id);
+      if (c < bestCost) {
+        bestCost = c;
+        best = g.id;
+      }
+    }
+    if (best == null || bestCost > s.tiki) return null;
+    return buyGenerators(best, 1) == BuyResult.ok ? best : null;
+  }
+
   // --------------------------------------------------------------- offline --
 
   double offlineCapSeconds() {

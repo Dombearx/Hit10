@@ -58,6 +58,13 @@ Map<String, Object?> encodeSave(SaveData d) {
     'shieldCharges': s.shieldCharges,
     'shieldProgress': s.shieldProgress,
     'goldenNextAt': s.goldenNextAt,
+    'modeBlind': s.modeBlind,
+    'modeFast': s.modeFast,
+    'secondClockOn': s.secondClockOn,
+    'autoBuyerOn': s.autoBuyerOn,
+    'tipsSeen': s.tipsSeen.toList(),
+    'adCooldownUntil': s.adCooldownUntil,
+    'turboLeft': s.turboLeft,
     'stats': {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
@@ -73,6 +80,8 @@ Map<String, Object?> encodeSave(SaveData d) {
       'missedInARow': l.missedInARow,
       'goldenCaught': l.goldenCaught,
       'secondsPlayed': l.secondsPlayed,
+      'tenthDayPerfects': l.tenthDayPerfects,
+      'tenthDayKey': l.tenthDayKey,
     },
     'settings': {
       'sfxVolume': st.sfxVolume,
@@ -132,7 +141,14 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..comboStreak = _i(j['comboStreak'])
     ..shieldCharges = _i(j['shieldCharges'])
     ..shieldProgress = _i(j['shieldProgress'])
-    ..goldenNextAt = _d(j['goldenNextAt']);
+    ..goldenNextAt = _d(j['goldenNextAt'])
+    ..modeBlind = j['modeBlind'] == true
+    ..modeFast = j['modeFast'] == true
+    ..secondClockOn = j['secondClockOn'] == true
+    ..autoBuyerOn = j['autoBuyerOn'] == true
+    ..turboLeft = _d(j['turboLeft']);
+  s.tipsSeen.addAll(_sl(j['tipsSeen']));
+  _m(j['adCooldownUntil']).forEach((k, v) => s.adCooldownUntil[k] = _i(v));
   _m(j['owned']).forEach((k, v) => s.owned[k] = _i(v));
   _m(j['upgrades']).forEach((k, v) => s.upgrades[k] = _i(v));
   _m(j['skills']).forEach((k, v) => s.skills[k] = _i(v));
@@ -158,7 +174,9 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..earlyTaps = _i(l['earlyTaps'])
     ..missedInARow = _i(l['missedInARow'])
     ..goldenCaught = _i(l['goldenCaught'])
-    ..secondsPlayed = _d(l['secondsPlayed']);
+    ..secondsPlayed = _d(l['secondsPlayed'])
+    ..tenthDayPerfects = _i(l['tenthDayPerfects'])
+    ..tenthDayKey = _i(l['tenthDayKey']);
   final st = _m(j['settings']);
   final settings = Settings()
     ..sfxVolume = _d(st['sfxVolume'], 1)

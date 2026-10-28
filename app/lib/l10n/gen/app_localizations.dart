@@ -817,6 +817,768 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SHIELD!'**
   String get shieldSaved;
+
+  /// No description provided for @ach_earned.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned {amount}'**
+  String ach_earned(String amount);
+
+  /// No description provided for @ach_earned_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn {amount} Ticks in total'**
+  String ach_earned_desc(String amount);
+
+  /// No description provided for @ach_owned.
+  ///
+  /// In en, this message translates to:
+  /// **'{generator} ×{count}'**
+  String ach_owned(String generator, String count);
+
+  /// No description provided for @ach_owned_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Own {count} × {generator}'**
+  String ach_owned_desc(String generator, String count);
+
+  /// No description provided for @ach_perfects.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfectionist {count}'**
+  String ach_perfects(String count);
+
+  /// No description provided for @ach_perfects_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit PERFECT {count} times'**
+  String ach_perfects_desc(String count);
+
+  /// No description provided for @ach_perfectStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Flawless {count}'**
+  String ach_perfectStreak(String count);
+
+  /// No description provided for @ach_perfectStreak_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} PERFECTs in a row'**
+  String ach_perfectStreak_desc(String count);
+
+  /// No description provided for @ach_combo.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo {count}'**
+  String ach_combo(String count);
+
+  /// No description provided for @ach_combo_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach a streak of {count}'**
+  String ach_combo_desc(String count);
+
+  /// No description provided for @ach_golden.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold digger {count}'**
+  String ach_golden(String count);
+
+  /// No description provided for @ach_golden_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch {count} golden seconds'**
+  String ach_golden_desc(String count);
+
+  /// No description provided for @ach_prestige.
+  ///
+  /// In en, this message translates to:
+  /// **'Time traveller {count}'**
+  String ach_prestige(String count);
+
+  /// No description provided for @ach_prestige_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Prestige {count} times'**
+  String ach_prestige_desc(String count);
+
+  /// No description provided for @ach_mode_blind.
+  ///
+  /// In en, this message translates to:
+  /// **'Blindfolded'**
+  String get ach_mode_blind;
+
+  /// No description provided for @ach_mode_blind_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT in blind mode'**
+  String get ach_mode_blind_desc;
+
+  /// No description provided for @ach_mode_fast.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick hands'**
+  String get ach_mode_fast;
+
+  /// No description provided for @ach_mode_fast_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT on the fast clock'**
+  String get ach_mode_fast_desc;
+
+  /// No description provided for @ach_mode_both.
+  ///
+  /// In en, this message translates to:
+  /// **'Madman'**
+  String get ach_mode_both;
+
+  /// No description provided for @ach_mode_both_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT with both modes on'**
+  String get ach_mode_both_desc;
+
+  /// No description provided for @ach_hidden_impatient.
+  ///
+  /// In en, this message translates to:
+  /// **'Impatient'**
+  String get ach_hidden_impatient;
+
+  /// No description provided for @ach_hidden_impatient_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'TOO EARLY 100 times'**
+  String get ach_hidden_impatient_desc;
+
+  /// No description provided for @ach_hidden_nap.
+  ///
+  /// In en, this message translates to:
+  /// **'Nap time'**
+  String get ach_hidden_nap;
+
+  /// No description provided for @ach_hidden_nap_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'10 rounds in a row without a tap'**
+  String get ach_hidden_nap_desc;
+
+  /// No description provided for @ach_hidden_almost.
+  ///
+  /// In en, this message translates to:
+  /// **'So close'**
+  String get ach_hidden_almost;
+
+  /// No description provided for @ach_hidden_almost_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'9.99, then 10.01'**
+  String get ach_hidden_almost_desc;
+
+  /// No description provided for @ach_hidden_punctual.
+  ///
+  /// In en, this message translates to:
+  /// **'Punctual'**
+  String get ach_hidden_punctual;
+
+  /// No description provided for @ach_hidden_punctual_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT at 10:00 in the morning'**
+  String get ach_hidden_punctual_desc;
+
+  /// No description provided for @ach_hidden_tenth.
+  ///
+  /// In en, this message translates to:
+  /// **'Ten out of ten'**
+  String get ach_hidden_tenth;
+
+  /// No description provided for @ach_hidden_tenth_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'10 PERFECTs on the 10th of a month'**
+  String get ach_hidden_tenth_desc;
+
+  /// No description provided for @ach_hidden_fullCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Full collection'**
+  String get ach_hidden_fullCollection;
+
+  /// No description provided for @ach_hidden_fullCollection_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Every skill maxed out'**
+  String get ach_hidden_fullCollection_desc;
+
+  /// No description provided for @ach_hidden_museum.
+  ///
+  /// In en, this message translates to:
+  /// **'Museum'**
+  String get ach_hidden_museum;
+
+  /// No description provided for @ach_hidden_museum_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'One of every clock'**
+  String get ach_hidden_museum_desc;
+
+  /// No description provided for @ach_hidden_boiledEgg.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft-boiled'**
+  String get ach_hidden_boiledEgg;
+
+  /// No description provided for @ach_hidden_boiledEgg_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'100 grandmas'**
+  String get ach_hidden_boiledEgg_desc;
+
+  /// No description provided for @perk_headStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Head start'**
+  String get perk_headStart;
+
+  /// No description provided for @perk_headStart_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Start each run with 10 grandpas and 1K Ticks'**
+  String get perk_headStart_desc;
+
+  /// No description provided for @perk_muscleMemory1.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle memory I'**
+  String get perk_muscleMemory1;
+
+  /// No description provided for @perk_muscleMemory1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Forward survives the paradox'**
+  String get perk_muscleMemory1_desc;
+
+  /// No description provided for @perk_muscleMemory2.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle memory II'**
+  String get perk_muscleMemory2;
+
+  /// No description provided for @perk_muscleMemory2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hawk Eye and Magnet survive too'**
+  String get perk_muscleMemory2_desc;
+
+  /// No description provided for @perk_muscleMemory3.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle memory III'**
+  String get perk_muscleMemory3;
+
+  /// No description provided for @perk_muscleMemory3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Other skills keep half their level'**
+  String get perk_muscleMemory3_desc;
+
+  /// No description provided for @perk_longNap1.
+  ///
+  /// In en, this message translates to:
+  /// **'Long nap I'**
+  String get perk_longNap1;
+
+  /// No description provided for @perk_longNap1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline limit 12 h'**
+  String get perk_longNap1_desc;
+
+  /// No description provided for @perk_longNap2.
+  ///
+  /// In en, this message translates to:
+  /// **'Long nap II'**
+  String get perk_longNap2;
+
+  /// No description provided for @perk_longNap2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline limit 24 h'**
+  String get perk_longNap2_desc;
+
+  /// No description provided for @perk_deepSleep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep sleep I'**
+  String get perk_deepSleep1;
+
+  /// No description provided for @perk_deepSleep1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline at 75 %'**
+  String get perk_deepSleep1_desc;
+
+  /// No description provided for @perk_deepSleep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep sleep II'**
+  String get perk_deepSleep2;
+
+  /// No description provided for @perk_deepSleep2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline at 100 %'**
+  String get perk_deepSleep2_desc;
+
+  /// No description provided for @perk_goldRush.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold rush'**
+  String get perk_goldRush;
+
+  /// No description provided for @perk_goldRush_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden seconds 15 % more often'**
+  String get perk_goldRush_desc;
+
+  /// No description provided for @perk_startShield.
+  ///
+  /// In en, this message translates to:
+  /// **'Shield at start'**
+  String get perk_startShield;
+
+  /// No description provided for @perk_startShield_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'One shield charge, even without the skill'**
+  String get perk_startShield_desc;
+
+  /// No description provided for @perk_comboFloor.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft landing'**
+  String get perk_comboFloor;
+
+  /// No description provided for @perk_comboFloor_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A miss drops the streak to 5, not 0'**
+  String get perk_comboFloor_desc;
+
+  /// No description provided for @perk_autoBuyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto buyer'**
+  String get perk_autoBuyer;
+
+  /// No description provided for @perk_autoBuyer_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A switch that buys the cheapest clock every 5 s'**
+  String get perk_autoBuyer_desc;
+
+  /// No description provided for @perk_earlyModes.
+  ///
+  /// In en, this message translates to:
+  /// **'Daredevil'**
+  String get perk_earlyModes;
+
+  /// No description provided for @perk_earlyModes_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk modes unlocked from the start'**
+  String get perk_earlyModes_desc;
+
+  /// No description provided for @perk_unlockSchrodinger.
+  ///
+  /// In en, this message translates to:
+  /// **'The box'**
+  String get perk_unlockSchrodinger;
+
+  /// No description provided for @perk_unlockSchrodinger_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks Schrödinger\'s Cat'**
+  String get perk_unlockSchrodinger_desc;
+
+  /// No description provided for @perk_secondClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Second clock'**
+  String get perk_secondClock;
+
+  /// No description provided for @perk_secondClock_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play two stopwatches at once'**
+  String get perk_secondClock_desc;
+
+  /// No description provided for @perk_unlockChronos.
+  ///
+  /// In en, this message translates to:
+  /// **'Altar of Chronos'**
+  String get perk_unlockChronos;
+
+  /// No description provided for @perk_unlockChronos_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks Chronos'**
+  String get perk_unlockChronos_desc;
+
+  /// No description provided for @achievementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievementsTitle;
+
+  /// No description provided for @achievementsSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}/{total} · +{percent}% income'**
+  String achievementsSummary(int count, int total, String percent);
+
+  /// No description provided for @achievementsUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} achievements unlocked!'**
+  String achievementsUnlocked(int count);
+
+  /// No description provided for @achievementUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement unlocked!'**
+  String get achievementUnlocked;
+
+  /// No description provided for @hiddenAchievement.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden achievement'**
+  String get hiddenAchievement;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statsTitle;
+
+  /// No description provided for @statEarnedRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned this run'**
+  String get statEarnedRun;
+
+  /// No description provided for @statEarnedTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned in total'**
+  String get statEarnedTotal;
+
+  /// No description provided for @statRounds.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounds'**
+  String get statRounds;
+
+  /// No description provided for @statTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'Hits'**
+  String get statTiers;
+
+  /// No description provided for @statMeanError.
+  ///
+  /// In en, this message translates to:
+  /// **'Average error'**
+  String get statMeanError;
+
+  /// No description provided for @statSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Spread'**
+  String get statSpread;
+
+  /// No description provided for @statMeanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'negative = you tap early'**
+  String get statMeanHint;
+
+  /// No description provided for @statBestStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Best PERFECT streak'**
+  String get statBestStreak;
+
+  /// No description provided for @statBestCombo.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest combo'**
+  String get statBestCombo;
+
+  /// No description provided for @statGolden.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden seconds caught'**
+  String get statGolden;
+
+  /// No description provided for @statPlayTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time played'**
+  String get statPlayTime;
+
+  /// No description provided for @statPrestiges.
+  ///
+  /// In en, this message translates to:
+  /// **'Prestiges'**
+  String get statPrestiges;
+
+  /// No description provided for @statChronons.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronons'**
+  String get statChronons;
+
+  /// No description provided for @ms.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} ms'**
+  String ms(String value);
+
+  /// No description provided for @prestigeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time paradox'**
+  String get prestigeTitle;
+
+  /// No description provided for @prestigeChronons.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronons: {count} (+{percent}% forever)'**
+  String prestigeChronons(int count, String percent);
+
+  /// No description provided for @prestigeShards.
+  ///
+  /// In en, this message translates to:
+  /// **'Time shards: {count}'**
+  String prestigeShards(int count);
+
+  /// No description provided for @prestigeGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewind now for +{count} Chronons'**
+  String prestigeGain(int count);
+
+  /// No description provided for @prestigeNext.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} more Ticks for the next Chronon'**
+  String prestigeNext(String amount);
+
+  /// No description provided for @prestigeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewind time'**
+  String get prestigeButton;
+
+  /// No description provided for @prestigeConfirm1.
+  ///
+  /// In en, this message translates to:
+  /// **'You lose your clocks, skills and Ticks. Chronons, perks and achievements stay. Continue?'**
+  String get prestigeConfirm1;
+
+  /// No description provided for @prestigeConfirm2.
+  ///
+  /// In en, this message translates to:
+  /// **'Really? Time will rewind.'**
+  String get prestigeConfirm2;
+
+  /// No description provided for @perksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Perks'**
+  String get perksTitle;
+
+  /// No description provided for @perkRequires.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs: {name}'**
+  String perkRequires(String name);
+
+  /// No description provided for @perkOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned'**
+  String get perkOwned;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @modeBlind.
+  ///
+  /// In en, this message translates to:
+  /// **'Blind ×3'**
+  String get modeBlind;
+
+  /// No description provided for @modeFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast clock ×2'**
+  String get modeFast;
+
+  /// No description provided for @modeSecond.
+  ///
+  /// In en, this message translates to:
+  /// **'Second clock'**
+  String get modeSecond;
+
+  /// No description provided for @modeAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto buyer'**
+  String get modeAuto;
+
+  /// No description provided for @adTurbo.
+  ///
+  /// In en, this message translates to:
+  /// **'Turbo ×2'**
+  String get adTurbo;
+
+  /// No description provided for @adTurboLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'×2 · {time}'**
+  String adTurboLeft(String time);
+
+  /// No description provided for @adGolden.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden second'**
+  String get adGolden;
+
+  /// No description provided for @adBag.
+  ///
+  /// In en, this message translates to:
+  /// **'+{minutes} min'**
+  String adBag(int minutes);
+
+  /// No description provided for @adRescue.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak {count} lost! Restore'**
+  String adRescue(int count);
+
+  /// No description provided for @adDouble.
+  ///
+  /// In en, this message translates to:
+  /// **'Double it'**
+  String get adDouble;
+
+  /// No description provided for @adUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No ad right now'**
+  String get adUnavailable;
+
+  /// No description provided for @adCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'in {time}'**
+  String adCooldown(String time);
+
+  /// No description provided for @adFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get adFull;
+
+  /// No description provided for @tutorialAim.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap when the clock shows exactly 10.00'**
+  String get tutorialAim;
+
+  /// No description provided for @tutorialBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy a grandpa: he will try for you!'**
+  String get tutorialBuy;
+
+  /// No description provided for @tutorialInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandpa tries every 10 seconds. More clocks, more Ticks!'**
+  String get tutorialInfo;
+
+  /// No description provided for @tutorialGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get tutorialGotIt;
+
+  /// No description provided for @tip_skills.
+  ///
+  /// In en, this message translates to:
+  /// **'New skill! Check the Skills tab.'**
+  String get tip_skills;
+
+  /// No description provided for @tip_golden.
+  ///
+  /// In en, this message translates to:
+  /// **'A golden second! Catch the flying clock: the next round turns golden.'**
+  String get tip_golden;
+
+  /// No description provided for @tip_combo.
+  ///
+  /// In en, this message translates to:
+  /// **'A streak! GREAT and PERFECT hits keep raising the multiplier.'**
+  String get tip_combo;
+
+  /// No description provided for @tip_prestige.
+  ///
+  /// In en, this message translates to:
+  /// **'You can rewind time: a prestige gives Chronons, a permanent bonus.'**
+  String get tip_prestige;
+
+  /// No description provided for @notificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your clocks collected {amount} Ticks! Come back for more.'**
+  String notificationTitle(String amount);
+
+  /// No description provided for @notificationAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Shall we tell you when your clocks are full?'**
+  String get notificationAsk;
 }
 
 class _AppLocalizationsDelegate

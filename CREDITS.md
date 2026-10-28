@@ -6,8 +6,8 @@ Every third-party asset shipped in the game is listed here (docs/01-wizja.md).
 
 | Asset | Author | Licence | Source |
 |---|---|---|---|
-| Lilita One | Juan Montoreano | SIL Open Font License 1.1 (`app/assets/fonts/OFL-LilitaOne.txt`) | [Google Fonts](https://fonts.google.com/specimen/Lilita+One) |
-| Fredoka | Milena Brandão, Hafontia | SIL Open Font License 1.1 (`app/assets/fonts/OFL-Fredoka.txt`) | [Google Fonts](https://fonts.google.com/specimen/Fredoka) |
+| Paytone One | Vernon Adams | SIL Open Font License 1.1 (`app/assets/fonts/OFL-PaytoneOne.txt`) | [Google Fonts](https://fonts.google.com/specimen/Paytone+One) |
+| Nunito | Vernon Adams, Cyreal, Jacques Le Bailly | SIL Open Font License 1.1 (`app/assets/fonts/OFL-Nunito.txt`) | [Google Fonts](https://fonts.google.com/specimen/Nunito) |
 
 ## Sounds
 

@@ -25,7 +25,7 @@ telefonie.
 - [ ] `flutter create` w `app/` (Android, pion, `applicationId`
       `io.github.dombearx.hit10`), struktura katalogów z 05 §2
 - [ ] Zależności: Riverpod, Flame, `flutter_animate`, `flutter_soloud`,
-      `path_provider`, l10n PL/EN (`gen-l10n`), czcionki Lilita One i Fredoka
+      `path_provider`, l10n PL/EN (`gen-l10n`), czcionki Paytone One i Nunito
 - [ ] `assets/balance.json` z liczbami z 02/03 i walidacją przy starcie
       (T-5…T-7)
 - [ ] Atrapa `RewardedAds` (T-25)

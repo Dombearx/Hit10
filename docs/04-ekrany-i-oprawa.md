@@ -107,8 +107,9 @@ pliku motywu):
 - **U-8:** Progi są rozróżnialne **nie tylko kolorem** (napis i kształt
   ikony), ze względu na daltonizm.
 
-**Czcionki (Google Fonts, OFL):** *Lilita One* na nagłówki, cyfry stopera
-i liczby; *Fredoka* na tekst. Obie mają polskie znaki. **U-9:** Cyfry stopera
+**Czcionki (Google Fonts, OFL):** *Paytone One* na nagłówki, cyfry stopera
+i liczby; *Nunito* na tekst. Obie mają pełne polskie znaki (Lilita One i
+Fredoka ich nie mają — sprawdzone w M4). **U-9:** Cyfry stopera
 mają stałą szerokość (tabular figures), żeby nie skakały.
 
 ### 4.1 Karty z emoji (grafika postaci i ikon w 1.0)

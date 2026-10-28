@@ -42,13 +42,22 @@ class GoldenClock extends PositionComponent {
 
   double get size2 => radius;
 
+  static const _tileRow = 44.0;
+  static const _wave = 0.15;
+
   /// Where the clock is [t] seconds into its flight.
   Vector2 at(double t) {
     final k = (t / life).clamp(0.0, 1.0);
     final x0 = -radius, x1 = arenaSize.x + radius;
     final x = fromLeft ? x0 + (x1 - x0) * k : x1 - (x1 - x0) * k;
-    final band = math.max(radius * 1.2, dialTop * 0.55);
-    final y = band + math.sin(k * math.pi * 3) * band * 0.35;
+    // The wave's crests must clear the ad tiles in the arena's top corners
+    // (game_screen.dart): they swallow taps, so a clock behind them can't
+    // be caught.
+    final band = math.max(
+      (_tileRow + radius * 0.8) / (1 - _wave),
+      dialTop * 0.55,
+    );
+    final y = band + math.sin(k * math.pi * 3) * band * _wave;
     return Vector2(x, y);
   }
 

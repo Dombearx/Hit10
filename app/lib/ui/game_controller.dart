@@ -4,9 +4,12 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../ads/rewarded_ads.dart';
 import '../balance/balance.dart';
+import '../engine/ad_offers.dart';
 import '../engine/game_engine.dart';
 import '../engine/round_engine.dart';
+import '../model/achievements.dart';
 import '../model/economy.dart';
 import '../model/game_state.dart';
 import '../model/grading.dart';
@@ -16,21 +19,40 @@ import '../persistence/save_codec.dart';
 import '../persistence/save_store.dart';
 import 'audio.dart';
 import 'haptics.dart';
+import 'notifications.dart';
 
 /// What the arena needs to animate a finished round.
 class HitFeedback {
-  HitFeedback(this.outcome, this.gameTime);
+  HitFeedback(this.outcome, this.gameTime, {this.clock = 0});
   final RoundOutcome outcome;
   final double gameTime;
+
+  /// Which stopwatch (0, or 1 for the second clock).
+  final int clock;
 
   Grade get grade =>
       Grade(outcome.tier, outcome.raw.error, outcome.raw.missKind);
   double get reward => outcome.payout;
 }
 
+/// One stopwatch and what was fixed when its round started (R-TRYB-1).
+class ClockSlot {
+  ClockSlot(this.index, this.round);
+  final int index;
+  final RoundEngine round;
+  double mode = 1;
+  bool blind = false;
+  bool fast = false;
+  int lastTickTenth = -1;
+  bool whooshed = false;
+}
+
+enum TutorialStep { aim, buyGrandpa, grandpaInfo, done }
+
 /// Glue between the pure engine and the screen: owns the monotonic clock
 /// (T-8), turns pointer-downs into grades (T-9), runs the economy tick
-/// (T-14), saves (T-18) and fires sound and haptics.
+/// (T-14), saves (T-18), offers, achievements and the tutorial, and fires
+/// sound and haptics.
 class GameController extends ChangeNotifier {
   GameController({
     required this.balance,
@@ -39,19 +61,21 @@ class GameController extends ChangeNotifier {
     this.store,
     Sfx? sfx,
     Haptics? haptics,
+    this.notifications = const NoNotifications(),
     int Function()? wallClockMs,
+    DateTime Function()? localNow,
   }) : state = state ?? GameState(),
        settings = settings ?? Settings(),
        sfx = sfx ?? Sfx(),
        haptics = haptics ?? Haptics(),
-       _wallMs = wallClockMs ?? (() => DateTime.now().millisecondsSinceEpoch) {
+       _wallMs = wallClockMs ?? (() => DateTime.now().millisecondsSinceEpoch),
+       _localNow = localNow ?? DateTime.now {
     engine = GameEngine(balance, this.state);
-    round = RoundEngine(
-      config: balance.round,
-      timeMapFor: () => econ.timeMap(),
-      windowsFor: econ.windows,
-    );
+    ads = AdOffers(engine);
+    achievements = buildAchievements(balance);
+    _rebuildClocks();
     _applySettings();
+    engine.goldenEnabled = this.state.tutorialDone;
   }
 
   final Balance balance;
@@ -60,13 +84,23 @@ class GameController extends ChangeNotifier {
   final SaveStore? store;
   final Sfx sfx;
   final Haptics haptics;
+  final OfflineNotifications notifications;
   final int Function() _wallMs;
+  final DateTime Function() _localNow;
   late final GameEngine engine;
-  late final RoundEngine round;
+  late final AdOffers ads;
+  late final List<AchievementDef> achievements;
   final InputDiagnostics diagnostics = InputDiagnostics();
   final GeneratorShowcase showcase = GeneratorShowcase();
 
   Economy get econ => engine.econ;
+
+  final List<ClockSlot> clocks = [];
+
+  /// The main stopwatch (the only one unless the second clock is on).
+  RoundEngine get round => clocks.first.round;
+
+  int wallMs() => _wallMs();
 
   final Stopwatch _clock = Stopwatch()..start();
 
@@ -76,12 +110,12 @@ class GameController extends ChangeNotifier {
   final _feedback = StreamController<HitFeedback>.broadcast();
   Stream<HitFeedback> get feedback => _feedback.stream;
 
-  /// Fires with `true` when a golden round starts.
-  final _roundStarts = StreamController<bool>.broadcast();
-  Stream<bool> get roundStarts => _roundStarts.stream;
+  /// Fires (clock index, golden?) when a round starts.
+  final _roundStarts = StreamController<(int, bool)>.broadcast();
+  Stream<(int, bool)> get roundStarts => _roundStarts.stream;
 
-  int _lastTickTenth = -1;
-  bool _whooshed = false;
+  final _unlocked = StreamController<AchievementDef>.broadcast();
+  Stream<AchievementDef> get achievementUnlocked => _unlocked.stream;
 
   /// Offline income waiting in the "while you were away" dialog.
   OfflineReport? pendingOffline;
@@ -89,9 +123,15 @@ class GameController extends ChangeNotifier {
   /// Set when the save could not be read and the game started fresh (T-20).
   bool saveWasCorrupt = false;
 
+  /// A one-time tip to show (R-TUT-2), or null.
+  String? pendingTip;
+
   double? _lastTick;
   double _econAcc = 0;
   double _sinceSave = 0;
+  double _sinceAchievementCheck = 0;
+  double? _startSecondAt;
+  bool _adPlaying = false;
   static const _saveEvery = 10.0;
 
   void _applySettings() {
@@ -100,13 +140,72 @@ class GameController extends ChangeNotifier {
     haptics.enabled = settings.haptics;
   }
 
-  /// Pointer-down on the arena. [eventTime] is the platform timestamp, used
-  /// only for diagnostics; the grade comes from the clock read right here.
-  void onPointerDown(Duration eventTime) {
+  void applySettings() {
+    _applySettings();
+    notifyListeners();
+    unawaited(save());
+  }
+
+  // -------------------------------------------------------------- clocks --
+
+  bool get secondClockActive =>
+      state.secondClockOn && state.perks.contains('secondClock');
+
+  RoundEngine _newRound() => RoundEngine(
+    config: balance.round,
+    timeMapFor: () => econ.timeMap(clock: engine.clockSpeed()),
+    windowsFor: econ.windows,
+  );
+
+  void _rebuildClocks() {
+    for (final c in clocks) {
+      if (c.round.phase != RoundPhase.waiting) {
+        c.round.cancel();
+        engine.onRoundCancelled();
+      }
+    }
+    clocks
+      ..clear()
+      ..add(ClockSlot(0, _newRound()));
+    if (secondClockActive) clocks.add(ClockSlot(1, _newRound()));
+    _startSecondAt = null;
+  }
+
+  /// Toggles from the mode row (R-TRYB-1, docs/02 §9.2).
+  void setMode({bool? blind, bool? fast, bool? secondClock, bool? autoBuyer}) {
+    if (blind != null) state.modeBlind = blind;
+    if (fast != null) state.modeFast = fast;
+    if (autoBuyer != null) state.autoBuyerOn = autoBuyer;
+    if (secondClock != null && secondClock != state.secondClockOn) {
+      state.secondClockOn = secondClock;
+      _rebuildClocks();
+    }
+    sfx.play('tick');
+    notifyListeners();
+    unawaited(save());
+  }
+
+  // --------------------------------------------------------------- input --
+
+  /// Pointer-down on the arena; [clock] is the half that was touched.
+  /// [eventTime] is the platform timestamp, used only for diagnostics; the
+  /// grade comes from the clock read right here.
+  void onPointerDown(Duration eventTime, {int clock = 0}) {
+    if (_adPlaying) return;
     final t = now();
     diagnostics.recordInput(t, eventTime);
     unawaited(sfx.init()); // the web needs a gesture before audio starts
-    _handle(round.tap(t));
+    final slot = clocks[clock.clamp(0, clocks.length - 1)];
+    final wasWaiting = slot.round.phase == RoundPhase.waiting;
+    _handle(slot, slot.round.tap(t));
+    // Starting from rest: the second clock follows 5 game-seconds later.
+    if (wasWaiting && clocks.length > 1 && slot.index == 0) {
+      final b = clocks[1].round;
+      if (b.phase == RoundPhase.waiting) {
+        _startSecondAt =
+            t + slot.round.timeMap.realAt(balance.round.secondClockOffset);
+      }
+    }
   }
 
   /// Called every frame by the arena.
@@ -114,38 +213,71 @@ class GameController extends ChangeNotifier {
     final t = now();
     final last = _lastTick;
     _lastTick = t;
-    _handle(round.update(t));
-    _roundSounds(t);
+    final start = _startSecondAt;
+    if (start != null && t >= start && clocks.length > 1) {
+      _startSecondAt = null;
+      _handle(clocks[1], clocks[1].round.tap(start));
+    }
+    var inZone = false;
+    for (final c in clocks) {
+      _handle(c, c.round.update(t));
+      inZone |= _roundSounds(c, t);
+    }
+    sfx.underwater(inZone);
     if (last == null) return;
     // Long gaps (debugger, backgrounded tab) are offline time, not play.
     final dt = (t - last).clamp(0.0, 1.0);
     _econAcc += dt;
     final step = 1 / balance.economyTickHz;
     if (_econAcc >= step) {
+      ads.tick(_econAcc);
       engine.tick(_econAcc);
+      if (engine.goldenVisibleLeft > 0) _tip('golden');
+      if (engine.autoBuy(_econAcc) != null) sfx.play('buy', gain: 0.4);
       _econAcc = 0;
       notifyListeners();
+    }
+    _sinceAchievementCheck += dt;
+    if (_sinceAchievementCheck >= 1) {
+      _sinceAchievementCheck = 0;
+      _checkAchievements(const AchievementContext());
+      if (engine.canPrestige()) _tip('prestige');
     }
     _sinceSave += dt;
     if (_sinceSave >= _saveEvery) unawaited(save());
   }
 
-  void _handle(RoundEvent? ev) {
+  void _handle(ClockSlot slot, RoundEvent? ev) {
     switch (ev) {
       case null:
         return;
       case RoundStarted():
         engine.onRoundStart();
-        _lastTickTenth = -1;
-        _whooshed = false;
+        slot
+          ..mode = engine.modeMultiplier()
+          ..blind = engine.blindActive
+          ..fast = engine.fastActive
+          ..lastTickTenth = -1
+          ..whooshed = false;
         if (engine.goldenRound) sfx.play('coins');
-        _roundStarts.add(engine.goldenRound);
+        _roundStarts.add((slot.index, engine.goldenRound));
         notifyListeners();
       case RoundGraded(:final grade, :final gameTime):
-        sfx.underwater(false);
-        final o = engine.resolveRound(grade);
+        final o = engine.resolveRound(grade, mode: slot.mode);
+        ads.onRound(o, _wallMs());
+        final local = _localNow();
+        if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
+        if (state.comboStreak >= 3) _tip('combo');
         _playFeedback(o);
-        _feedback.add(HitFeedback(o, gameTime));
+        _feedback.add(HitFeedback(o, gameTime, clock: slot.index));
+        _checkAchievements(
+          AchievementContext(
+            now: local,
+            lastHitPerfect: o.tier == Tier.perfect,
+            lastHitBlind: slot.blind,
+            lastHitFast: slot.fast,
+          ),
+        );
         notifyListeners();
     }
   }
@@ -169,27 +301,28 @@ class GameController extends ChangeNotifier {
     unawaited(haptics.forTier(o.tier));
   }
 
-  /// Ticking in the last second, the fast-forward whoosh and the muffled
-  /// bullet-time zone (docs/04 §3, U-19).
-  void _roundSounds(double now) {
-    if (round.phase != RoundPhase.running) return;
+  /// Ticking in the last second and the fast-forward whoosh (docs/04 §3).
+  /// Returns whether the clock is inside the bullet-time zone (U-19).
+  bool _roundSounds(ClockSlot slot, double now) {
+    final round = slot.round;
+    if (round.phase != RoundPhase.running) return false;
     final g = round.gameTime(now);
     final r = balance.round;
     if (econ.level('ticking') > 0 && g >= r.target - 1 && g < r.target) {
       final tenth = (g * 10).floor();
-      if (tenth != _lastTickTenth) {
-        _lastTickTenth = tenth;
+      if (tenth != slot.lastTickTenth) {
+        slot.lastTickTenth = tenth;
         sfx.play('tick', gain: 0.7);
         if (settings.haptics) unawaited(HapticFeedback.selectionClick());
       }
     }
-    if (!_whooshed && round.timeMap.fastForward > 1 && g >= r.fastForwardEnd) {
-      _whooshed = true;
+    if (!slot.whooshed &&
+        round.timeMap.fastForward > 1 &&
+        g >= r.fastForwardEnd) {
+      slot.whooshed = true;
       sfx.play('whoosh', gain: 0.6);
     }
-    sfx.underwater(
-      round.timeMap.zoneSpeed < 1 && round.timeMap.inBulletZone(g),
-    );
+    return round.timeMap.zoneSpeed < 1 && round.timeMap.inBulletZone(g);
   }
 
   /// The player tapped the flying golden clock (R-ZLOTA-1).
@@ -200,12 +333,23 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // -------------------------------------------------------- achievements --
+
+  void _checkAchievements(AchievementContext ctx) {
+    for (final a in unlockAchievements(achievements, state, ctx)) {
+      _unlocked.add(a);
+      sfx.play('great', gain: 0.8, speed: 1.5);
+    }
+  }
+
   // ------------------------------------------------------------ shopping --
 
   BuyResult _afterBuy(BuyResult r) {
     if (r == BuyResult.ok) {
       sfx.play('buy');
       if (settings.haptics) unawaited(HapticFeedback.selectionClick());
+      _checkAchievements(const AchievementContext());
+      _advanceTutorial();
       unawaited(save());
       notifyListeners();
     }
@@ -217,6 +361,92 @@ class GameController extends ChangeNotifier {
   BuyResult buyUpgrade(String id) => _afterBuy(engine.buyUpgrade(id));
   BuyResult buySynergy(String id) => _afterBuy(engine.buySynergy(id));
   BuyResult buySkill(String id) => _afterBuy(engine.buySkill(id));
+  BuyResult buyPerk(String id) => _afterBuy(engine.buyPerk(id));
+
+  /// Time paradox (R-PRES-6 confirms in the UI first).
+  int prestige() {
+    _rebuildClocks();
+    final gain = engine.prestige();
+    // The run's upgrades are gone, and the second clock may be too.
+    _rebuildClocks();
+    if (gain > 0) {
+      ads.rescue = null;
+      _checkAchievements(const AchievementContext());
+      unawaited(save());
+      notifyListeners();
+    }
+    return gain;
+  }
+
+  // ----------------------------------------------------------- ad offers --
+
+  /// Pauses the rounds, plays an ad and grants the offer only if it was
+  /// watched to the end (R-AD-3). Returns whether the reward was granted.
+  Future<bool> watchAd(AdOffer offer, RewardedAds provider) async {
+    if (_adPlaying || !ads.available(offer, _wallMs()) || !provider.isReady) {
+      return false;
+    }
+    _adPlaying = true;
+    pause();
+    try {
+      final ok = await provider.show();
+      if (!ok) return false;
+      final amount = ads.grant(
+        offer,
+        _wallMs(),
+        offlineAmount: pendingOffline?.amount ?? 0,
+      );
+      if (amount > 0) sfx.play('coins');
+      if (offer == AdOffer.offline) pendingOffline = null;
+      unawaited(save());
+      return true;
+    } finally {
+      _adPlaying = false;
+      _lastTick = null;
+      notifyListeners();
+    }
+  }
+
+  // ------------------------------------------------------------ tutorial --
+
+  TutorialStep get tutorialStep {
+    if (state.tutorialDone) return TutorialStep.done;
+    if (econ.owned('grandpa') == 0) {
+      return state.tiki >= balance.generators.first.baseCost
+          ? TutorialStep.buyGrandpa
+          : TutorialStep.aim;
+    }
+    return TutorialStep.grandpaInfo;
+  }
+
+  void _advanceTutorial() {
+    if (!state.tutorialDone) notifyListeners();
+  }
+
+  /// Finishes (or skips) the tutorial (R-TUT-1).
+  void finishTutorial() {
+    state.tutorialDone = true;
+    engine.goldenEnabled = true;
+    notifyListeners();
+    unawaited(save());
+  }
+
+  void _tip(String id) {
+    if (!state.tutorialDone || pendingTip != null) return;
+    if (state.tipsSeen.contains(id)) return;
+    pendingTip = id;
+  }
+
+  void dismissTip() {
+    final t = pendingTip;
+    if (t == null) return;
+    state.tipsSeen.add(t);
+    pendingTip = null;
+    notifyListeners();
+  }
+
+  /// Called by the skills tab when a skill card first appears.
+  void skillRevealed() => _tip('skills');
 
   // -------------------------------------------------------- offline/save --
 
@@ -253,20 +483,43 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  /// App hidden or a panel covers the clock (R-RUNDA-8).
+  /// App hidden, a panel covers the clock or an ad plays (R-RUNDA-8).
   void pause() {
-    if (round.phase != RoundPhase.waiting) {
-      round.cancel();
-      engine.onRoundCancelled();
-      sfx.underwater(false);
-      notifyListeners();
+    var changed = false;
+    for (final c in clocks) {
+      if (c.round.phase != RoundPhase.waiting) {
+        c.round.cancel();
+        engine.onRoundCancelled();
+        changed = true;
+      }
     }
+    _startSecondAt = null;
+    sfx.underwater(false);
+    if (changed) notifyListeners();
     _lastTick = null;
     unawaited(save());
   }
 
+  /// Leaving the app: also schedules the "offline limit reached"
+  /// notification (R-OFF-4).
+  void background({required String Function(String amount) title}) {
+    pause();
+    if (!settings.notifications) return;
+    final rate = econ.passive() * engine.offlineEfficiency();
+    if (rate <= 0) return;
+    final cap = engine.offlineCapSeconds();
+    unawaited(
+      notifications.scheduleOfflineFull(
+        DateTime.now().add(Duration(seconds: cap.round())),
+        rate * cap,
+        title,
+      ),
+    );
+  }
+
   void resume() {
     _lastTick = null;
+    unawaited(notifications.cancel());
     checkOffline();
   }
 
@@ -274,6 +527,7 @@ class GameController extends ChangeNotifier {
   void dispose() {
     _feedback.close();
     _roundStarts.close();
+    _unlocked.close();
     super.dispose();
   }
 }
@@ -303,7 +557,11 @@ class InputDiagnostics {
 
 /// Loads the save (falling back to the backup, then to a fresh game, T-20)
 /// and returns a ready controller with offline income checked.
-Future<GameController> loadGame(Balance balance, SaveStore store) async {
+Future<GameController> loadGame(
+  Balance balance,
+  SaveStore store, {
+  OfflineNotifications notifications = const NoNotifications(),
+}) async {
   SaveData? data;
   var corrupt = false;
   for (final read in [store.read, store.readBackup]) {
@@ -322,6 +580,7 @@ Future<GameController> loadGame(Balance balance, SaveStore store) async {
     state: data?.state,
     settings: data?.settings,
     store: store,
+    notifications: notifications,
   );
   c.saveWasCorrupt = corrupt && data == null;
   c.checkOffline();

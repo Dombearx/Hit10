@@ -91,7 +91,9 @@ class ArenaGame extends FlameGame {
     await add(stage);
     _warmUp();
     _sub = controller.feedback.listen(stage.onFeedback);
-    _starts = controller.roundStarts.listen(stage.onRoundStart);
+    _starts = controller.roundStarts.listen(
+      (e) => stage.onRoundStart(e.$2, clock: e.$1),
+    );
   }
 
   /// Renders every effect label once, off screen, so the first PERFECT does
@@ -129,7 +131,7 @@ class ArenaGame extends FlameGame {
     }
   }
 
-  StreamSubscription<bool>? _starts;
+  StreamSubscription<(int, bool)>? _starts;
   ui.Image? _goldenImage;
   GoldenClock? _golden;
   bool _goldenFromLeft = true;
@@ -188,9 +190,10 @@ class ArenaGame extends FlameGame {
   }
 
   void _spawnPopup(ShowcaseHit hit) {
-    final c = stage.center;
-    final r = stage.radius;
     _popupLeft = !_popupLeft;
+    final n = controller.clocks.length;
+    final c = stage.centerOf(_popupLeft ? 0 : n - 1);
+    final r = stage.radiusOf(0);
     final scale = (r / 150).clamp(0.8, 1.4);
     // Keep the whole bubble on screen (about 100 px wide at scale 1).
     final half = 52 * scale;
@@ -228,7 +231,7 @@ class Stage extends Component {
   Stage(this.game);
 
   final ArenaGame game;
-  late final Dial dial = Dial(this);
+  final List<Dial> dials = [];
   final ParticleField particles = ParticleField();
   final _rng = math.Random();
 
@@ -236,14 +239,38 @@ class Stage extends Component {
   double _shakeAmp = 0;
   double _shakeDur = 1;
   double _wobble = 0; // miss: horizontal dial wobble, seconds remaining
+  int _wobbleClock = 0;
 
   Vector2 get size => game.size;
-  Vector2 get center => Vector2(size.x / 2, size.y * 0.5);
-  double get radius => math.min(size.x * 0.40, size.y * 0.42);
+  int get _count => game.controller.clocks.length;
+
+  /// One dial in the middle, or two side by side (docs/02 §9.2).
+  Vector2 centerOf(int i) => _count == 1
+      ? Vector2(size.x / 2, size.y * 0.5)
+      : Vector2(size.x * (i == 0 ? 0.26 : 0.74), size.y * 0.5);
+
+  double radiusOf(int i) => _count == 1
+      ? math.min(size.x * 0.40, size.y * 0.42)
+      : math.min(size.x * 0.23, size.y * 0.36);
+
+  Vector2 get center => centerOf(0);
+  double get radius => radiusOf(0);
 
   @override
   Future<void> onLoad() async {
-    await addAll([dial, particles]);
+    _syncDials();
+    await add(particles);
+  }
+
+  void _syncDials() {
+    while (dials.length < _count) {
+      final d = Dial(this, dials.length);
+      dials.add(d);
+      add(d);
+    }
+    while (dials.length > _count) {
+      dials.removeLast().removeFromParent();
+    }
   }
 
   void shake(double amplitude, double seconds) {
@@ -252,11 +279,13 @@ class Stage extends Component {
     _shakeDur = seconds;
   }
 
-  double get wobbleOffset =>
-      _wobble <= 0 ? 0 : math.sin(_wobble * 60) * 10 * (_wobble / 0.35);
+  double wobbleOffset(int clock) => _wobble <= 0 || clock != _wobbleClock
+      ? 0
+      : math.sin(_wobble * 60) * 10 * (_wobble / 0.35);
 
   @override
   void update(double dt) {
+    if (dials.length != _count) _syncDials();
     if (_shake > 0) _shake = math.max(0, _shake - dt);
     if (_wobble > 0) _wobble = math.max(0, _wobble - dt);
   }
@@ -278,11 +307,12 @@ class Stage extends Component {
   }
 
   void onFeedback(HitFeedback f) {
-    final c = center;
-    final r = radius;
+    final c = centerOf(f.clock);
+    final r = radiusOf(f.clock);
     final l = game.labels;
     final g = f.grade;
-    dial.flash(g.tier);
+    if (f.clock < dials.length) dials[f.clock].flash(g.tier);
+    _wobbleClock = f.clock;
     TextStyle label(Color color, double size) => TextStyle(
       fontFamily: Fonts.display,
       fontSize: size,
@@ -464,10 +494,10 @@ class Stage extends Component {
 
 /// Effects that start with a round: the golden-round banner.
 extension on Stage {
-  void onRoundStart(bool golden) {
+  void onRoundStart(bool golden, {int clock = 0}) {
     if (!golden) return;
-    final c = center;
-    final r = radius;
+    final c = centerOf(clock);
+    final r = radiusOf(clock);
     add(
       PopText(
         text: game.labels.goldenRound,
@@ -486,9 +516,12 @@ extension on Stage {
 
 /// The stopwatch face: ring, progress arc, ticks and fixed-width digits.
 class Dial extends Component {
-  Dial(this.stage);
+  Dial(this.stage, this.index);
 
   final Stage stage;
+
+  /// Which stopwatch this face shows (0, or 1 for the second clock).
+  final int index;
   double _flash = 0;
   Color _flashColor = Palette.perfect;
   double _time = 0; // for idle pulsing
@@ -604,12 +637,17 @@ class Dial extends Component {
   @override
   void render(Canvas canvas) {
     final ctrl = stage.game.controller;
-    final round = ctrl.round;
+    if (index >= ctrl.clocks.length) return;
+    final slot = ctrl.clocks[index];
+    final round = slot.round;
     final now = ctrl.now();
     final t = round.gameTime(now);
     final target = ctrl.balance.round.target;
-    final r = stage.radius;
-    final c = stage.center.toOffset().translate(stage.wobbleOffset, 0);
+    final r = stage.radiusOf(index);
+    final c = stage
+        .centerOf(index)
+        .toOffset()
+        .translate(stage.wobbleOffset(index), 0);
     final ring = r * 0.085;
 
     final engine = ctrl.engine;
@@ -723,7 +761,9 @@ class Dial extends Component {
     final speed = running && map != null ? map.speedAt(t) : 1.0;
     final digitSize = r * 0.44;
     final throb = _zone > 0 ? 1 + 0.05 * _zone * math.sin(_time * 14) : 1.0;
-    if (speed > 1.6) {
+    final blindFrom = ctrl.balance.blind.hideDigitsAt ?? double.infinity;
+    // The fast-forward ghost must not reveal the time in blind mode.
+    if (speed > 1.6 && !(slot.blind && t >= blindFrom)) {
       final ghost = Color.lerp(digitColor, Palette.dial, 0.85)!;
       _drawDigits(
         canvas,
@@ -733,13 +773,16 @@ class Dial extends Component {
         ghost,
       );
     }
+    final hideAt = ctrl.balance.blind.hideDigitsAt;
+    final hidden = slot.blind && running && hideAt != null && t >= hideAt;
     _drawDigits(
       canvas,
-      formatStopwatch(shown),
+      // Blind mode (docs/02 §7): from 7.00 a pulsing "?" replaces the time.
+      hidden ? '??.??' : formatStopwatch(shown),
       c,
       digitSize,
-      digitColor,
-      scale: throb,
+      hidden ? Palette.miss : digitColor,
+      scale: hidden ? 1 + 0.06 * math.sin(_time * 6) : throb,
     );
     if (golden && running) {
       final p = 0.5 + 0.5 * math.sin(_time * 6);

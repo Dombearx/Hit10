@@ -22,10 +22,10 @@ abstract final class Palette {
 
 abstract final class Fonts {
   /// Headings, stopwatch digits and numbers.
-  static const display = 'LilitaOne';
+  static const display = 'PaytoneOne';
 
   /// Body text.
-  static const body = 'Fredoka';
+  static const body = 'Nunito';
 }
 
 ThemeData buildTheme() {
