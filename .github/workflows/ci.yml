@@ -88,6 +88,51 @@ jobs:
           name: hit10-aab
           path: hit10-*.aab
           retention-days: 30
+
+  # Launches the APK on an Android emulator and plays a round: catches
+  # crashes that only happen on a real device (playtest1 crashed at start).
+  smoke:
+    needs: apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: hit10-apk
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: bash tools/smoke/run.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke
+          path: smoke-out/
+          retention-days: 14
+
+  # Only an APK that started and played a round on the emulator is released.
+  release:
+    needs: [apk, smoke]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: hit10-apk
+      - uses: actions/download-artifact@v4
+        with:
+          name: hit10-aab
       # On main, the milestone named in MILESTONE gets a tag and a GitHub
       # Release with this APK the first time it appears (docs/07-plan.md).
       - name: Read milestone
