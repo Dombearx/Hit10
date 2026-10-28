@@ -110,7 +110,80 @@ pliku motywu):
 i liczby; *Fredoka* na tekst. Obie mają polskie znaki. **U-9:** Cyfry stopera
 mają stałą szerokość (tabular figures), żeby nie skakały.
 
-**Grafika AI, wspólny szablon promptu** (portrety generatorów, ikony):
+### 4.1 Karty z emoji (grafika postaci i ikon w 1.0)
+
+Źródło: [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji),
+styl **3D** (PNG 256×256, licencja MIT). Do repo trafiają tylko używane pliki
+(`assets/emoji/`), razem z plikiem licencji i wpisem w `CREDITS.md`.
+
+- **U-10:** Karta to widżet składany w kodzie, a nie gotowy obrazek:
+  - zaokrąglony kwadrat (promień 20% boku) w pastelowym kolorze danej pozycji;
+  - kontur `#2B2D42` o grubości ok. 3% boku;
+  - odblask: półprzezroczysty biały pas w górnych 40%;
+  - miękki cień pod kartą;
+  - emoji główne zajmuje 68% boku i jest wyśrodkowane;
+  - opcjonalnie emoji w rogu (36% boku) w białym kółku z konturem.
+
+  Wzór to makieta z rozmowy projektowej: 14 kart generatorów. Kolory i emoji
+  są danymi (tabela niżej), nie kodem.
+- **U-11:** Przypisanie emoji. Nazwy to nazwy katalogów w repo Fluent Emoji.
+  Przy postaciach z odcieniem skóry bierzemy wariant `Default`. Jeśli emoji
+  nie istnieje w stylu 3D, bierzemy najbliższe pasujące i zmieniamy tabelę.
+
+| Generator | Emoji główne | W rogu | Tło |
+|---|---|---|---|
+| Dziadek | Old man | Stopwatch | `#FFD36E` |
+| Babcia | Old woman | Egg | `#FFB38A` |
+| Kukułka | Bird | Mantelpiece clock | `#9BE7C4` |
+| Metronom | Musical note | – | `#B9A7FF` |
+| Zegarmistrz | Man mechanic | Magnifying glass tilted left | `#FFC9DE` |
+| Sędzia sprintu | Chequered flag | Stopwatch | `#A7E0FF` |
+| Zegar dworcowy | Station | Snail (opóźnienia) | `#FFE29A` |
+| Zegar kwarcowy | Gem stone | – | `#C8F2FF` |
+| Zegar atomowy | Atom symbol | – | `#D7C4FF` |
+| Satelita GPS | Satellite | – | `#B4D8FF` |
+| Pulsar | Dizzy | – | `#FFE6A7` |
+| Maszyna czasu | Hourglass done | Cyclone | `#FFC2A8` |
+| Kot Schrödingera | Cat | Package | `#E2D2FF` |
+| Chronos | Mantelpiece clock | Dizzy | `#FFD86E` |
+
+| Umiejętność | Emoji | | Perk | Emoji |
+|---|---|---|---|---|
+| Siła trafienia | Flexed biceps | | Szybki start | Rocket |
+| Przewijanie | Fast-forward button | | Pamięć mięśniowa I–III | Brain |
+| Tykanie | Bell | | Długa drzemka I–II | Sleeping face |
+| Sokole oko | Eagle | | Głęboki sen I–II | Bed |
+| Combo | Fire | | Gorączka złota | Pick |
+| Magnes | Magnet | | Tarcza na start | Shield |
+| Echo | Speaker high volume | | Twarde lądowanie | Parachute |
+| Bullet time | Snail | | Automatyczny kupiec | Shopping cart |
+| Szczęście | Four leaf clover | | Śmiałek | Smiling face with sunglasses |
+| Tarcza | Shield | | Pudełko z kotem | Package |
+| Złoty dotyk | Sparkles | | Drugi zegar | Stopwatch |
+| | | | Ołtarz Chronosa | Classical building |
+
+- **U-12:** Pozostałe elementy:
+  - **ulepszenia generatora:** karta generatora pomniejszona do ikony plus
+    cyfra poziomu (1–8) w rogu, rysowana w kodzie;
+  - **synergie:** dwa emoji generatorów na jednej karcie, ukośnie;
+  - **osiągnięcia:** odznaka (okrągła karta) z emoji kategorii: Money bag
+    (zarobione), emoji generatora (posiadane), Bullseye (PERFEKTY),
+    Fire (serie i combo), Glowing star (Złote Sekundy), Cyclone (prestiż),
+    See-no-evil monkey / High voltage (tryby), Red question mark (ukryte);
+  - **oferty reklam:** Television w rogu przycisku.
+
+### 4.2 Rysowane wektorowo przez nas
+- **U-26:** **Ikona aplikacji:** tarcza stopera z „10.00” w stylu gry
+  (kontur, gradient, odblask), jako SVG. Eksport: ikona adaptacyjna
+  Androida (warstwy przednia i tylna) oraz 512×512 do sklepu.
+- **U-27:** **Złoty zegarek** (Złota Sekunda) jako wektor w kodzie albo SVG,
+  bo musi świecić i obracać się płynnie.
+- **U-28:** **Do sklepu:** grafika promocyjna 1024×500 złożona z tła gry,
+  logo i kart postaci. 4–8 zrzutów ekranu z gry z podpisami PL/EN.
+
+### 4.3 Grafika AI (po wydaniu, opcjonalnie)
+Nie jest potrzebna do 1.0. Jeśli dojdzie, zastępuje emoji w tych samych
+kartach (U-10), więc kod się nie zmienia. Wspólny szablon promptu:
 
 ```
 <obiekt>, mobile game character portrait, chunky cartoon style, thick dark outline,
@@ -118,23 +191,15 @@ soft 3D shading, bright saturated colors, warm lighting, centered, simple shape,
 readable at 64px, transparent background, no text
 ```
 
-- **U-10:** Najpierw powstaje jeden wzorcowy portret (Dziadek). Każdy kolejny
-  generuje się z nim jako obrazkiem referencyjnym. Tło jest wycinane,
-  a eksport to PNG 512×512 (w aplikacji skalowany).
-- **U-11:** Potrzebne grafiki:
-  - 14 portretów generatorów,
-  - 11 ikon umiejętności,
-  - 14 ikon ulepszeń (jedna na generator, z cyfrą poziomu nakładaną w kodzie),
-  - 6 ikon synergii,
-  - ok. 10 szablonów odznak osiągnięć (kategorie; liczby nakładane w kodzie),
-  - 16 ikon perków,
-  - złoty zegarek,
-  - ikona aplikacji (512×512 i adaptacyjna),
-  - grafika promocyjna 1024×500,
-  - 4–8 zrzutów ekranu do sklepu.
-- **U-12:** Do czasu gotowych grafik aplikacja działa na **zastępnikach**:
-  kolorowe kółko z emoji albo inicjałem. Brak grafiki nigdy nie blokuje
-  implementacji.
+Najpierw powstaje jeden wzorcowy portret, kolejne generuje się z nim jako
+obrazkiem referencyjnym. Modele z licencją pozwalającą na użycie
+komercyjne, do uruchomienia u siebie:
+- **SDXL:** karta NVIDIA z 8 GB pamięci;
+- **FLUX.1 [schnell]:** 12–16 GB;
+- **Qwen-Image / Qwen-Image-Edit:** 24 GB;
+- Mac M1+ z 16 GB: aplikacja Draw Things.
+
+FLUX.1 [dev] odpada, bo ma licencję niekomercyjną.
 
 ## 5. Dźwięk
 

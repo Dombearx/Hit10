@@ -101,9 +101,16 @@ Jak dzielimy grafikę:
 - **Kodem** (Flutter/Flame): zegar, tarcza, cyfry, tła z gradientów, przyciski,
   panele, wszystkie cząsteczki i efekty. Nie ma do tego plików graficznych,
   a całość skaluje się do każdego ekranu.
-- **Grafika generowana AI** (jeden szablon stylu, patrz 04): portrety 14
-  generatorów, ikony 11 umiejętności, ikony ulepszeń, odznaki osiągnięć,
-  ikona aplikacji, grafiki do sklepu.
+- **Gotowe darmowe emoji 3D: Microsoft Fluent Emoji** (licencja MIT,
+  użycie komercyjne dozwolone). Z nich są postacie generatorów, ikony
+  umiejętności, perków, osiągnięć i ulepszeń. Kod składa je w karty
+  w jednym stylu (kolorowe tło, gruby kontur, mała ikonka w rogu), patrz 04
+  §4.
+- **Rysowane przez nas wektorowo (SVG):** ikona aplikacji, złoty zegarek
+  i grafika promocyjna do sklepu.
+- **Grafika AI: dopiero po wydaniu (1.x).** Jeśli gra się przyjmie,
+  unikalne postacie mogą zastąpić emoji (szablon promptu i lista
+  modeli w 04 §4.3). Do 1.0 grafika kosztuje 0 zł.
 - **Darmowe zasoby:** czcionki z Google Fonts (licencja OFL), dźwięki z
   Kenney.nl (CC0) albo generowane (jsfxr). Każdy zasób z zewnątrz trafia z licencją
   do pliku `CREDITS.md` (powstaje w M0).

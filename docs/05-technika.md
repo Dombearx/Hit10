@@ -45,8 +45,8 @@ CREDITS.md        autorzy i licencje zasobów
   Pilnuje tego test (skan importów) albo osobny pakiet Dart.
 - **T-4:** Symulator `dart run tool/simulate.dart` korzysta z **tego samego**
   kodu ekonomii co gra. Nie wolno mieć drugiej implementacji wzorów.
-  Projektowy skrypt w Pythonie (sekcja 4 w 03) jest tylko punktem odniesienia,
-  do repo nie trafia.
+  Projektowy symulator w Pythonie (`design/`, wyniki w 03 §4–5) jest tylko
+  punktem odniesienia do sprawdzenia portu (06 §1.2). Gra go nie używa.
 
 ## 3. Plik balansu
 
@@ -114,6 +114,9 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
   robi to samo w drugą stronę, z walidacją i potwierdzeniem nadpisania.
 - **T-20:** Uszkodzony zapis i brak kopii oznaczają komunikat i start od zera,
   a nie wyłożenie się aplikacji.
+- **T-32:** Zapis jest objęty **kopią zapasową Androida** (Auto Backup na
+  koncie Google, darmowa, bez backendu). Po zmianie telefonu postęp wraca
+  sam. Kopią objęty jest tylko plik zapisu, bez ustawień urządzenia.
 
 ## 7. Wydajność i jakość
 
@@ -124,6 +127,12 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
 - **T-23:** Rozmiar pobieranego AAB/APK poniżej 40 MB.
 - **T-24:** `flutter analyze` bez ostrzeżeń, `dart format`, wszystkie testy
   zielone (06). Do repo dochodzi `Makefile` z `make check`.
+- **T-31:** **CI w GitHub Actions** (darmowe minuty, bez stałych kosztów):
+  - każdy push uruchamia `make check` i symulator `--check`, a potem buduje
+    debug APK jako artefakt;
+  - tag `m0`…`m6` tworzy GitHub Release z APK, który właściciel pobiera
+    i instaluje prosto na telefonie (włączona „instalacja z nieznanych
+    źródeł”).
 
 ## 8. Reklamy (M6, przygotowanie od początku)
 
