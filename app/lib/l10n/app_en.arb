@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "Hit10",
+  "@appTitle": {"description": "App name shown in the launcher and title bar"},
+  "tagline": "Tap at exactly 10.00",
+  "@tagline": {"description": "One-line pitch on the start screen"}
+}
