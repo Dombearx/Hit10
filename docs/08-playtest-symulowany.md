@@ -82,3 +82,50 @@ i zostaną w nim 14 dni — boty ani fikcyjne konta tego nie spełnią
 (np. r/AndroidClosedTesting, społeczności „12 testers” na Discordzie/Reddicie
 — testujesz ich aplikacje, oni twoją), albo konto organizacji (wymaga
 numeru D-U-N-S; tego wymogu nie ma).
+
+## Runda 2 — po poprawkach
+
+Wprowadzone: szczęście początkującego (10 rund szerszych okien i ×3
+wypłaty, potem 20 rund łagodnego wygaszania), runda bez dotknięcia nie
+jest pudłem, stoper staje po 2 rundach bez dotknięcia, Turbo co 5 min.
+Ceny i reszta balansu bez zmian; symulator przechodzi wszystkie progi.
+
+| Persona | Pierwszy zakup (przed → po) | Zakupy w 10 min | Dochód po 10 min |
+|---|---|---|---|
+| Kasia | 2:54 → 0:44 / 1:49 | 15 → 28 / 31 | 2,9 → 18–23/s |
+| Ola | 3:15 → 1:05 / 1:28 | 16 → 31 / 34 | 4,9 → 23–26/s |
+| Pan Zdzisław | 6:20 → 0:54 / 1:48 | 2 → 12 / 9 | 0,2 → 0,9–1,2/s |
+| Bartek | 9:45 → 2:12 / 1:05 | 1 → 22 / 19 | 0,1 → 6–12/s |
+| Ania | 2:42 → 0:33 | 18 → 28 | 10,4 → 21,8/s |
+| Tomek | 3:36 → 0:22 | 25 → 59 | 15,8 → 106/s |
+| Ewa | 4:30 → 0:44 | 14 → 14 | 2,7 → 1,4/s |
+
+(Dwie liczby po strzałce: dwa przebiegi po poprawkach — widać, ile waha
+się wynik jednej sesji.)
+
+- Pierwszy zakup: z 1,5–10 min do ~0,5–2 min. Najdłuższa przerwa bez
+  zakupu: z 3–10 min do ~1–2 min.
+- Odłożony telefon: 1 runda zamiast 13, combo zostaje.
+- Wygaszanie premii: trafialność schodzi stopniowo (np. Ola 90% → 90% →
+  60% → 43% w rundach 1–10, 11–20, 21–30, 31+) zamiast skoku po 10. rundzie.
+- Zostaje: gracze bardzo nieprecyzyjni (σ ≈ 170 ms) pudłują w ~2/3 rund
+  po okresie startowym. Postęp mają, ale wolny — to gra zręcznościowa.
+
+## Porównanie z rekomendacjami dla gier mobilnych
+
+| Rekomendacja | Stan |
+|---|---|
+| Pierwsze ~30 s decyduje („czy to ciekawe?”) | runda trwa 10 s, pierwsza nagroda po 10 s, pierwszy zakup ~0,5–2 min |
+| Zawsze widoczny następny cel, ulepszenia zmieniające grę | zakup co ~1 min; przewijanie/tykanie od 2.–6. min |
+| Samouczek grany, nie czytany; mechaniki stopniowo | jedno zdanie + strzałka; combo ~40 s, Złota Sekunda ~5 min |
+| Sesja 5–9 min (GameAnalytics 2025) | 10-min sesja = 12–59 decyzji zakupowych |
+| Powód do powrotu | dochód offline + powiadomienie o pełnym limicie |
+| Reklamy dobrowolne, nie od razu | tylko nagradzane, od 5. min, Turbo co 5 min |
+| Retencja D1 (branża: 77–90% nie wraca) | nie do zmierzenia botami — test z ludźmi |
+| Nagroda dzienna | brak (opcja na później) |
+
+Źródła: PocketGamer.biz „First impressions count…”, „PGC Digital: How to
+enhance the first time user experience”; GameAnalytics Mobile Gaming
+Benchmarks 2025; dev.to „I built 7 idle games in 30 days”; bugnet.io „How
+to design an idle or incremental game”; Project Leap „The Definitive Guide
+to Retaining Mobile Game Players”.
