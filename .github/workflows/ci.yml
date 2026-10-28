@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+    tags: ['m*']
+  pull_request:
+
+permissions:
+  contents: write # attaching APKs to milestone releases
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.47.8'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: cd app && flutter pub get
+      - run: make check
+
+  apk:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Build APK
+        run: |
+          cd app
+          flutter pub get
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk "../hit10-${GITHUB_REF_NAME//\//-}.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hit10-apk
+          path: hit10-*.apk
+          retention-days: 30
+      - name: Milestone release
+        if: startsWith(github.ref, 'refs/tags/m')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: hit10-*.apk
+          body: |
+            APK for milestone ${{ github.ref_name }} (docs/07-plan.md).
+            Install on Android: download the .apk on the phone and allow
+            installing from this source when asked.
