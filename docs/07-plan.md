@@ -126,17 +126,21 @@ i balansu. Zmiany liczb wpisujemy do 02/03.
 
 **Cel:** gra w Google Play.
 
-- [ ] Prawdziwe reklamy nagradzane `google_mobile_ads` + zgoda UMP;
+- [x] Prawdziwe reklamy nagradzane `google_mobile_ads` + zgoda UMP;
       w trakcie prac tylko testowe jednostki (T-26, T-28)
-- [ ] Strona `https://dombearx.github.io`: polityka prywatności,
+- [x] Strona `https://dombearx.github.io`: polityka prywatności,
       `app-ads.txt`, strona gry (01)
-- [ ] Klucz podpisu (poza repo), podpisany AAB, wersjonowanie (05 §9)
-- [ ] Wpis w sklepie PL/EN: nazwa, opis, ikona, grafika 1024×500, zrzuty
+- [x] Klucz podpisu (poza repo), podpisany AAB, wersjonowanie (05 §9)
+- [x] Wpis w sklepie PL/EN: nazwa, opis, ikona, grafika 1024×500, zrzuty
       (U-28)
 - [ ] Data Safety, kategoria wiekowa 13+, ankieta treści
 - [ ] **Test zamknięty: 12 testerów przez 14 dni** (wymóg dla nowych kont
       osobistych). Uwagi testerów poprawiamy w trakcie.
 - [ ] Wniosek o dostęp do produkcji, wydanie
+
+Kod, pliki strony (`site/`), teksty i grafiki sklepu (`store/`) są gotowe;
+kroki na kontach (AdMob, klucz, sekrety CI, repo strony, Play Console,
+test zamknięty) opisuje `store/PLAY_CONSOLE.md`.
 
 **Testy ręczne:** wszystkie ponownie i M-10 (reklamy).
 

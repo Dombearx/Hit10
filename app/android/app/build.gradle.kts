@@ -1,8 +1,28 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
+
+// Release signing (docs/05 §9): the keystore never enters the repo. Locally
+// it comes from android/key.properties (gitignored), in CI from secrets via
+// environment variables. Without either, release builds use the debug key,
+// which is fine for testing but cannot be uploaded to Play.
+val keyProps = Properties().apply {
+    val f = rootProject.file("key.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+fun signing(name: String, env: String): String? =
+    keyProps.getProperty(name) ?: System.getenv(env)
+val releaseStore = signing("storeFile", "HIT10_KEYSTORE")
+
+// AdMob app id (docs/05 T-26, T-28): Google's test id unless the release
+// build passes the real one.
+val admobAppId = System.getenv("ADMOB_APP_ID")
+    ?: (project.findProperty("ADMOB_APP_ID") as String?)
+    ?: "ca-app-pub-3940256099942544~3347511713"
 
 android {
     namespace = "io.github.dombearx.hit10"
@@ -17,10 +37,8 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Fixed forever after the first release (docs/05 §9).
         applicationId = "io.github.dombearx.hit10"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
@@ -29,13 +47,24 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["admobAppId"] = admobAppId
+    }
+
+    signingConfigs {
+        if (releaseStore != null) {
+            create("release") {
+                storeFile = file(releaseStore)
+                storePassword = signing("storePassword", "HIT10_KEYSTORE_PASSWORD")
+                keyAlias = signing("keyAlias", "HIT10_KEY_ALIAS")
+                keyPassword = signing("keyPassword", "HIT10_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("release")
+                ?: signingConfigs.getByName("debug")
         }
     }
 }

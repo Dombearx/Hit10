@@ -136,7 +136,9 @@ class GameController extends ChangeNotifier {
   bool _goldenShown = false;
 
   /// A running clock is inside the bullet-time zone (docs/04 §3, U-19).
-  bool inBulletZone = false;
+  /// Its own notifier: the whole UI must not rebuild when it flips.
+  final bulletZone = ValueNotifier<bool>(false);
+  bool get inBulletZone => bulletZone.value;
   static const _saveEvery = 10.0;
 
   void _applySettings() {
@@ -249,7 +251,12 @@ class GameController extends ChangeNotifier {
   }
 
   /// Called every frame by the arena.
+  /// QA builds only (store screenshots): holds the rounds still, so a
+  /// result can be captured before the next round starts (R-RUNDA-6).
+  bool qaFrozen = false;
+
   void tick() {
+    if (qaFrozen) return;
     final t = now();
     final last = _lastTick;
     _lastTick = t;
@@ -264,10 +271,7 @@ class GameController extends ChangeNotifier {
       inZone |= _roundSounds(c, t);
     }
     sfx.underwater(inZone);
-    if (inZone != inBulletZone) {
-      inBulletZone = inZone;
-      notifyListeners();
-    }
+    bulletZone.value = inZone; // notifies only on change
     sfx.music(
       engine.goldenRound
           ? MusicTrack.golden

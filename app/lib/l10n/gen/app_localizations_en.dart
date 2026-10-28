@@ -1627,4 +1627,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get upg_chronos_8_desc => '10.00. Always was, always will be.';
+
+  @override
+  String get settingsPrivacyPolicy => 'Privacy policy';
+
+  @override
+  String get settingsAdPrivacy => 'Ad privacy choices';
 }

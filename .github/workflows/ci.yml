@@ -55,6 +55,39 @@ jobs:
           name: hit10-apk
           path: hit10-*.apk
           retention-days: 30
+      # The Play upload (docs/05 §9): signed with the upload key and built
+      # with the real AdMob ids — but only when those secrets exist, and
+      # never for the APKs above, which are for testing on our own phones
+      # (T-28: never tap your own real ads). versionCode = CI run number,
+      # so every upload is higher than the last.
+      - name: Build AAB
+        env:
+          KEYSTORE_B64: ${{ secrets.HIT10_KEYSTORE_B64 }}
+          HIT10_KEYSTORE_PASSWORD: ${{ secrets.HIT10_KEYSTORE_PASSWORD }}
+          HIT10_KEY_ALIAS: ${{ secrets.HIT10_KEY_ALIAS }}
+          HIT10_KEY_PASSWORD: ${{ secrets.HIT10_KEY_PASSWORD }}
+          ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
+          ADMOB_REWARDED_ID: ${{ secrets.ADMOB_REWARDED_ID }}
+        run: |
+          cd app
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+            export HIT10_KEYSTORE="$RUNNER_TEMP/upload.jks"
+            signed=signed
+          else
+            unset ADMOB_APP_ID ADMOB_REWARDED_ID
+            signed=unsigned
+          fi
+          define=()
+          [ -n "${ADMOB_REWARDED_ID:-}" ] && define=(--dart-define=ADMOB_REWARDED_ID="$ADMOB_REWARDED_ID")
+          flutter build appbundle --release --build-number=${{ github.run_number }} "${define[@]}"
+          cp build/app/outputs/bundle/release/app-release.aab "../hit10-${GITHUB_REF_NAME//\//-}-$signed.aab"
+          rm -f "$RUNNER_TEMP/upload.jks"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hit10-aab
+          path: hit10-*.aab
+          retention-days: 30
       # On main, the milestone named in MILESTONE gets a tag and a GitHub
       # Release with this APK the first time it appears (docs/07-plan.md).
       - name: Read milestone
@@ -77,8 +110,11 @@ jobs:
           tag_name: ${{ steps.milestone.outputs.name }}
           target_commitish: ${{ github.sha }}
           name: Hit10 ${{ steps.milestone.outputs.name }}
-          files: hit10-*.apk
+          files: |
+            hit10-*.apk
+            hit10-*-signed.aab
           body: |
-            APK for milestone ${{ steps.milestone.outputs.name }} (docs/07-plan.md).
+            APK for milestone ${{ steps.milestone.outputs.name }} (docs/07-plan.md),
+            plus the signed AAB for Play when the signing secrets are set.
             Install on Android: download the .apk on the phone and allow
             installing from this source when asked.

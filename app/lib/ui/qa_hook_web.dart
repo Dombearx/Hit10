@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
+import 'package:flutter/scheduler.dart';
+
 import '../engine/round_engine.dart';
 import 'game_controller.dart';
 
@@ -18,12 +20,22 @@ void registerQaHook(GameController c) {
         c.onPointerDown(Duration.zero);
       }
       final dueReal = c.round.startedAt + c.round.timeMap.realAt(game);
-      // Timers fire late by a frame or so: wake 30 ms early, then spin.
-      final delayUs = ((dueReal - c.now() - 0.03) * 1e6).round();
+      // Timers fire late by a frame or more (slow headless rendering): wake
+      // 250 ms early, then spin. QA builds only, so blocking is fine.
+      final delayUs = ((dueReal - c.now() - 0.25) * 1e6).round();
       Timer(Duration(microseconds: delayUs < 0 ? 0 : delayUs), () {
         while (c.now() < dueReal) {}
         c.onPointerDown(Duration.zero);
       });
+    }).toJS,
+  );
+  api.setProperty(
+    'freeze'.toJS,
+    ((JSBoolean on) {
+      c.qaFrozen = on.toDart;
+      // Slow every animation (Flame's too, it runs on a Ticker) so slow
+      // high-DPR screenshots still catch the effects mid-flight.
+      timeDilation = on.toDart ? 25 : 1;
     }).toJS,
   );
   api.setProperty('tapNow'.toJS, (() => c.onPointerDown(Duration.zero)).toJS);
@@ -118,6 +130,9 @@ void registerQaHook(GameController c) {
       if (m['earnedTotal'] case final num v) c.state.earnedTotal = v.toDouble();
       if (m['playSeconds'] case final num v) c.state.playSeconds = v.toDouble();
       if (m['combo'] case final num v) c.state.comboStreak = v.toInt();
+      if (m['tipsSeen'] case final List<dynamic> t) {
+        c.state.tipsSeen.addAll(t.cast<String>());
+      }
       if (m['tutorialDone'] == true) c.finishTutorial();
     }).toJS,
   );

@@ -1630,4 +1630,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get upg_chronos_8_desc => '10,00. Od zawsze i na zawsze.';
+
+  @override
+  String get settingsPrivacyPolicy => 'Polityka prywatności';
+
+  @override
+  String get settingsAdPrivacy => 'Prywatność reklam';
 }

@@ -1,0 +1,75 @@
+# Google Play listing (docs/07 M6)
+
+Limits: name ≤ 30 characters, short description ≤ 80, full ≤ 4000
+(`tools/store/check_listing.py` counts them). Graphics: `icon-512.png`,
+`feature-1024x500.png`, `screens/pl/*.png` and `screens/en/*.png`
+(1080×1920), regenerated with `make store`.
+
+## Polski (pl-PL)
+
+**Nazwa:** Hit10: Trafisz w 10.00?
+
+**Krótki opis:** Zatrzymaj stoper dokładnie na 10.00. Precyzja, zegary i dziadek z zegarkiem.
+
+**Pełny opis:**
+
+Zatrzymaj stoper dokładnie na 10.00. Brzmi prosto? To spróbuj.
+
+Każda runda trwa dziesięć sekund. Im bliżej trafisz, tym więcej Tików
+zarobisz: PERFEKT, ŚWIETNIE, DOBRZE… albo ZA WCZEŚNIE. Za Tiki zatrudniasz
+pomocników, którzy też próbują trafić — i zarabiają, nawet gdy nie grasz.
+
+⏱️ Czternaście zegarów: od dziadka z zegarkiem, babci z minutnikiem
+i kukułki, przez zegarmistrza i sędziego sprintu, aż po zegar atomowy,
+pulsar, maszynę czasu, kota Schrödingera i samego Chronosa.
+
+🎯 Umiejętności, które zmieniają rundę: przewijanie do 9 sekund, bullet
+time spowalniający czas tuż przed celem, tykanie w ostatniej sekundzie,
+szersze okna trafienia, combo, tarcza na serię i szczęście.
+
+✨ Złota Sekunda: złap latający złoty zegarek, a następna runda będzie
+złota — Szał, Fart albo Gorąca ręka.
+
+🌀 Paradoks czasowy: cofnij czas, zdobądź Chronony na stały bonus i odkryj
+drzewko perków — od szybkiego startu po drugi zegar.
+
+🏆 97 osiągnięć, tryby „Na ślepo” i „Szybki zegar”, ponad sto ulepszeń
+z własnym poczuciem humoru.
+
+📴 Gra działa bez internetu i bez konta. Reklamy są tylko nagradzane
+i tylko wtedy, gdy sam je wybierzesz.
+
+## English (en-US)
+
+**Name:** Hit10: Stop at 10.00
+
+**Short description:** Stop the watch at exactly 10.00. Precision, clocks and a grandpa with a watch.
+
+**Full description:**
+
+Stop the watch at exactly 10.00. Sounds easy? Go on, try.
+
+Every round lasts ten seconds. The closer you hit, the more Ticks you
+earn: PERFECT, GREAT, GOOD… or TOO EARLY. Spend Ticks on helpers who try
+to hit 10.00 too — and keep earning while you're away.
+
+⏱️ Fourteen clocks: from a grandpa with a pocket watch, a grandma with an
+egg timer and a cuckoo, through a watchmaker and a sprint judge, all the
+way to an atomic clock, a pulsar, a time machine, Schrödinger's cat and
+Chronos himself.
+
+🎯 Skills that change the round: fast-forward to 9 seconds, bullet time
+that slows the clock right before the target, ticking in the last second,
+wider hit windows, combos, a streak shield and luck.
+
+✨ The golden second: catch the flying golden clock and your next round
+turns golden — Frenzy, Lucky or Hot hand.
+
+🌀 Time paradox: rewind time, earn Chronons for a permanent bonus and
+unlock a perk tree — from a head start to a second clock.
+
+🏆 97 achievements, Blind and Fast clock modes, over a hundred upgrades
+with a sense of humour.
+
+📴 Plays offline, no account needed. Ads are rewarded only, and only when
+you choose to watch one.

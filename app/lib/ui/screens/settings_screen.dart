@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../ads/rewarded_ads.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../model/number_format.dart';
 import '../../persistence/save_codec.dart';
@@ -138,6 +140,17 @@ class _Settings extends ConsumerWidget {
         _Group(
           title: l.settingsOther,
           children: [
+            _Action(
+              key: const Key('set-privacy'),
+              label: l.settingsPrivacyPolicy,
+              onTap: () => launchUrl(
+                Uri.parse(privacyPolicyUrl),
+                mode: LaunchMode.externalApplication,
+              ),
+            ),
+            const SizedBox(height: 10),
+            if (ref.watch(rewardedAdsProvider) case final AdPrivacy p)
+              _AdPrivacyButton(privacy: p),
             _Action(
               key: const Key('set-credits'),
               label: l.settingsCredits,
@@ -280,6 +293,32 @@ class _AskDialogState extends State<_AskDialog> {
           child: Text(widget.ok),
         ),
       ],
+    );
+  }
+}
+
+/// The privacy policy on the game's site (docs/05 T-26).
+const privacyPolicyUrl = 'https://dombearx.github.io/hit10/privacy.html';
+
+/// UMP's "privacy options" entry, shown only where the law requires it.
+class _AdPrivacyButton extends StatelessWidget {
+  const _AdPrivacyButton({required this.privacy});
+  final AdPrivacy privacy;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: privacy.optionsRequired(),
+      builder: (context, snap) => snap.data != true
+          ? const SizedBox.shrink()
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: _Action(
+                key: const Key('set-ad-privacy'),
+                label: AppLocalizations.of(context).settingsAdPrivacy,
+                onTap: privacy.showOptions,
+              ),
+            ),
     );
   }
 }
