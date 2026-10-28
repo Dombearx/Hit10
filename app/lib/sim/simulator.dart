@@ -301,7 +301,7 @@ class Simulator {
         e.claimGolden();
         e.onRoundStart();
         final err = _gauss() * cfg.sigma * econ.bulletTimeSpeed();
-        final o = e.resolveRound(grade(err, econ.windows()));
+        final o = e.resolveRound(grade(err, econ.playerWindows()));
         if (ads != null &&
             o.comboBroken &&
             o.streakBefore >= ads.rescueMinStreak &&

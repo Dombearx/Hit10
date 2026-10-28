@@ -30,8 +30,12 @@ class HitFeedback {
   /// Which stopwatch (0, or 1 for the second clock).
   final int clock;
 
-  Grade get grade =>
-      Grade(outcome.tier, outcome.raw.error, outcome.raw.missKind);
+  Grade get grade => Grade(
+    outcome.tier,
+    outcome.raw.error,
+    outcome.raw.missKind,
+    outcome.raw.close,
+  );
   double get reward => outcome.payout;
 }
 
@@ -196,7 +200,7 @@ class GameController extends ChangeNotifier {
   RoundEngine _newRound() => RoundEngine(
     config: balance.round,
     timeMapFor: () => econ.timeMap(clock: engine.clockSpeed()),
-    windowsFor: econ.windows,
+    windowsFor: econ.playerWindows,
   );
 
   void _rebuildClocks() {
@@ -250,11 +254,11 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  /// Called every frame by the arena.
   /// QA builds only (store screenshots): holds the rounds still, so a
   /// result can be captured before the next round starts (R-RUNDA-6).
   bool qaFrozen = false;
 
+  /// Called every frame by the arena.
   void tick() {
     if (qaFrozen) return;
     final t = now();
@@ -266,7 +270,9 @@ class GameController extends ChangeNotifier {
       _handle(clocks[1], clocks[1].round.tap(start));
     }
     var inZone = false;
+    final idle = state.lifetime.missedInARow >= balance.round.idleStopAfter;
     for (final c in clocks) {
+      c.round.autoStart = !idle;
       _handle(c, c.round.update(t));
       inZone |= _roundSounds(c, t);
     }
@@ -341,6 +347,8 @@ class GameController extends ChangeNotifier {
   }
 
   void _playFeedback(RoundOutcome o) {
+    // A skipped round (no touch) passes quietly: nobody is looking.
+    if (o.raw.missKind == MissKind.noTap) return;
     // Ding rises a semitone every two streak steps, up to an octave (U-15).
     final pitch = math.pow(2, math.min(o.streak ~/ 2, 12) / 12).toDouble();
     switch (o.tier) {
@@ -351,12 +359,14 @@ class GameController extends ChangeNotifier {
         sfx.play('great', speed: pitch);
       case Tier.good:
         sfx.play('good');
+      case Tier.miss when o.raw.close:
+        sfx.play('good', gain: 0.6, speed: 0.8);
       case Tier.miss:
         sfx.play('miss');
     }
     if (o.comboBroken && o.streakBefore >= 3) sfx.play('combo_break');
     if (o.golden?.effect != null) sfx.play('buy', gain: 0.8);
-    unawaited(haptics.forTier(o.tier));
+    unawaited(o.raw.close ? haptics.light() : haptics.forTier(o.tier));
   }
 
   /// Ticking in the last second and the fast-forward whoosh (docs/04 §3).
@@ -536,8 +546,23 @@ class GameController extends ChangeNotifier {
   /// Checks for offline income (start-up and every resume).
   void checkOffline() {
     pendingOffline = engine.offlineSince(_wallMs());
+    pendingDaily = engine.dailyFor(_localNow());
     state.lastSeenMs = _wallMs();
-    if (pendingOffline != null) notifyListeners();
+    if (pendingOffline != null || pendingDaily != null) notifyListeners();
+  }
+
+  /// Today's daily bonus waiting in its dialog (playtest 08), or null.
+  DailyBonus? pendingDaily;
+
+  void collectDaily() {
+    final d = pendingDaily;
+    if (d == null) return;
+    engine.claimDaily(d);
+    pendingDaily = null;
+    sfx.play('fanfare', gain: 0.7);
+    unawaited(haptics.medium());
+    unawaited(save());
+    notifyListeners();
   }
 
   void collectOffline({double multiplier = 1}) {

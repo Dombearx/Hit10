@@ -27,7 +27,8 @@ class RoundConfig {
       resultPause = _d(j['resultPause']),
       fastForwardEnd = _d(j['fastForwardEnd']),
       bulletZone = _d(j['bulletZone']),
-      secondClockOffset = _d(j['secondClockOffset']);
+      secondClockOffset = _d(j['secondClockOffset']),
+      idleStopAfter = _i(j['idleStopAfter']);
   final double target;
   final double autoEndAfter;
   final double inputGraceAfterStart;
@@ -35,6 +36,46 @@ class RoundConfig {
   final double fastForwardEnd;
   final double bulletZone;
   final double secondClockOffset;
+
+  /// Untapped rounds in a row after which the stopwatch waits for a touch
+  /// instead of starting the next round (phone put down, playtest 08).
+  final int idleStopAfter;
+}
+
+/// BLISKO (docs/02 §2): a player's miss within [window] still pays
+/// [reward] (in units of the tier rewards) but breaks the combo.
+class CloseConfig {
+  CloseConfig(Map<String, Object?> j)
+    : window = _d(j['window']),
+      reward = _d(j['reward']);
+  final double window;
+  final double reward;
+}
+
+/// Daily bonus (playtest 08): a 7-day streak; day N pays [minutes][N-1]
+/// minutes of passive income, at least [floorPerDay]·N Tiki.
+class DailyConfig {
+  DailyConfig(Map<String, Object?> j)
+    : minutes = [for (final m in j['minutes']! as List) _d(m)],
+      floorPerDay = _d(j['floorPerDay']);
+  final List<double> minutes;
+  final double floorPerDay;
+}
+
+/// "Beginner's luck" (playtest 08): the first [rounds] rounds of a new
+/// game pay more, so a new player buys within a minute. The windows stay
+/// as they are: hitting 10.00 must stay an achievement.
+class BeginnerConfig {
+  BeginnerConfig(Map<String, Object?> j)
+    : rounds = _i(j['rounds']),
+      rewardMultiplier = _d(j['rewardMultiplier']),
+      fadeRounds = _i(j['fadeRounds']);
+  final int rounds;
+
+  /// After [rounds], the bonus fades out linearly over this many rounds
+  /// instead of stopping at once.
+  final int fadeRounds;
+  final double rewardMultiplier;
 }
 
 class TierConfig {
@@ -237,6 +278,7 @@ class AdsConfig {
       turboMultiplier = _d(_m(j['turbo'])['multiplier']),
       turboDuration = _d(_m(j['turbo'])['duration']),
       turboMaxStock = _d(_m(j['turbo'])['maxStock']),
+      turboCooldown = _d(_m(j['turbo'])['cooldown']),
       bagProductionSeconds = _d(_m(j['bag'])['productionSeconds']),
       bagCooldown = _d(_m(j['bag'])['cooldown']),
       rescueMinStreak = _i(_m(j['rescue'])['minStreak']),
@@ -249,6 +291,9 @@ class AdsConfig {
   final double turboMultiplier;
   final double turboDuration;
   final double turboMaxStock;
+
+  /// Between two Turbo ads (playtest 08: players chained 8 in 3 minutes).
+  final double turboCooldown;
   final double bagProductionSeconds;
   final double bagCooldown;
   final int rescueMinStreak;
@@ -284,6 +329,9 @@ class Balance {
       achievements = AchievementsConfig(_m(j['achievements'])),
       prestige = PrestigeConfig(_m(j['prestige'])),
       ads = AdsConfig(_m(j['ads'])),
+      beginner = BeginnerConfig(_m(j['beginner'])),
+      close = CloseConfig(_m(j['close'])),
+      daily = DailyConfig(_m(j['daily'])),
       ui = UiConfig(_m(j['ui']));
 
   /// Parses and validates; throws [BalanceException] listing every problem.
@@ -323,6 +371,9 @@ class Balance {
   final AchievementsConfig achievements;
   final PrestigeConfig prestige;
   final AdsConfig ads;
+  final BeginnerConfig beginner;
+  final CloseConfig close;
+  final DailyConfig daily;
   final UiConfig ui;
 
   TierConfig tier(String id) => tiers.firstWhere((t) => t.id == id);
@@ -344,6 +395,11 @@ class Balance {
     const tierOrder = ['perfect', 'great', 'good'];
     if (tiers.map((t) => t.id).join(',') != tierOrder.join(',')) {
       e.add('tiers must be exactly ${tierOrder.join(', ')} in that order');
+    }
+    if (daily.minutes.isEmpty) e.add('daily.minutes must not be empty');
+    if (tiers.map((t) => t.id).join(',') == tierOrder.join(',') &&
+        close.window <= tier('good').window) {
+      e.add('close.window must be wider than the good window');
     }
     for (var i = 1; i < tiers.length; i++) {
       if (tiers[i].window <= tiers[i - 1].window) {

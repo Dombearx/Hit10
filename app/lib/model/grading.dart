@@ -12,25 +12,31 @@ class Windows {
     required this.perfect,
     required this.great,
     required this.good,
+    this.close = 0,
   });
 
   final double perfect;
   final double great;
   final double good;
 
+  /// Beyond [good]: a miss that still pays a little (BLISKO, docs/02 §2).
+  /// Only the player's own taps have it; 0 = none.
+  final double close;
+
   @override
   bool operator ==(Object other) =>
       other is Windows &&
       other.perfect == perfect &&
       other.great == great &&
-      other.good == good;
+      other.good == good &&
+      other.close == close;
 
   @override
-  int get hashCode => Object.hash(perfect, great, good);
+  int get hashCode => Object.hash(perfect, great, good, close);
 }
 
 class Grade {
-  const Grade(this.tier, this.error, [this.missKind]);
+  const Grade(this.tier, this.error, [this.missKind, this.close = false]);
 
   final Tier tier;
 
@@ -38,6 +44,9 @@ class Grade {
   /// is the auto-end offset.
   final double error;
   final MissKind? missKind;
+
+  /// A miss inside the close window: breaks the combo, pays a little.
+  final bool close;
 
   bool get isHit => tier != Tier.miss;
 }
@@ -50,5 +59,10 @@ Grade grade(double error, Windows w) {
   if (a < perfect) return Grade(Tier.perfect, error);
   if (a < w.great) return Grade(Tier.great, error);
   if (a < w.good) return Grade(Tier.good, error);
-  return Grade(Tier.miss, error, error < 0 ? MissKind.early : MissKind.late);
+  return Grade(
+    Tier.miss,
+    error,
+    error < 0 ? MissKind.early : MissKind.late,
+    a < w.close,
+  );
 }

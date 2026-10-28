@@ -65,6 +65,8 @@ Map<String, Object?> encodeSave(SaveData d) {
     'tipsSeen': s.tipsSeen.toList(),
     'adCooldownUntil': s.adCooldownUntil,
     'turboLeft': s.turboLeft,
+    'dailyKey': s.dailyKey,
+    'dailyStreak': s.dailyStreak,
     'stats': {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
@@ -146,7 +148,9 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..modeFast = j['modeFast'] == true
     ..secondClockOn = j['secondClockOn'] == true
     ..autoBuyerOn = j['autoBuyerOn'] == true
-    ..turboLeft = _d(j['turboLeft']);
+    ..turboLeft = _d(j['turboLeft'])
+    ..dailyKey = _i(j['dailyKey'])
+    ..dailyStreak = _i(j['dailyStreak']);
   s.tipsSeen.addAll(_sl(j['tipsSeen']));
   _m(j['adCooldownUntil']).forEach((k, v) => s.adCooldownUntil[k] = _i(v));
   _m(j['owned']).forEach((k, v) => s.owned[k] = _i(v));

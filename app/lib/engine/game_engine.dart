@@ -197,6 +197,30 @@ class GameEngine {
   /// Applies Luck, Hot hand, the combo and the Shield, pays out and records
   /// statistics (docs/02 §2–§3, §6). [mode] is the risk-mode multiplier.
   RoundOutcome resolveRound(Grade g, {double mode = 1}) {
+    // No touch at all is a skipped round, not a miss (playtest 08): looking
+    // at the shop or putting the phone down costs nothing but the round.
+    if (g.missKind == MissKind.noTap) {
+      s.lifetime.missedInARow++;
+      GoldenOutcome? golden;
+      if (goldenRound) {
+        goldenRound = false;
+        golden = _resolveGolden(Tier.miss);
+      }
+      final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
+      return RoundOutcome(
+        raw: g,
+        tier: Tier.miss,
+        payout: 0,
+        combo: combo,
+        streak: s.comboStreak,
+        streakBefore: s.comboStreak,
+        comboBroken: false,
+        shieldUsed: false,
+        bumpedByLuck: false,
+        hotHand: false,
+        golden: golden,
+      );
+    }
     var tier = g.tier;
     var bumped = false;
     final hot = hotHandLeft > 0 && tier != Tier.miss;
@@ -231,7 +255,11 @@ class GameEngine {
       }
     }
     final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
-    final payout = hitPayout(Grade(tier, g.error), combo: combo, mode: mode);
+    final payout = hitPayout(
+      Grade(tier, g.error, g.missKind, g.close),
+      combo: combo,
+      mode: mode,
+    );
     s.earn(payout);
     _recordStats(g, tier);
     GoldenOutcome? golden;
@@ -264,8 +292,7 @@ class GameEngine {
   }
 
   void _recordStats(Grade raw, Tier tier) {
-    final tapped = raw.missKind != MissKind.noTap;
-    s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: tapped);
+    s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: true);
     final l = s.lifetime;
     if (tier == Tier.perfect) {
       l.perfects++;
@@ -276,7 +303,7 @@ class GameEngine {
     }
     l.bestCombo = math.max(l.bestCombo, s.comboStreak);
     if (raw.missKind == MissKind.early) l.earlyTaps++;
-    l.missedInARow = raw.missKind == MissKind.noTap ? l.missedInARow + 1 : 0;
+    l.missedInARow = 0;
   }
 
   double passive() => econ.passive(frenzy: frenzy, turbo: turbo);
@@ -295,9 +322,19 @@ class GameEngine {
 
   /// R-WYPLATA-1: what a graded tap pays.
   double hitPayout(Grade g, {double combo = 1, double mode = 1}) {
-    if (!g.isHit) return 0;
+    if (!g.isHit) {
+      // BLISKO: a small consolation, no echo (docs/02 §2).
+      if (!g.close) return 0;
+      return b.close.reward *
+          econ.strikePower() *
+          globalMultiplier() *
+          econ.beginnerPay() *
+          combo *
+          mode;
+    }
     final t = b.tier(g.tier.name);
-    final flat = t.reward * econ.strikePower() * globalMultiplier();
+    final flat =
+        t.reward * econ.strikePower() * globalMultiplier() * econ.beginnerPay();
     final echo = econ.echoSeconds() * t.echoShare * passive();
     return (flat + echo) * combo * mode;
   }
@@ -510,6 +547,41 @@ class GameEngine {
     return OfflineReport(away, counted, amount);
   }
 
+  /// Today's daily bonus, or null when already claimed today or the
+  /// tutorial isn't done (playtest 08). [now] is local time.
+  DailyBonus? dailyFor(DateTime now) {
+    if (!s.tutorialDone) return null;
+    final key = dateKey(now);
+    if (key == s.dailyKey) return null;
+    final yesterday = dateKey(
+      DateTime(now.year, now.month, now.day).subtract(const Duration(days: 1)),
+    );
+    final days = b.daily.minutes.length;
+    final day = s.dailyKey == yesterday ? s.dailyStreak % days + 1 : 1;
+    final amount = math.max(
+      b.daily.floorPerDay * day,
+      passive() * 60 * b.daily.minutes[day - 1],
+    );
+    return DailyBonus(key, day, amount);
+  }
+
+  void claimDaily(DailyBonus d) {
+    s.earn(d.amount);
+    s.dailyKey = d.key;
+    s.dailyStreak = d.day;
+  }
+
   void claimOffline(OfflineReport r, {double multiplier = 1}) =>
       s.earn(r.amount * multiplier);
+}
+
+/// yyyymmdd of a local date.
+int dateKey(DateTime d) => d.year * 10000 + d.month * 100 + d.day;
+
+/// The daily bonus on offer: streak [day] (1–7) pays [amount].
+class DailyBonus {
+  const DailyBonus(this.key, this.day, this.amount);
+  final int key;
+  final int day;
+  final double amount;
 }

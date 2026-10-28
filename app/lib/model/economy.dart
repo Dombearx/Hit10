@@ -29,8 +29,35 @@ class Economy {
     return c.baseCost * math.pow(c.costGrowth, l);
   }
 
+  /// How much beginner's luck is left: 1 for the first rounds of a
+  /// brand-new game (never prestiged), fading to 0 (playtest 08).
+  double get beginnerShare {
+    final n = b.beginner;
+    final r = s.stats.rounds;
+    if (s.chronons > 0 || r >= n.rounds + n.fadeRounds) return 0;
+    if (r < n.rounds) return 1;
+    return 1 - (r - n.rounds) / n.fadeRounds;
+  }
+
+  bool get beginner => beginnerShare > 0;
+
+  /// Windows from skills; generators always use these.
   Windows windows() =>
       windowsAt(magnet: level('magnet'), wideEye: level('wideEye'));
+
+  /// The windows for the player's own taps: [windows] plus BLISKO.
+  Windows playerWindows() {
+    final w = windows();
+    return Windows(
+      perfect: w.perfect,
+      great: w.great,
+      good: w.good,
+      close: math.max(b.close.window, w.good),
+    );
+  }
+
+  /// The payout factor from beginner's luck (×3 → ×1).
+  double beginnerPay() => 1 + (b.beginner.rewardMultiplier - 1) * beginnerShare;
 
   Windows windowsAt({int magnet = 0, int wideEye = 0}) {
     final we = 1 + _per('wideEye') * wideEye;

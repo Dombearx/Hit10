@@ -51,6 +51,7 @@ void main() {
   });
 
   test('hit payout (R-WYPLATA-1) with echo, combo and mode', () {
+    s.stats.rounds = 30; // past beginner's luck
     s.owned['grandma'] = 10; // P = 10/s
     s.skills.addAll({'power': 2, 'echo': 4}); // ×(1 + 1.5·2) = ×4, 2 s
     const perfect = Grade(Tier.perfect, 0);
@@ -65,6 +66,7 @@ void main() {
   });
 
   test('frenzy and turbo multiply everything', () {
+    s.stats.rounds = 30; // past beginner's luck
     s.owned['grandma'] = 1;
     g.frenzy = 7;
     g.turbo = 2;

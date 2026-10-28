@@ -14,6 +14,7 @@
   "tierGood": "GOOD",
   "missEarly": "TOO EARLY",
   "missLate": "TOO LATE",
+  "missClose": "CLOSE!",
   "tapToStart": "Tap to start",
   "decimalSeparator": ".",
   "@decimalSeparator": {
@@ -437,7 +438,7 @@
   "ach_hidden_impatient": "Impatient",
   "ach_hidden_impatient_desc": "TOO EARLY 100 times",
   "ach_hidden_nap": "Nap time",
-  "ach_hidden_nap_desc": "10 rounds in a row without a tap",
+  "ach_hidden_nap_desc": "Put the phone down until the stopwatch stops by itself",
   "ach_hidden_almost": "So close",
   "ach_hidden_almost_desc": "9.99, then 10.01",
   "ach_hidden_punctual": "Punctual",
@@ -899,5 +900,25 @@
   "upg_chronos_8": "The Absolute Second",
   "upg_chronos_8_desc": "10.00. Always was, always will be.",
   "settingsPrivacyPolicy": "Privacy policy",
-  "settingsAdPrivacy": "Ad privacy choices"
+  "settingsAdPrivacy": "Ad privacy choices",
+  "dailyTitle": "Daily bonus",
+  "dailyDay": "Day {day} of {total}",
+  "dailyHint": "Come back every day — the bonus grows for {total} days. Missing one starts over.",
+  "@dailyDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@dailyHint": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

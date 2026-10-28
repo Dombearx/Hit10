@@ -8,7 +8,8 @@
     "resultPause": 0.7,
     "fastForwardEnd": 9.0,
     "bulletZone": 0.2,
-    "secondClockOffset": 5.0
+    "secondClockOffset": 5.0,
+    "idleStopAfter": 2
   },
   "tiers": [
     {
@@ -376,7 +377,7 @@
       25
     ],
     "impatientEarlyTaps": 100,
-    "napMissedRounds": 10,
+    "napMissedRounds": 2,
     "boiledEggGrandmas": 100,
     "tenthDayPerfects": 10
   },
@@ -493,7 +494,8 @@
     "turbo": {
       "multiplier": 2,
       "duration": 1800,
-      "maxStock": 14400
+      "maxStock": 14400,
+      "cooldown": 300
     },
     "bag": {
       "productionSeconds": 300,
@@ -511,5 +513,26 @@
   "ui": {
     "skillRevealFraction": 0.5,
     "generatorPopupsPerSecond": 3
+  },
+  "beginner": {
+    "rounds": 10,
+    "rewardMultiplier": 3,
+    "fadeRounds": 20
+  },
+  "close": {
+    "window": 0.15,
+    "reward": 0.3
+  },
+  "daily": {
+    "minutes": [
+      5,
+      10,
+      15,
+      20,
+      30,
+      45,
+      60
+    ],
+    "floorPerDay": 25
   }
 }

@@ -30,6 +30,7 @@ class ArenaLabels {
     required this.good,
     required this.early,
     required this.late,
+    required this.close,
     required this.tapToStart,
     required this.decimalSeparator,
     required this.goldenRound,
@@ -45,6 +46,7 @@ class ArenaLabels {
   final String good;
   final String early;
   final String late;
+  final String close;
   final String tapToStart;
   final String decimalSeparator;
   final String goldenRound;
@@ -101,6 +103,7 @@ class ArenaGame extends FlameGame {
       (labels.good, r * 0.2),
       (labels.early, r * 0.17),
       (labels.late, r * 0.17),
+      (labels.close, r * 0.18),
       (labels.goldenRound, r * 0.2),
       ('+0123456789KMBT', r * 0.2),
     ]) {
@@ -402,11 +405,19 @@ class Stage extends Component {
         );
       case Tier.miss:
         _wobble = 0.35;
-        final text = g.missKind == MissKind.early ? l.early : l.late;
+        // BLISKO pays a little: say so in a friendlier colour.
+        final text = g.close
+            ? l.close
+            : g.missKind == MissKind.early
+            ? l.early
+            : l.late;
         add(
           PopText(
             text: text,
-            style: label(Palette.missText, r * 0.17),
+            style: label(
+              g.close ? Palette.good : Palette.missText,
+              r * (g.close ? 0.18 : 0.17),
+            ),
             at: labelAt,
             dropIn: true,
             life: 0.85,
