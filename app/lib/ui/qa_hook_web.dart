@@ -50,6 +50,8 @@ void registerQaHook(GameController c) {
       return jsonEncode({
         'tiki': s.tiki,
         'phase': c.round.phase.name,
+        // Identifies a round, skipped ones included (playtest bots).
+        'roundStart': c.round.startedAt,
         'gameTime': c.round.gameTime(c.now()),
         'rounds': s.stats.rounds,
         'byTier': s.stats.byTier.map((k, v) => MapEntry(k.name, v)),

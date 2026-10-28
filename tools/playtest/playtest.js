@@ -126,8 +126,10 @@ async function play(browser, key) {
       if (s.goldenVisible <= 0) log._goldenSeen = false;
       // The stopwatch: start a round if waiting; tap once per running round.
       if (s.phase === 'waiting') await q(() => window.hit10Qa.tapNow());
-      if (s.phase === 'running' && tappedRound !== s.rounds) {
-        tappedRound = s.rounds;
+      // Rounds are told apart by their start time: a skipped round (no
+      // touch) doesn't count in s.rounds.
+      if (s.phase === 'running' && tappedRound !== s.roundStart) {
+        tappedRound = s.roundStart;
         let skip = rnd() < P.distract;
         // Shopping now pulls the eyes off the dial.
         if (now() - lastShop >= P.shopEvery) {
@@ -151,6 +153,7 @@ async function play(browser, key) {
             if (rnd() < P.ads * 0.5) { await q((o) => window.hit10Qa.watchAd(o), a); ev('watched ad: ' + a); }
           }
         }
+        if (skip) log.skipped = (log.skipped || 0) + 1;
         if (!skip) {
           const sigma = P.s1 + (P.s0 - P.s1) * Math.exp(-rounds / P.learn);
           const off = P.bias + sigma * gauss();
@@ -178,7 +181,7 @@ async function play(browser, key) {
     playedMin: +(now() / 60).toFixed(1), rounds: s.rounds, byTier: s.byTier, tiki: s.tiki, passive: s.passive,
     owned: s.owned, skills: s.skills, upgrades: s.upgrades, achievements: s.achievements,
     goldenCaught: s.goldenCaught, bestCombo, comboBreaks, longestNothingToBuySec: Math.round(longestWait),
-    purchases: log.purchases.length,
+    purchases: log.purchases.length, skipped: log.skipped || 0,
   };
   await page.screenshot({ path: path.join(OUT, `${key}-end.png`) });
   fs.writeFileSync(path.join(OUT, `${key}.json`), JSON.stringify(log, null, 1));
