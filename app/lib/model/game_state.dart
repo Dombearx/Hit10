@@ -43,6 +43,17 @@ class GameState {
 
   bool tutorialDone = false;
 
+  // ---------------------------------------------------------- the combo --
+  /// Combo streak (docs/02 §3); survives pauses (R-RUNDA-8), reset by misses.
+  int comboStreak = 0;
+  int shieldCharges = 0;
+
+  /// Combo steps gained towards the next shield charge.
+  int shieldProgress = 0;
+
+  /// Play time (s) at which the next golden second appears (R-ZLOTA-1).
+  double goldenNextAt = 0;
+
   void earn(double amount) {
     if (amount <= 0 || amount.isNaN) return;
     tiki += amount;

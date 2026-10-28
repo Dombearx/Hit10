@@ -1,0 +1,219 @@
+import 'package:flutter/material.dart';
+
+import '../../l10n/gen/app_localizations.dart';
+import '../../model/economy.dart';
+import '../catalog.dart';
+import '../format.dart';
+import '../game_controller.dart';
+import '../theme.dart';
+import '../widgets/buy_button.dart';
+import '../widgets/emoji_card.dart';
+
+/// The "Skills" tab (docs/02 §4): level, effect now → next, price.
+class SkillList extends StatelessWidget {
+  const SkillList({super.key, required this.controller});
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final skills = [...c.balance.skills]
+      ..sort((a, b) => a.baseCost.compareTo(b.baseCost));
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
+      children: [
+        for (final sk in skills)
+          _revealed(c, sk.id)
+              ? _SkillTile(key: ValueKey(sk.id), controller: c, id: sk.id)
+              : _LockedSkill(controller: c, id: sk.id),
+      ],
+    );
+  }
+
+  /// R-UMIEJ-3: shown once the player has held half its first price.
+  static bool _revealed(GameController c, String id) =>
+      c.econ.level(id) > 0 ||
+      c.state.peakTiki >=
+          c.balance.skill(id).baseCost * c.balance.ui.skillRevealFraction;
+}
+
+/// "now → next" texts for each skill's effect.
+(String, String) skillEffectValues(
+  AppLocalizations l,
+  Economy e,
+  String id,
+  int level,
+) {
+  String n(double v, int digits) =>
+      v.toStringAsFixed(digits).replaceAll('.', l.decimalSeparator);
+  String at(int lv) {
+    switch (id) {
+      case 'power':
+        return '×${n(1 + e.b.skill('power').perLevel * lv, 1)}';
+      case 'fastForward':
+        return '×${n(e.fastForwardSpeed(lv), 1)}';
+      case 'ticking':
+        return lv > 0 ? l.on : l.off;
+      case 'wideEye':
+        return '±${n(e.windowsAt(wideEye: lv).great, 3)} s';
+      case 'combo':
+        return '${e.comboCap(lv)}';
+      case 'magnet':
+        return '±${n(e.windowsAt(magnet: lv).perfect, 3)} s';
+      case 'echo':
+        return '${n(e.b.skill('echo').perLevel * lv, 1)} s';
+      case 'bulletTime':
+        return '×${n(e.bulletTimeSpeed(lv), 2)}';
+      case 'luck':
+        return '${(e.luckChance(lv) * 100).round()}%';
+      case 'shield':
+        return '$lv';
+      case 'goldenTouch':
+        return '×${n(1 - e.b.skill('goldenTouch').perLevel * lv, 2)}';
+    }
+    return '$lv';
+  }
+
+  return (at(level), at(level + 1));
+}
+
+class _SkillTile extends StatelessWidget {
+  const _SkillTile({super.key, required this.controller, required this.id});
+  final GameController controller;
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final f = Fmt.of(context, c);
+    final cfg = c.balance.skill(id);
+    final level = c.econ.level(id);
+    final maxed = level >= cfg.maxLevel;
+    final cost = c.econ.skillCost(id);
+    final affordable = cost != null && cost <= c.state.tiki;
+    final (now, next) = skillEffectValues(l, c.econ, id, level);
+    final label = skillLabel(l, id);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.88),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: affordable ? Palette.accent : Palette.outline,
+          width: affordable ? 3 : 2.5,
+        ),
+        boxShadow: const [
+          BoxShadow(color: Color(0x22000000), offset: Offset(0, 3)),
+        ],
+      ),
+      child: Row(
+        children: [
+          EmojiCard(
+            art: skillArt[id]!,
+            size: 54,
+            badge: level > 0 ? '$level' : null,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  skillName(l, id),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  maxed
+                      ? l.skillEffectMax(label, now)
+                      : l.skillEffect(label, now, next),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Palette.perfectDeep,
+                  ),
+                ),
+                Text(
+                  skillDescription(l, id),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    height: 1.2,
+                    color: Palette.outline.withValues(alpha: 0.7),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          BuyButton(
+            key: Key('skill-$id'),
+            label: maxed ? null : l.skillLevel(level, cfg.maxLevel),
+            price: maxed ? l.skillMaxed : f.price(cost!),
+            enabled: affordable,
+            onPressed: () => c.buySkill(id),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LockedSkill extends StatelessWidget {
+  const _LockedSkill({required this.controller, required this.id});
+  final GameController controller;
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final f = Fmt.of(context, c);
+    final reveal =
+        c.balance.skill(id).baseCost * c.balance.ui.skillRevealFraction;
+    return Opacity(
+      opacity: 0.75,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: Palette.outline, width: 2.5),
+        ),
+        child: Row(
+          children: [
+            EmojiCard(art: skillArt[id]!, size: 54, locked: true),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l.lockedName,
+                    style: const TextStyle(
+                      fontFamily: Fonts.display,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    l.skillLockedHint(f.price(reveal)),
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: Palette.outline.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

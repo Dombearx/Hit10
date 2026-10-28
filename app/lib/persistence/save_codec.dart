@@ -54,6 +54,10 @@ Map<String, Object?> encodeSave(SaveData d) {
     'lastSeenMs': s.lastSeenMs,
     'playSeconds': s.playSeconds,
     'tutorialDone': s.tutorialDone,
+    'comboStreak': s.comboStreak,
+    'shieldCharges': s.shieldCharges,
+    'shieldProgress': s.shieldProgress,
+    'goldenNextAt': s.goldenNextAt,
     'stats': {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
@@ -124,7 +128,11 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..prestiges = _i(j['prestiges'])
     ..lastSeenMs = _i(j['lastSeenMs'])
     ..playSeconds = _d(j['playSeconds'])
-    ..tutorialDone = j['tutorialDone'] == true;
+    ..tutorialDone = j['tutorialDone'] == true
+    ..comboStreak = _i(j['comboStreak'])
+    ..shieldCharges = _i(j['shieldCharges'])
+    ..shieldProgress = _i(j['shieldProgress'])
+    ..goldenNextAt = _d(j['goldenNextAt']);
   _m(j['owned']).forEach((k, v) => s.owned[k] = _i(v));
   _m(j['upgrades']).forEach((k, v) => s.upgrades[k] = _i(v));
   _m(j['skills']).forEach((k, v) => s.skills[k] = _i(v));

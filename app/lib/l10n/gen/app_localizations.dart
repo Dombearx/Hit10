@@ -511,6 +511,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Coming soon'**
   String get comingSoon;
+
+  /// No description provided for @skill_power.
+  ///
+  /// In en, this message translates to:
+  /// **'Strike Power'**
+  String get skill_power;
+
+  /// No description provided for @skill_power_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Every hit pays more.'**
+  String get skill_power_desc;
+
+  /// No description provided for @skill_power_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit reward'**
+  String get skill_power_label;
+
+  /// No description provided for @skill_fastForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Forward'**
+  String get skill_fastForward;
+
+  /// No description provided for @skill_fastForward_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The start of a round flies by. More rounds per minute.'**
+  String get skill_fastForward_desc;
+
+  /// No description provided for @skill_fastForward_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up to 9.00'**
+  String get skill_fastForward_label;
+
+  /// No description provided for @skill_ticking.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticking'**
+  String get skill_ticking;
+
+  /// No description provided for @skill_ticking_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A tick in the last second helps you find the beat.'**
+  String get skill_ticking_desc;
+
+  /// No description provided for @skill_ticking_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticking'**
+  String get skill_ticking_label;
+
+  /// No description provided for @skill_wideEye.
+  ///
+  /// In en, this message translates to:
+  /// **'Hawk Eye'**
+  String get skill_wideEye;
+
+  /// No description provided for @skill_wideEye_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Wider GREAT and GOOD windows. For you and your clocks.'**
+  String get skill_wideEye_desc;
+
+  /// No description provided for @skill_wideEye_label.
+  ///
+  /// In en, this message translates to:
+  /// **'GREAT window'**
+  String get skill_wideEye_label;
+
+  /// No description provided for @skill_combo.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo'**
+  String get skill_combo;
+
+  /// No description provided for @skill_combo_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A higher streak cap; the streak multiplies the whole payout.'**
+  String get skill_combo_desc;
+
+  /// No description provided for @skill_combo_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak cap'**
+  String get skill_combo_label;
+
+  /// No description provided for @skill_magnet.
+  ///
+  /// In en, this message translates to:
+  /// **'Magnet'**
+  String get skill_magnet;
+
+  /// No description provided for @skill_magnet_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A wider PERFECT window. The digits stick to 10.00.'**
+  String get skill_magnet_desc;
+
+  /// No description provided for @skill_magnet_label.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT window'**
+  String get skill_magnet_label;
+
+  /// No description provided for @skill_echo.
+  ///
+  /// In en, this message translates to:
+  /// **'Echo'**
+  String get skill_echo;
+
+  /// No description provided for @skill_echo_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hits also pay seconds of your clocks\' income.'**
+  String get skill_echo_desc;
+
+  /// No description provided for @skill_echo_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Echo'**
+  String get skill_echo_label;
+
+  /// No description provided for @skill_bulletTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Bullet Time'**
+  String get skill_bulletTime;
+
+  /// No description provided for @skill_bulletTime_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Time slows down around 10.00. Easier to hit.'**
+  String get skill_bulletTime_desc;
+
+  /// No description provided for @skill_bulletTime_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed near 10.00'**
+  String get skill_bulletTime_label;
+
+  /// No description provided for @skill_luck.
+  ///
+  /// In en, this message translates to:
+  /// **'Luck'**
+  String get skill_luck;
+
+  /// No description provided for @skill_luck_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A chance that a hit jumps one tier up.'**
+  String get skill_luck_desc;
+
+  /// No description provided for @skill_luck_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Chance'**
+  String get skill_luck_label;
+
+  /// No description provided for @skill_shield.
+  ///
+  /// In en, this message translates to:
+  /// **'Shield'**
+  String get skill_shield;
+
+  /// No description provided for @skill_shield_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A miss uses a charge instead of breaking the streak.'**
+  String get skill_shield_desc;
+
+  /// No description provided for @skill_shield_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Charges'**
+  String get skill_shield_label;
+
+  /// No description provided for @skill_goldenTouch.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Touch'**
+  String get skill_goldenTouch;
+
+  /// No description provided for @skill_goldenTouch_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden seconds come more often and hit harder.'**
+  String get skill_goldenTouch_desc;
+
+  /// No description provided for @skill_goldenTouch_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval'**
+  String get skill_goldenTouch_label;
+
+  /// No description provided for @skillLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}/{max}'**
+  String skillLevel(int level, int max);
+
+  /// No description provided for @skillEffect.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {now} → {next}'**
+  String skillEffect(String label, String now, String next);
+
+  /// No description provided for @skillEffectMax.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {now}'**
+  String skillEffectMax(String label, String now);
+
+  /// No description provided for @skillMaxed.
+  ///
+  /// In en, this message translates to:
+  /// **'MAX'**
+  String get skillMaxed;
+
+  /// No description provided for @skillLockedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Revealed at {price} Ticks'**
+  String skillLockedHint(String price);
+
+  /// No description provided for @on.
+  ///
+  /// In en, this message translates to:
+  /// **'on'**
+  String get on;
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'off'**
+  String get off;
+
+  /// No description provided for @goldenRound.
+  ///
+  /// In en, this message translates to:
+  /// **'GOLDEN ROUND!'**
+  String get goldenRound;
+
+  /// No description provided for @goldenEscaped.
+  ///
+  /// In en, this message translates to:
+  /// **'It escaped!'**
+  String get goldenEscaped;
+
+  /// No description provided for @goldenFrenzy.
+  ///
+  /// In en, this message translates to:
+  /// **'FRENZY ×{mult}!'**
+  String goldenFrenzy(String mult);
+
+  /// No description provided for @goldenLucky.
+  ///
+  /// In en, this message translates to:
+  /// **'LUCKY! +{amount}'**
+  String goldenLucky(String amount);
+
+  /// No description provided for @goldenHotHand.
+  ///
+  /// In en, this message translates to:
+  /// **'HOT HAND!'**
+  String get goldenHotHand;
+
+  /// No description provided for @chipFrenzy.
+  ///
+  /// In en, this message translates to:
+  /// **'Frenzy ×{mult}'**
+  String chipFrenzy(String mult);
+
+  /// No description provided for @chipHotHand.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot hand'**
+  String get chipHotHand;
+
+  /// No description provided for @comboLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'COMBO'**
+  String get comboLabel;
+
+  /// No description provided for @streakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'streak {count}'**
+  String streakLabel(int count);
+
+  /// No description provided for @luckyBump.
+  ///
+  /// In en, this message translates to:
+  /// **'LUCKY!'**
+  String get luckyBump;
+
+  /// No description provided for @shieldSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'SHIELD!'**
+  String get shieldSaved;
 }
 
 class _AppLocalizationsDelegate

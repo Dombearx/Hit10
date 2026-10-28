@@ -11,9 +11,14 @@ import 'offline_dialog.dart';
 import 'providers.dart';
 import 'qa_hook.dart';
 import 'shop/generator_list.dart';
+import 'shop/skill_list.dart';
 import 'shop/upgrade_strip.dart';
 import 'theme.dart';
+import 'throttled.dart';
 import 'widgets/animated_counter.dart';
+import 'widgets/combo_meter.dart';
+import 'widgets/effect_chips.dart';
+import 'widgets/frenzy_background.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({super.key});
@@ -29,6 +34,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     onHide: controller.pause,
     onPause: controller.pause,
     onShow: _onShow,
+  );
+
+  /// The shop and the upgrade strip repaint at 4 Hz, not at every tick.
+  late final ThrottledListenable _slow = ThrottledListenable(
+    controller,
+    const Duration(milliseconds: 250),
   );
 
   bool _diagnostics = false;
@@ -49,6 +60,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       late: l.missLate,
       tapToStart: l.tapToStart,
       decimalSeparator: l.decimalSeparator,
+      goldenRound: l.goldenRound,
+      goldenEscaped: l.goldenEscaped,
+      frenzy: l.goldenFrenzy,
+      lucky: l.goldenLucky,
+      hotHand: l.goldenHotHand,
+      luckyBump: l.luckyBump,
+      shieldSaved: l.shieldSaved,
     );
   }
 
@@ -92,6 +110,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   void dispose() {
     controller.removeListener(_maybeShowOffline);
+    _slow.dispose();
     _lifecycle.dispose();
     super.dispose();
   }
@@ -111,10 +130,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
     return Scaffold(
-      body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: backgroundGradient),
+      body: FrenzyBackground(
+        controller: controller,
         child: SafeArea(
           child: Stack(
             children: [
@@ -127,15 +145,29 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     child: Listener(
                       key: const Key('arena'),
                       behavior: HitTestBehavior.opaque,
-                      onPointerDown: (e) =>
-                          controller.onPointerDown(e.timeStamp),
-                      child: GameWidget(game: arena),
+                      onPointerDown: (e) {
+                        final p = e.localPosition;
+                        // A tap on the flying golden clock is not a round
+                        // tap (R-ZLOTA-1).
+                        if (arena.isLoaded &&
+                            arena.tapGolden(Vector2(p.dx, p.dy))) {
+                          return;
+                        }
+                        controller.onPointerDown(e.timeStamp);
+                      },
+                      child: RepaintBoundary(child: GameWidget(game: arena)),
                     ),
                   ),
                   ListenableBuilder(
                     listenable: controller,
-                    builder: (context, _) =>
-                        UpgradeStrip(controller: controller),
+                    builder: (context, _) => ComboMeter(controller: controller),
+                  ),
+                  RepaintBoundary(
+                    child: ListenableBuilder(
+                      listenable: _slow,
+                      builder: (context, _) =>
+                          UpgradeStrip(controller: controller),
+                    ),
                   ),
                   _ShopHeader(
                     tab: _tab,
@@ -152,14 +184,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   if (!_shopCollapsed)
                     Expanded(
                       flex: 5,
-                      child: ListenableBuilder(
-                        listenable: controller,
-                        builder: (context, _) => _tab == 0
-                            ? GeneratorList(
-                                controller: controller,
-                                amount: _amount,
-                              )
-                            : Center(child: Text(l.comingSoon)),
+                      child: RepaintBoundary(
+                        child: ListenableBuilder(
+                          listenable: _slow,
+                          builder: (context, _) => _tab == 0
+                              ? GeneratorList(
+                                  controller: controller,
+                                  amount: _amount,
+                                )
+                              : SkillList(controller: controller),
+                        ),
                       ),
                     ),
                 ],
@@ -219,6 +253,7 @@ class _Header extends StatelessWidget {
                   ),
                 ],
               ),
+              EffectChips(controller: controller),
               AnimatedOpacity(
                 opacity: ps > 0 ? 1 : 0,
                 duration: const Duration(milliseconds: 300),

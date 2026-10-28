@@ -6,7 +6,9 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart' show WidgetsBinding;
 
+import '../engine/game_engine.dart';
 import '../engine/round_engine.dart';
 import '../model/grading.dart';
 import '../model/number_format.dart';
@@ -14,7 +16,9 @@ import '../model/showcase.dart';
 import '../ui/game_controller.dart';
 import '../ui/theme.dart';
 import '../ui/catalog.dart';
+import 'baked.dart';
 import 'generator_popup.dart';
+import 'golden_clock.dart';
 import 'particles.dart';
 import 'pop_text.dart';
 
@@ -28,6 +32,13 @@ class ArenaLabels {
     required this.late,
     required this.tapToStart,
     required this.decimalSeparator,
+    required this.goldenRound,
+    required this.goldenEscaped,
+    required this.frenzy,
+    required this.lucky,
+    required this.hotHand,
+    required this.luckyBump,
+    required this.shieldSaved,
   });
   final String perfect;
   final String great;
@@ -36,6 +47,13 @@ class ArenaLabels {
   final String late;
   final String tapToStart;
   final String decimalSeparator;
+  final String goldenRound;
+  final String goldenEscaped;
+  final String Function(String mult) frenzy;
+  final String Function(String amount) lucky;
+  final String hotHand;
+  final String luckyBump;
+  final String shieldSaved;
 }
 
 /// The stopwatch arena (docs/04 §1, §3). Pure drawing: all game decisions
@@ -54,6 +72,8 @@ class ArenaGame extends FlameGame {
 
   @override
   Future<void> onLoad() async {
+    Baked.devicePixelRatio =
+        WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
     images.prefix = 'assets/';
     for (final art in generatorArt.values) {
       try {
@@ -62,9 +82,93 @@ class ArenaGame extends FlameGame {
         // A missing emoji just leaves the bubble without an icon.
       }
     }
+    try {
+      _goldenImage = await images.load('emoji/alarm_clock.png');
+    } on Object {
+      _goldenImage = null;
+    }
     stage = Stage(this);
     await add(stage);
+    _warmUp();
     _sub = controller.feedback.listen(stage.onFeedback);
+    _starts = controller.roundStarts.listen(stage.onRoundStart);
+  }
+
+  /// Renders every effect label once, off screen, so the first PERFECT does
+  /// not stall on font rasterisation and shader setup.
+  void _warmUp() {
+    final r = stage.radius;
+    for (final (text, size) in [
+      (labels.perfect, r * 0.24),
+      (labels.great, r * 0.22),
+      (labels.good, r * 0.2),
+      (labels.early, r * 0.17),
+      (labels.late, r * 0.17),
+      (labels.goldenRound, r * 0.2),
+      ('+0123456789KMBT', r * 0.2),
+    ]) {
+      final p = TextPainter(
+        text: TextSpan(
+          text: text,
+          style: TextStyle(
+            fontFamily: Fonts.display,
+            fontSize: size,
+            color: Palette.perfect,
+            shadows: const [
+              Shadow(color: Palette.outline, offset: Offset(0, 3)),
+            ],
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      Baked(
+        p.width + 8,
+        p.height + 8,
+        (c) => p.paint(c, Offset.zero),
+      ).dispose();
+    }
+  }
+
+  StreamSubscription<bool>? _starts;
+  ui.Image? _goldenImage;
+  GoldenClock? _golden;
+  bool _goldenFromLeft = true;
+
+  /// The screen asks before treating a tap as a round tap (R-ZLOTA-1).
+  bool tapGolden(Vector2 p) {
+    final g = _golden;
+    if (g == null || !g.hits(p)) return false;
+    g.leave(caught: true);
+    stage.particles.burst(
+      origin: g.position,
+      count: 40,
+      colors: const [Palette.perfect, Color(0xFFFFF3B0), Palette.perfectDeep],
+      speedMin: 200,
+      speedMax: 700,
+    );
+    _golden = null;
+    controller.claimGolden();
+    return true;
+  }
+
+  void _updateGolden() {
+    final visible = controller.engine.goldenVisibleLeft > 0;
+    if (visible && _golden == null) {
+      _goldenFromLeft = !_goldenFromLeft;
+      final g = GoldenClock(
+        arenaSize: size,
+        dialTop: stage.center.y - stage.radius,
+        radius: stage.radius * 0.2,
+        life: controller.engine.goldenVisibleLeft,
+        image: _goldenImage,
+        fromLeft: _goldenFromLeft,
+      );
+      _golden = g;
+      stage.add(g);
+    } else if (!visible && _golden != null) {
+      _golden!.leave(caught: false);
+      _golden = null;
+    }
   }
 
   final Map<String, ui.Image> _emoji = {};
@@ -74,6 +178,7 @@ class ArenaGame extends FlameGame {
   @override
   void update(double dt) {
     controller.tick();
+    _updateGolden();
     controller.showcase.maxPerSecond =
         controller.balance.ui.generatorPopupsPerSecond;
     for (final hit in controller.showcase.update(dt, controller.econ)) {
@@ -113,6 +218,7 @@ class ArenaGame extends FlameGame {
   @override
   void onRemove() {
     _sub?.cancel();
+    _starts?.cancel();
     super.onRemove();
   }
 }
@@ -274,19 +380,107 @@ class Stage extends Component {
           ),
         );
     }
+    final o = f.outcome;
+    final small = label(Palette.dial, r * 0.13);
+    if (o.bumpedByLuck) {
+      add(
+        PopText(
+          text: l.luckyBump,
+          style: small,
+          at: Vector2(c.x, c.y + r * 0.42),
+          life: 0.8,
+        ),
+      );
+    }
+    if (o.shieldUsed) {
+      add(
+        PopText(
+          text: l.shieldSaved,
+          style: label(Palette.good, r * 0.15),
+          at: Vector2(c.x, c.y + r * 0.42),
+          life: 0.9,
+        ),
+      );
+    }
+    final golden = o.golden;
+    if (golden != null) {
+      final gs = label(Palette.perfect, r * 0.2);
+      final text = switch (golden.effect) {
+        null => l.goldenEscaped,
+        GoldenEffect.frenzy => l.frenzy(
+          formatNumber(
+            game.controller.balance.golden.effect('frenzy').multiplier,
+          ),
+        ),
+        GoldenEffect.lucky => l.lucky(
+          formatNumber(golden.amount, decimalSeparator: l.decimalSeparator),
+        ),
+        GoldenEffect.hotHand => l.hotHand,
+      };
+      add(
+        PopText(
+          text: text,
+          style: gs,
+          // Over the lower dial: clear of the digits and the balance.
+          at: Vector2(c.x, c.y + r * 0.62),
+          life: 1.8,
+          rise: r * 0.15,
+        ),
+      );
+      if (golden.effect != null) {
+        particles.burst(
+          origin: c,
+          count: 80,
+          colors: const [
+            Palette.perfect,
+            Color(0xFFFFF3B0),
+            Palette.neonMagenta,
+          ],
+          speedMin: 400,
+          speedMax: 1300,
+          sizeMin: 6,
+          sizeMax: 16,
+          life: 1.3,
+        );
+        shake(10, 0.35);
+      }
+    }
     if (f.reward > 0) {
       add(
         PopText(
           text:
               '+${formatNumber(f.reward, decimalSeparator: l.decimalSeparator)}',
           style: label(Palette.dial, r * 0.2),
-          // Flies up towards the balance counter (docs/04 §3).
-          at: Vector2(c.x, c.y - r * 1.15),
-          rise: r * 0.9,
+          // Flies up towards the balance counter (docs/04 §3) and fades
+          // before reaching it.
+          at: Vector2(c.x, c.y - r * 1.12),
+          rise: r * 0.45,
           life: 0.8,
         ),
       );
     }
+  }
+}
+
+/// Effects that start with a round: the golden-round banner.
+extension on Stage {
+  void onRoundStart(bool golden) {
+    if (!golden) return;
+    final c = center;
+    final r = radius;
+    add(
+      PopText(
+        text: game.labels.goldenRound,
+        style: TextStyle(
+          fontFamily: Fonts.display,
+          fontSize: r * 0.2,
+          color: Palette.perfect,
+          shadows: const [Shadow(color: Palette.outline, offset: Offset(0, 3))],
+        ),
+        at: Vector2(c.x, c.y - r * 0.55),
+        life: 1.4,
+      ),
+    );
   }
 }
 
@@ -298,6 +492,7 @@ class Dial extends Component {
   double _flash = 0;
   Color _flashColor = Palette.perfect;
   double _time = 0; // for idle pulsing
+  double _zone = 0; // bullet-time overlay strength 0..1
 
   final _fill = Paint()..color = Palette.dial;
   final _outline = Paint()
@@ -331,13 +526,10 @@ class Dial extends Component {
     ).toColor();
   }
 
-  final Map<String, TextPainter> _glyphs = {};
   TextPainter? _sub;
   String? _subText;
   double _subSize = 0;
   double _subAlpha = -1;
-  double _glyphSize = 0;
-  Color _glyphColor = Palette.outline;
 
   void flash(Tier tier) {
     _flash = tier == Tier.miss ? 0 : 0.35;
@@ -354,47 +546,59 @@ class Dial extends Component {
     if (_flash > 0) _flash = math.max(0, _flash - dt);
   }
 
-  TextPainter _glyph(String ch) => _glyphs.putIfAbsent(ch, () {
-    return TextPainter(
-      text: TextSpan(
-        text: ch,
-        style: TextStyle(
-          fontFamily: Fonts.display,
-          fontSize: _glyphSize,
-          color: _glyphColor,
-          height: 1,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-  });
+  /// Glyph painters per (size, colour); a handful of combinations exist
+  /// (digit colours per tier, the fast-forward ghost), so layout happens
+  /// once per combination, not per frame.
+  final Map<(double, int), Map<String, TextPainter>> _glyphCache = {};
 
-  /// Digits drawn one per fixed-width cell so they never jump (U-9).
+  TextPainter _glyph(String ch, double size, Color color) {
+    final key = (size.roundToDouble(), color.toARGB32());
+    if (_glyphCache.length > 24) _glyphCache.clear();
+    final set = _glyphCache.putIfAbsent(key, () => {});
+    return set.putIfAbsent(
+      ch,
+      () => TextPainter(
+        text: TextSpan(
+          text: ch,
+          style: TextStyle(
+            fontFamily: Fonts.display,
+            fontSize: key.$1,
+            color: color,
+            height: 1,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout(),
+    );
+  }
+
+  /// Digits drawn one per fixed-width cell so they never jump (U-9);
+  /// [scale] throbs them without re-laying out text.
   void _drawDigits(
     Canvas canvas,
     String text,
     Offset center,
     double size,
-    Color color,
-  ) {
-    if (size != _glyphSize || color != _glyphColor) {
-      _glyphs.clear();
-      _glyphSize = size;
-      _glyphColor = color;
-    }
-    final cell = _glyph('0').width * 1.04;
+    Color color, {
+    double scale = 1,
+  }) {
+    final cell = _glyph('0', size, color).width * 1.04;
     final dotCell = cell * 0.45;
     var width = 0.0;
     for (final ch in text.split('')) {
       width += ch == '.' ? dotCell : cell;
     }
-    var x = center.dx - width / 2;
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    if (scale != 1) canvas.scale(scale);
+    var x = -width / 2;
     for (final ch in text.split('')) {
       final w = ch == '.' ? dotCell : cell;
-      final p = _glyph(ch);
-      p.paint(canvas, Offset(x + (w - p.width) / 2, center.dy - p.height / 2));
+      final p = _glyph(ch, size, color);
+      p.paint(canvas, Offset(x + (w - p.width) / 2, -p.height / 2));
       x += w;
     }
+    canvas.restore();
   }
 
   @override
@@ -408,7 +612,54 @@ class Dial extends Component {
     final c = stage.center.toOffset().translate(stage.wobbleOffset, 0);
     final ring = r * 0.085;
 
+    final engine = ctrl.engine;
+    final running = round.phase == RoundPhase.running;
+    final map = round.phase == RoundPhase.waiting ? null : round.timeMap;
+    final inZone =
+        running && map != null && map.zoneSpeed < 1 && map.inBulletZone(t);
+    final golden = engine.goldenRound;
+
+    // Bullet time: the whole arena cools and darkens at the edges (docs/04 §3).
+    _zone = inZone ? math.min(1, _zone + 0.12) : math.max(0, _zone - 0.08);
+    if (_zone > 0) {
+      // A dark aura around the dial that fades out before the arena edges.
+      final aura = r * 1.9;
+      canvas.drawCircle(
+        c,
+        aura,
+        Paint()
+          ..shader = RadialGradient(
+            colors: [
+              Color.fromRGBO(30, 40, 90, 0.5 * _zone),
+              Color.fromRGBO(30, 40, 90, 0.28 * _zone),
+              const Color(0x001E285A),
+            ],
+            stops: const [0.5, 0.72, 1],
+          ).createShader(Rect.fromCircle(center: c, radius: aura)),
+      );
+    }
+
+    // Frenzy: neon halo pulsing behind the dial.
+    if (engine.frenzy > 1) {
+      // Gradient halo: a blur filter would be redrawn every frame.
+      final p = 0.5 + 0.5 * math.sin(_time * 7);
+      final halo = r * (1.22 + 0.06 * p);
+      final col = Color.lerp(Palette.neonCyan, Palette.neonMagenta, p)!;
+      canvas.drawCircle(
+        c,
+        halo,
+        Paint()
+          ..shader = RadialGradient(
+            colors: [col.withValues(alpha: 0.75), col.withValues(alpha: 0)],
+            stops: const [0.78, 1],
+          ).createShader(Rect.fromCircle(center: c, radius: halo)),
+      );
+    }
+
     canvas.drawCircle(c.translate(0, r * 0.07), r, _shadow);
+    _fill.color = golden
+        ? const Color(0xFFFFF4C2)
+        : Color.lerp(Palette.dial, const Color(0xFFDDE6FF), _zone)!;
     canvas.drawCircle(c, r, _fill);
 
     // Progress arc: blue, turning gold in the last second.
@@ -442,7 +693,9 @@ class Dial extends Component {
       );
     }
 
-    _outline.strokeWidth = r * 0.045;
+    _outline
+      ..strokeWidth = r * 0.045
+      ..color = golden ? Palette.perfectDeep : Palette.outline;
     canvas.drawCircle(c, r, _outline);
 
     if (_flash > 0) {
@@ -466,7 +719,34 @@ class Dial extends Component {
             Tier.good => Palette.good,
             Tier.miss => Palette.miss,
           };
-    _drawDigits(canvas, formatStopwatch(shown), c, r * 0.44, digitColor);
+    // Fast forward smears the digits; bullet time makes them throb.
+    final speed = running && map != null ? map.speedAt(t) : 1.0;
+    final digitSize = r * 0.44;
+    final throb = _zone > 0 ? 1 + 0.05 * _zone * math.sin(_time * 14) : 1.0;
+    if (speed > 1.6) {
+      final ghost = Color.lerp(digitColor, Palette.dial, 0.85)!;
+      _drawDigits(
+        canvas,
+        formatStopwatch(shown),
+        c.translate(0, -r * 0.03),
+        digitSize,
+        ghost,
+      );
+    }
+    _drawDigits(
+      canvas,
+      formatStopwatch(shown),
+      c,
+      digitSize,
+      digitColor,
+      scale: throb,
+    );
+    if (golden && running) {
+      final p = 0.5 + 0.5 * math.sin(_time * 6);
+      _outline.color = Palette.perfect.withValues(alpha: 0.6 + 0.4 * p);
+      canvas.drawCircle(c, r * 1.04, _outline);
+      _outline.color = Palette.outline;
+    }
 
     String? line;
     var alpha = 1.0;
