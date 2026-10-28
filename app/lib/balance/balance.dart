@@ -218,11 +218,13 @@ class PerkConfig {
 class PrestigeConfig {
   PrestigeConfig(Map<String, Object?> j)
     : divisor = _d(j['divisor']),
-      exponent = _d(j['exponent']),
+      root = _d(j['root']),
       bonusPerChronon = _d(j['bonusPerChronon']),
       perks = _ml(j['perks']).map(PerkConfig.new).toList();
   final double divisor;
-  final double exponent;
+
+  /// Chronons grow with the [root]-th root of lifetime Tiki (R-PRES-2).
+  final double root;
   final double bonusPerChronon;
   final List<PerkConfig> perks;
 }
@@ -454,8 +456,8 @@ class Balance {
     if (offline.efficiency < 0 || offline.efficiency > 1) {
       e.add('offline efficiency must be within 0..1');
     }
-    if (prestige.divisor <= 0 || prestige.exponent <= 0) {
-      e.add('prestige divisor and exponent must be > 0');
+    if (prestige.divisor <= 0 || prestige.root <= 0) {
+      e.add('prestige divisor and root must be > 0');
     }
     if (round.fastForwardEnd >= round.target - round.bulletZone) {
       e.add('fastForwardEnd must end before the bullet-time zone');

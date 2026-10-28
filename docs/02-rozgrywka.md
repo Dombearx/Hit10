@@ -73,7 +73,7 @@ Te dwa czasy różnią się przez Przewijanie i bullet time.
 
 ## 3. Wypłata za trafienie i combo
 
-- **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + L_siła) · G + 0.5 s · L_echo · udział_echa · P) · combo · mnożnik_trybu`
+- **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + 1.5·L_siła) · G + 0.5 s · L_echo · udział_echa · P) · combo · mnożnik_trybu`
   - `G` to globalny mnożnik (osiągnięcia, Chronony, Szał), patrz 03;
   - `P` to aktualny dochód pasywny na sekundę (już z `G`).
 - **R-COMBO-1:** `seria` rośnie o krok combo progu (tabela wyżej). Pudło zeruje
@@ -92,10 +92,10 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 
 | id | Nazwa PL / EN | Max | Koszt bazowy | Wzrost | Efekt na poziomie L |
 |---|---|---|---|---|---|
-| `power` | Siła trafienia / Strike Power | 10 | 50 | ×7 | nagroda progu ×(1+L) |
+| `power` | Siła trafienia / Strike Power | 10 | 50 | ×7 | nagroda progu ×(1+1.5L) |
 | `fastForward` | Przewijanie / Fast Forward | 10 | 150 | ×5 | czas gry przed 9.0 ×(1+0.5L) |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
-| `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×6 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
+| `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×5 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
 | `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +2 na poziom (5 → 25) |
 | `magnet` | Magnes / Magnet | 10 | 2 000 | ×7 | okno PERFEKT +0.001 s na poziom, max ±0.015 |
 | `echo` | Echo / Echo | 10 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 5 s) |

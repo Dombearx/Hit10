@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -9,8 +10,11 @@ import 'package:flutter/painting.dart';
 import '../engine/round_engine.dart';
 import '../model/grading.dart';
 import '../model/number_format.dart';
+import '../model/showcase.dart';
 import '../ui/game_controller.dart';
 import '../ui/theme.dart';
+import '../ui/catalog.dart';
+import 'generator_popup.dart';
 import 'particles.dart';
 import 'pop_text.dart';
 
@@ -50,15 +54,60 @@ class ArenaGame extends FlameGame {
 
   @override
   Future<void> onLoad() async {
+    images.prefix = 'assets/';
+    for (final art in generatorArt.values) {
+      try {
+        _emoji[art.main] = await images.load('emoji/${art.main}.png');
+      } on Object {
+        // A missing emoji just leaves the bubble without an icon.
+      }
+    }
     stage = Stage(this);
     await add(stage);
     _sub = controller.feedback.listen(stage.onFeedback);
   }
 
+  final Map<String, ui.Image> _emoji = {};
+  final _rng = math.Random();
+  bool _popupLeft = true;
+
   @override
   void update(double dt) {
     controller.tick();
+    controller.showcase.maxPerSecond =
+        controller.balance.ui.generatorPopupsPerSecond;
+    for (final hit in controller.showcase.update(dt, controller.econ)) {
+      _spawnPopup(hit);
+    }
     super.update(dt);
+  }
+
+  void _spawnPopup(ShowcaseHit hit) {
+    final c = stage.center;
+    final r = stage.radius;
+    _popupLeft = !_popupLeft;
+    final scale = (r / 150).clamp(0.8, 1.4);
+    // Keep the whole bubble on screen (about 100 px wide at scale 1).
+    final half = 52 * scale;
+    final x = (_popupLeft ? c.x - r * 0.95 : c.x + r * 0.95).clamp(
+      half + 4,
+      size.x - half - 4,
+    );
+    // Spawn low on the dial: bubbles float up ~0.27 r and must never cover
+    // the digits (U-7), whose lower edge is at about c.y + 0.22 r.
+    final y = c.y + r * (0.55 + 0.35 * _rng.nextDouble());
+    stage.add(
+      GeneratorPopup(
+        emoji: _emoji[generatorArt[hit.generator]?.main],
+        time: formatStopwatch(hit.gameTime),
+        reward: hit.tier == Tier.miss
+            ? '—'
+            : '+${formatNumber(hit.reward, decimalSeparator: labels.decimalSeparator)}',
+        tier: hit.tier,
+        at: Vector2(x, y),
+        scale: scale,
+      ),
+    );
   }
 
   @override

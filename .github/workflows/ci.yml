@@ -27,6 +27,8 @@ jobs:
           cache: true
       - run: cd app && flutter pub get
       - run: make check
+      - name: Balance simulation (docs/03 §3, §5)
+        run: make sim
 
   apk:
     needs: check

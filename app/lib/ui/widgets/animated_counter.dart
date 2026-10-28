@@ -10,11 +10,17 @@ class AnimatedCounter extends StatefulWidget {
     super.key,
     required this.value,
     required this.decimalSeparator,
+    this.notation = Notation.short,
+    this.whole = false,
     this.style,
   });
 
   final double value;
   final String decimalSeparator;
+  final Notation notation;
+
+  /// Show whole numbers only (the balance; fractions stay in "0.1/s").
+  final bool whole;
   final TextStyle? style;
 
   @override
@@ -75,7 +81,11 @@ class _AnimatedCounterState extends State<AnimatedCounter>
         return Transform.scale(
           scale: scale,
           child: Text(
-            formatNumber(_current, decimalSeparator: widget.decimalSeparator),
+            formatNumber(
+              widget.whole ? _current.floorToDouble() : _current,
+              decimalSeparator: widget.decimalSeparator,
+              notation: widget.notation,
+            ),
             style:
                 widget.style ??
                 const TextStyle(

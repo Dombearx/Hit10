@@ -94,8 +94,12 @@ class Game:
         return pp * r["perfect"] + pg * r["great"] + pd * r["good"]
 
     # -- income ----------------------------------------------------------------
-    def global_mult(self, t):
+    def global_mult(self, t=None):
+        """t=None means "no temporary effects" (used for decisions and
+        reports); passing the current time applies Frenzy/Turbo."""
         m = 1 + self.chronons * self.b["prestige"]["bonusPerChronon"]
+        if t is None:
+            return m
         if t < self.frenzy_until:
             m *= self.b["golden"]["effects"][0]["multiplier"]
         if t < self.turbo_until:
@@ -119,7 +123,7 @@ class Game:
         window_gain = self.ev_rate(g["sigma"]) / self.base_ev[gid] if self.base_ev[gid] else 1
         return n * g["baseRate"] * mult * window_gain
 
-    def passive(self, t=0, **extra):
+    def passive(self, t=None, **extra):
         return sum(self.gen_rate(g, **extra) for g in self.gens) * self.global_mult(t)
 
     def round_seconds(self):

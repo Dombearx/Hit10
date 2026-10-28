@@ -44,7 +44,7 @@
       "maxLevel": 10,
       "baseCost": 50,
       "costGrowth": 7,
-      "perLevel": 1.0
+      "perLevel": 1.5
     },
     {
       "id": "fastForward",
@@ -64,7 +64,7 @@
       "id": "wideEye",
       "maxLevel": 10,
       "baseCost": 300,
-      "costGrowth": 6,
+      "costGrowth": 5,
       "perLevel": 0.08
     },
     {
@@ -382,7 +382,7 @@
   },
   "prestige": {
     "divisor": 100000000.0,
-    "exponent": 0.3333333,
+    "root": 3,
     "bonusPerChronon": 0.02,
     "perks": [
       {

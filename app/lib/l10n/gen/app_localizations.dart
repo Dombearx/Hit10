@@ -157,6 +157,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'.'**
   String get decimalSeparator;
+
+  /// No description provided for @gen_grandpa.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandpa with a Pocket Watch'**
+  String get gen_grandpa;
+
+  /// No description provided for @gen_grandpa_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'“Back in my day a second lasted longer.”'**
+  String get gen_grandpa_desc;
+
+  /// No description provided for @gen_grandma.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandma with an Egg Timer'**
+  String get gen_grandma;
+
+  /// No description provided for @gen_grandma_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft-boiled eggs since 1974. Ten seconds? Child\'s play.'**
+  String get gen_grandma_desc;
+
+  /// No description provided for @gen_cuckoo.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuckoo'**
+  String get gen_cuckoo;
+
+  /// No description provided for @gen_cuckoo_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuckoos every ten seconds. Usually.'**
+  String get gen_cuckoo_desc;
+
+  /// No description provided for @gen_metronome.
+  ///
+  /// In en, this message translates to:
+  /// **'Metronome'**
+  String get gen_metronome;
+
+  /// No description provided for @gen_metronome_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick. Tock. Tick. Tock. Never gets bored.'**
+  String get gen_metronome_desc;
+
+  /// No description provided for @gen_watchmaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Watchmaker'**
+  String get gen_watchmaker;
+
+  /// No description provided for @gen_watchmaker_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe in the eye, peace in the soul.'**
+  String get gen_watchmaker_desc;
+
+  /// No description provided for @gen_sprintJudge.
+  ///
+  /// In en, this message translates to:
+  /// **'Sprint Judge'**
+  String get gen_sprintJudge;
+
+  /// No description provided for @gen_sprintJudge_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'False start! Then a perfect 10.00.'**
+  String get gen_sprintJudge_desc;
+
+  /// No description provided for @gen_stationClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Station Clock'**
+  String get gen_stationClock;
+
+  /// No description provided for @gen_stationClock_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Delays may vary. Still tries a lot.'**
+  String get gen_stationClock_desc;
+
+  /// No description provided for @gen_quartz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quartz Clock'**
+  String get gen_quartz;
+
+  /// No description provided for @gen_quartz_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'32,768 wiggles a second, not one too many.'**
+  String get gen_quartz_desc;
+
+  /// No description provided for @gen_atomic.
+  ///
+  /// In en, this message translates to:
+  /// **'Atomic Clock'**
+  String get gen_atomic;
+
+  /// No description provided for @gen_atomic_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Off by a second every hundred million years.'**
+  String get gen_atomic_desc;
+
+  /// No description provided for @gen_gps.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS Satellite'**
+  String get gen_gps;
+
+  /// No description provided for @gen_gps_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Knows where you are. And exactly what time it is.'**
+  String get gen_gps_desc;
+
+  /// No description provided for @gen_pulsar.
+  ///
+  /// In en, this message translates to:
+  /// **'Pulsar'**
+  String get gen_pulsar;
+
+  /// No description provided for @gen_pulsar_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A neutron star that ticks like clockwork.'**
+  String get gen_pulsar_desc;
+
+  /// No description provided for @gen_timeMachine.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Machine'**
+  String get gen_timeMachine;
+
+  /// No description provided for @gen_timeMachine_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hits before it taps.'**
+  String get gen_timeMachine_desc;
+
+  /// No description provided for @gen_schrodinger.
+  ///
+  /// In en, this message translates to:
+  /// **'Schrödinger\'s Cat'**
+  String get gen_schrodinger;
+
+  /// No description provided for @gen_schrodinger_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit and missed. Until you open the box.'**
+  String get gen_schrodinger_desc;
+
+  /// No description provided for @gen_chronos.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronos'**
+  String get gen_chronos;
+
+  /// No description provided for @gen_chronos_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'God of time. Never misses. Ever.'**
+  String get gen_chronos_desc;
+
+  /// No description provided for @syn_grandparents.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandparents\' Date Night'**
+  String get syn_grandparents;
+
+  /// No description provided for @syn_birdRhythm.
+  ///
+  /// In en, this message translates to:
+  /// **'Bird Rhythm'**
+  String get syn_birdRhythm;
+
+  /// No description provided for @syn_craftsmanship.
+  ///
+  /// In en, this message translates to:
+  /// **'Craft Meets Quartz'**
+  String get syn_craftsmanship;
+
+  /// No description provided for @syn_photoFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Finish'**
+  String get syn_photoFinish;
+
+  /// No description provided for @syn_cosmicBeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmic Beat'**
+  String get syn_cosmicBeat;
+
+  /// No description provided for @syn_delayedTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Train from the Future'**
+  String get syn_delayedTrain;
+
+  /// No description provided for @perSecond.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}/s'**
+  String perSecond(String value);
+
+  /// No description provided for @tabClocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Clocks'**
+  String get tabClocks;
+
+  /// No description provided for @tabSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get tabSkills;
+
+  /// No description provided for @buyAmountMax.
+  ///
+  /// In en, this message translates to:
+  /// **'MAX'**
+  String get buyAmountMax;
+
+  /// No description provided for @ownedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'×{count}'**
+  String ownedCount(int count);
+
+  /// No description provided for @unitRate.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}/s each'**
+  String unitRate(String value);
+
+  /// No description provided for @incomeShare.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of income'**
+  String incomeShare(String percent);
+
+  /// No description provided for @windowBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'windows ×{value}'**
+  String windowBonus(String value);
+
+  /// No description provided for @lockedName.
+  ///
+  /// In en, this message translates to:
+  /// **'???'**
+  String get lockedName;
+
+  /// No description provided for @lockedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy the previous clock to reveal'**
+  String get lockedHint;
+
+  /// No description provided for @upgradesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrades'**
+  String get upgradesTitle;
+
+  /// No description provided for @upgradeName.
+  ///
+  /// In en, this message translates to:
+  /// **'{generator} {level}'**
+  String upgradeName(String generator, String level);
+
+  /// No description provided for @upgradeEffect.
+  ///
+  /// In en, this message translates to:
+  /// **'{generator} earn ×2'**
+  String upgradeEffect(String generator);
+
+  /// No description provided for @upgradeRequires.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs {count} owned'**
+  String upgradeRequires(int count);
+
+  /// No description provided for @synergyEffect.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} +{aPct}% per {b} · {b} +{bPct}% per {a}'**
+  String synergyEffect(String a, String b, String aPct, String bPct);
+
+  /// No description provided for @buy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get buy;
+
+  /// No description provided for @cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost: {value}'**
+  String cost(String value);
+
+  /// No description provided for @offlineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'While you were away…'**
+  String get offlineTitle;
+
+  /// No description provided for @offlineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your clocks kept ticking for {duration}.'**
+  String offlineBody(String duration);
+
+  /// No description provided for @offlineCapped.
+  ///
+  /// In en, this message translates to:
+  /// **'(counted up to {duration})'**
+  String offlineCapped(String duration);
+
+  /// No description provided for @collect.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect'**
+  String get collect;
+
+  /// No description provided for @durationHm.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String durationHm(int hours, int minutes);
+
+  /// No description provided for @durationM.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String durationM(int minutes);
+
+  /// No description provided for @saveCorrupt.
+  ///
+  /// In en, this message translates to:
+  /// **'Your save could not be read, so the game started fresh.'**
+  String get saveCorrupt;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
 }
 
 class _AppLocalizationsDelegate

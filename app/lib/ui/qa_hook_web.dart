@@ -38,8 +38,42 @@ void registerQaHook(GameController c) {
         'rounds': s.stats.rounds,
         'byTier': s.stats.byTier.map((k, v) => MapEntry(k.name, v)),
         'lastError': c.round.lastGrade?.error,
+        'owned': s.owned,
+        'upgrades': s.upgrades,
+        'synergies': s.synergies.toList(),
+        'passive': c.engine.passive(),
+        'pendingOffline': c.pendingOffline?.amount,
       }).toJS;
     }).toJS,
+  );
+  api.setProperty(
+    'grant'.toJS,
+    // The next economy tick (≤ 0.1 s) repaints the counter.
+    ((JSNumber amount) => c.state.earn(amount.toDartDouble)).toJS,
+  );
+  // Pretend the player left [seconds] ago, then came back.
+  api.setProperty(
+    'awayFor'.toJS,
+    ((JSNumber seconds) {
+      c.state.lastSeenMs -= (seconds.toDartDouble * 1000).round();
+      c.resume();
+    }).toJS,
+  );
+  api.setProperty(
+    'buy'.toJS,
+    ((
+      JSString id,
+      JSNumber count,
+    ) => c.buyGenerators(id.toDart, count.toDartInt).name.toJS).toJS,
+  );
+  api.setProperty(
+    'buyUpgrade'.toJS,
+    ((JSString id) => c.buyUpgrade(id.toDart).name.toJS).toJS,
+  );
+  api.setProperty('save'.toJS, (() => c.save().toJS).toJS);
+  api.setProperty(
+    'wipe'.toJS,
+    (() => (c.store?.clear() ?? Future<void>.value()).toJS).toJS,
   );
   globalContext.setProperty('hit10Qa'.toJS, api);
 }
