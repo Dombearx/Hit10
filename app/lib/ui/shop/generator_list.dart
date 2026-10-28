@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,13 +11,14 @@ import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
+import '../widgets/ad_buttons.dart';
 import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
 
 enum BuyAmount { one, ten, hundred, max }
 
 /// The "Clocks" tab: revealed generators, then one silhouette (R-GEN-4).
-class GeneratorList extends StatelessWidget {
+class GeneratorList extends StatefulWidget {
   const GeneratorList({
     super.key,
     required this.controller,
@@ -26,8 +29,19 @@ class GeneratorList extends StatelessWidget {
   final BuyAmount amount;
 
   @override
+  State<GeneratorList> createState() => _GeneratorListState();
+}
+
+class _GeneratorListState extends State<GeneratorList> {
+  /// Generators already on show; one that joins later gets the reveal
+  /// flash (docs/04 §3 "Nowy generator odkryty"). Null until first build,
+  /// so nothing flashes at launch.
+  Set<String>? _seen;
+
+  @override
   Widget build(BuildContext context) {
-    final c = controller;
+    final c = widget.controller;
+    final amount = widget.amount;
     final ids = <String>[];
     String? silhouette;
     for (final g in c.balance.generators) {
@@ -48,17 +62,24 @@ class GeneratorList extends StatelessWidget {
       (id) => c.econ.generatorCost(id) > c.state.tiki,
       orElse: () => '',
     );
+    final seen = _seen ??= ids.toSet();
+    final fresh = ids.where((id) => !seen.contains(id)).toSet();
+    seen.addAll(ids);
     return ListView(
       padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
       children: [
         for (final id in ids)
-          _GeneratorTile(
+          _RevealFlash(
             key: ValueKey(id),
-            controller: c,
-            id: id,
-            amount: amount,
-            totalIncome: total,
-            offerBag: id == bagId,
+            active: fresh.contains(id),
+            reduceMotion: c.settings.reduceMotion,
+            child: _GeneratorTile(
+              controller: c,
+              id: id,
+              amount: amount,
+              totalIncome: total,
+              offerBag: id == bagId,
+            ),
           ),
         if (silhouette != null) _LockedTile(controller: c, id: silhouette),
       ],
@@ -66,9 +87,84 @@ class GeneratorList extends StatelessWidget {
   }
 }
 
+/// A white flash and a pop when a generator first appears.
+class _RevealFlash extends StatefulWidget {
+  const _RevealFlash({
+    super.key,
+    required this.active,
+    required this.reduceMotion,
+    required this.child,
+  });
+  final bool active;
+  final bool reduceMotion;
+  final Widget child;
+
+  @override
+  State<_RevealFlash> createState() => _RevealFlashState();
+}
+
+class _RevealFlashState extends State<_RevealFlash>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _a = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 700),
+    value: 1,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.active) _a.forward(from: 0);
+  }
+
+  @override
+  void didUpdateWidget(_RevealFlash old) {
+    super.didUpdateWidget(old);
+    if (widget.active && !old.active) _a.forward(from: 0);
+  }
+
+  @override
+  void dispose() {
+    _a.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _a,
+      child: widget.child,
+      builder: (context, child) {
+        final k = _a.value;
+        if (k >= 1) return child!;
+        final pop = 1 + 0.06 * math.sin(k * math.pi);
+        final flash = widget.reduceMotion ? 0.0 : (1 - k) * 0.85;
+        return Transform.scale(
+          scale: pop,
+          child: Stack(
+            children: [
+              child!,
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: flash),
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
 class _GeneratorTile extends StatelessWidget {
   const _GeneratorTile({
-    super.key,
     required this.controller,
     required this.id,
     required this.amount,
@@ -129,13 +225,17 @@ class _GeneratorTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  generatorName(l, id),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                // Long names (EN, small screens) shrink rather than cut.
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    generatorName(l, id),
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -239,7 +339,7 @@ Widget? _bagButton(BuildContext context, GameController c) {
   final ads = ProviderScope.containerOf(context).read(rewardedAdsProvider);
   return GestureDetector(
     key: const Key('ad-bag'),
-    onTap: () => c.watchAd(AdOffer.bag, ads),
+    onTap: () => watchAdWithReward(context, c, AdOffer.bag, ads),
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
       decoration: BoxDecoration(

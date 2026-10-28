@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/gen/app_localizations.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 
@@ -8,7 +9,7 @@ import '../theme.dart';
 Future<void> showGameSheet(
   BuildContext context,
   GameController c, {
-  required String title,
+  required String Function(AppLocalizations l) title,
   required Widget Function(BuildContext context) builder,
 }) {
   c.pause();
@@ -41,7 +42,9 @@ Future<void> showGameSheet(
                 children: [
                   Expanded(
                     child: Text(
-                      title,
+                      // Built here, not at open time, so a language change
+                      // in the settings sheet retitles it at once.
+                      title(AppLocalizations.of(context)),
                       style: const TextStyle(
                         fontFamily: Fonts.display,
                         fontSize: 26,

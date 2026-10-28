@@ -14,11 +14,10 @@ import 'sheet.dart';
 
 /// Time paradox (docs/02 §9): Chronons, the rewind button, the perk tree.
 Future<void> showPrestige(BuildContext context, GameController c) {
-  final l = AppLocalizations.of(context);
   return showGameSheet(
     context,
     c,
-    title: l.prestigeTitle,
+    title: (l) => l.prestigeTitle,
     builder: (context) => _Prestige(controller: c),
   );
 }
@@ -52,7 +51,11 @@ class _Prestige extends StatelessWidget {
     if (!await ask(l.prestigeConfirm1)) return;
     if (!context.mounted || !await ask(l.prestigeConfirm2)) return;
     if (!context.mounted) return;
-    await showRewindAnimation(context);
+    controller.rewindEffects();
+    await showRewindAnimation(
+      context,
+      reduceMotion: controller.settings.reduceMotion,
+    );
     controller.prestige();
   }
 
@@ -207,18 +210,22 @@ class _PerkTile extends StatelessWidget {
 
 /// R-PRES-6: the screen "rewinds": digits spin back to 0, then a white
 /// flash.
-Future<void> showRewindAnimation(BuildContext context) {
+Future<void> showRewindAnimation(
+  BuildContext context, {
+  bool reduceMotion = false,
+}) {
   return showGeneralDialog<void>(
     context: context,
     barrierDismissible: false,
     barrierColor: Colors.transparent,
     transitionDuration: Duration.zero,
-    pageBuilder: (context, _, _) => const _Rewind(),
+    pageBuilder: (context, _, _) => _Rewind(reduceMotion: reduceMotion),
   );
 }
 
 class _Rewind extends StatefulWidget {
-  const _Rewind();
+  const _Rewind({required this.reduceMotion});
+  final bool reduceMotion;
 
   @override
   State<_Rewind> createState() => _RewindState();
@@ -248,7 +255,7 @@ class _RewindState extends State<_Rewind> with SingleTickerProviderStateMixin {
         final k = _a.value;
         final spin = Curves.easeIn.transform(math.min(1, k / 0.8));
         final shown = 99.99 * (1 - spin);
-        final flash = k < 0.8
+        final flash = widget.reduceMotion || k < 0.8
             ? 0.0
             : (k < 0.9 ? (k - 0.8) / 0.1 : (1 - k) / 0.1);
         return Stack(

@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../ads/rewarded_ads.dart';
 import '../../engine/ad_offers.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../catalog.dart';
 import '../game_controller.dart';
 import '../providers.dart';
 import '../theme.dart';
+import 'burst.dart';
 
 String clockText(double seconds) {
   final t = seconds.ceil();
@@ -41,7 +43,9 @@ class AdCornerButtons extends ConsumerWidget {
           : (!can && o == AdOffer.turbo ? l.adFull : null);
       return GestureDetector(
         key: key,
-        onTap: can ? () => unawaited(c.watchAd(o, adsProvider)) : null,
+        onTap: can
+            ? () => unawaited(watchAdWithReward(context, c, o, adsProvider))
+            : null,
         child: Opacity(
           opacity: can ? 1 : 0.55,
           child: Container(
@@ -116,7 +120,8 @@ class RescuePopup extends ConsumerWidget {
     final left = (r.expiresAtPlay - c.state.playSeconds).clamp(0.0, 9.0);
     return GestureDetector(
       key: const Key('ad-rescue'),
-      onTap: () => unawaited(c.watchAd(AdOffer.rescue, adsProvider)),
+      onTap: () =>
+          unawaited(watchAdWithReward(context, c, AdOffer.rescue, adsProvider)),
       child: Container(
         margin: const EdgeInsets.only(bottom: 4),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -143,4 +148,29 @@ class RescuePopup extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Plays the ad and, once the reward lands, a full burst where the offer
+/// was (U-25). The button itself may be gone by then (cooldown), so its
+/// place is taken before the ad.
+Future<bool> watchAdWithReward(
+  BuildContext context,
+  GameController c,
+  AdOffer offer,
+  RewardedAds ads,
+) async {
+  final overlay = Overlay.maybeOf(context, rootOverlay: true);
+  final at = centerOf(context);
+  final ok = await c.watchAd(offer, ads);
+  if (ok && overlay != null && overlay.mounted && at != null) {
+    showBurst(
+      null,
+      overlay: overlay,
+      at: at,
+      count: 28,
+      spread: 1.3,
+      reduceMotion: c.settings.reduceMotion,
+    );
+  }
+  return ok;
 }

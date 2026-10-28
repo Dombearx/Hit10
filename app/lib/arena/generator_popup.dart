@@ -50,12 +50,23 @@ class GeneratorPopup extends PositionComponent {
     textDirection: TextDirection.ltr,
   )..layout();
 
+  /// Seconds into a quick fade-out once a newer bubble took this place.
+  double? _leaving;
+
+  /// A newer bubble appeared on this side: fade out fast so they never pile
+  /// up on each other.
+  void dismiss() => _leaving ??= 0;
+
   @override
   void update(double dt) {
     _t += dt;
     position.y -= 26 * dt * _scaleK;
-    if (_t >= life) removeFromParent();
+    final leaving = _leaving;
+    if (leaving != null) _leaving = leaving + dt;
+    if (_t >= life || (_leaving ?? 0) >= _fadeOut) removeFromParent();
   }
+
+  static const _fadeOut = 0.2;
 
   Baked? _baked;
 
@@ -97,7 +108,9 @@ class GeneratorPopup extends PositionComponent {
   @override
   void render(Canvas canvas) {
     final k = _t / life;
-    final alpha = k < 0.1 ? k / 0.1 : (k > 0.7 ? (1 - k) / 0.3 : 1.0);
+    var alpha = k < 0.1 ? k / 0.1 : (k > 0.7 ? (1 - k) / 0.3 : 1.0);
+    final leaving = _leaving;
+    if (leaving != null) alpha *= (1 - leaving / _fadeOut).clamp(0.0, 1.0);
     final pop = k < 0.12 ? 0.7 + 0.3 * (k / 0.12) : 1.0;
     final baked = _baked ??= _bake();
     canvas.save();

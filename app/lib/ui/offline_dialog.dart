@@ -4,6 +4,7 @@ import '../l10n/gen/app_localizations.dart';
 import 'format.dart';
 import 'game_controller.dart';
 import 'theme.dart';
+import 'widgets/ad_buttons.dart';
 import 'widgets/buy_button.dart';
 import 'widgets/emoji_card.dart';
 import 'catalog.dart';
@@ -143,8 +144,14 @@ Future<void> _show(
                       price: l.adDouble,
                       enabled: ads.isReady,
                       minWidth: 120,
+                      celebrate: false,
                       onPressed: () async {
-                        final ok = await c.watchAd(AdOffer.offline, ads);
+                        final ok = await watchAdWithReward(
+                          context,
+                          c,
+                          AdOffer.offline,
+                          ads,
+                        );
                         if (ok) {
                           c.collectOffline();
                         }

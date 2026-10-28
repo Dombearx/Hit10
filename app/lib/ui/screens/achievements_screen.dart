@@ -9,11 +9,10 @@ import '../widgets/emoji_card.dart';
 import 'sheet.dart';
 
 Future<void> showAchievements(BuildContext context, GameController c) {
-  final l = AppLocalizations.of(context);
   return showGameSheet(
     context,
     c,
-    title: l.achievementsTitle,
+    title: (l) => l.achievementsTitle,
     builder: (context) => _Achievements(controller: c),
   );
 }

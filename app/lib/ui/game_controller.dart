@@ -45,6 +45,7 @@ class ClockSlot {
   bool fast = false;
   int lastTickTenth = -1;
   bool whooshed = false;
+  double lastHeartbeat = -10;
 }
 
 enum TutorialStep { aim, buyGrandpa, grandpaInfo, done }
@@ -132,18 +133,57 @@ class GameController extends ChangeNotifier {
   double _sinceAchievementCheck = 0;
   double? _startSecondAt;
   bool _adPlaying = false;
+  bool _goldenShown = false;
+
+  /// A running clock is inside the bullet-time zone (docs/04 §3, U-19).
+  bool inBulletZone = false;
   static const _saveEvery = 10.0;
 
   void _applySettings() {
     sfx.volume = settings.sfxVolume;
     sfx.enabled = settings.sfxVolume > 0;
+    sfx.musicVolume = settings.musicVolume;
+    sfx.updateMusicVolume();
     haptics.enabled = settings.haptics;
   }
 
+  /// Bumped on every settings change; the app rebuilds its locale from it.
+  final settingsVersion = ValueNotifier<int>(0);
+
   void applySettings() {
     _applySettings();
+    settingsVersion.value++;
     notifyListeners();
     unawaited(save());
+  }
+
+  // ------------------------------------------------------ export / reset --
+
+  /// Set once this controller's save has been replaced (import, reset): it
+  /// must never write again, or it would overwrite the new save.
+  bool _retired = false;
+
+  /// The save as copyable text (T-19).
+  String exportText() =>
+      exportSave(SaveData(state, settings, balanceVersion: balance.version));
+
+  /// Validates [text] and makes it the save; throws [SaveFormatException]
+  /// on anything that is not an exported save. The app restarts after.
+  Future<void> importText(String text) async {
+    final data = importSave(text);
+    _retired = true;
+    await store?.write(saveToJsonString(data));
+  }
+
+  /// Wipes the progress but keeps the player's settings.
+  Future<void> resetProgress() async {
+    _retired = true;
+    await store?.clear();
+    await store?.write(
+      saveToJsonString(
+        SaveData(GameState(), settings, balanceVersion: balance.version),
+      ),
+    );
   }
 
   // -------------------------------------------------------------- clocks --
@@ -224,6 +264,17 @@ class GameController extends ChangeNotifier {
       inZone |= _roundSounds(c, t);
     }
     sfx.underwater(inZone);
+    if (inZone != inBulletZone) {
+      inBulletZone = inZone;
+      notifyListeners();
+    }
+    sfx.music(
+      engine.goldenRound
+          ? MusicTrack.golden
+          : engine.frenzyLeft > 0
+          ? MusicTrack.frenzy
+          : MusicTrack.calm,
+    );
     if (last == null) return;
     // Long gaps (debugger, backgrounded tab) are offline time, not play.
     final dt = (t - last).clamp(0.0, 1.0);
@@ -232,7 +283,10 @@ class GameController extends ChangeNotifier {
     if (_econAcc >= step) {
       ads.tick(_econAcc);
       engine.tick(_econAcc);
-      if (engine.goldenVisibleLeft > 0) _tip('golden');
+      final golden = engine.goldenVisibleLeft > 0;
+      if (golden && !_goldenShown) sfx.play('chimes', gain: 0.7);
+      _goldenShown = golden;
+      if (golden) _tip('golden');
       if (engine.autoBuy(_econAcc) != null) sfx.play('buy', gain: 0.4);
       _econAcc = 0;
       notifyListeners();
@@ -322,7 +376,12 @@ class GameController extends ChangeNotifier {
       slot.whooshed = true;
       sfx.play('whoosh', gain: 0.6);
     }
-    return round.timeMap.zoneSpeed < 1 && round.timeMap.inBulletZone(g);
+    final inZone = round.timeMap.zoneSpeed < 1 && round.timeMap.inBulletZone(g);
+    if (inZone && now - slot.lastHeartbeat > 0.8) {
+      slot.lastHeartbeat = now;
+      sfx.play('heartbeat', gain: 0.8);
+    }
+    return inZone;
   }
 
   /// The player tapped the flying golden clock (R-ZLOTA-1).
@@ -336,9 +395,14 @@ class GameController extends ChangeNotifier {
   // -------------------------------------------------------- achievements --
 
   void _checkAchievements(AchievementContext ctx) {
+    var any = false;
     for (final a in unlockAchievements(achievements, state, ctx)) {
       _unlocked.add(a);
-      sfx.play('great', gain: 0.8, speed: 1.5);
+      any = true;
+    }
+    if (any) {
+      sfx.play('fanfare', gain: 0.7);
+      unawaited(haptics.medium());
     }
   }
 
@@ -347,7 +411,7 @@ class GameController extends ChangeNotifier {
   BuyResult _afterBuy(BuyResult r) {
     if (r == BuyResult.ok) {
       sfx.play('buy');
-      if (settings.haptics) unawaited(HapticFeedback.selectionClick());
+      unawaited(haptics.light());
       _checkAchievements(const AchievementContext());
       _advanceTutorial();
       unawaited(save());
@@ -356,12 +420,27 @@ class GameController extends ChangeNotifier {
     return r;
   }
 
-  BuyResult buyGenerators(String id, int count) =>
-      _afterBuy(engine.buyGenerators(id, count));
+  BuyResult buyGenerators(String id, int count) {
+    final first = econ.owned(id) == 0;
+    final r = _afterBuy(engine.buyGenerators(id, count));
+    // The first of a kind reveals the next generator (docs/04 §3).
+    if (r == BuyResult.ok && first && id != balance.generators.last.id) {
+      sfx.play('fanfare', gain: 0.6);
+      unawaited(haptics.medium());
+    }
+    return r;
+  }
+
   BuyResult buyUpgrade(String id) => _afterBuy(engine.buyUpgrade(id));
   BuyResult buySynergy(String id) => _afterBuy(engine.buySynergy(id));
   BuyResult buySkill(String id) => _afterBuy(engine.buySkill(id));
   BuyResult buyPerk(String id) => _afterBuy(engine.buyPerk(id));
+
+  /// The rewind animation's sound and long buzz (docs/04 §3).
+  void rewindEffects() {
+    sfx.play('rewind');
+    unawaited(haptics.long());
+  }
 
   /// Time paradox (R-PRES-6 confirms in the UI first).
   int prestige() {
@@ -468,6 +547,7 @@ class GameController extends ChangeNotifier {
   }
 
   Future<void> save() async {
+    if (_retired) return;
     _sinceSave = 0;
     state.lastSeenMs = _wallMs();
     final store = this.store;
@@ -561,6 +641,8 @@ Future<GameController> loadGame(
   Balance balance,
   SaveStore store, {
   OfflineNotifications notifications = const NoNotifications(),
+  Sfx? sfx,
+  Haptics? haptics,
 }) async {
   SaveData? data;
   var corrupt = false;
@@ -581,6 +663,8 @@ Future<GameController> loadGame(
     settings: data?.settings,
     store: store,
     notifications: notifications,
+    sfx: sfx,
+    haptics: haptics,
   );
   c.saveWasCorrupt = corrupt && data == null;
   c.checkOffline();

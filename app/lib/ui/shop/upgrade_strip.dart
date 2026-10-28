@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../balance/balance.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../../l10n/upgrade_texts.dart';
 import '../../model/economy.dart';
 import '../catalog.dart';
 import '../format.dart';
@@ -57,7 +58,7 @@ class UpgradeStrip extends StatelessWidget {
         builder: (context, _) {
           final l = AppLocalizations.of(context);
           final f = Fmt.of(context, c);
-          final (title, effect) = it.describe(l, c);
+          final (title, effect, flavor) = it.describe(l, c);
           return Container(
             margin: const EdgeInsets.all(12),
             padding: const EdgeInsets.all(18),
@@ -85,7 +86,23 @@ class UpgradeStrip extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(effect, style: const TextStyle(fontSize: 14)),
+                        Text(
+                          effect,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Palette.perfectDeep,
+                          ),
+                        ),
+                        if (flavor != null)
+                          Text(
+                            flavor,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontStyle: FontStyle.italic,
+                              color: Palette.outline.withValues(alpha: 0.7),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -139,11 +156,17 @@ class _Item {
     }
   }
 
-  (String, String) describe(AppLocalizations l, GameController c) {
+  /// Title, effect and (for upgrades) the one-liner (R-ULEP-2).
+  (String, String, String?) describe(AppLocalizations l, GameController c) {
     final u = upgrade;
     if (u != null) {
       final name = generatorName(l, u.generator);
-      return (l.upgradeName(name, roman(u.index)), l.upgradeEffect(name));
+      final texts = upgradeTexts(l, u.generator, u.index + 1);
+      return (
+        texts?.$1 ?? l.upgradeName(name, roman(u.index)),
+        l.upgradeEffect(name),
+        texts?.$2,
+      );
     }
     final s = synergy!;
     String pct(double v) => (v * 100).toStringAsFixed(v * 100 < 1 ? 1 : 0);
@@ -155,6 +178,7 @@ class _Item {
         pct(s.aPerB),
         pct(s.bPerA),
       ),
+      null,
     );
   }
 }

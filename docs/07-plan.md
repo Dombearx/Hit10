@@ -22,18 +22,18 @@ M0 Szkielet ─► M1 Rdzeń ─► ⏸ „czy to fajne?” ─► M2 Ekonomia �
 **Cel:** pusty, ale kompletny projekt, który buduje się w CI i instaluje na
 telefonie.
 
-- [ ] `flutter create` w `app/` (Android, pion, `applicationId`
+- [x] `flutter create` w `app/` (Android, pion, `applicationId`
       `io.github.dombearx.hit10`), struktura katalogów z 05 §2
-- [ ] Zależności: Riverpod, Flame, `flutter_animate`, `flutter_soloud`,
+- [x] Zależności: Riverpod, Flame, `flutter_animate`, `flutter_soloud`,
       `path_provider`, l10n PL/EN (`gen-l10n`), czcionki Paytone One i Nunito
-- [ ] `assets/balance.json` z liczbami z 02/03 i walidacją przy starcie
+- [x] `assets/balance.json` z liczbami z 02/03 i walidacją przy starcie
       (T-5…T-7)
-- [ ] Atrapa `RewardedAds` (T-25)
-- [ ] Test architektury: `lib/model` i `lib/engine` bez Fluttera (T-3)
-- [ ] `Makefile`: `make check` (analyze, format, test)
-- [ ] GitHub Actions: `make check` i debug APK na każdy push, Release na tag
+- [x] Atrapa `RewardedAds` (T-25)
+- [x] Test architektury: `lib/model` i `lib/engine` bez Fluttera (T-3)
+- [x] `Makefile`: `make check` (analyze, format, test)
+- [x] GitHub Actions: `make check` i debug APK na każdy push, Release na tag
       (T-31)
-- [ ] `CREDITS.md` z pierwszymi wpisami (czcionki)
+- [x] `CREDITS.md` z pierwszymi wpisami (czcionki)
 
 **Gotowe, gdy:** APK z `m0` instaluje się na twoim telefonie i pokazuje
 ekran z napisem „Hit10” po polsku albo po angielsku, zależnie od języka
@@ -43,15 +43,15 @@ telefonu.
 
 **Cel:** sama runda „kliknij w 10.00”, uczciwa i przyjemna. Bez sklepu.
 
-- [ ] Model: ocena i progi, mapowanie czasu rzeczywistego na czas gry (na
+- [x] Model: ocena i progi, mapowanie czasu rzeczywistego na czas gry (na
       razie bez ulepszeń), wypłata bazowa (R-RUNDA-1…9, R-PROG-*, T-11)
-- [ ] Pomiar dotknięcia: `Listener.onPointerDown` + `Stopwatch` (T-8…T-10)
-- [ ] Arena we Flame: tarcza, cyfry (tabular), pierścień postępu
-- [ ] Efekty PERFEKT / ŚWIETNIE / DOBRZE / PUDŁO, z dźwiękiem i wibracją
+- [x] Pomiar dotknięcia: `Listener.onPointerDown` + `Stopwatch` (T-8…T-10)
+- [x] Arena we Flame: tarcza, cyfry (tabular), pierścień postępu
+- [x] Efekty PERFEKT / ŚWIETNIE / DOBRZE / PUDŁO, z dźwiękiem i wibracją
       (04 §3, U-14, U-15)
-- [ ] Saldo Tików z animowanym licznikiem
-- [ ] Tryb diagnostyczny: histogram błędów, czasy klatek (T-12)
-- [ ] Pierwsze dźwięki z Kenneya i jsfxr
+- [x] Saldo Tików z animowanym licznikiem
+- [x] Tryb diagnostyczny: histogram błędów, czasy klatek (T-12)
+- [x] Pierwsze dźwięki z Kenneya i jsfxr
 
 **Testy ręczne:** M-1 (precyzja), M-2 (uczciwość pod obciążeniem), M-6
 (dźwięk).
@@ -63,15 +63,15 @@ Rozstrzygamy też, czy potrzebna jest kalibracja opóźnienia ekranu (T-13).
 
 **Cel:** pętla „zarabiam → kupuję → zarabiam więcej” działa i się zapisuje.
 
-- [ ] Model: generatory 1–12, ceny ×1/×10/×100/MAX, dochód z zyskiem okien,
+- [x] Model: generatory 1–12, ceny ×1/×10/×100/MAX, dochód z zyskiem okien,
       ulepszenia generatorów, synergie (02 §5, 03 §2)
-- [ ] Silnik: tyk ekonomii 10×/s, „trafienia generatorów” jako efekt (T-14,
+- [x] Silnik: tyk ekonomii 10×/s, „trafienia generatorów” jako efekt (T-14,
       T-15)
-- [ ] Sklep „Zegary”: karty z emoji (04 §4.1), pasek ulepszeń, sylwetki
+- [x] Sklep „Zegary”: karty z emoji (04 §4.1), pasek ulepszeń, sylwetki
       „???”
-- [ ] Zapis: atomowy, kopia, migracje, eksport/import (T-17…T-20)
-- [ ] Offline z oknem „Gdy cię nie było…” (R-OFF-1…3)
-- [ ] Symulator w Dart (`tool/simulate.dart --check`) z tym samym kodem
+- [x] Zapis: atomowy, kopia, migracje, eksport/import (T-17…T-20)
+- [x] Offline z oknem „Gdy cię nie było…” (R-OFF-1…3)
+- [x] Symulator w Dart (`tool/simulate.dart --check`) z tym samym kodem
       ekonomii co gra. Wyniki porównane z `design/` (06 §1.2).
 
 **Testy ręczne:** M-4 (cykl życia), M-5 (zmiana daty).
@@ -80,12 +80,12 @@ Rozstrzygamy też, czy potrzebna jest kalibracja opóźnienia ekranu (T-13).
 
 **Cel:** gracz ma na co wydawać i czuje, że rośnie w siłę.
 
-- [ ] Wszystkie 11 umiejętności (02 §4), sklep „Umiejętności” z „przed → po”
-- [ ] Przewijanie i bullet time z efektami i filtrami dźwięku
+- [x] Wszystkie 11 umiejętności (02 §4), sklep „Umiejętności” z „przed → po”
+- [x] Przewijanie i bullet time z efektami i filtrami dźwięku
       (R-RUNDA-10…13, U-19)
-- [ ] Combo, Tarcza, Echo (02 §3)
-- [ ] Złota Sekunda z trzema efektami (02 §6)
-- [ ] `--check` sprawdza wszystkie cele B-1…B-10 (mediana z 5 ziaren)
+- [x] Combo, Tarcza, Echo (02 §3)
+- [x] Złota Sekunda z trzema efektami (02 §6)
+- [x] `--check` sprawdza wszystkie cele B-1…B-10 (mediana z 5 ziaren)
 
 **Testy ręczne:** M-3 (wydajność).
 
@@ -96,13 +96,13 @@ i balansu. Zmiany liczb wpisujemy do 02/03.
 
 **Cel:** treść na tygodnie i przygotowane miejsca na reklamy.
 
-- [ ] Osiągnięcia, ok. 100, z warunkami generowanymi z tabeli (02 §8)
-- [ ] Tryby: Na ślepo, Szybki zegar (02 §7)
-- [ ] Prestiż, Chronony, Okruchy, drzewko perków, drugi zegar,
+- [x] Osiągnięcia, ok. 100, z warunkami generowanymi z tabeli (02 §8)
+- [x] Tryby: Na ślepo, Szybki zegar (02 §7)
+- [x] Prestiż, Chronony, Okruchy, drzewko perków, drugi zegar,
       generatory 13–14 (02 §9)
-- [ ] Statystyki (02 §12) i samouczek (02 §11)
-- [ ] Powiadomienie o pełnym limicie offline (R-OFF-4, R-OFF-5)
-- [ ] Logika 5 ofert reklamowych na atrapie, z przyciskami w UI (02 §13,
+- [x] Statystyki (02 §12) i samouczek (02 §11)
+- [x] Powiadomienie o pełnym limicie offline (R-OFF-4, R-OFF-5)
+- [x] Logika 5 ofert reklamowych na atrapie, z przyciskami w UI (02 §13,
       04 §5a, T-29). `--check` sprawdza też A-1 i A-2.
 
 **Testy ręczne:** M-8, pierwsze podejście: 3 osoby grają 15 min; M-11 (powiadomienie).
@@ -111,14 +111,14 @@ i balansu. Zmiany liczb wpisujemy do 02/03.
 
 **Cel:** gra wygląda i brzmi jak gotowy produkt.
 
-- [ ] Docelowa paleta i tokeny (04 §4), karty emoji dla wszystkiego (U-10…U-12)
-- [ ] Ikona aplikacji i złoty zegarek jako SVG (U-26, U-27)
-- [ ] Pełna tabela efektów z 04 §3, „Ogranicz ruch” (U-6)
-- [ ] Muzyka (3 pętle) i wszystkie efekty dźwiękowe (U-13, U-19…U-21)
-- [ ] Wszystkie teksty i humor PL/EN: 112 nazw ulepszeń, opisy, osiągnięcia
+- [x] Docelowa paleta i tokeny (04 §4), karty emoji dla wszystkiego (U-10…U-12)
+- [x] Ikona aplikacji i złoty zegarek jako SVG (U-26, U-27)
+- [x] Pełna tabela efektów z 04 §3, „Ogranicz ruch” (U-6)
+- [x] Muzyka (3 pętle) i wszystkie efekty dźwiękowe (U-13, U-19…U-21)
+- [x] Wszystkie teksty i humor PL/EN: 112 nazw ulepszeń, opisy, osiągnięcia
       (R-ULEP-2)
-- [ ] Ekran ustawień w całości (04 §2), autorzy i licencje
-- [ ] Kopia zapasowa Androida (T-32)
+- [x] Ekran ustawień w całości (04 §2), autorzy i licencje
+- [x] Kopia zapasowa Androida (T-32)
 
 **Testy ręczne:** M-7, M-8 (ponownie), M-9.
 

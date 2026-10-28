@@ -211,17 +211,18 @@ FLUX.1 [dev] odpada, bo ma licencję niekomercyjną.
     skryptem `tools/sfx/generate.py` (oscylatory i szum, numpy + ffmpeg),
     więc należą do projektu i nie wymagają licencji. Paczki Kenney.nl (CC0)
     zostają opcją, gdyby własne brzmienia nie wystarczyły.
-  - **Muzyka** (3 pętle: spokojna, Szał, złota runda): OpenGameArt z filtrem
-    CC0 albo Pixabay Music (licencja Pixabay pozwala na użycie komercyjne).
-    Żadnych utworów z serwisów AI na darmowych planach (brak praw
-    komercyjnych).
+  - **Muzyka** (3 pętle: spokojna, Szał, złota runda): również
+    **syntezowana w repo** (`tools/sfx/music.py`: woodblocki „tik-tak”,
+    marimba, bas, dzwonki), więc należy do projektu. OpenGameArt (CC0) albo
+    Pixabay Music zostają opcją na później. Żadnych utworów z serwisów AI na
+    darmowych planach (brak praw komercyjnych).
   - Całe audio poniżej 5 MB.
 - **U-14:** Dźwięk trafienia musi zagrać w < 30 ms od dotknięcia
   (wstępnie załadowane próbki).
 - **U-15:** Wysokość „ding” rośnie z serią (np. +1 półton co 2 kroki, max
   +12). To prosty, a bardzo skuteczny „juice”.
 - **U-19:** W strefie bullet time muzyka i efekty przechodzą przez filtr
-  dolnoprzepustowy („jak pod wodą”). W Szale muzyka gra ok. 15% szybciej.
+  dolnoprzepustowy („jak pod wodą”). W Szale gra osobna, szybsza pętla.
   Wszystko robione filtrami silnika dźwięku, bez osobnych plików.
 - **U-20:** Efekty są domyślnie włączone, muzyka też, ale cicha (ok. 40%).
   Jeśli przy starcie w telefonie gra inna muzyka, muzyka gry startuje

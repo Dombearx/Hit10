@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flutter/painting.dart';
@@ -14,7 +13,6 @@ class GoldenClock extends PositionComponent {
     required this.dialTop,
     required this.radius,
     required this.life,
-    required this.image,
     required this.fromLeft,
   }) : super(anchor: Anchor.center);
 
@@ -22,7 +20,6 @@ class GoldenClock extends PositionComponent {
   final double dialTop;
   final double radius;
   final double life;
-  final ui.Image? image;
   final bool fromLeft;
   double _t = 0;
 
@@ -31,14 +28,19 @@ class GoldenClock extends PositionComponent {
   bool caught = false;
 
   final _glow = Paint();
-  final _face = Paint()..color = Palette.perfect;
+  final _face = Paint()..color = const Color(0xFFFFFBEA);
+  final _gold = Paint();
+  final _ray = Paint();
+  final _shine = Paint()
+    ..color = const Color(0xCCFFFFFF)
+    ..style = PaintingStyle.stroke
+    ..strokeCap = StrokeCap.round;
   final _rim = Paint()
     ..color = Palette.outline
     ..style = PaintingStyle.stroke;
   final _hand = Paint()
     ..color = Palette.outline
     ..strokeCap = StrokeCap.round;
-  final _img = Paint()..filterQuality = FilterQuality.medium;
 
   double get size2 => radius;
 
@@ -99,29 +101,91 @@ class GoldenClock extends PositionComponent {
     final r = radius;
     _glow.shader ??= const RadialGradient(
       colors: [Color(0xAAFFD54A), Color(0x00FFD54A)],
-    ).createShader(Rect.fromCircle(center: Offset.zero, radius: r * 1.5));
-    canvas.drawCircle(Offset.zero, r * 1.5, _glow);
-    final img = image;
-    if (img != null) {
-      canvas.drawImageRect(
-        img,
-        Rect.fromLTWH(0, 0, img.width.toDouble(), img.height.toDouble()),
-        Rect.fromCircle(center: Offset.zero, radius: r * 1.1),
-        _img
-          ..colorFilter = const ColorFilter.mode(
-            Color(0x66FFC300),
-            BlendMode.srcATop,
-          ),
-      );
-    } else {
-      canvas.drawCircle(Offset.zero, r, _face);
-      _rim.strokeWidth = r * 0.12;
-      canvas.drawCircle(Offset.zero, r, _rim);
-      _hand.strokeWidth = r * 0.1;
-      canvas.drawLine(Offset.zero, Offset(0, -r * 0.6), _hand);
-      canvas.drawLine(Offset.zero, Offset(r * 0.4, 0), _hand);
-    }
+    ).createShader(Rect.fromCircle(center: Offset.zero, radius: r * 1.6));
+    canvas.drawCircle(Offset.zero, r * 1.6, _glow);
+    _drawRays(canvas, r);
+    _drawClock(canvas, r);
     if (alpha < 1) canvas.restore();
     canvas.restore();
+  }
+
+  /// Slowly turning sun rays behind the clock.
+  void _drawRays(Canvas canvas, double r) {
+    canvas.save();
+    canvas.rotate(_t * 0.8);
+    _ray.shader ??= const RadialGradient(
+      colors: [Color(0x99FFF3B0), Color(0x00FFF3B0)],
+    ).createShader(Rect.fromCircle(center: Offset.zero, radius: r * 1.9));
+    for (var i = 0; i < 8; i++) {
+      canvas.drawPath(_rayPath(r), _ray);
+      canvas.rotate(math.pi / 4);
+    }
+    canvas.restore();
+  }
+
+  Path? _rayCache;
+  Path _rayPath(double r) => _rayCache ??= Path()
+    ..moveTo(-r * 0.16, 0)
+    ..lineTo(0, -r * 1.9)
+    ..lineTo(r * 0.16, 0)
+    ..close();
+
+  /// The golden alarm clock in vector (docs/04 U-27): bells, a gold body,
+  /// a white face and hands that spin while it flies.
+  void _drawClock(Canvas canvas, double r) {
+    final outline = r * 0.13;
+    _rim.strokeWidth = outline;
+    _gold.shader ??= const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFFFFE066), Color(0xFFFFC300), Color(0xFFFF8F00)],
+    ).createShader(Rect.fromCircle(center: Offset.zero, radius: r));
+    // Bells and the hammer.
+    for (final side in [-1.0, 1.0]) {
+      final c = Offset(side * r * 0.62, -r * 0.82);
+      canvas.drawCircle(c, r * 0.3, _gold);
+      canvas.drawCircle(c, r * 0.3, _rim);
+    }
+    // Legs.
+    _hand.strokeWidth = outline;
+    canvas.drawLine(
+      Offset(-r * 0.55, r * 0.8),
+      Offset(-r * 0.75, r * 1.05),
+      _hand,
+    );
+    canvas.drawLine(
+      Offset(r * 0.55, r * 0.8),
+      Offset(r * 0.75, r * 1.05),
+      _hand,
+    );
+    // Body and face.
+    canvas.drawCircle(Offset.zero, r, _gold);
+    canvas.drawCircle(Offset.zero, r, _rim);
+    canvas.drawCircle(Offset.zero, r * 0.7, _face);
+    _rim.strokeWidth = outline * 0.6;
+    canvas.drawCircle(Offset.zero, r * 0.7, _rim);
+    // Hands: the long one spins a turn a second, the short one slowly.
+    _hand.strokeWidth = r * 0.11;
+    final m = _t * math.pi * 2;
+    final h = _t * math.pi * 0.4;
+    canvas.drawLine(
+      Offset.zero,
+      Offset(math.sin(m), -math.cos(m)) * r * 0.55,
+      _hand,
+    );
+    canvas.drawLine(
+      Offset.zero,
+      Offset(math.sin(h), -math.cos(h)) * r * 0.36,
+      _hand,
+    );
+    canvas.drawCircle(Offset.zero, r * 0.09, _hand);
+    // Shine.
+    canvas.drawArc(
+      Rect.fromCircle(center: Offset.zero, radius: r * 0.84),
+      math.pi * 1.1,
+      math.pi * 0.35,
+      false,
+      _shine..strokeWidth = r * 0.1,
+    );
   }
 }

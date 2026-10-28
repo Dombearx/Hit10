@@ -867,4 +867,764 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationAsk => 'Shall we tell you when your clocks are full?';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsSound => 'Sound effects';
+
+  @override
+  String get settingsMusic => 'Music';
+
+  @override
+  String get settingsHaptics => 'Vibration';
+
+  @override
+  String get settingsNotifications => 'Tell me when the clocks are full';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get languageSystem => 'System';
+
+  @override
+  String get settingsNotation => 'Numbers';
+
+  @override
+  String get notationShort => 'Short (12.4M)';
+
+  @override
+  String get notationScientific => 'Scientific (1.24e7)';
+
+  @override
+  String get settingsReduceMotion => 'Reduce motion';
+
+  @override
+  String get settingsReduceMotionHint =>
+      'No shakes or flashes, fewer particles';
+
+  @override
+  String get settingsSave => 'Save';
+
+  @override
+  String get settingsExport => 'Export';
+
+  @override
+  String get settingsExportDone =>
+      'Save copied to the clipboard. Keep it somewhere safe.';
+
+  @override
+  String get settingsImport => 'Import';
+
+  @override
+  String get settingsImportHint => 'Paste the save text here';
+
+  @override
+  String get settingsImportConfirm =>
+      'Replace the current game with this save?';
+
+  @override
+  String get settingsImportBad => 'That doesn\'t look like a Hit10 save.';
+
+  @override
+  String get settingsReset => 'Start over';
+
+  @override
+  String get settingsResetConfirm1 =>
+      'Sure? You lose everything: Tiki, clocks, Chronons and achievements. Settings stay.';
+
+  @override
+  String settingsResetConfirm2(String word) {
+    return 'Type $word to confirm.';
+  }
+
+  @override
+  String get resetWord => 'RESET';
+
+  @override
+  String get settingsCredits => 'Credits and licences';
+
+  @override
+  String get creditsLegalese =>
+      'Art: Microsoft Fluent Emoji (MIT).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.';
+
+  @override
+  String get settingsOther => 'Other';
+
+  @override
+  String get upg_grandpa_1 => 'Reading Glasses';
+
+  @override
+  String get upg_grandpa_1_desc => 'Finally sees the hands.';
+
+  @override
+  String get upg_grandpa_2 => 'New Battery';
+
+  @override
+  String get upg_grandpa_2_desc => 'First one since cassette tapes.';
+
+  @override
+  String get upg_grandpa_3 => 'Non-slip Slippers';
+
+  @override
+  String get upg_grandpa_3_desc => 'Steady feet, steady thumb.';
+
+  @override
+  String get upg_grandpa_4 => 'Crossword: TIME';
+
+  @override
+  String get upg_grandpa_4_desc => 'Solved in exactly 10.00 s.';
+
+  @override
+  String get upg_grandpa_5 => 'Spa Retreat';
+
+  @override
+  String get upg_grandpa_5_desc => 'Comes back rested and twice as sharp.';
+
+  @override
+  String get upg_grandpa_6 => 'Tech-savvy Grandson';
+
+  @override
+  String get upg_grandpa_6_desc => 'Synced his watch to an atomic server.';
+
+  @override
+  String get upg_grandpa_7 => 'Punctuality Medal';
+
+  @override
+  String get upg_grandpa_7_desc => 'Pinned proudly to the waistcoat.';
+
+  @override
+  String get upg_grandpa_8 => 'Great-grandpa\'s Watch';
+
+  @override
+  String get upg_grandpa_8_desc =>
+      'Ticking in the family for three generations.';
+
+  @override
+  String get upg_grandma_1 => 'Happy Hen Eggs';
+
+  @override
+  String get upg_grandma_1_desc => 'Happy hens, happy timers.';
+
+  @override
+  String get upg_grandma_2 => 'Polka-dot Apron';
+
+  @override
+  String get upg_grandma_2_desc => 'Aerodynamic.';
+
+  @override
+  String get upg_grandma_3 => 'A Second Timer';
+
+  @override
+  String get upg_grandma_3_desc => 'One for the eggs, one for the soup.';
+
+  @override
+  String get upg_grandma_4 => 'Baking Club';
+
+  @override
+  String get upg_grandma_4_desc => 'Precision training. With cake.';
+
+  @override
+  String get upg_grandma_5 => '“Ten-Second Recipes”';
+
+  @override
+  String get upg_grandma_5_desc => 'Quick dishes only.';
+
+  @override
+  String get upg_grandma_6 => 'Induction Hob';
+
+  @override
+  String get upg_grandma_6_desc => 'Boils before you think.';
+
+  @override
+  String get upg_grandma_7 => 'Influencer Granddaughter';
+
+  @override
+  String get upg_grandma_7_desc => 'Films every perfect 10.00.';
+
+  @override
+  String get upg_grandma_8 => 'Golden Rolling Pin';
+
+  @override
+  String get upg_grandma_8_desc => 'A neighbourhood legend.';
+
+  @override
+  String get upg_cuckoo_1 => 'Diction Lessons';
+
+  @override
+  String get upg_cuckoo_1_desc => 'Cuck-oo. Crisp and on time.';
+
+  @override
+  String get upg_cuckoo_2 => 'Fresh Springs';
+
+  @override
+  String get upg_cuckoo_2_desc => 'Pops out like a slingshot.';
+
+  @override
+  String get upg_cuckoo_3 => 'Nest with a View';
+
+  @override
+  String get upg_cuckoo_3_desc => 'Better view, better cuckoos.';
+
+  @override
+  String get upg_cuckoo_4 => 'Cuckoo Choir';
+
+  @override
+  String get upg_cuckoo_4_desc => 'Cuckooing in canon.';
+
+  @override
+  String get upg_cuckoo_5 => 'Swiss Master Class';
+
+  @override
+  String get upg_cuckoo_5_desc => 'Precision straight from the Alps.';
+
+  @override
+  String get upg_cuckoo_6 => 'Espresso Beans';
+
+  @override
+  String get upg_cuckoo_6_desc => 'Cuckoos faster than it means to.';
+
+  @override
+  String get upg_cuckoo_7 => 'A Proper Agent';
+
+  @override
+  String get upg_cuckoo_7_desc => 'Signed for a world tour.';
+
+  @override
+  String get upg_cuckoo_8 => 'Black Forest Original';
+
+  @override
+  String get upg_cuckoo_8_desc => 'Certified, with a pedigree.';
+
+  @override
+  String get upg_metronome_1 => 'New Weight';
+
+  @override
+  String get upg_metronome_1_desc => 'Less wobble, more hits.';
+
+  @override
+  String get upg_metronome_2 => 'Pendulum Oil';
+
+  @override
+  String get upg_metronome_2_desc => 'Silence. Just tick-tock.';
+
+  @override
+  String get upg_metronome_3 => 'Six-Eight Time';
+
+  @override
+  String get upg_metronome_3_desc => 'For a change.';
+
+  @override
+  String get upg_metronome_4 => 'Orchestra Gig';
+
+  @override
+  String get upg_metronome_4_desc => 'A hundred violins watch only him.';
+
+  @override
+  String get upg_metronome_5 => 'Techno Mode';
+
+  @override
+  String get upg_metronome_5_desc => '140 beats a minute, not one off.';
+
+  @override
+  String get upg_metronome_6 => 'Digital Twin';
+
+  @override
+  String get upg_metronome_6_desc => 'Sibling rivalry.';
+
+  @override
+  String get upg_metronome_7 => 'Jazz Quartet Tour';
+
+  @override
+  String get upg_metronome_7_desc => 'Swings, never late.';
+
+  @override
+  String get upg_metronome_8 => 'Golden Pendulum';
+
+  @override
+  String get upg_metronome_8_desc => 'Perfect rhythm.';
+
+  @override
+  String get upg_watchmaker_1 => 'New Loupe';
+
+  @override
+  String get upg_watchmaker_1_desc => 'Sees every gear. Even the mental ones.';
+
+  @override
+  String get upg_watchmaker_2 => 'Screwdriver Set';
+
+  @override
+  String get upg_watchmaker_2_desc => '48 sizes, all of them tiny.';
+
+  @override
+  String get upg_watchmaker_3 => 'Apprentice';
+
+  @override
+  String get upg_watchmaker_3_desc => 'Learns on your Tiki.';
+
+  @override
+  String get upg_watchmaker_4 => 'Window Workbench';
+
+  @override
+  String get upg_watchmaker_4_desc => 'Daylight, daylight precision.';
+
+  @override
+  String get upg_watchmaker_5 => 'Swiss Movement';
+
+  @override
+  String get upg_watchmaker_5_desc => 'Delivered in a padlocked case.';
+
+  @override
+  String get upg_watchmaker_6 => 'Tourbillon';
+
+  @override
+  String get upg_watchmaker_6_desc => 'Spins so it never errs.';
+
+  @override
+  String get upg_watchmaker_7 => 'Watchmakers\' Guild';
+
+  @override
+  String get upg_watchmaker_7_desc =>
+      'Secret knowledge, passed on in whispers.';
+
+  @override
+  String get upg_watchmaker_8 => 'Grand Complication';
+
+  @override
+  String get upg_watchmaker_8_desc => 'Nobody knows what it does. It works.';
+
+  @override
+  String get upg_sprintJudge_1 => 'New Whistle';
+
+  @override
+  String get upg_sprintJudge_1_desc => 'Tweet! Right on time.';
+
+  @override
+  String get upg_sprintJudge_2 => 'Photo Finish';
+
+  @override
+  String get upg_sprintJudge_2_desc => 'Sees one hundredth of a second.';
+
+  @override
+  String get upg_sprintJudge_3 => 'Starter Pistol';
+
+  @override
+  String get upg_sprintJudge_3_desc => 'No bullets, all timing.';
+
+  @override
+  String get upg_sprintJudge_4 => 'Umpire\'s Chair';
+
+  @override
+  String get upg_sprintJudge_4_desc => 'With a view straight down the line.';
+
+  @override
+  String get upg_sprintJudge_5 => 'Olympic Licence';
+
+  @override
+  String get upg_sprintJudge_5_desc => 'It\'s official now.';
+
+  @override
+  String get upg_sprintJudge_6 => 'Video Replay';
+
+  @override
+  String get upg_sprintJudge_6_desc => 'Frame by frame.';
+
+  @override
+  String get upg_sprintJudge_7 => 'World-record Judging';
+
+  @override
+  String get upg_sprintJudge_7_desc => '9.58 s? Too slow.';
+
+  @override
+  String get upg_sprintJudge_8 => 'Golden Stopwatch';
+
+  @override
+  String get upg_sprintJudge_8_desc => 'Times as if it invented time.';
+
+  @override
+  String get upg_stationClock_1 => 'New Timetable';
+
+  @override
+  String get upg_stationClock_1_desc => 'Now accounts for reality.';
+
+  @override
+  String get upg_stationClock_2 => 'Polished Face';
+
+  @override
+  String get upg_stationClock_2_desc => 'Visible from platform five.';
+
+  @override
+  String get upg_stationClock_3 => 'PA Announcement';
+
+  @override
+  String get upg_stationClock_3_desc => '“The 10.00 will arrive on time.”';
+
+  @override
+  String get upg_stationClock_4 => 'Stationmaster';
+
+  @override
+  String get upg_stationClock_4_desc => 'Peaked cap, dead serious.';
+
+  @override
+  String get upg_stationClock_5 => 'High-speed Rail';
+
+  @override
+  String get upg_stationClock_5_desc => 'Fewer delays, more hits.';
+
+  @override
+  String get upg_stationClock_6 => 'Radio-controlled';
+
+  @override
+  String get upg_stationClock_6_desc => 'The radio knows the time.';
+
+  @override
+  String get upg_stationClock_7 => 'Grand Central';
+
+  @override
+  String get upg_stationClock_7_desc => 'A thousand commuters, one clock.';
+
+  @override
+  String get upg_stationClock_8 => 'The Train That Was On Time';
+
+  @override
+  String get upg_stationClock_8_desc => 'A legend nobody believed.';
+
+  @override
+  String get upg_quartz_1 => 'Fresh Crystal';
+
+  @override
+  String get upg_quartz_1_desc => 'Vibrates like new.';
+
+  @override
+  String get upg_quartz_2 => 'Proper Soldering';
+
+  @override
+  String get upg_quartz_2_desc => 'No cold joints, no excuses.';
+
+  @override
+  String get upg_quartz_3 => 'LCD Display';
+
+  @override
+  String get upg_quartz_3_desc => 'Digits straight from the 80s.';
+
+  @override
+  String get upg_quartz_4 => 'Temperature Compensation';
+
+  @override
+  String get upg_quartz_4_desc => 'Doesn\'t care about the weather.';
+
+  @override
+  String get upg_quartz_5 => 'Dual Oscillator';
+
+  @override
+  String get upg_quartz_5_desc => 'Two times 32,768.';
+
+  @override
+  String get upg_quartz_6 => 'Swiss Factory';
+
+  @override
+  String get upg_quartz_6_desc => 'The irony.';
+
+  @override
+  String get upg_quartz_7 => 'Built-in Calculator';
+
+  @override
+  String get upg_quartz_7_desc => 'Counts Tiki on the fly.';
+
+  @override
+  String get upg_quartz_8 => 'Rock Crystal';
+
+  @override
+  String get upg_quartz_8_desc => 'The one from the legends.';
+
+  @override
+  String get upg_atomic_1 => 'Laser Cooling';
+
+  @override
+  String get upg_atomic_1_desc => 'Atoms almost stand still. Almost.';
+
+  @override
+  String get upg_atomic_2 => 'Purer Caesium';
+
+  @override
+  String get upg_atomic_2_desc => 'Caesium-133, no additives.';
+
+  @override
+  String get upg_atomic_3 => 'Atomic Fountain';
+
+  @override
+  String get upg_atomic_3_desc => 'Atoms bounce to the beat.';
+
+  @override
+  String get upg_atomic_4 => 'Optical Clock';
+
+  @override
+  String get upg_atomic_4_desc => 'Measures time with light.';
+
+  @override
+  String get upg_atomic_5 => 'Ion Trap';
+
+  @override
+  String get upg_atomic_5_desc => 'One ion, zero excuses.';
+
+  @override
+  String get upg_atomic_6 => 'Lab Network';
+
+  @override
+  String get upg_atomic_6_desc => 'Every second is put to a vote.';
+
+  @override
+  String get upg_atomic_7 => 'Leap Second';
+
+  @override
+  String get upg_atomic_7_desc => 'Added while nobody was looking.';
+
+  @override
+  String get upg_atomic_8 => 'Nuclear Clock';
+
+  @override
+  String get upg_atomic_8_desc => 'Thorium-229 doesn\'t do jokes.';
+
+  @override
+  String get upg_gps_1 => 'Better Antenna';
+
+  @override
+  String get upg_gps_1_desc => 'Hears Earth more clearly.';
+
+  @override
+  String get upg_gps_2 => 'Relativity Fix';
+
+  @override
+  String get upg_gps_2_desc => 'Einstein would be proud.';
+
+  @override
+  String get upg_gps_3 => 'Bigger Solar Panel';
+
+  @override
+  String get upg_gps_3_desc => 'More power, more ticks.';
+
+  @override
+  String get upg_gps_4 => 'Constellation';
+
+  @override
+  String get upg_gps_4_desc => '31 friends in orbit.';
+
+  @override
+  String get upg_gps_5 => 'Ionosphere Correction';
+
+  @override
+  String get upg_gps_5_desc => 'Through clouds and storms.';
+
+  @override
+  String get upg_gps_6 => 'Ground Station';
+
+  @override
+  String get upg_gps_6_desc => 'Someone keeps watch from below.';
+
+  @override
+  String get upg_gps_7 => 'Laser Link';
+
+  @override
+  String get upg_gps_7_desc => 'Satellites whispering in light.';
+
+  @override
+  String get upg_gps_8 => 'Geostationary Orbit';
+
+  @override
+  String get upg_gps_8_desc => 'Always in the same place. Always on time.';
+
+  @override
+  String get upg_pulsar_1 => 'Bigger Dish';
+
+  @override
+  String get upg_pulsar_1_desc => 'Hears every pulse.';
+
+  @override
+  String get upg_pulsar_2 => 'Millisecond Pulsar';
+
+  @override
+  String get upg_pulsar_2_desc => '700 spins a second.';
+
+  @override
+  String get upg_pulsar_3 => 'Sky Map';
+
+  @override
+  String get upg_pulsar_3_desc => 'Finally we know where to look.';
+
+  @override
+  String get upg_pulsar_4 => 'Pulsar Timing Array';
+
+  @override
+  String get upg_pulsar_4_desc => 'A cosmic metronome choir.';
+
+  @override
+  String get upg_pulsar_5 => 'Gravitational Waves';
+
+  @override
+  String get upg_pulsar_5_desc => 'Spacetime wobbles on the beat.';
+
+  @override
+  String get upg_pulsar_6 => 'Magnetar';
+
+  @override
+  String get upg_pulsar_6_desc => 'A pulsar with attitude.';
+
+  @override
+  String get upg_pulsar_7 => 'Cosmic Lighthouse';
+
+  @override
+  String get upg_pulsar_7_desc => 'Guides ships home. On time.';
+
+  @override
+  String get upg_pulsar_8 => 'Heart of the Galaxy';
+
+  @override
+  String get upg_pulsar_8_desc => 'The whole Milky Way ticks along.';
+
+  @override
+  String get upg_timeMachine_1 => 'Flux Capacitor';
+
+  @override
+  String get upg_timeMachine_1_desc => '1.21 gigawatts, not a watt less.';
+
+  @override
+  String get upg_timeMachine_2 => 'Seat Belts';
+
+  @override
+  String get upg_timeMachine_2_desc => 'In case of paradox.';
+
+  @override
+  String get upg_timeMachine_3 => 'Note from the Future';
+
+  @override
+  String get upg_timeMachine_3_desc => '“Tap now.”';
+
+  @override
+  String get upg_timeMachine_4 => 'Time Loop';
+
+  @override
+  String get upg_timeMachine_4_desc =>
+      'Practises the same ten seconds forever.';
+
+  @override
+  String get upg_timeMachine_5 => 'Spare Timeline';
+
+  @override
+  String get upg_timeMachine_5_desc => 'Just in case.';
+
+  @override
+  String get upg_timeMachine_6 => 'Tours to 10.00';
+
+  @override
+  String get upg_timeMachine_6_desc => 'Guided, of course.';
+
+  @override
+  String get upg_timeMachine_7 => 'Meeting Yourself';
+
+  @override
+  String get upg_timeMachine_7_desc => 'Polite, but weird.';
+
+  @override
+  String get upg_timeMachine_8 => 'End of Time';
+
+  @override
+  String get upg_timeMachine_8_desc => 'One-way ticket.';
+
+  @override
+  String get upg_schrodinger_1 => 'Bigger Box';
+
+  @override
+  String get upg_schrodinger_1_desc => 'More room for uncertainty.';
+
+  @override
+  String get upg_schrodinger_2 => 'Quantum Kibble';
+
+  @override
+  String get upg_schrodinger_2_desc => 'Eaten and not eaten.';
+
+  @override
+  String get upg_schrodinger_3 => 'Entangled Yarn';
+
+  @override
+  String get upg_schrodinger_3_desc => 'Entanglement on demand.';
+
+  @override
+  String get upg_schrodinger_4 => 'Superposition Catnip';
+
+  @override
+  String get upg_schrodinger_4_desc => 'Purrs in two states at once.';
+
+  @override
+  String get upg_schrodinger_5 => 'Observer on Holiday';
+
+  @override
+  String get upg_schrodinger_5_desc => 'No one looks, everything hits.';
+
+  @override
+  String get upg_schrodinger_6 => 'A Second Cat';
+
+  @override
+  String get upg_schrodinger_6_desc => 'Now there are four states.';
+
+  @override
+  String get upg_schrodinger_7 => 'Many Worlds';
+
+  @override
+  String get upg_schrodinger_7_desc => 'In one of them it\'s always 10.00.';
+
+  @override
+  String get upg_schrodinger_8 => 'Box Opened';
+
+  @override
+  String get upg_schrodinger_8_desc => 'It hit. Definitely hit.';
+
+  @override
+  String get upg_chronos_1 => 'Sharpened Scythe';
+
+  @override
+  String get upg_chronos_1_desc => 'Slices seconds into hundredths.';
+
+  @override
+  String get upg_chronos_2 => 'Olympian Hourglass';
+
+  @override
+  String get upg_chronos_2_desc => 'Sand straight from the gods.';
+
+  @override
+  String get upg_chronos_3 => 'Temple';
+
+  @override
+  String get upg_chronos_3_desc => 'The faithful bring watches.';
+
+  @override
+  String get upg_chronos_4 => 'A Word with Kairos';
+
+  @override
+  String get upg_chronos_4_desc => 'About the right moment.';
+
+  @override
+  String get upg_chronos_5 => 'Throne of Gears';
+
+  @override
+  String get upg_chronos_5_desc => 'Comfy, if a bit ticky.';
+
+  @override
+  String get upg_chronos_6 => 'Pantheon of Punctuality';
+
+  @override
+  String get upg_chronos_6_desc => 'Gods who are never late.';
+
+  @override
+  String get upg_chronos_7 => 'Eternity';
+
+  @override
+  String get upg_chronos_7_desc => 'Has time. Literally.';
+
+  @override
+  String get upg_chronos_8 => 'The Absolute Second';
+
+  @override
+  String get upg_chronos_8_desc => '10.00. Always was, always will be.';
 }
