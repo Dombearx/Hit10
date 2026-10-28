@@ -29,9 +29,17 @@ class Economy {
     return c.baseCost * math.pow(c.costGrowth, l);
   }
 
-  /// The first rounds of a brand-new game (never prestiged): wider windows
-  /// and a bigger payout, so a new player buys within a minute (playtest 08).
-  bool get beginner => s.chronons == 0 && s.stats.rounds < b.beginner.rounds;
+  /// How much beginner's luck is left: 1 for the first rounds of a
+  /// brand-new game (never prestiged), fading to 0 (playtest 08).
+  double get beginnerShare {
+    final n = b.beginner;
+    final r = s.stats.rounds;
+    if (s.chronons > 0 || r >= n.rounds + n.fadeRounds) return 0;
+    if (r < n.rounds) return 1;
+    return 1 - (r - n.rounds) / n.fadeRounds;
+  }
+
+  bool get beginner => beginnerShare > 0;
 
   /// Windows from skills; generators always use these.
   Windows windows() =>
@@ -41,14 +49,20 @@ class Economy {
   /// beginner's luck at the very start.
   Windows playerWindows() {
     final w = windows();
-    if (!beginner) return w;
+    final k = beginnerShare;
+    if (k == 0) return w;
     final n = b.beginner;
+    double mix(double base, double wide) =>
+        math.max(base, base + (wide - base) * k);
     return Windows(
-      perfect: math.max(w.perfect, n.perfect),
-      great: math.max(w.great, n.great),
-      good: math.max(w.good, n.good),
+      perfect: mix(w.perfect, n.perfect),
+      great: mix(w.great, n.great),
+      good: mix(w.good, n.good),
     );
   }
+
+  /// The payout factor from beginner's luck (×3 → ×1).
+  double beginnerPay() => 1 + (b.beginner.rewardMultiplier - 1) * beginnerShare;
 
   Windows windowsAt({int magnet = 0, int wideEye = 0}) {
     final we = 1 + _per('wideEye') * wideEye;

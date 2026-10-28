@@ -50,8 +50,14 @@ class BeginnerConfig {
       perfect = _d(j['perfect']),
       great = _d(j['great']),
       good = _d(j['good']),
-      rewardMultiplier = _d(j['rewardMultiplier']);
+      rewardMultiplier = _d(j['rewardMultiplier']),
+      fadeRounds = _i(j['fadeRounds']);
   final int rounds;
+
+  /// After [rounds], the bonus fades out linearly over this many rounds
+  /// instead of stopping at once (playtest 08: hits fell from ~90% to ~55%
+  /// between round 10 and 11).
+  final int fadeRounds;
   final double perfect;
   final double great;
   final double good;

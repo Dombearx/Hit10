@@ -321,7 +321,9 @@ na wypłatę z dotknięć gracza.
 
 - **R-TUT-3:** Pierwsze **10 rund** nowej gry (przed pierwszym paradoksem)
   ma szersze okna gracza (PERFEKT ±10 ms, ŚWIETNIE ±40 ms, DOBRZE ±120 ms)
-  i **potrójną wypłatę**. Generatory tego nie dostają. Cel: pierwszy zakup
+  i **potrójną wypłatę**; przez kolejne 20 rund premia maleje liniowo do
+  zera (bez progu — w playteście trafialność spadała z ~90% do ~55% między
+  10. a 11. rundą). Generatory tego nie dostają. Cel: pierwszy zakup
   w ok. minutę także dla gracza nieprecyzyjnego.
 
 ## 12. Statystyki

@@ -321,10 +321,7 @@ class GameEngine {
     if (!g.isHit) return 0;
     final t = b.tier(g.tier.name);
     final flat =
-        t.reward *
-        econ.strikePower() *
-        globalMultiplier() *
-        (econ.beginner ? b.beginner.rewardMultiplier : 1);
+        t.reward * econ.strikePower() * globalMultiplier() * econ.beginnerPay();
     final echo = econ.echoSeconds() * t.echoShare * passive();
     return (flat + echo) * combo * mode;
   }

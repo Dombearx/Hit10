@@ -25,9 +25,16 @@ void main() {
       expect(w.good, b.beginner.good);
       expect(w.perfect, b.beginner.perfect);
       final pay = e.hitPayout(const Grade(Tier.perfect, 0));
-      s.stats.rounds = b.beginner.rounds;
-      expect(e.econ.playerWindows().good, e.econ.windows().good);
-      expect(pay, e.hitPayout(const Grade(Tier.perfect, 0)) * 3);
+      // Halfway through the fade: half the extra width, ×2 pay.
+      s.stats.rounds = b.beginner.rounds + b.beginner.fadeRounds ~/ 2;
+      final base = e.econ.windows().good;
+      expect(
+        e.econ.playerWindows().good,
+        closeTo((base + b.beginner.good) / 2, 1e-12),
+      );
+      s.stats.rounds = b.beginner.rounds + b.beginner.fadeRounds;
+      expect(e.econ.playerWindows().good, base);
+      expect(pay, closeTo(e.hitPayout(const Grade(Tier.perfect, 0)) * 3, 1e-9));
     });
 
     test('never after a paradox, never for generators', () {
