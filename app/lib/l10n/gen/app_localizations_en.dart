@@ -1634,14 +1634,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAdPrivacy => 'Ad privacy choices';
-
-  @override
-  String tip_early(int ms) {
-    return 'You tap $ms ms early on average. Wait a hair longer!';
-  }
-
-  @override
-  String tip_late(int ms) {
-    return 'You tap $ms ms late on average. Try a touch sooner!';
-  }
 }

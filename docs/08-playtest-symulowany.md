@@ -70,8 +70,9 @@ stałe. Problem leży w pierwszych minutach.
 3. **Auto-start do pierwszej przerwy:** po 2 rundach bez dotknięcia stoper
    czeka na dotyk zamiast kręcić dalej.
 4. **Turbo:** odnowienie 5 min między reklamami (zapas do 4 h zostaje).
-5. **Podpowiedź po kilku rundach:** „Klikasz średnio 0,03 s za wcześnie”
-   jako dymek (dane już są w statystykach).
+5. ~~Podpowiedź o średnim błędzie~~ — odrzucona: każdy wynik pokazuje
+   dokładny błąd, a średnia jest w statystykach; kolejny dymek nie jest
+   potrzebny.
 
 ## Test zamknięty (12 osób × 14 dni)
 

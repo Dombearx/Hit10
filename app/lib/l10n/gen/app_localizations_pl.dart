@@ -1636,14 +1636,4 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get settingsAdPrivacy => 'Prywatność reklam';
-
-  @override
-  String tip_early(int ms) {
-    return 'Klikasz średnio $ms ms za wcześnie. Poczekaj ułamek sekundy dłużej!';
-  }
-
-  @override
-  String tip_late(int ms) {
-    return 'Klikasz średnio $ms ms za późno. Spróbuj odrobinę wcześniej!';
-  }
 }

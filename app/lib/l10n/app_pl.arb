@@ -505,7 +505,5 @@
   "upg_chronos_8": "Sekunda absolutna",
   "upg_chronos_8_desc": "10,00. Od zawsze i na zawsze.",
   "settingsPrivacyPolicy": "Polityka prywatności",
-  "settingsAdPrivacy": "Prywatność reklam",
-  "tip_early": "Klikasz średnio {ms} ms za wcześnie. Poczekaj ułamek sekundy dłużej!",
-  "tip_late": "Klikasz średnio {ms} ms za późno. Spróbuj odrobinę wcześniej!"
+  "settingsAdPrivacy": "Prywatność reklam"
 }

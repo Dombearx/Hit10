@@ -899,21 +899,5 @@
   "upg_chronos_8": "The Absolute Second",
   "upg_chronos_8_desc": "10.00. Always was, always will be.",
   "settingsPrivacyPolicy": "Privacy policy",
-  "settingsAdPrivacy": "Ad privacy choices",
-  "tip_early": "You tap {ms} ms early on average. Wait a hair longer!",
-  "tip_late": "You tap {ms} ms late on average. Try a touch sooner!",
-  "@tip_early": {
-    "placeholders": {
-      "ms": {
-        "type": "int"
-      }
-    }
-  },
-  "@tip_late": {
-    "placeholders": {
-      "ms": {
-        "type": "int"
-      }
-    }
-  }
+  "settingsAdPrivacy": "Ad privacy choices"
 }

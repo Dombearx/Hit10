@@ -32,8 +32,6 @@ class TutorialBubble extends StatelessWidget {
             'golden' => l.tip_golden,
             'combo' => l.tip_combo,
             'prestige' => l.tip_prestige,
-            'early' => l.tip_early(c.state.stats.meanError.abs().ms),
-            'late' => l.tip_late(c.state.stats.meanError.abs().ms),
             _ => null,
           };
           showOk = true;
@@ -83,9 +81,4 @@ class TutorialBubble extends StatelessWidget {
       ),
     );
   }
-}
-
-extension on double {
-  /// Seconds as whole milliseconds.
-  int get ms => (this * 1000).round();
 }

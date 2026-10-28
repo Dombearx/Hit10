@@ -323,8 +323,6 @@ na wypłatę z dotknięć gracza.
   ma szersze okna gracza (PERFEKT ±10 ms, ŚWIETNIE ±40 ms, DOBRZE ±120 ms)
   i **potrójną wypłatę**. Generatory tego nie dostają. Cel: pierwszy zakup
   w ok. minutę także dla gracza nieprecyzyjnego.
-- **R-TUT-4:** Gdy po 15 dotknięciach średni błąd przekracza 25 ms, gra
-  raz podpowiada „Klikasz średnio X ms za wcześnie/za późno”.
 
 ## 12. Statystyki
 

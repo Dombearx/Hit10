@@ -330,7 +330,6 @@ class GameController extends ChangeNotifier {
         if (state.comboStreak >= 3) _tip('combo');
         _playFeedback(o);
         _feedback.add(HitFeedback(o, gameTime, clock: slot.index));
-        _biasTip();
         _checkAchievements(
           AchievementContext(
             now: local,
@@ -517,14 +516,6 @@ class GameController extends ChangeNotifier {
     engine.goldenEnabled = true;
     notifyListeners();
     unawaited(save());
-  }
-
-  /// A systematic early or late habit gets one friendly hint (playtest 08).
-  void _biasTip() {
-    final st = state.stats;
-    if (st.recentErrors.length < 15) return;
-    final m = st.meanError;
-    if (m.abs() >= 0.025) _tip(m < 0 ? 'early' : 'late');
   }
 
   void _tip(String id) {
