@@ -31,13 +31,17 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
   void initState() {
     super.initState();
     widget.controller.addListener(_onChange);
+    widget.controller.bulletZone.addListener(_onZone);
+  }
+
+  void _onZone() {
+    final zone = widget.controller.inBulletZone;
+    if (zone != _zone) setState(() => _zone = zone);
   }
 
   bool _zone = false;
 
   void _onChange() {
-    final zone = widget.controller.inBulletZone;
-    if (zone != _zone) setState(() => _zone = zone);
     final on = widget.controller.engine.frenzyLeft > 0;
     if (on && !_pulse.isAnimating) _pulse.repeat();
     if (!on && _pulse.isAnimating) {
@@ -49,6 +53,7 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
   @override
   void dispose() {
     widget.controller.removeListener(_onChange);
+    widget.controller.bulletZone.removeListener(_onZone);
     _pulse.dispose();
     super.dispose();
   }
@@ -112,7 +117,9 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
           ),
         );
       },
-      child: widget.child,
+      // The game repaints on its own; the pulsing background and the
+      // vignette must not drag the whole screen into every frame.
+      child: RepaintBoundary(child: widget.child),
     );
   }
 
