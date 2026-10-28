@@ -70,7 +70,7 @@ Rozstrzygamy też, czy potrzebna jest kalibracja opóźnienia ekranu (T-13).
 - [ ] Sklep „Zegary”: karty z emoji (04 §4.1), pasek ulepszeń, sylwetki
       „???”
 - [ ] Zapis: atomowy, kopia, migracje, eksport/import (T-17…T-20)
-- [ ] Offline z oknem „Gdy cię nie było…” (R-OFF-*)
+- [ ] Offline z oknem „Gdy cię nie było…” (R-OFF-1…3)
 - [ ] Symulator w Dart (`tool/simulate.dart --check`) z tym samym kodem
       ekonomii co gra. Wyniki porównane z `design/` (06 §1.2).
 
