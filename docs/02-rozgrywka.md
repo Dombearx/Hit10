@@ -26,7 +26,12 @@ Te dwa czasy różnią się przez Przewijanie i bullet time.
   (pudło). Jeśli gracz nie dotknie do `10.30`, runda kończy się wynikiem
   **ZA PÓŹNO** (pudło).
 - **R-RUNDA-6:** Po wyniku trwa pauza `0.7 s` (efekty, liczby), po której
-  **następna runda startuje automatycznie**.
+  **następna runda startuje automatycznie** — chyba że 2 ostatnie rundy
+  minęły bez dotknięcia (telefon odłożony): wtedy stoper czeka na dotyk
+  (08, playtest).
+- **R-RUNDA-6a:** Runda **bez dotknięcia** to runda pominięta, a nie pudło:
+  nie zeruje serii, nie zużywa Tarczy, nic nie płaci i nie liczy się do
+  statystyk trafień (08: zaglądanie do sklepu nie może karać).
 - **R-RUNDA-7:** Przy pierwszym uruchomieniu i po powrocie do aplikacji zegar
   stoi na `0.00` z napisem „Dotknij, aby zacząć”. Pierwsze dotknięcie startuje
   rundę i nie jest oceniane.
@@ -76,8 +81,8 @@ Te dwa czasy różnią się przez Przewijanie i bullet time.
 - **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + 1.5·L_siła) · G + 0.5 s · L_echo · udział_echa · P) · combo · mnożnik_trybu`
   - `G` to globalny mnożnik (osiągnięcia, Chronony, Szał), patrz 03;
   - `P` to aktualny dochód pasywny na sekundę (już z `G`).
-- **R-COMBO-1:** `seria` rośnie o krok combo progu (tabela wyżej). Pudło zeruje
-  serię, chyba że gracz ma ładunek Tarczy (zużywa go wtedy, a seria zostaje).
+- **R-COMBO-1:** `seria` rośnie o krok combo progu (tabela wyżej). Pudło
+  (dotknięcie za wcześnie lub za późno, R-RUNDA-6a) zeruje serię, chyba że gracz ma ładunek Tarczy (zużywa go wtedy, a seria zostaje).
 - **R-COMBO-2:** `combo = 1 + 0.05 · min(seria, limit)`, a
   `limit = 5 + 2·L_combo`, czyli od 5 do 25 (×1.25 do ×2.25).
 - **R-COMBO-3:** Combo mnoży **całą** wypłatę, razem z Echem. Bez tego
@@ -312,6 +317,15 @@ na wypłatę z dotknięć gracza.
 - **R-TUT-2:** Nowe mechaniki (pierwsza umiejętność, Złota Sekunda, combo,
   prestiż) mają jednorazowy dymek z wyjaśnieniem przy pierwszym pojawieniu się.
 
+### 11.1 Szczęście początkującego (08, playtest)
+
+- **R-TUT-3:** Pierwsze **10 rund** nowej gry (przed pierwszym paradoksem)
+  ma szersze okna gracza (PERFEKT ±10 ms, ŚWIETNIE ±40 ms, DOBRZE ±120 ms)
+  i **potrójną wypłatę**. Generatory tego nie dostają. Cel: pierwszy zakup
+  w ok. minutę także dla gracza nieprecyzyjnego.
+- **R-TUT-4:** Gdy po 15 dotknięciach średni błąd przekracza 25 ms, gra
+  raz podpowiada „Klikasz średnio X ms za wcześnie/za późno”.
+
 ## 12. Statystyki
 
 - **R-STAT-1:** Ekran statystyk pokazuje:
@@ -334,7 +348,7 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 | id | Oferta PL / EN | Gdzie | Nagroda | Ograniczenie |
 |---|---|---|---|---|
 | `adOffline` | Podwój / Double it | okno „Gdy cię nie było…” | ×2 dochodu offline | tylko przy nieobecności ≥ 30 min |
-| `adTurbo` | Turbo / Turbo | przycisk przy zegarze | **×2 całego dochodu** na 30 min | zapas najwyżej 4 h; czas Turbo płynie tylko podczas gry |
+| `adTurbo` | Turbo / Turbo | przycisk przy zegarze | **×2 całego dochodu** na 30 min | zapas najwyżej 4 h; czas Turbo płynie tylko podczas gry; kolejna reklama Turbo najwcześniej po 5 min (08) |
 | `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu | raz na 30 min |
 | `adRescue` | Ratunek combo / Combo Rescue | wyskakuje od razu po utracie serii ≥ 15 | przywraca serię sprzed pudła | raz na 15 min; okno znika po 5 s albo przy następnym dotknięciu |
 | `adGolden` | Złota Sekunda / Golden Second | przycisk przy zegarze | Złota Sekunda pojawia się od razu | raz na 30 min |

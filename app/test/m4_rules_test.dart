@@ -119,13 +119,16 @@ void main() {
       expect(ads.available(AdOffer.turbo, 0), isFalse);
     });
 
-    test('turbo stacks to 4 h, drains only in play, feeds G', () {
+    test('turbo stacks to 4 h, 5 min apart, drains only in play, feeds G', () {
+      const gap = 300 * 1000;
       for (var i = 0; i < 8; i++) {
-        expect(ads.available(AdOffer.turbo, 0), isTrue);
-        ads.grant(AdOffer.turbo, 0);
+        expect(ads.available(AdOffer.turbo, i * gap), isTrue);
+        ads.grant(AdOffer.turbo, i * gap);
+        // Playtest 08: no chaining ads back to back.
+        expect(ads.available(AdOffer.turbo, i * gap + gap - 1), isFalse);
       }
       expect(s.turboLeft, 14400);
-      expect(ads.available(AdOffer.turbo, 0), isFalse);
+      expect(ads.available(AdOffer.turbo, 9 * gap), isFalse); // full
       ads.tick(1);
       expect(e.passive(), closeTo(2, 1e-9));
       ads.tick(14400);

@@ -959,7 +959,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_hidden_nap_desc.
   ///
   /// In en, this message translates to:
-  /// **'10 rounds in a row without a tap'**
+  /// **'Put the phone down until the stopwatch stops by itself'**
   String get ach_hidden_nap_desc;
 
   /// No description provided for @ach_hidden_almost.
@@ -3091,6 +3091,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ad privacy choices'**
   String get settingsAdPrivacy;
+
+  /// No description provided for @tip_early.
+  ///
+  /// In en, this message translates to:
+  /// **'You tap {ms} ms early on average. Wait a hair longer!'**
+  String tip_early(int ms);
+
+  /// No description provided for @tip_late.
+  ///
+  /// In en, this message translates to:
+  /// **'You tap {ms} ms late on average. Try a touch sooner!'**
+  String tip_late(int ms);
 }
 
 class _AppLocalizationsDelegate

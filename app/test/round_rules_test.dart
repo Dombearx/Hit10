@@ -63,6 +63,7 @@ void main() {
     });
 
     test('combo multiplies the whole payout including echo (R-COMBO-3)', () {
+      s.stats.rounds = 10; // past beginner's luck
       s.owned['grandma'] = 10;
       s.skills.addAll({'echo': 2, 'combo': 10});
       s.comboStreak = 8; // → 10 after this perfect

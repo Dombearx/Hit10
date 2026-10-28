@@ -523,7 +523,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ach_hidden_nap => 'Nap time';
 
   @override
-  String get ach_hidden_nap_desc => '10 rounds in a row without a tap';
+  String get ach_hidden_nap_desc =>
+      'Put the phone down until the stopwatch stops by itself';
 
   @override
   String get ach_hidden_almost => 'So close';
@@ -1633,4 +1634,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAdPrivacy => 'Ad privacy choices';
+
+  @override
+  String tip_early(int ms) {
+    return 'You tap $ms ms early on average. Wait a hair longer!';
+  }
+
+  @override
+  String tip_late(int ms) {
+    return 'You tap $ms ms late on average. Try a touch sooner!';
+  }
 }

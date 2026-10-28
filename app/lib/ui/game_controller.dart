@@ -196,7 +196,7 @@ class GameController extends ChangeNotifier {
   RoundEngine _newRound() => RoundEngine(
     config: balance.round,
     timeMapFor: () => econ.timeMap(clock: engine.clockSpeed()),
-    windowsFor: econ.windows,
+    windowsFor: econ.playerWindows,
   );
 
   void _rebuildClocks() {
@@ -250,11 +250,11 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  /// Called every frame by the arena.
   /// QA builds only (store screenshots): holds the rounds still, so a
   /// result can be captured before the next round starts (R-RUNDA-6).
   bool qaFrozen = false;
 
+  /// Called every frame by the arena.
   void tick() {
     if (qaFrozen) return;
     final t = now();
@@ -266,7 +266,9 @@ class GameController extends ChangeNotifier {
       _handle(clocks[1], clocks[1].round.tap(start));
     }
     var inZone = false;
+    final idle = state.lifetime.missedInARow >= balance.round.idleStopAfter;
     for (final c in clocks) {
+      c.round.autoStart = !idle;
       _handle(c, c.round.update(t));
       inZone |= _roundSounds(c, t);
     }
@@ -328,6 +330,7 @@ class GameController extends ChangeNotifier {
         if (state.comboStreak >= 3) _tip('combo');
         _playFeedback(o);
         _feedback.add(HitFeedback(o, gameTime, clock: slot.index));
+        _biasTip();
         _checkAchievements(
           AchievementContext(
             now: local,
@@ -341,6 +344,8 @@ class GameController extends ChangeNotifier {
   }
 
   void _playFeedback(RoundOutcome o) {
+    // A skipped round (no touch) passes quietly: nobody is looking.
+    if (o.raw.missKind == MissKind.noTap) return;
     // Ding rises a semitone every two streak steps, up to an octave (U-15).
     final pitch = math.pow(2, math.min(o.streak ~/ 2, 12) / 12).toDouble();
     switch (o.tier) {
@@ -512,6 +517,14 @@ class GameController extends ChangeNotifier {
     engine.goldenEnabled = true;
     notifyListeners();
     unawaited(save());
+  }
+
+  /// A systematic early or late habit gets one friendly hint (playtest 08).
+  void _biasTip() {
+    final st = state.stats;
+    if (st.recentErrors.length < 15) return;
+    final m = st.meanError;
+    if (m.abs() >= 0.025) _tip(m < 0 ? 'early' : 'late');
   }
 
   void _tip(String id) {

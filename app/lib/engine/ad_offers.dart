@@ -35,6 +35,7 @@ class AdOffers {
     AdOffer.bag => cfg.bagCooldown,
     AdOffer.rescue => cfg.rescueCooldown,
     AdOffer.golden => cfg.goldenCooldown,
+    AdOffer.turbo => cfg.turboCooldown,
     _ => 0,
   };
 

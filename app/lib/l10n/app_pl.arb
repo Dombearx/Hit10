@@ -143,7 +143,7 @@
   "ach_hidden_impatient": "Niecierpliwy",
   "ach_hidden_impatient_desc": "100 razy ZA WCZEŚNIE",
   "ach_hidden_nap": "Drzemka",
-  "ach_hidden_nap_desc": "10 rund z rzędu bez dotknięcia",
+  "ach_hidden_nap_desc": "Odłóż telefon, aż stoper sam się zatrzyma",
   "ach_hidden_almost": "Prawie",
   "ach_hidden_almost_desc": "9.99, a potem 10.01",
   "ach_hidden_punctual": "Punktualny",
@@ -505,5 +505,7 @@
   "upg_chronos_8": "Sekunda absolutna",
   "upg_chronos_8_desc": "10,00. Od zawsze i na zawsze.",
   "settingsPrivacyPolicy": "Polityka prywatności",
-  "settingsAdPrivacy": "Prywatność reklam"
+  "settingsAdPrivacy": "Prywatność reklam",
+  "tip_early": "Klikasz średnio {ms} ms za wcześnie. Poczekaj ułamek sekundy dłużej!",
+  "tip_late": "Klikasz średnio {ms} ms za późno. Spróbuj odrobinę wcześniej!"
 }

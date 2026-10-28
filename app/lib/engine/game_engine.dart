@@ -197,6 +197,30 @@ class GameEngine {
   /// Applies Luck, Hot hand, the combo and the Shield, pays out and records
   /// statistics (docs/02 §2–§3, §6). [mode] is the risk-mode multiplier.
   RoundOutcome resolveRound(Grade g, {double mode = 1}) {
+    // No touch at all is a skipped round, not a miss (playtest 08): looking
+    // at the shop or putting the phone down costs nothing but the round.
+    if (g.missKind == MissKind.noTap) {
+      s.lifetime.missedInARow++;
+      GoldenOutcome? golden;
+      if (goldenRound) {
+        goldenRound = false;
+        golden = _resolveGolden(Tier.miss);
+      }
+      final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
+      return RoundOutcome(
+        raw: g,
+        tier: Tier.miss,
+        payout: 0,
+        combo: combo,
+        streak: s.comboStreak,
+        streakBefore: s.comboStreak,
+        comboBroken: false,
+        shieldUsed: false,
+        bumpedByLuck: false,
+        hotHand: false,
+        golden: golden,
+      );
+    }
     var tier = g.tier;
     var bumped = false;
     final hot = hotHandLeft > 0 && tier != Tier.miss;
@@ -264,8 +288,7 @@ class GameEngine {
   }
 
   void _recordStats(Grade raw, Tier tier) {
-    final tapped = raw.missKind != MissKind.noTap;
-    s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: tapped);
+    s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: true);
     final l = s.lifetime;
     if (tier == Tier.perfect) {
       l.perfects++;
@@ -276,7 +299,7 @@ class GameEngine {
     }
     l.bestCombo = math.max(l.bestCombo, s.comboStreak);
     if (raw.missKind == MissKind.early) l.earlyTaps++;
-    l.missedInARow = raw.missKind == MissKind.noTap ? l.missedInARow + 1 : 0;
+    l.missedInARow = 0;
   }
 
   double passive() => econ.passive(frenzy: frenzy, turbo: turbo);
@@ -297,7 +320,11 @@ class GameEngine {
   double hitPayout(Grade g, {double combo = 1, double mode = 1}) {
     if (!g.isHit) return 0;
     final t = b.tier(g.tier.name);
-    final flat = t.reward * econ.strikePower() * globalMultiplier();
+    final flat =
+        t.reward *
+        econ.strikePower() *
+        globalMultiplier() *
+        (econ.beginner ? b.beginner.rewardMultiplier : 1);
     final echo = econ.echoSeconds() * t.echoShare * passive();
     return (flat + echo) * combo * mode;
   }

@@ -77,6 +77,10 @@ class RoundEngine {
     _windows = windowsFor();
   }
 
+  /// Whether the next round starts by itself after a result (R-RUNDA-6).
+  /// The controller turns it off after untapped rounds.
+  bool autoStart = true;
+
   /// Handles a pointer-down at [now]. Returns what happened, or null when the
   /// tap was ignored (grace period, result pause).
   RoundEvent? tap(double now) {
@@ -110,6 +114,11 @@ class RoundEngine {
         );
       case RoundPhase.result:
         if (now < _resultUntil) return null;
+        if (!autoStart) {
+          // Nobody is playing: wait for a touch (R-RUNDA-6, playtest 08).
+          _phase = RoundPhase.waiting;
+          return null;
+        }
         _begin(_resultUntil);
         return const RoundStarted();
     }

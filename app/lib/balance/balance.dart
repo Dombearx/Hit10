@@ -27,7 +27,8 @@ class RoundConfig {
       resultPause = _d(j['resultPause']),
       fastForwardEnd = _d(j['fastForwardEnd']),
       bulletZone = _d(j['bulletZone']),
-      secondClockOffset = _d(j['secondClockOffset']);
+      secondClockOffset = _d(j['secondClockOffset']),
+      idleStopAfter = _i(j['idleStopAfter']);
   final double target;
   final double autoEndAfter;
   final double inputGraceAfterStart;
@@ -35,6 +36,26 @@ class RoundConfig {
   final double fastForwardEnd;
   final double bulletZone;
   final double secondClockOffset;
+
+  /// Untapped rounds in a row after which the stopwatch waits for a touch
+  /// instead of starting the next round (phone put down, playtest 08).
+  final int idleStopAfter;
+}
+
+/// "Beginner's luck" (playtest 08): wider hit windows for the first
+/// [rounds] rounds, so a new player lands hits and buys within a minute.
+class BeginnerConfig {
+  BeginnerConfig(Map<String, Object?> j)
+    : rounds = _i(j['rounds']),
+      perfect = _d(j['perfect']),
+      great = _d(j['great']),
+      good = _d(j['good']),
+      rewardMultiplier = _d(j['rewardMultiplier']);
+  final int rounds;
+  final double perfect;
+  final double great;
+  final double good;
+  final double rewardMultiplier;
 }
 
 class TierConfig {
@@ -237,6 +258,7 @@ class AdsConfig {
       turboMultiplier = _d(_m(j['turbo'])['multiplier']),
       turboDuration = _d(_m(j['turbo'])['duration']),
       turboMaxStock = _d(_m(j['turbo'])['maxStock']),
+      turboCooldown = _d(_m(j['turbo'])['cooldown']),
       bagProductionSeconds = _d(_m(j['bag'])['productionSeconds']),
       bagCooldown = _d(_m(j['bag'])['cooldown']),
       rescueMinStreak = _i(_m(j['rescue'])['minStreak']),
@@ -249,6 +271,9 @@ class AdsConfig {
   final double turboMultiplier;
   final double turboDuration;
   final double turboMaxStock;
+
+  /// Between two Turbo ads (playtest 08: players chained 8 in 3 minutes).
+  final double turboCooldown;
   final double bagProductionSeconds;
   final double bagCooldown;
   final int rescueMinStreak;
@@ -284,6 +309,7 @@ class Balance {
       achievements = AchievementsConfig(_m(j['achievements'])),
       prestige = PrestigeConfig(_m(j['prestige'])),
       ads = AdsConfig(_m(j['ads'])),
+      beginner = BeginnerConfig(_m(j['beginner'])),
       ui = UiConfig(_m(j['ui']));
 
   /// Parses and validates; throws [BalanceException] listing every problem.
@@ -323,6 +349,7 @@ class Balance {
   final AchievementsConfig achievements;
   final PrestigeConfig prestige;
   final AdsConfig ads;
+  final BeginnerConfig beginner;
   final UiConfig ui;
 
   TierConfig tier(String id) => tiers.firstWhere((t) => t.id == id);

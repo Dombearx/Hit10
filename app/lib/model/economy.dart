@@ -29,8 +29,26 @@ class Economy {
     return c.baseCost * math.pow(c.costGrowth, l);
   }
 
+  /// The first rounds of a brand-new game (never prestiged): wider windows
+  /// and a bigger payout, so a new player buys within a minute (playtest 08).
+  bool get beginner => s.chronons == 0 && s.stats.rounds < b.beginner.rounds;
+
+  /// Windows from skills; generators always use these.
   Windows windows() =>
       windowsAt(magnet: level('magnet'), wideEye: level('wideEye'));
+
+  /// The windows for the player's own taps: [windows] widened by
+  /// beginner's luck at the very start.
+  Windows playerWindows() {
+    final w = windows();
+    if (!beginner) return w;
+    final n = b.beginner;
+    return Windows(
+      perfect: math.max(w.perfect, n.perfect),
+      great: math.max(w.great, n.great),
+      good: math.max(w.good, n.good),
+    );
+  }
 
   Windows windowsAt({int magnet = 0, int wideEye = 0}) {
     final we = 1 + _per('wideEye') * wideEye;
