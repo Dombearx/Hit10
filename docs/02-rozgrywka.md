@@ -315,3 +315,34 @@ na wypłatę z dotknięć gracza.
   - prestiże i Chronony.
 
   Średni błąd pomaga graczowi zobaczyć, czy klika za wcześnie, czy za późno.
+
+## 13. Reklamy nagradzane
+
+Każda oferta jest **opcjonalna**, a nagroda jest **opisana na przycisku**
+przed obejrzeniem. Reklama nigdy nie przerywa rundy: przycisk reklamy
+pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
+
+| id | Oferta PL / EN | Gdzie | Nagroda | Ograniczenie |
+|---|---|---|---|---|
+| `adOffline` | Podwój / Double it | okno „Gdy cię nie było…” | ×2 dochodu offline | tylko przy nieobecności ≥ 30 min |
+| `adTurbo` | Turbo / Turbo | przycisk przy zegarze | **×2 całego dochodu** na 30 min | zapas najwyżej 4 h; czas Turbo płynie tylko podczas gry |
+| `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu | raz na 30 min |
+| `adRescue` | Ratunek combo / Combo Rescue | wyskakuje od razu po utracie serii ≥ 15 | przywraca serię sprzed pudła | raz na 15 min; okno znika po 5 s albo przy następnym dotknięciu |
+| `adGolden` | Złota Sekunda / Golden Second | przycisk przy zegarze | Złota Sekunda pojawia się od razu | raz na 30 min |
+
+- **R-AD-1:** Czasy odnowienia liczone są w czasie rzeczywistym (także gdy
+  gra jest zamknięta), z wyjątkiem Turbo, którego zapas maleje tylko podczas
+  gry.
+- **R-AD-2:** Turbo wchodzi do globalnego mnożnika `G` (03 §2), więc działa
+  na generatory, trafienia, Echo i Fart. **Nie** działa na dochód offline,
+  bo od tego jest `adOffline`.
+- **R-AD-3:** Nagroda trafia do gracza tylko po pełnym obejrzeniu (callback
+  „reward earned” z SDK). Przerwana albo nieudana reklama oznacza brak
+  nagrody, brak kary i brak zużycia czasu odnowienia.
+- **R-AD-4:** Przycisk niedostępnej oferty (czas odnowienia, brak reklamy,
+  brak sieci) pokazuje powód i czas do dostępności. Gra nigdy nie czeka na
+  załadowanie reklamy (T-27).
+- **R-AD-5:** Oferty pojawiają się dopiero po samouczku i po pierwszych
+  5 minutach gry. Pierwsze wrażenie ma być „bez reklam”.
+- **R-AD-6:** Brak reklam przy starcie aplikacji i przy wychodzeniu z niej.
+  Nie ma też żadnej reklamy, której gracz sam nie wybrał.

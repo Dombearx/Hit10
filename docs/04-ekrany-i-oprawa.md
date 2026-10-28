@@ -138,14 +138,40 @@ readable at 64px, transparent background, no text
 
 ## 5. Dźwięk
 
-- **U-13:** Lista efektów jak w tabeli z sekcji 3, ok. 20 plików (OGG, krótkie)
-  i 2–3 pętle muzyczne: spokojna, Szał, Złota runda. Źródła: Kenney (CC0),
-  jsfxr albo inne darmowe na licencji pozwalającej na użycie komercyjne,
-  zawsze wpisane do `CREDITS.md`.
+- **U-13:** Wszystkie dźwięki są **darmowe** i na licencji pozwalającej na
+  użycie komercyjne. Każdy jest wpisany do `CREDITS.md` z linkiem i licencją.
+  - **Efekty** (ok. 20 plików, OGG, krótkie): paczki Kenney.nl na licencji
+    CC0 (*Interface Sounds*, *Casino Audio* na monety, *Impact Sounds*)
+    i własne „tiki” z generatora jsfxr.
+  - **Muzyka** (3 pętle: spokojna, Szał, złota runda): OpenGameArt z filtrem
+    CC0 albo Pixabay Music (licencja Pixabay pozwala na użycie komercyjne).
+    Żadnych utworów z serwisów AI na darmowych planach (brak praw
+    komercyjnych).
+  - Całe audio poniżej 5 MB.
 - **U-14:** Dźwięk trafienia musi zagrać w < 30 ms od dotknięcia
   (wstępnie załadowane próbki).
 - **U-15:** Wysokość „ding” rośnie z serią (np. +1 półton co 2 kroki, max
   +12). To prosty, a bardzo skuteczny „juice”.
+- **U-19:** W strefie bullet time muzyka i efekty przechodzą przez filtr
+  dolnoprzepustowy („jak pod wodą”). W Szale muzyka gra ok. 15% szybciej.
+  Wszystko robione filtrami silnika dźwięku, bez osobnych plików.
+- **U-20:** Efekty są domyślnie włączone, muzyka też, ale cicha (ok. 40%).
+  Jeśli przy starcie w telefonie gra inna muzyka, muzyka gry startuje
+  wyłączona, a efekty zostają.
+- **U-21:** Dźwięk wycisza się, gdy aplikacja przechodzi w tło.
+
+## 5a. Reklamy w interfejsie
+
+- **U-22:** Przyciski Turbo i Złotej Sekundy to małe kafelki z ikoną
+  telewizorka obok zegara. Nigdy nie leżą w obszarze areny przyjmującym
+  dotknięcia, żeby nie było przypadkowych kliknięć. Aktywne Turbo pokazuje
+  pasek z pozostałym czasem („×2 · 1:23:40”).
+- **U-23:** Worek Tików pojawia się na karcie, na którą brakuje Tików, jako
+  drugi przycisk („📺 +5 min”).
+- **U-24:** Ratunek combo to wyskakujący dymek nad licznikiem combo z
+  odliczaniem 5 s, w stylu „Seria 18 przepadła! 📺 Przywróć”.
+- **U-25:** Po nagrodzie z reklamy pojawia się pełny efekt (cząsteczki,
+  dźwięk), żeby nagroda była odczuwalna.
 
 ## 6. Liczby i teksty
 

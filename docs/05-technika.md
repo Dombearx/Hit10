@@ -7,8 +7,10 @@
   widżetów przez `GameWidget`.
 - Interfejs (sklep, panele, toasty) to zwykły Flutter.
 - Stan: **Riverpod**. Animacje UI: `flutter_animate`.
-- Dźwięk: `flame_audio` albo `audioplayers` (wybór przy M1, kryterium U-14).
-  Wibracje: `HapticFeedback` z Fluttera.
+- Dźwięk: **`flutter_soloud`** (silnik SoLoud w C++). Wybrany zamiast
+  `audioplayers`/`flame_audio` z trzech powodów: małe opóźnienie (U-14),
+  zmiana wysokości dźwięku w locie (U-15) i filtry na żywo (U-19). Wibracje:
+  `HapticFeedback` z Fluttera.
 - Zapis: plik JSON przez `path_provider`.
 - Tłumaczenia: `flutter_localizations` + ARB (`gen-l10n`).
 - **T-1:** Szablon `MobileAppTemplate` nie jest używany. Projekt startuje
@@ -128,15 +130,29 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
 - **T-25:** Od M1 w kodzie istnieje interfejs `RewardedAds`
   (`isReady`, `show() → Future<bool>`) z implementacją-atrapą, która zawsze
   „daje” nagrodę po 1 s. Ekrany korzystają tylko z tego interfejsu.
-- **T-26:** W M6 dochodzi implementacja z `google_mobile_ads` i formularzem
-  zgody **UMP** (wymagany w UE). Do tego polityka prywatności (strona WWW)
-  i odpowiedzi w ankiecie Data Safety w Google Play.
+- **T-26:** W M6 dochodzi implementacja z `google_mobile_ads` (wyłącznie
+  format rewarded) i formularzem zgody **UMP** (wymagany w UE). Do tego:
+  - polityka prywatności i `app-ads.txt` na `https://dombearx.github.io`
+    (01, „Strona WWW bez domeny”);
+  - ankieta Data Safety: reklamy zbierają identyfikator reklamowy, a gra
+    sama nic nie zbiera i niczego nie wysyła.
+- **T-28:** Podczas tworzenia gry używamy **wyłącznie testowych jednostek
+  reklamowych** Google. Prawdziwe ID trafiają tylko do wersji wydawanej.
+  Klikanie własnych prawdziwych reklam grozi blokadą konta AdMob.
+- **T-29:** Logika ofert (czasy odnowienia, zapas Turbo, warunki pojawienia
+  się) jest w `lib/engine`, a nie w warstwie reklam, więc testy i symulator
+  działają z atrapą `RewardedAds`.
+- **T-30:** Brak analityki i Crashlytics. Raporty awarii dostarcza za darmo
+  Google Play Console (Android vitals), bez żadnego SDK. Przychód
+  i oglądalność reklam widać w panelu AdMob.
 - **T-27:** Brak reklamy (offline, błąd ładowania) oznacza, że przycisk jest
   wyszarzony z opisem. Gra nigdy nie czeka na reklamę.
 
 ## 9. Wydanie (M6)
 
-- Android: `applicationId` do ustalenia (np. `pl.<twoja-domena>.hit10`), klucz
+- Android: `applicationId` = `io.github.dombearx.hit10`. Bez własnej domeny
+  używamy odwróconej domeny GitHub Pages. Identyfikatora nie da się zmienić
+  po pierwszym wydaniu. Klucz
   podpisu poza repo, wersjonowanie `versionName+versionCode`, AAB do
   Play Console.
 - Ikona adaptacyjna, ekran startowy w kolorach gry, nazwa w sklepie PL/EN.

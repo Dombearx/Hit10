@@ -23,6 +23,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | Zapis | zapis → odczyt daje identyczny stan; migracja każdej wersji; uszkodzony plik → kopia; eksport/import | T-17…T-20 |
 | Plik balansu | plik z repo przechodzi walidację; zepsute pliki są odrzucane z dobrym komunikatem | T-6 |
 | Format liczb | progi przyrostków, `aa`/`ab`, separator PL/EN, notacja naukowa | U-16 |
+| Reklamy (logika ofert) | czasy odnowienia (także po zamknięciu gry), zapas Turbo max 4 h i płynięcie tylko w grze, Turbo w `G` i nie w offline, brak nagrody i brak zużycia odnowienia po przerwanej reklamie, oferty ukryte przez pierwsze 5 min i w samouczku, Ratunek tylko przy serii ≥ 15 | R-AD-1…6 |
 | Architektura | `lib/model` i `lib/engine` nie importują Fluttera ani Flame | T-3 |
 
 ### 1.2 Balans (symulacja w CI)
@@ -31,6 +32,8 @@ kryteria z sekcji 3, a `make check` przechodzi.
   σ = 30 ms, σ = 60 ms, pasywny po 10 min, drugi run z 20 Chrononami) na
   5 stałych ziarnach losowania i kończy się błędem, gdy mediana któregoś
   celu B-1…B-10 wypada poza przedział (E-5).
+- `--check` sprawdza też cele reklam A-1 i A-2 (03 §5) dla gracza biorącego
+  każdą ofertę, na atrapie reklam.
 - Całe `--check` (4 scenariusze × 5 ziaren) ma trwać poniżej 60 s.
 - Wyniki dla ziarna 10 z balansem z repo zgadzają się z tabelami w 03 §4
   (±10%), co potwierdza, że port do Dart liczy tak samo jak symulacja
@@ -66,6 +69,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | **M-7** | Ogranicz ruch | brak wstrząsów i błysków (U-6) |
 | **M-8** | „Czy to wciąga?” — 3 osoby spoza projektu grają 15 min bez instrukcji | każda rozumie zasadę w < 1 min, ≥2 z 3 chcą grać dalej; notujemy, co było niejasne |
 | **M-9** | Małe i duże ekrany (≈5" i tablet), tryb ciemny systemu | nic nie wychodzi poza ekran, cyfry czytelne |
+| **M-10** | Reklamy na telefonie (M6): testowe jednostki, zgoda UMP z adresu w UE (VPN albo ustawienia debug UMP), brak sieci, przerwanie reklamy w połowie | nagroda tylko po pełnym obejrzeniu, okno zgody pojawia się i da się je zmienić z ustawień, gra działa bez sieci |
 
 ## 3. Kryteria akceptacji etapów
 

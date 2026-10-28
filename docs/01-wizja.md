@@ -47,14 +47,38 @@ samouczek, ustawienia. Do tego oprawa z [04-ekrany-i-oprawa.md](04-ekrany-i-opra
   użytkownika.
 
 **Monetyzacja (etap M6, przed wydaniem):** wyłącznie **reklamy nagradzane**,
-oglądane z wyboru gracza:
-- ×2 dochodu offline,
-- 2 minuty Szału,
-- dodatkowa Złota Sekunda.
+oglądane z wyboru gracza. Pięć ofert (×2 offline, Turbo, Worek Tików, Ratunek
+combo, Złota Sekunda na żądanie), szczegóły w
+[02-rozgrywka.md §13](02-rozgrywka.md#13-reklamy-nagradzane). Zasady:
+- Gra jest w pełni grywalna bez reklam. Cele tempa z 03 są liczone bez reklam.
+- Reklamy przyspieszają grę ok. 2–2.5× dla kogoś, kto ogląda wszystkie
+  oferty. To poziom spotykany w grach idle, gdzie standardem jest ×2.
+- Nagrody za reklamy są liczone od aktualnego dochodu (np. „5 minut
+  produkcji”), a nie jako stała liczba Tików.
 
-Reklama nigdy nie pojawia się w trakcie rundy. Reklamy pełnoekranowe
-(interstitial) są nierozstrzygnięte; jeśli będą, to tylko poza rundą i nie
-częściej niż co kilka minut. Decyzja przy M6.
+**Świadomie nie robimy w 1.0:**
+- **Banerów.** Cała arena przyjmuje dotknięcia, więc baner obok niej
+  oznaczałby przypadkowe kliknięcia, które grożą blokadą konta AdMob. Do tego
+  psuje wygląd i daje najmniejszy przychód.
+- **Reklam pełnoekranowych (interstitial).** Obniżają liczbę wracających
+  graczy, a Google zabrania ich w trakcie rozgrywki. Do rozważenia w 1.x,
+  wyłącznie w naturalnych przerwach i razem z zakupem „Bez reklam”.
+
+**Zakupy w aplikacji: wersja 1.1** (jeśli gracze zostają na dłużej). Nie
+wymagają backendu (Google Play Billing). Pomysły:
+- **Premium** (jednorazowo): bonusy z reklam bez oglądania reklam, z tymi
+  samymi limitami czasowymi, plus stałe ×1.5 do dochodu;
+- **skórki zegara** (kosmetyka).
+
+**Odbiorca w sklepie: 13+.** Grupa „dzieci” wymaga programu Families i mocno
+ogranicza reklamy.
+
+**Strona WWW bez domeny:** GitHub Pages na stronie użytkownika
+`https://dombearx.github.io` (repo `Dombearx/Dombearx.github.io`). Na stronie
+będą polityka prywatności, plik `app-ads.txt` w katalogu głównym (wymóg
+AdMob) i krótka strona gry. Zapasowo, gdyby AdMob nie przyjął `github.io`:
+darmowy Firebase Hosting (`<projekt>.web.app`), który Google podaje
+w dokumentacji AdMob. Kosztuje 0 zł, a sam hosting nie wymaga backendu.
 
 ## Kierunek graficzny
 

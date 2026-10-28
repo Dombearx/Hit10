@@ -48,7 +48,7 @@ dochód_i     = n_i · Tiki_bazowo_i · 2^(ulepszenia_i) · synergia_i · zysk_o
 **Globalny mnożnik:**
 
 ```
-G = (1 + 0.02 · Chronony) · (1 + 0.01 · osiągnięcia) · (Szał aktywny ? 7 : 1)
+G = (1 + 0.02 · Chronony) · (1 + 0.01 · osiągnięcia) · (Szał aktywny ? 7 : 1) · (Turbo aktywne ? 2 : 1)
 P = Σ dochód_i · G                   # dochód pasywny na sekundę
 ```
 
@@ -178,7 +178,58 @@ Symulacja zakłada też, że gracz klika bez przerwy przez 8 h.
 w godzinach 1–2 (×60), potem tempo spada do ×1.5–2 na godzinę. To celowa
 „ściana” przed prestiżem. Trzeba sprawdzić, czy nie nudzi.
 
-## 5. Zasady strojenia
+## 5. Reklamy a balans
+
+Cele tempa B-1…B-10 są liczone **bez reklam**. Reklamy mają osobne cele:
+
+| id | Cel | Przedział |
+|---|---|---|
+| **A-1** | Gracz biorący każdą ofertę dochodzi do Tików gracza bez reklam z 8 h po… | 3–4 h (2–2.7× szybciej) |
+| **A-2** | Liczba reklam przy ciągłej grze i braniu wszystkiego | ≤ 6 na godzinę |
+| **A-3** | Typowy dzień (3 sesje po ~15 min), gracz biorący wszystko | ≤ 10 reklam; przeciętny gracz 2–6 |
+
+**Wyniki symulacji** (8 h gry, gracz σ = 30 ms, mediana z 5 ziaren;
+`adOffline` i `adRescue` nie są tu liczone: offline nie jest modelowany,
+a Ratunek prawie się nie włączał, bo przy pełnych umiejętnościach pudła są
+rzadkie i łapie je Tarcza):
+
+| Wariant | Turbo | Worek | Złota na żądanie | Stan z 8 h osiągnięty po | Reklam / h |
+|---|---|---|---|---|---|
+| pierwsza propozycja | ×2 / 15 min, zapas 2 h | 20 min dochodu co 10 min | co 15 min | **1.3 h** (6× szybciej) | 14 |
+| tylko Turbo | ×2 / 15 min | – | – | 4.0 h | 4 |
+| **A — przyjęty** | **×2 / 30 min, zapas 4 h** | **5 min co 30 min** | **co 30 min** | **3.3 h** (2.4×) | **6** |
+| B | ×2 / 30 min, zapas 4 h | 10 min co 30 min | co 30 min | 2.8 h | 6 |
+| C | ×2 / 30 min, zapas 4 h | 5 min co 30 min | co 60 min | 3.4 h | 5 |
+
+Wnioski:
+- Pierwsza propozycja była za hojna. Worek „20 min dochodu co 10 min”
+  potraja dochód, a efekt się kumuluje. Ktoś z reklamami przeszedłby grę
+  6× szybciej, co odbiera sens grania bez reklam.
+- W wariancie A prawie całą przewagę (×2) daje Turbo. Pozostałe oferty
+  dokładają ok. 20%: są miłym bonusem, a nie przymusem.
+
+**Na tle rynku:**
+- W AdVenture Capitalist reklama daje ×2 dochodu na 4 h, do 5 razy dziennie,
+  więc ×2 jest prawie zawsze aktywne. Nasze Turbo daje ten sam mnożnik, ale
+  za mniej „gry na reklamę”: 30 min czasu w grze zamiast 4 h zegarowych.
+  Przy krótkich sesjach mobilnych w praktyce wychodzi podobnie, 1–3 reklamy
+  dziennie, żeby mieć Turbo cały czas.
+- Wskaźniki branżowe dla reklam nagradzanych to ok. 2–6 wyświetleń na
+  aktywnego gracza dziennie, przy 15–25% graczy oglądających. Nasz typowy
+  dzień daje 8–10 reklam dla kogoś, kto bierze wszystko (2 Turbo, 3× offline,
+  1–3 Worki, 1–2 Złote), więc średnia wśród wszystkich graczy powinna
+  wpaść w 2–6.
+- Przychód na aktywnego gracza dziennie w grach idle to ok. 0.05–0.30 USD,
+  zależnie od kraju (PL jest w dolnej części) i od tego, ilu graczy wraca.
+  To dane z blogów firm reklamowych, więc tylko orientacyjnie.
+
+Źródła: [AdVenture Capitalist Wiki — Opt-In Boosts](https://adventure-capitalist.fandom.com/wiki/Opt-In_Boosts),
+[AdReact — Rewarded Video Ads](https://adreact.com/blog/rewarded-video-ads-mobile-game-monetization/),
+[Game Ace — Idle game development](https://game-ace.com/blog/idle-game-development/),
+[Coinis — Rewarded Video](https://coinis.com/glossary/rewarded-video),
+[Playio — Rewarded Ad Benchmarks 2026](https://blog.playio.co/rewarded-ad-benchmarks-2026).
+
+## 6. Zasady strojenia
 
 - **E-2:** Wszystkie liczby z 02 i 03 leżą w jednym pliku balansu (05).
   Zmiana balansu nie wymaga zmian w kodzie.
