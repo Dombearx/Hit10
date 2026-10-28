@@ -25,6 +25,7 @@ class Sfx {
   bool enabled = true;
 
   bool get ready => _ready;
+  bool _underwater = false;
 
   /// Safe to call repeatedly; on the web it must follow a user gesture.
   Future<void> init() async {
@@ -36,11 +37,28 @@ class Sfx {
       for (final n in names) {
         _sources[n] = await soloud.loadAsset('assets/audio/$n.ogg');
       }
+      // Low-pass for bullet time (U-19); dry until the zone.
+      final lp = soloud.filters.biquadResonantFilter;
+      lp.activate();
+      lp.type.value = 0; // low-pass
+      lp.frequency.value = 700;
+      lp.wet.value = 0;
       _ready = true;
     } on Object catch (e) {
       debugPrint('Sfx disabled: $e');
     } finally {
       _starting = false;
+    }
+  }
+
+  /// Muffles everything inside the bullet-time zone (U-19).
+  void underwater(bool on) {
+    if (!_ready || on == _underwater) return;
+    _underwater = on;
+    try {
+      SoLoud.instance.filters.biquadResonantFilter.wet.value = on ? 1 : 0;
+    } on Object catch (e) {
+      debugPrint('filter failed: $e');
     }
   }
 

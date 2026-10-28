@@ -118,3 +118,48 @@ const _roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
 /// 0 → I … 9 → X (upgrade levels).
 String roman(int index) =>
     index < _roman.length ? _roman[index] : '${index + 1}';
+
+String skillName(AppLocalizations l, String id) => switch (id) {
+  'power' => l.skill_power,
+  'fastForward' => l.skill_fastForward,
+  'ticking' => l.skill_ticking,
+  'wideEye' => l.skill_wideEye,
+  'combo' => l.skill_combo,
+  'magnet' => l.skill_magnet,
+  'echo' => l.skill_echo,
+  'bulletTime' => l.skill_bulletTime,
+  'luck' => l.skill_luck,
+  'shield' => l.skill_shield,
+  'goldenTouch' => l.skill_goldenTouch,
+  _ => id,
+};
+
+String skillDescription(AppLocalizations l, String id) => switch (id) {
+  'power' => l.skill_power_desc,
+  'fastForward' => l.skill_fastForward_desc,
+  'ticking' => l.skill_ticking_desc,
+  'wideEye' => l.skill_wideEye_desc,
+  'combo' => l.skill_combo_desc,
+  'magnet' => l.skill_magnet_desc,
+  'echo' => l.skill_echo_desc,
+  'bulletTime' => l.skill_bulletTime_desc,
+  'luck' => l.skill_luck_desc,
+  'shield' => l.skill_shield_desc,
+  'goldenTouch' => l.skill_goldenTouch_desc,
+  _ => '',
+};
+
+String skillLabel(AppLocalizations l, String id) => switch (id) {
+  'power' => l.skill_power_label,
+  'fastForward' => l.skill_fastForward_label,
+  'ticking' => l.skill_ticking_label,
+  'wideEye' => l.skill_wideEye_label,
+  'combo' => l.skill_combo_label,
+  'magnet' => l.skill_magnet_label,
+  'echo' => l.skill_echo_label,
+  'bulletTime' => l.skill_bulletTime_label,
+  'luck' => l.skill_luck_label,
+  'shield' => l.skill_shield_label,
+  'goldenTouch' => l.skill_goldenTouch_label,
+  _ => id,
+};

@@ -104,7 +104,7 @@ class Simulator {
   Simulator(this.b, this.cfg)
     : rnd = math.Random(cfg.seed),
       s = GameState()..chronons = cfg.chronons {
-    e = GameEngine(b, s);
+    e = GameEngine(b, s, random: math.Random(cfg.seed * 7919 + 1));
   }
 
   final Balance b;
@@ -113,12 +113,6 @@ class Simulator {
   final GameState s;
   late final GameEngine e;
   Economy get econ => e.econ;
-
-  int _streak = 0;
-  int _shield = 0;
-  int _shieldProgress = 0;
-  double _frenzyUntil = -1;
-  double _turboUntil = -1;
 
   // ------------------------------------------------- analytic estimates --
 
@@ -259,114 +253,68 @@ class Simulator {
     return math.sqrt(-2 * math.log(u1)) * math.cos(2 * math.pi * u2);
   }
 
-  double _uniform(double a, double b) => a + rnd.nextDouble() * (b - a);
-
   // -------------------------------------------------------------- run --
 
   SimResult run() {
     final res = SimResult()..state = s;
-    final gold = b.golden;
     final ads = cfg.ads;
     var t = 0.0;
-    var nextGolden = _uniform(gold.intervalMin, gold.intervalMax);
     var nextHour = 3600.0;
     var nextBag = 0.0, nextAdGolden = 0.0, nextRescue = 0.0;
+    var turboUntil = -1.0;
     final end = cfg.hours * 3600;
     while (t < end) {
       final idle =
           cfg.idleAfterMinutes != null && t >= cfg.idleAfterMinutes! * 60;
-      e.frenzy = t < _frenzyUntil ? gold.effect('frenzy').multiplier : 1;
-      e.turbo = ads != null && t < _turboUntil ? ads.turboMultiplier : 1;
+      e.turbo = ads != null && t < turboUntil ? ads.turboMultiplier : 1;
+      e.goldenEnabled = !idle;
       final dt = idle ? 5.0 : econ.roundSeconds();
-      final passive = e.passive();
-      var gain = passive * dt;
+      // Passive income and effect timers for the whole round, as the game's
+      // own tick does (T-4: no second copy of the rules here).
+      e.tick(dt);
       if (!idle) {
-        final slow = econ.bulletTimeSpeed();
-        final err = _gauss() * cfg.sigma * slow;
-        var tier = grade(err, econ.windows()).tier;
-        if ((tier == Tier.great || tier == Tier.good) &&
-            rnd.nextDouble() < econ.luckChance()) {
-          tier = tier == Tier.great ? Tier.perfect : Tier.great;
-        }
-        final cap = econ.comboCap();
-        if (tier == Tier.miss) {
-          if (_shield > 0) {
-            _shield--;
-          } else if (ads != null &&
-              _streak >= ads.rescueMinStreak &&
-              t >= nextRescue) {
-            nextRescue = t + ads.rescueCooldown;
-            res.adLog.add((t, 'rescue'));
-          } else {
-            _streak = 0;
-          }
-        } else {
-          final step = b.tier(tier.name).comboStep;
-          _streak = math.min(cap, _streak + step);
-          _shieldProgress += step;
-          while (_shieldProgress >= b.combo.shieldRechargeSteps) {
-            _shieldProgress -= b.combo.shieldRechargeSteps;
-            _shield = math.min(econ.shieldCharges(), _shield + 1);
-          }
-          final combo = 1 + b.combo.multiplierPerStep * _streak;
-          gain += e.hitPayout(Grade(tier, err), combo: combo);
-        }
-        if (t >= nextGolden) {
-          nextGolden =
-              t +
-              _uniform(gold.intervalMin, gold.intervalMax) *
-                  econ.goldenIntervalFactor();
-          if (tier != Tier.miss) {
-            final strength =
-                gold.tierStrength[tier.name]! * econ.goldenStrengthFactor();
-            final r =
-                rnd.nextDouble() *
-                gold.effects.fold<double>(0, (a, x) => a + x.weight);
-            var acc = 0.0;
-            for (final eff in gold.effects) {
-              acc += eff.weight;
-              if (r >= acc) continue;
-              if (eff.id == 'frenzy') {
-                _frenzyUntil =
-                    math.max(_frenzyUntil, t) + eff.duration * strength;
-              } else if (eff.id == 'lucky') {
-                gain +=
-                    strength *
-                    math.min(
-                      passive * eff.productionSeconds,
-                      s.tiki * eff.bankFraction,
-                    );
-              }
-              break;
-            }
-          }
-        }
         if (ads != null) {
-          if (_turboUntil - t < 60) {
-            _turboUntil = math.min(
-              math.max(_turboUntil, t) + ads.turboDuration,
+          if (turboUntil - t < 60) {
+            turboUntil = math.min(
+              math.max(turboUntil, t) + ads.turboDuration,
               t + ads.turboMaxStock,
             );
             res.adLog.add((t, 'turbo'));
           }
           if (t >= nextBag) {
+            final f = e.frenzy, tu = e.turbo;
             e.frenzy = 1;
             e.turbo = 1;
-            gain += e.passive() * ads.bagSeconds;
+            s.earn(e.passive() * ads.bagSeconds);
+            e.frenzy = f;
+            e.turbo = tu;
             nextBag = t + ads.bagCooldown;
             res.adLog.add((t, 'bag'));
           }
-          if (t >= nextAdGolden) {
-            nextGolden = t;
+          if (t >= nextAdGolden && e.goldenVisibleLeft == 0 && !e.goldenArmed) {
+            e.summonGolden();
             nextAdGolden = t + ads.goldenCooldown;
             res.adLog.add((t, 'golden'));
           }
         }
+        // The bot catches every golden clock; the next round is golden.
+        e.claimGolden();
+        e.onRoundStart();
+        final err = _gauss() * cfg.sigma * econ.bulletTimeSpeed();
+        final o = e.resolveRound(grade(err, econ.windows()));
+        if (ads != null &&
+            o.comboBroken &&
+            o.streakBefore >= ads.rescueMinStreak &&
+            t >= nextRescue) {
+          s.comboStreak = o.streakBefore;
+          nextRescue = t + ads.rescueCooldown;
+          res.adLog.add((t, 'rescue'));
+        }
       }
-      s.earn(gain);
       t += dt;
-      e.frenzy = 1;
       e.turbo = 1;
+      final frenzyNow = e.frenzy;
+      e.frenzy = 1;
       // Greedy: best payback first, while affordable.
       while (true) {
         (double, String, String, double)? best;
@@ -384,6 +332,7 @@ class Simulator {
         if (kind == 'gen') res.firstGenerator.putIfAbsent(key, () => t);
         if (kind == 'skill') res.skillLog.add((t, key, econ.level(key)));
       }
+      e.frenzy = frenzyNow;
       res.earnedLog.add((t, s.earnedTotal));
       if (t >= nextHour) {
         final base = _passive();

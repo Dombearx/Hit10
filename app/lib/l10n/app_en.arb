@@ -190,5 +190,124 @@
     }
   },
   "saveCorrupt": "Your save could not be read, so the game started fresh.",
-  "comingSoon": "Coming soon"
+  "comingSoon": "Coming soon",
+  "skill_power": "Strike Power",
+  "skill_power_desc": "Every hit pays more.",
+  "skill_power_label": "Hit reward",
+  "skill_fastForward": "Fast Forward",
+  "skill_fastForward_desc": "The start of a round flies by. More rounds per minute.",
+  "skill_fastForward_label": "Speed up to 9.00",
+  "skill_ticking": "Ticking",
+  "skill_ticking_desc": "A tick in the last second helps you find the beat.",
+  "skill_ticking_label": "Ticking",
+  "skill_wideEye": "Hawk Eye",
+  "skill_wideEye_desc": "Wider GREAT and GOOD windows. For you and your clocks.",
+  "skill_wideEye_label": "GREAT window",
+  "skill_combo": "Combo",
+  "skill_combo_desc": "A higher streak cap; the streak multiplies the whole payout.",
+  "skill_combo_label": "Streak cap",
+  "skill_magnet": "Magnet",
+  "skill_magnet_desc": "A wider PERFECT window. The digits stick to 10.00.",
+  "skill_magnet_label": "PERFECT window",
+  "skill_echo": "Echo",
+  "skill_echo_desc": "Hits also pay seconds of your clocks' income.",
+  "skill_echo_label": "Echo",
+  "skill_bulletTime": "Bullet Time",
+  "skill_bulletTime_desc": "Time slows down around 10.00. Easier to hit.",
+  "skill_bulletTime_label": "Speed near 10.00",
+  "skill_luck": "Luck",
+  "skill_luck_desc": "A chance that a hit jumps one tier up.",
+  "skill_luck_label": "Chance",
+  "skill_shield": "Shield",
+  "skill_shield_desc": "A miss uses a charge instead of breaking the streak.",
+  "skill_shield_label": "Charges",
+  "skill_goldenTouch": "Golden Touch",
+  "skill_goldenTouch_desc": "Golden seconds come more often and hit harder.",
+  "skill_goldenTouch_label": "Interval",
+  "skillLevel": "Level {level}/{max}",
+  "@skillLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "skillEffect": "{label}: {now} → {next}",
+  "@skillEffect": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "now": {
+        "type": "String"
+      },
+      "next": {
+        "type": "String"
+      }
+    }
+  },
+  "skillEffectMax": "{label}: {now}",
+  "@skillEffectMax": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "now": {
+        "type": "String"
+      }
+    }
+  },
+  "skillMaxed": "MAX",
+  "skillLockedHint": "Revealed at {price} Ticks",
+  "@skillLockedHint": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "on": "on",
+  "off": "off",
+  "goldenRound": "GOLDEN ROUND!",
+  "goldenEscaped": "It escaped!",
+  "goldenFrenzy": "FRENZY ×{mult}!",
+  "@goldenFrenzy": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "goldenLucky": "LUCKY! +{amount}",
+  "@goldenLucky": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goldenHotHand": "HOT HAND!",
+  "chipFrenzy": "Frenzy ×{mult}",
+  "@chipFrenzy": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "chipHotHand": "Hot hand",
+  "comboLabel": "COMBO",
+  "streakLabel": "streak {count}",
+  "@streakLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "luckyBump": "LUCKY!",
+  "shieldSaved": "SHIELD!"
 }

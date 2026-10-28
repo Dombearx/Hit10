@@ -246,4 +246,182 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get comingSoon => 'Coming soon';
+
+  @override
+  String get skill_power => 'Strike Power';
+
+  @override
+  String get skill_power_desc => 'Every hit pays more.';
+
+  @override
+  String get skill_power_label => 'Hit reward';
+
+  @override
+  String get skill_fastForward => 'Fast Forward';
+
+  @override
+  String get skill_fastForward_desc =>
+      'The start of a round flies by. More rounds per minute.';
+
+  @override
+  String get skill_fastForward_label => 'Speed up to 9.00';
+
+  @override
+  String get skill_ticking => 'Ticking';
+
+  @override
+  String get skill_ticking_desc =>
+      'A tick in the last second helps you find the beat.';
+
+  @override
+  String get skill_ticking_label => 'Ticking';
+
+  @override
+  String get skill_wideEye => 'Hawk Eye';
+
+  @override
+  String get skill_wideEye_desc =>
+      'Wider GREAT and GOOD windows. For you and your clocks.';
+
+  @override
+  String get skill_wideEye_label => 'GREAT window';
+
+  @override
+  String get skill_combo => 'Combo';
+
+  @override
+  String get skill_combo_desc =>
+      'A higher streak cap; the streak multiplies the whole payout.';
+
+  @override
+  String get skill_combo_label => 'Streak cap';
+
+  @override
+  String get skill_magnet => 'Magnet';
+
+  @override
+  String get skill_magnet_desc =>
+      'A wider PERFECT window. The digits stick to 10.00.';
+
+  @override
+  String get skill_magnet_label => 'PERFECT window';
+
+  @override
+  String get skill_echo => 'Echo';
+
+  @override
+  String get skill_echo_desc =>
+      'Hits also pay seconds of your clocks\' income.';
+
+  @override
+  String get skill_echo_label => 'Echo';
+
+  @override
+  String get skill_bulletTime => 'Bullet Time';
+
+  @override
+  String get skill_bulletTime_desc =>
+      'Time slows down around 10.00. Easier to hit.';
+
+  @override
+  String get skill_bulletTime_label => 'Speed near 10.00';
+
+  @override
+  String get skill_luck => 'Luck';
+
+  @override
+  String get skill_luck_desc => 'A chance that a hit jumps one tier up.';
+
+  @override
+  String get skill_luck_label => 'Chance';
+
+  @override
+  String get skill_shield => 'Shield';
+
+  @override
+  String get skill_shield_desc =>
+      'A miss uses a charge instead of breaking the streak.';
+
+  @override
+  String get skill_shield_label => 'Charges';
+
+  @override
+  String get skill_goldenTouch => 'Golden Touch';
+
+  @override
+  String get skill_goldenTouch_desc =>
+      'Golden seconds come more often and hit harder.';
+
+  @override
+  String get skill_goldenTouch_label => 'Interval';
+
+  @override
+  String skillLevel(int level, int max) {
+    return 'Level $level/$max';
+  }
+
+  @override
+  String skillEffect(String label, String now, String next) {
+    return '$label: $now → $next';
+  }
+
+  @override
+  String skillEffectMax(String label, String now) {
+    return '$label: $now';
+  }
+
+  @override
+  String get skillMaxed => 'MAX';
+
+  @override
+  String skillLockedHint(String price) {
+    return 'Revealed at $price Ticks';
+  }
+
+  @override
+  String get on => 'on';
+
+  @override
+  String get off => 'off';
+
+  @override
+  String get goldenRound => 'GOLDEN ROUND!';
+
+  @override
+  String get goldenEscaped => 'It escaped!';
+
+  @override
+  String goldenFrenzy(String mult) {
+    return 'FRENZY ×$mult!';
+  }
+
+  @override
+  String goldenLucky(String amount) {
+    return 'LUCKY! +$amount';
+  }
+
+  @override
+  String get goldenHotHand => 'HOT HAND!';
+
+  @override
+  String chipFrenzy(String mult) {
+    return 'Frenzy ×$mult';
+  }
+
+  @override
+  String get chipHotHand => 'Hot hand';
+
+  @override
+  String get comboLabel => 'COMBO';
+
+  @override
+  String streakLabel(int count) {
+    return 'streak $count';
+  }
+
+  @override
+  String get luckyBump => 'LUCKY!';
+
+  @override
+  String get shieldSaved => 'SHIELD!';
 }

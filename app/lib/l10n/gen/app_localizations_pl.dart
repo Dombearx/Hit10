@@ -249,4 +249,179 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get comingSoon => 'Wkrótce';
+
+  @override
+  String get skill_power => 'Siła trafienia';
+
+  @override
+  String get skill_power_desc => 'Każde trafienie płaci więcej.';
+
+  @override
+  String get skill_power_label => 'Nagroda za trafienie';
+
+  @override
+  String get skill_fastForward => 'Przewijanie';
+
+  @override
+  String get skill_fastForward_desc =>
+      'Początek rundy leci szybciej. Więcej rund na minutę.';
+
+  @override
+  String get skill_fastForward_label => 'Tempo do 9.00';
+
+  @override
+  String get skill_ticking => 'Tykanie';
+
+  @override
+  String get skill_ticking_desc =>
+      'Tik w ostatniej sekundzie pomaga złapać rytm.';
+
+  @override
+  String get skill_ticking_label => 'Tykanie';
+
+  @override
+  String get skill_wideEye => 'Sokole oko';
+
+  @override
+  String get skill_wideEye_desc =>
+      'Szersze okna ŚWIETNIE i DOBRZE. Dla ciebie i dla zegarów.';
+
+  @override
+  String get skill_wideEye_label => 'Okno ŚWIETNIE';
+
+  @override
+  String get skill_combo => 'Combo';
+
+  @override
+  String get skill_combo_desc =>
+      'Wyższy limit serii, a seria mnoży całą wypłatę.';
+
+  @override
+  String get skill_combo_label => 'Limit serii';
+
+  @override
+  String get skill_magnet => 'Magnes';
+
+  @override
+  String get skill_magnet_desc =>
+      'Szersze okno PERFEKT. Cyfry same lgną do 10.00.';
+
+  @override
+  String get skill_magnet_label => 'Okno PERFEKT';
+
+  @override
+  String get skill_echo => 'Echo';
+
+  @override
+  String get skill_echo_desc => 'Trafienie płaci też sekundy dochodu zegarów.';
+
+  @override
+  String get skill_echo_label => 'Echo';
+
+  @override
+  String get skill_bulletTime => 'Bullet time';
+
+  @override
+  String get skill_bulletTime_desc =>
+      'Czas zwalnia przy 10.00. Łatwiej trafić.';
+
+  @override
+  String get skill_bulletTime_label => 'Tempo przy 10.00';
+
+  @override
+  String get skill_luck => 'Szczęście';
+
+  @override
+  String get skill_luck_desc => 'Szansa, że trafienie podskoczy o próg w górę.';
+
+  @override
+  String get skill_luck_label => 'Szansa';
+
+  @override
+  String get skill_shield => 'Tarcza';
+
+  @override
+  String get skill_shield_desc => 'Pudło zużywa ładunek zamiast zerować serię.';
+
+  @override
+  String get skill_shield_label => 'Ładunki';
+
+  @override
+  String get skill_goldenTouch => 'Złoty dotyk';
+
+  @override
+  String get skill_goldenTouch_desc => 'Złota Sekunda częściej i mocniej.';
+
+  @override
+  String get skill_goldenTouch_label => 'Odstęp';
+
+  @override
+  String skillLevel(int level, int max) {
+    return 'Poziom $level/$max';
+  }
+
+  @override
+  String skillEffect(String label, String now, String next) {
+    return '$label: $now → $next';
+  }
+
+  @override
+  String skillEffectMax(String label, String now) {
+    return '$label: $now';
+  }
+
+  @override
+  String get skillMaxed => 'MAX';
+
+  @override
+  String skillLockedHint(String price) {
+    return 'Odkryjesz przy $price Tikach';
+  }
+
+  @override
+  String get on => 'wł.';
+
+  @override
+  String get off => 'wył.';
+
+  @override
+  String get goldenRound => 'ZŁOTA RUNDA!';
+
+  @override
+  String get goldenEscaped => 'Uciekła!';
+
+  @override
+  String goldenFrenzy(String mult) {
+    return 'SZAŁ ×$mult!';
+  }
+
+  @override
+  String goldenLucky(String amount) {
+    return 'FART! +$amount';
+  }
+
+  @override
+  String get goldenHotHand => 'GORĄCA RĘKA!';
+
+  @override
+  String chipFrenzy(String mult) {
+    return 'Szał ×$mult';
+  }
+
+  @override
+  String get chipHotHand => 'Gorąca ręka';
+
+  @override
+  String get comboLabel => 'COMBO';
+
+  @override
+  String streakLabel(int count) {
+    return 'seria $count';
+  }
+
+  @override
+  String get luckyBump => 'FART!';
+
+  @override
+  String get shieldSaved => 'TARCZA!';
 }

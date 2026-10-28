@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -18,10 +19,13 @@ import 'haptics.dart';
 
 /// What the arena needs to animate a finished round.
 class HitFeedback {
-  HitFeedback(this.grade, this.reward, this.gameTime);
-  final Grade grade;
-  final double reward;
+  HitFeedback(this.outcome, this.gameTime);
+  final RoundOutcome outcome;
   final double gameTime;
+
+  Grade get grade =>
+      Grade(outcome.tier, outcome.raw.error, outcome.raw.missKind);
+  double get reward => outcome.payout;
 }
 
 /// Glue between the pure engine and the screen: owns the monotonic clock
@@ -72,6 +76,13 @@ class GameController extends ChangeNotifier {
   final _feedback = StreamController<HitFeedback>.broadcast();
   Stream<HitFeedback> get feedback => _feedback.stream;
 
+  /// Fires with `true` when a golden round starts.
+  final _roundStarts = StreamController<bool>.broadcast();
+  Stream<bool> get roundStarts => _roundStarts.stream;
+
+  int _lastTickTenth = -1;
+  bool _whooshed = false;
+
   /// Offline income waiting in the "while you were away" dialog.
   OfflineReport? pendingOffline;
 
@@ -104,6 +115,7 @@ class GameController extends ChangeNotifier {
     final last = _lastTick;
     _lastTick = t;
     _handle(round.update(t));
+    _roundSounds(t);
     if (last == null) return;
     // Long gaps (debugger, backgrounded tab) are offline time, not play.
     final dt = (t - last).clamp(0.0, 1.0);
@@ -123,30 +135,69 @@ class GameController extends ChangeNotifier {
       case null:
         return;
       case RoundStarted():
+        engine.onRoundStart();
+        _lastTickTenth = -1;
+        _whooshed = false;
+        if (engine.goldenRound) sfx.play('coins');
+        _roundStarts.add(engine.goldenRound);
         notifyListeners();
       case RoundGraded(:final grade, :final gameTime):
-        final reward = engine.hitPayout(grade);
-        state.earn(reward);
-        state.stats.record(grade, tapped: grade.missKind != MissKind.noTap);
-        _playFeedback(grade.tier);
-        _feedback.add(HitFeedback(grade, reward, gameTime));
+        sfx.underwater(false);
+        final o = engine.resolveRound(grade);
+        _playFeedback(o);
+        _feedback.add(HitFeedback(o, gameTime));
         notifyListeners();
     }
   }
 
-  void _playFeedback(Tier tier) {
-    switch (tier) {
+  void _playFeedback(RoundOutcome o) {
+    // Ding rises a semitone every two streak steps, up to an octave (U-15).
+    final pitch = math.pow(2, math.min(o.streak ~/ 2, 12) / 12).toDouble();
+    switch (o.tier) {
       case Tier.perfect:
-        sfx.play('perfect');
+        sfx.play('perfect', speed: pitch);
         sfx.play('coins', gain: 0.6);
       case Tier.great:
-        sfx.play('great');
+        sfx.play('great', speed: pitch);
       case Tier.good:
         sfx.play('good');
       case Tier.miss:
         sfx.play('miss');
     }
-    unawaited(haptics.forTier(tier));
+    if (o.comboBroken && o.streakBefore >= 3) sfx.play('combo_break');
+    if (o.golden?.effect != null) sfx.play('buy', gain: 0.8);
+    unawaited(haptics.forTier(o.tier));
+  }
+
+  /// Ticking in the last second, the fast-forward whoosh and the muffled
+  /// bullet-time zone (docs/04 §3, U-19).
+  void _roundSounds(double now) {
+    if (round.phase != RoundPhase.running) return;
+    final g = round.gameTime(now);
+    final r = balance.round;
+    if (econ.level('ticking') > 0 && g >= r.target - 1 && g < r.target) {
+      final tenth = (g * 10).floor();
+      if (tenth != _lastTickTenth) {
+        _lastTickTenth = tenth;
+        sfx.play('tick', gain: 0.7);
+        if (settings.haptics) unawaited(HapticFeedback.selectionClick());
+      }
+    }
+    if (!_whooshed && round.timeMap.fastForward > 1 && g >= r.fastForwardEnd) {
+      _whooshed = true;
+      sfx.play('whoosh', gain: 0.6);
+    }
+    sfx.underwater(
+      round.timeMap.zoneSpeed < 1 && round.timeMap.inBulletZone(g),
+    );
+  }
+
+  /// The player tapped the flying golden clock (R-ZLOTA-1).
+  void claimGolden() {
+    if (!engine.claimGolden()) return;
+    sfx.play('coins');
+    if (settings.haptics) unawaited(HapticFeedback.mediumImpact());
+    notifyListeners();
   }
 
   // ------------------------------------------------------------ shopping --
@@ -206,6 +257,8 @@ class GameController extends ChangeNotifier {
   void pause() {
     if (round.phase != RoundPhase.waiting) {
       round.cancel();
+      engine.onRoundCancelled();
+      sfx.underwater(false);
       notifyListeners();
     }
     _lastTick = null;
@@ -220,6 +273,7 @@ class GameController extends ChangeNotifier {
   @override
   void dispose() {
     _feedback.close();
+    _roundStarts.close();
     super.dispose();
   }
 }

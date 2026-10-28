@@ -2,6 +2,8 @@ import 'package:flame/components.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/painting.dart';
 
+import 'baked.dart';
+
 /// A label that bounces in (0 → 1.3 → 1), holds, then rises and fades
 /// (docs/04 §3). Removes itself when done.
 class PopText extends PositionComponent {
@@ -58,19 +60,27 @@ class PopText extends PositionComponent {
     return _t < fadeStart ? 0 : -rise * (_t - fadeStart) / (life - fadeStart);
   }
 
+  Baked? _baked;
+
+  @override
+  void onRemove() {
+    _baked?.dispose();
+    super.onRemove();
+  }
+
   @override
   void render(Canvas canvas) {
     final s = _scale;
     if (s <= 0.001) return;
+    final baked = _baked ??= Baked(
+      _painter.width + 8,
+      _painter.height + 8,
+      (c) => _painter.paint(c, const Offset(4, 4)),
+    );
     canvas.save();
     canvas.translate(0, _dy);
     canvas.scale(s);
-    final a = _alpha;
-    if (a < 1) {
-      canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, a));
-    }
-    _painter.paint(canvas, Offset(-_painter.width / 2, -_painter.height / 2));
-    if (a < 1) canvas.restore();
+    baked.draw(canvas, _alpha);
     canvas.restore();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,9 @@ Future<void> main() async {
     await rootBundle.loadString('assets/balance.json'),
   );
   final controller = await loadGame(balance, createSaveStore());
+  // Decode all sounds before play starts so the first hit never stalls; the
+  // web must wait for a user gesture instead (GameController.onPointerDown).
+  if (!kIsWeb) await controller.sfx.init();
   runApp(
     ProviderScope(
       overrides: [

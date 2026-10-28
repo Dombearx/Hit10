@@ -43,6 +43,15 @@ void registerQaHook(GameController c) {
         'synergies': s.synergies.toList(),
         'passive': c.engine.passive(),
         'pendingOffline': c.pendingOffline?.amount,
+        'skills': s.skills,
+        'combo': s.comboStreak,
+        'shield': s.shieldCharges,
+        'frenzyLeft': c.engine.frenzyLeft,
+        'hotHandLeft': c.engine.hotHandLeft,
+        'goldenVisible': c.engine.goldenVisibleLeft,
+        'goldenArmed': c.engine.goldenArmed,
+        'goldenRound': c.engine.goldenRound,
+        'goldenCaught': s.lifetime.goldenCaught,
       }).toJS;
     }).toJS,
   );
@@ -69,6 +78,24 @@ void registerQaHook(GameController c) {
   api.setProperty(
     'buyUpgrade'.toJS,
     ((JSString id) => c.buyUpgrade(id.toDart).name.toJS).toJS,
+  );
+  api.setProperty(
+    'setSkill'.toJS,
+    ((JSString id, JSNumber level) {
+      c.state.skills[id.toDart] = level.toDartInt;
+      if (id.toDart == 'shield') {
+        c.state.shieldCharges = c.engine.maxShieldCharges();
+      }
+    }).toJS,
+  );
+  api.setProperty('summonGolden'.toJS, (() => c.engine.summonGolden()).toJS);
+  api.setProperty(
+    'effect'.toJS,
+    ((JSString name, JSNumber seconds) {
+      final v = seconds.toDartDouble;
+      if (name.toDart == 'frenzy') c.engine.frenzyLeft = v;
+      if (name.toDart == 'hotHand') c.engine.hotHandLeft = v;
+    }).toJS,
   );
   api.setProperty('save'.toJS, (() => c.save().toJS).toJS);
   api.setProperty(

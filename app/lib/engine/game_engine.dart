@@ -7,6 +7,48 @@ import '../model/grading.dart';
 
 enum BuyResult { ok, tooExpensive, unavailable }
 
+enum GoldenEffect { frenzy, lucky, hotHand }
+
+/// What a golden round gave (R-ZLOTA-2/3).
+class GoldenOutcome {
+  const GoldenOutcome(this.effect, this.strength, this.amount);
+  final GoldenEffect? effect; // null = "it escaped!" (miss)
+  final double strength;
+
+  /// Seconds of effect for Frenzy/Hot hand, Tiki for Lucky.
+  final double amount;
+}
+
+/// Everything that happened when a round was graded (docs/02 §3).
+class RoundOutcome {
+  const RoundOutcome({
+    required this.raw,
+    required this.tier,
+    required this.payout,
+    required this.combo,
+    required this.streak,
+    required this.streakBefore,
+    required this.comboBroken,
+    required this.shieldUsed,
+    required this.bumpedByLuck,
+    required this.hotHand,
+    this.golden,
+  });
+
+  /// The grade before Luck / Hot hand.
+  final Grade raw;
+  final Tier tier;
+  final double payout;
+  final double combo;
+  final int streak;
+  final int streakBefore;
+  final bool comboBroken;
+  final bool shieldUsed;
+  final bool bumpedByLuck;
+  final bool hotHand;
+  final GoldenOutcome? golden;
+}
+
 /// Offline income waiting for the player to collect it (R-OFF-1…2).
 class OfflineReport {
   const OfflineReport(this.awaySeconds, this.countedSeconds, this.amount);
@@ -20,15 +62,222 @@ class OfflineReport {
 /// The game rules that change state: economy ticks, payouts, purchases and
 /// offline income. Pure Dart (T-3); the Flutter controller drives it.
 class GameEngine {
-  GameEngine(this.b, this.s) : econ = Economy(b, s);
+  GameEngine(this.b, this.s, {math.Random? random})
+    : econ = Economy(b, s),
+      rng = random ?? math.Random() {
+    if (s.goldenNextAt <= s.playSeconds) _scheduleGolden();
+  }
 
   final Balance b;
   final GameState s;
   final Economy econ;
+  final math.Random rng;
 
-  /// Temporary global multipliers (Frenzy, Turbo) — set by M3/M4 systems.
+  /// Temporary global multipliers. [frenzy] follows the golden-second effect;
+  /// [turbo] is set by the ad offers (M4).
   double frenzy = 1;
   double turbo = 1;
+
+  // --------------------------------------------------------- golden second --
+
+  /// Golden seconds are off during the tutorial (R-ZLOTA-5).
+  bool goldenEnabled = true;
+
+  /// Seconds left of the visible golden clock; 0 = none on screen.
+  double goldenVisibleLeft = 0;
+
+  /// The player caught the clock: the next round is golden.
+  bool goldenArmed = false;
+
+  /// The round in progress is golden.
+  bool goldenRound = false;
+
+  double frenzyLeft = 0;
+  double hotHandLeft = 0;
+
+  void _scheduleGolden() {
+    final g = b.golden;
+    var interval =
+        g.intervalMin + rng.nextDouble() * (g.intervalMax - g.intervalMin);
+    interval *= econ.goldenIntervalFactor();
+    if (s.perks.contains('goldRush')) {
+      interval *= b.perk('goldRush').params['intervalMultiplier']!;
+    }
+    s.goldenNextAt = s.playSeconds + interval;
+  }
+
+  /// Advances golden-second and effect timers by [dt] seconds of play.
+  /// Returns true when a golden clock just appeared.
+  bool updateEffects(double dt) {
+    frenzyLeft = math.max(0, frenzyLeft - dt);
+    hotHandLeft = math.max(0, hotHandLeft - dt);
+    frenzy = frenzyLeft > 0 ? b.golden.effect('frenzy').multiplier : 1;
+    if (goldenVisibleLeft > 0) {
+      goldenVisibleLeft = math.max(0, goldenVisibleLeft - dt);
+      if (goldenVisibleLeft == 0) _scheduleGolden(); // it flew away
+      return false;
+    }
+    if (!goldenEnabled || goldenArmed || goldenRound) return false;
+    if (s.playSeconds >= s.goldenNextAt) {
+      goldenVisibleLeft = b.golden.visibleFor;
+      return true;
+    }
+    return false;
+  }
+
+  /// The player tapped the flying golden clock.
+  bool claimGolden() {
+    if (goldenVisibleLeft <= 0) return false;
+    goldenVisibleLeft = 0;
+    goldenArmed = true;
+    return true;
+  }
+
+  /// Ad offer "Golden second now" (R-AD): show the clock immediately.
+  void summonGolden() {
+    if (goldenVisibleLeft > 0 || goldenArmed || goldenRound) return;
+    goldenVisibleLeft = b.golden.visibleFor;
+  }
+
+  void onRoundStart() {
+    if (goldenArmed) {
+      goldenArmed = false;
+      goldenRound = true;
+    }
+  }
+
+  /// A round was abandoned (pause): an armed golden round stays armed.
+  void onRoundCancelled() {
+    if (goldenRound) {
+      goldenRound = false;
+      goldenArmed = true;
+    }
+  }
+
+  GoldenOutcome _resolveGolden(Tier tier) {
+    _scheduleGolden();
+    if (tier == Tier.miss) return const GoldenOutcome(null, 0, 0);
+    s.lifetime.goldenCaught++;
+    final strength =
+        b.golden.tierStrength[tier.name]! * econ.goldenStrengthFactor();
+    final total = b.golden.effects.fold<double>(0, (a, e) => a + e.weight);
+    var r = rng.nextDouble() * total;
+    var pick = b.golden.effects.last;
+    for (final e in b.golden.effects) {
+      r -= e.weight;
+      if (r < 0) {
+        pick = e;
+        break;
+      }
+    }
+    switch (pick.id) {
+      case 'frenzy':
+        final secs = pick.duration * strength;
+        frenzyLeft += secs; // the same effect again extends it (R-ZLOTA-4)
+        frenzy = pick.multiplier;
+        return GoldenOutcome(GoldenEffect.frenzy, strength, secs);
+      case 'lucky':
+        final amount =
+            strength *
+            math.min(
+              passive() * pick.productionSeconds,
+              s.tiki * pick.bankFraction,
+            );
+        s.earn(amount);
+        return GoldenOutcome(GoldenEffect.lucky, strength, amount);
+      default:
+        final secs = pick.duration * strength;
+        hotHandLeft += secs;
+        return GoldenOutcome(GoldenEffect.hotHand, strength, secs);
+    }
+  }
+
+  // ------------------------------------------------------------ the round --
+
+  /// Applies Luck, Hot hand, the combo and the Shield, pays out and records
+  /// statistics (docs/02 §2–§3, §6). [mode] is the risk-mode multiplier.
+  RoundOutcome resolveRound(Grade g, {double mode = 1}) {
+    var tier = g.tier;
+    var bumped = false;
+    final hot = hotHandLeft > 0 && tier != Tier.miss;
+    if (hot) {
+      tier = Tier.perfect;
+    } else if ((tier == Tier.great || tier == Tier.good) &&
+        rng.nextDouble() < econ.luckChance()) {
+      tier = tier == Tier.great ? Tier.perfect : Tier.great;
+      bumped = true;
+    }
+    final before = s.comboStreak;
+    var broken = false;
+    var shieldUsed = false;
+    if (tier == Tier.miss) {
+      if (s.shieldCharges > 0 && before > 0) {
+        s.shieldCharges--;
+        shieldUsed = true;
+      } else {
+        final floor = s.perks.contains('comboFloor')
+            ? b.perk('comboFloor').params['floor']!.round()
+            : 0;
+        s.comboStreak = math.min(before, floor);
+        broken = before > s.comboStreak;
+      }
+    } else {
+      final step = b.tier(tier.name).comboStep;
+      s.comboStreak = math.min(econ.comboCap(), before + step);
+      s.shieldProgress += step;
+      while (s.shieldProgress >= b.combo.shieldRechargeSteps) {
+        s.shieldProgress -= b.combo.shieldRechargeSteps;
+        s.shieldCharges = math.min(maxShieldCharges(), s.shieldCharges + 1);
+      }
+    }
+    final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
+    final payout = hitPayout(Grade(tier, g.error), combo: combo, mode: mode);
+    s.earn(payout);
+    _recordStats(g, tier);
+    GoldenOutcome? golden;
+    if (goldenRound) {
+      goldenRound = false;
+      golden = _resolveGolden(tier);
+    }
+    return RoundOutcome(
+      raw: g,
+      tier: tier,
+      payout: payout,
+      combo: combo,
+      streak: s.comboStreak,
+      streakBefore: before,
+      comboBroken: broken,
+      shieldUsed: shieldUsed,
+      bumpedByLuck: bumped,
+      hotHand: hot,
+      golden: golden,
+    );
+  }
+
+  /// Shield level plus the "shield at start" perk (docs/02 §9.1).
+  int maxShieldCharges() {
+    var n = econ.shieldCharges();
+    if (s.perks.contains('startShield')) {
+      n = math.max(n, b.perk('startShield').params['charges']!.round());
+    }
+    return n;
+  }
+
+  void _recordStats(Grade raw, Tier tier) {
+    final tapped = raw.missKind != MissKind.noTap;
+    s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: tapped);
+    final l = s.lifetime;
+    if (tier == Tier.perfect) {
+      l.perfects++;
+      l.perfectStreak++;
+      l.bestPerfectStreak = math.max(l.bestPerfectStreak, l.perfectStreak);
+    } else {
+      l.perfectStreak = 0;
+    }
+    l.bestCombo = math.max(l.bestCombo, s.comboStreak);
+    if (raw.missKind == MissKind.early) l.earlyTaps++;
+    l.missedInARow = raw.missKind == MissKind.noTap ? l.missedInARow + 1 : 0;
+  }
 
   double passive() => econ.passive(frenzy: frenzy, turbo: turbo);
 
@@ -38,6 +287,7 @@ class GameEngine {
   /// Earns passive income for [dt] seconds of play (T-14).
   void tick(double dt) {
     if (dt <= 0) return;
+    updateEffects(dt);
     s.earn(passive() * dt);
     s.playSeconds += dt;
     s.lifetime.secondsPlayed += dt;
@@ -82,6 +332,14 @@ class GameEngine {
     if (cost == null) return BuyResult.unavailable;
     if (!s.spend(cost)) return BuyResult.tooExpensive;
     s.skills[id] = econ.level(id) + 1;
+    // A new Shield level arrives charged.
+    if (id == 'shield') s.shieldCharges = maxShieldCharges();
+    // Golden Touch shortens the wait right away.
+    if (id == 'goldenTouch' && goldenVisibleLeft == 0 && !goldenArmed) {
+      final before = s.goldenNextAt;
+      _scheduleGolden();
+      s.goldenNextAt = math.min(before, s.goldenNextAt);
+    }
     return BuyResult.ok;
   }
 
