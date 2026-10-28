@@ -1,12 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import '../balance/balance.dart';
+import '../engine/game_engine.dart';
 import '../engine/round_engine.dart';
+import '../model/economy.dart';
 import '../model/game_state.dart';
 import '../model/grading.dart';
-import '../model/time_map.dart';
+import '../model/settings.dart';
+import '../model/showcase.dart';
+import '../persistence/save_codec.dart';
+import '../persistence/save_store.dart';
 import 'audio.dart';
 import 'haptics.dart';
 
@@ -19,25 +25,44 @@ class HitFeedback {
 }
 
 /// Glue between the pure engine and the screen: owns the monotonic clock
-/// (T-8), turns pointer-downs into grades (T-9), pays rewards and fires sound
-/// and haptics. The arena reads it every frame; widgets listen for changes.
+/// (T-8), turns pointer-downs into grades (T-9), runs the economy tick
+/// (T-14), saves (T-18) and fires sound and haptics.
 class GameController extends ChangeNotifier {
-  GameController({required this.balance, Sfx? sfx, Haptics? haptics})
-    : sfx = sfx ?? Sfx(),
-      haptics = haptics ?? Haptics() {
+  GameController({
+    required this.balance,
+    GameState? state,
+    Settings? settings,
+    this.store,
+    Sfx? sfx,
+    Haptics? haptics,
+    int Function()? wallClockMs,
+  }) : state = state ?? GameState(),
+       settings = settings ?? Settings(),
+       sfx = sfx ?? Sfx(),
+       haptics = haptics ?? Haptics(),
+       _wallMs = wallClockMs ?? (() => DateTime.now().millisecondsSinceEpoch) {
+    engine = GameEngine(balance, this.state);
     round = RoundEngine(
       config: balance.round,
-      timeMapFor: _timeMap,
-      windowsFor: _windows,
+      timeMapFor: () => econ.timeMap(),
+      windowsFor: econ.windows,
     );
+    _applySettings();
   }
 
   final Balance balance;
+  final GameState state;
+  final Settings settings;
+  final SaveStore? store;
   final Sfx sfx;
   final Haptics haptics;
-  final GameState state = GameState();
+  final int Function() _wallMs;
+  late final GameEngine engine;
   late final RoundEngine round;
   final InputDiagnostics diagnostics = InputDiagnostics();
+  final GeneratorShowcase showcase = GeneratorShowcase();
+
+  Economy get econ => engine.econ;
 
   final Stopwatch _clock = Stopwatch()..start();
 
@@ -47,20 +72,22 @@ class GameController extends ChangeNotifier {
   final _feedback = StreamController<HitFeedback>.broadcast();
   Stream<HitFeedback> get feedback => _feedback.stream;
 
-  TimeMap _timeMap() {
-    final r = balance.round;
-    return TimeMap(
-      fastForwardEnd: r.fastForwardEnd,
-      zoneStart: r.target - r.bulletZone,
-      zoneEnd: r.target + r.bulletZone,
-    );
-  }
+  /// Offline income waiting in the "while you were away" dialog.
+  OfflineReport? pendingOffline;
 
-  Windows _windows() => Windows(
-    perfect: balance.tier('perfect').window,
-    great: balance.tier('great').window,
-    good: balance.tier('good').window,
-  );
+  /// Set when the save could not be read and the game started fresh (T-20).
+  bool saveWasCorrupt = false;
+
+  double? _lastTick;
+  double _econAcc = 0;
+  double _sinceSave = 0;
+  static const _saveEvery = 10.0;
+
+  void _applySettings() {
+    sfx.volume = settings.sfxVolume;
+    sfx.enabled = settings.sfxVolume > 0;
+    haptics.enabled = settings.haptics;
+  }
 
   /// Pointer-down on the arena. [eventTime] is the platform timestamp, used
   /// only for diagnostics; the grade comes from the clock read right here.
@@ -72,7 +99,24 @@ class GameController extends ChangeNotifier {
   }
 
   /// Called every frame by the arena.
-  void tick() => _handle(round.update(now()));
+  void tick() {
+    final t = now();
+    final last = _lastTick;
+    _lastTick = t;
+    _handle(round.update(t));
+    if (last == null) return;
+    // Long gaps (debugger, backgrounded tab) are offline time, not play.
+    final dt = (t - last).clamp(0.0, 1.0);
+    _econAcc += dt;
+    final step = 1 / balance.economyTickHz;
+    if (_econAcc >= step) {
+      engine.tick(_econAcc);
+      _econAcc = 0;
+      notifyListeners();
+    }
+    _sinceSave += dt;
+    if (_sinceSave >= _saveEvery) unawaited(save());
+  }
 
   void _handle(RoundEvent? ev) {
     switch (ev) {
@@ -81,7 +125,7 @@ class GameController extends ChangeNotifier {
       case RoundStarted():
         notifyListeners();
       case RoundGraded(:final grade, :final gameTime):
-        final reward = grade.isHit ? balance.tier(grade.tier.name).reward : 0.0;
+        final reward = engine.hitPayout(grade);
         state.earn(reward);
         state.stats.record(grade, tapped: grade.missKind != MissKind.noTap);
         _playFeedback(grade.tier);
@@ -105,11 +149,72 @@ class GameController extends ChangeNotifier {
     unawaited(haptics.forTier(tier));
   }
 
+  // ------------------------------------------------------------ shopping --
+
+  BuyResult _afterBuy(BuyResult r) {
+    if (r == BuyResult.ok) {
+      sfx.play('buy');
+      if (settings.haptics) unawaited(HapticFeedback.selectionClick());
+      unawaited(save());
+      notifyListeners();
+    }
+    return r;
+  }
+
+  BuyResult buyGenerators(String id, int count) =>
+      _afterBuy(engine.buyGenerators(id, count));
+  BuyResult buyUpgrade(String id) => _afterBuy(engine.buyUpgrade(id));
+  BuyResult buySynergy(String id) => _afterBuy(engine.buySynergy(id));
+  BuyResult buySkill(String id) => _afterBuy(engine.buySkill(id));
+
+  // -------------------------------------------------------- offline/save --
+
+  /// Checks for offline income (start-up and every resume).
+  void checkOffline() {
+    pendingOffline = engine.offlineSince(_wallMs());
+    state.lastSeenMs = _wallMs();
+    if (pendingOffline != null) notifyListeners();
+  }
+
+  void collectOffline({double multiplier = 1}) {
+    final r = pendingOffline;
+    if (r == null) return;
+    engine.claimOffline(r, multiplier: multiplier);
+    pendingOffline = null;
+    sfx.play('coins');
+    unawaited(save());
+    notifyListeners();
+  }
+
+  Future<void> save() async {
+    _sinceSave = 0;
+    state.lastSeenMs = _wallMs();
+    final store = this.store;
+    if (store == null) return;
+    try {
+      await store.write(
+        saveToJsonString(
+          SaveData(state, settings, balanceVersion: balance.version),
+        ),
+      );
+    } on Object catch (e) {
+      debugPrint('save failed: $e');
+    }
+  }
+
   /// App hidden or a panel covers the clock (R-RUNDA-8).
   void pause() {
-    if (round.phase == RoundPhase.waiting) return;
-    round.cancel();
-    notifyListeners();
+    if (round.phase != RoundPhase.waiting) {
+      round.cancel();
+      notifyListeners();
+    }
+    _lastTick = null;
+    unawaited(save());
+  }
+
+  void resume() {
+    _lastTick = null;
+    checkOffline();
   }
 
   @override
@@ -133,11 +238,38 @@ class InputDiagnostics {
 
   int get samples => _offsets.length;
 
-  /// Spread (max − min after removing the mean) of the input offset, in ms.
+  /// Largest deviation of the input offset from its mean, in ms.
   double get jitterMs {
     if (_offsets.length < 2) return 0;
     final mean = _offsets.reduce((a, b) => a + b) / _offsets.length;
     final dev = _offsets.map((o) => (o - mean).abs());
     return dev.reduce((a, b) => a > b ? a : b) * 1000;
   }
+}
+
+/// Loads the save (falling back to the backup, then to a fresh game, T-20)
+/// and returns a ready controller with offline income checked.
+Future<GameController> loadGame(Balance balance, SaveStore store) async {
+  SaveData? data;
+  var corrupt = false;
+  for (final read in [store.read, store.readBackup]) {
+    try {
+      final text = await read();
+      if (text == null) break;
+      data = saveFromJsonString(text);
+      break;
+    } on Object catch (e) {
+      corrupt = true;
+      debugPrint('save unreadable: $e');
+    }
+  }
+  final c = GameController(
+    balance: balance,
+    state: data?.state,
+    settings: data?.settings,
+    store: store,
+  );
+  c.saveWasCorrupt = corrupt && data == null;
+  c.checkOffline();
+  return c;
 }

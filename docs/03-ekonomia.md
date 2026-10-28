@@ -178,6 +178,23 @@ Symulacja zakłada też, że gracz klika bez przerwy przez 8 h.
 w godzinach 1–2 (×60), potem tempo spada do ×1.5–2 na godzinę. To celowa
 „ściana” przed prestiżem. Trzeba sprawdzić, czy nie nudzi.
 
+### 4.1 Port do Darta (M2)
+
+Symulator w Darcie (`app/tool/simulate.dart --check`) liczy na kodzie gry.
+Wyszedł przy tym błąd w projektowym symulatorze w Pythonie: wywołany bez
+czasu liczył Szał (×7) jako trwały po pierwszej Złotej Sekundzie. Zawyżało
+to raportowany dochód pasywny i decyzje bota, ale nie faktyczne zarobki
+(poprawione w `design/sim.py`). Na poprawionym modelu dwa cele wypadły tuż
+pod progiem: B-6a (0,95) i B-7 (0,399). Korekta:
+
+| Zmiana | Było → jest | Efekt (mediana z 5 ziaren) |
+|---|---|---|
+| Siła trafienia na poziom | +100% → **+150%** | B-6a 0,95 → 1,13 |
+| Wzrost ceny Sokolego oka | ×6 → **×5** | B-7 0,40 → 0,49; B-8 0,043 → 0,049 |
+
+Wszystkie cele B-1…B-10, A-1 i A-2 przechodzą. Aktualne wyniki zawsze
+pokazuje `dart run tool/simulate.dart --check`.
+
 ## 5. Reklamy a balans
 
 Cele tempa B-1…B-10 są liczone **bez reklam**. Reklamy mają osobne cele:

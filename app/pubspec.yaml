@@ -19,6 +19,7 @@ dependencies:
   flutter_soloud: ^5.2.2
   intl: ^0.20.3
   path_provider: ^2.1.6
+  archive: ^4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +34,7 @@ flutter:
   assets:
     - assets/balance.json
     - assets/audio/
+    - assets/emoji/
 
   fonts:
     - family: LilitaOne

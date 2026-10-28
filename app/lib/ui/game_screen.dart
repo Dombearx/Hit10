@@ -5,9 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../arena/arena_game.dart';
 import '../l10n/gen/app_localizations.dart';
 import 'diagnostics_panel.dart';
+import 'format.dart';
 import 'game_controller.dart';
+import 'offline_dialog.dart';
 import 'providers.dart';
 import 'qa_hook.dart';
+import 'shop/generator_list.dart';
+import 'shop/upgrade_strip.dart';
 import 'theme.dart';
 import 'widgets/animated_counter.dart';
 
@@ -19,16 +23,19 @@ class GameScreen extends ConsumerStatefulWidget {
 }
 
 class _GameScreenState extends ConsumerState<GameScreen> {
-  late final GameController controller = GameController(
-    balance: ref.read(balanceProvider),
-  );
+  late final GameController controller = ref.read(gameControllerProvider);
   late final ArenaGame arena = ArenaGame(controller, _labels());
   late final AppLifecycleListener _lifecycle = AppLifecycleListener(
     onHide: controller.pause,
     onPause: controller.pause,
+    onShow: _onShow,
   );
 
   bool _diagnostics = false;
+  bool _shopCollapsed = false;
+  bool _offlineOpen = false;
+  int _tab = 0;
+  BuyAmount _amount = BuyAmount.one;
   int _secretTaps = 0;
   DateTime _lastSecretTap = DateTime(0);
 
@@ -49,6 +56,30 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   void initState() {
     super.initState();
     if (qaEnabled) registerQaHook(controller);
+    controller.addListener(_maybeShowOffline);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeShowOffline();
+      if (controller.saveWasCorrupt && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).saveCorrupt)),
+        );
+      }
+    });
+  }
+
+  void _onShow() {
+    controller.resume();
+    _maybeShowOffline();
+  }
+
+  void _maybeShowOffline() {
+    if (_offlineOpen || controller.pendingOffline == null || !mounted) return;
+    _offlineOpen = true;
+    controller.pause();
+    showOfflineDialog(
+      context,
+      controller,
+    ).whenComplete(() => _offlineOpen = false);
   }
 
   @override
@@ -60,8 +91,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   void dispose() {
+    controller.removeListener(_maybeShowOffline);
     _lifecycle.dispose();
-    controller.dispose();
     super.dispose();
   }
 
@@ -89,30 +120,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             children: [
               Column(
                 children: [
-                  const SizedBox(height: 12),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: _onSecretTap,
-                    child: ListenableBuilder(
-                      listenable: controller,
-                      builder: (context, _) => Column(
-                        children: [
-                          AnimatedCounter(
-                            value: controller.state.tiki,
-                            decimalSeparator: l.decimalSeparator,
-                          ),
-                          Text(
-                            l.tikiLabel,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 6),
+                  _Header(controller: controller, onSecretTap: _onSecretTap),
                   Expanded(
+                    flex: _shopCollapsed ? 8 : 5,
                     child: Listener(
                       key: const Key('arena'),
                       behavior: HitTestBehavior.opaque,
@@ -121,7 +132,36 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       child: GameWidget(game: arena),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  ListenableBuilder(
+                    listenable: controller,
+                    builder: (context, _) =>
+                        UpgradeStrip(controller: controller),
+                  ),
+                  _ShopHeader(
+                    tab: _tab,
+                    amount: _amount,
+                    collapsed: _shopCollapsed,
+                    onTab: (t) => setState(() {
+                      _tab = t;
+                      _shopCollapsed = false;
+                    }),
+                    onAmount: (a) => setState(() => _amount = a),
+                    onToggle: () =>
+                        setState(() => _shopCollapsed = !_shopCollapsed),
+                  ),
+                  if (!_shopCollapsed)
+                    Expanded(
+                      flex: 5,
+                      child: ListenableBuilder(
+                        listenable: controller,
+                        builder: (context, _) => _tab == 0
+                            ? GeneratorList(
+                                controller: controller,
+                                amount: _amount,
+                              )
+                            : Center(child: Text(l.comingSoon)),
+                      ),
+                    ),
                 ],
               ),
               if (_diagnostics)
@@ -134,6 +174,201 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({required this.controller, required this.onSecretTap});
+  final GameController controller;
+  final VoidCallback onSecretTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onSecretTap,
+      child: ListenableBuilder(
+        listenable: controller,
+        builder: (context, _) {
+          final f = Fmt.of(context, controller);
+          final ps = controller.engine.passive();
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  AnimatedCounter(
+                    key: const Key('balance'),
+                    value: controller.state.tiki,
+                    decimalSeparator: l.decimalSeparator,
+                    notation: controller.settings.notation,
+                    whole: true,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    l.tikiLabel,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              AnimatedOpacity(
+                opacity: ps > 0 ? 1 : 0,
+                duration: const Duration(milliseconds: 300),
+                child: Text(
+                  f.perSecond(ps),
+                  style: TextStyle(
+                    fontFamily: Fonts.display,
+                    fontSize: 16,
+                    color: Palette.outline.withValues(alpha: 0.7),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ShopHeader extends StatelessWidget {
+  const _ShopHeader({
+    required this.tab,
+    required this.amount,
+    required this.collapsed,
+    required this.onTab,
+    required this.onAmount,
+    required this.onToggle,
+  });
+
+  final int tab;
+  final BuyAmount amount;
+  final bool collapsed;
+  final ValueChanged<int> onTab;
+  final ValueChanged<BuyAmount> onAmount;
+  final VoidCallback onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    Widget tabButton(int i, String text) => GestureDetector(
+      key: Key('tab-$i'),
+      onTap: () => onTab(i),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        decoration: BoxDecoration(
+          color: tab == i
+              ? Palette.outline
+              : Colors.white.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Palette.outline, width: 2),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontFamily: Fonts.display,
+            fontSize: 15,
+            color: tab == i ? Colors.white : Palette.outline,
+          ),
+        ),
+      ),
+    );
+    Widget amountButton(BuyAmount a, String text) => GestureDetector(
+      key: Key('amount-${a.name}'),
+      onTap: () => onAmount(a),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+        decoration: BoxDecoration(
+          color: amount == a ? Palette.accent : Colors.transparent,
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontFamily: Fonts.display,
+            fontSize: 13,
+            color: amount == a ? Colors.white : Palette.outline,
+          ),
+        ),
+      ),
+    );
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onVerticalDragEnd: (d) {
+        final v = d.primaryVelocity ?? 0;
+        if ((v > 200 && !collapsed) || (v < -200 && collapsed)) onToggle();
+      },
+      child: Column(
+        children: [
+          // Drag or tap the handle to fold the shop away (U-2).
+          GestureDetector(
+            key: const Key('shop-toggle'),
+            behavior: HitTestBehavior.opaque,
+            onTap: onToggle,
+            child: SizedBox(
+              width: 120,
+              height: 18,
+              child: Center(
+                child: Container(
+                  width: 44,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Palette.outline.withValues(alpha: 0.45),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 8, 6),
+            child: Row(
+              children: [
+                // Scale down rather than overflow on narrow screens or with
+                // large system text.
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        tabButton(0, l.tabClocks),
+                        const SizedBox(width: 6),
+                        tabButton(1, l.tabSkills),
+                      ],
+                    ),
+                  ),
+                ),
+                if (tab == 0 && !collapsed) ...[
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+                          amountButton(BuyAmount.one, '×1'),
+                          amountButton(BuyAmount.ten, '×10'),
+                          amountButton(BuyAmount.hundred, '×100'),
+                          amountButton(BuyAmount.max, l.buyAmountMax),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
