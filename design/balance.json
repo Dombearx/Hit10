@@ -1,0 +1,346 @@
+{
+ "version": 1,
+ "currency": "tiki",
+ "round": {
+  "target": 10.0,
+  "autoEndAfter": 0.3,
+  "inputGraceAfterStart": 0.25,
+  "resultPause": 0.7,
+  "fastForwardEnd": 9.0,
+  "bulletZone": 0.2
+ },
+ "tiers": [
+  {
+   "id": "perfect",
+   "window": 0.005,
+   "reward": 10,
+   "echoShare": 1.0,
+   "comboStep": 2
+  },
+  {
+   "id": "great",
+   "window": 0.02,
+   "reward": 3,
+   "echoShare": 0.333,
+   "comboStep": 1
+  },
+  {
+   "id": "good",
+   "window": 0.05,
+   "reward": 1,
+   "echoShare": 0.1,
+   "comboStep": 0
+  }
+ ],
+ "combo": {
+  "multiplierPerStep": 0.05,
+  "baseCap": 5
+ },
+ "skills": [
+  {
+   "id": "power",
+   "maxLevel": 10,
+   "baseCost": 50,
+   "costGrowth": 7,
+   "perLevel": 1.0,
+   "effect": "tierRewardMultiplier = 1 + perLevel*L"
+  },
+  {
+   "id": "fastForward",
+   "maxLevel": 10,
+   "baseCost": 150,
+   "costGrowth": 5,
+   "perLevel": 0.5,
+   "effect": "speed of game time before fastForwardEnd = 1 + perLevel*L"
+  },
+  {
+   "id": "ticking",
+   "maxLevel": 1,
+   "baseCost": 200,
+   "costGrowth": 1,
+   "perLevel": 1,
+   "effect": "audio + haptic tick on every 0.1 s in the last second"
+  },
+  {
+   "id": "wideEye",
+   "maxLevel": 10,
+   "baseCost": 300,
+   "costGrowth": 6,
+   "perLevel": 0.08,
+   "effect": "great and good windows x (1 + perLevel*L)"
+  },
+  {
+   "id": "combo",
+   "maxLevel": 10,
+   "baseCost": 500,
+   "costGrowth": 8,
+   "perLevel": 2,
+   "effect": "combo cap = baseCap + perLevel*L; the combo multiplier scales the whole hit payout, echo included"
+  },
+  {
+   "id": "magnet",
+   "maxLevel": 10,
+   "baseCost": 2000,
+   "costGrowth": 7,
+   "perLevel": 0.001,
+   "effect": "perfect window + perLevel*L seconds"
+  },
+  {
+   "id": "echo",
+   "maxLevel": 10,
+   "baseCost": 5000,
+   "costGrowth": 9,
+   "perLevel": 0.5,
+   "effect": "a hit also pays perLevel*L*echoShare seconds of passive income"
+  },
+  {
+   "id": "bulletTime",
+   "maxLevel": 10,
+   "baseCost": 5000,
+   "costGrowth": 7,
+   "perLevel": 0.06,
+   "effect": "speed of game time inside the bullet zone = 1 - perLevel*L"
+  },
+  {
+   "id": "luck",
+   "maxLevel": 10,
+   "baseCost": 10000,
+   "costGrowth": 8,
+   "perLevel": 0.02,
+   "effect": "chance that a great/good hit is bumped one tier up = perLevel*L"
+  },
+  {
+   "id": "shield",
+   "maxLevel": 3,
+   "baseCost": 2000,
+   "costGrowth": 50,
+   "perLevel": 1,
+   "effect": "misses forgiven without breaking combo; recharges 1 per 10 combo steps"
+  },
+  {
+   "id": "goldenTouch",
+   "maxLevel": 5,
+   "baseCost": 1000000.0,
+   "costGrowth": 50,
+   "perLevel": 0.05,
+   "effect": "golden-second interval x (1 - perLevel*L), effect strength x (1 + perLevel*L)"
+  }
+ ],
+ "generators": [
+  {
+   "id": "grandpa",
+   "sigma": 0.8,
+   "baseCost": 15,
+   "baseRate": 0.1
+  },
+  {
+   "id": "grandma",
+   "sigma": 0.5,
+   "baseCost": 100,
+   "baseRate": 1
+  },
+  {
+   "id": "cuckoo",
+   "sigma": 0.3,
+   "baseCost": 1100,
+   "baseRate": 8
+  },
+  {
+   "id": "metronome",
+   "sigma": 0.15,
+   "baseCost": 12000,
+   "baseRate": 47
+  },
+  {
+   "id": "watchmaker",
+   "sigma": 0.08,
+   "baseCost": 130000,
+   "baseRate": 260
+  },
+  {
+   "id": "sprintJudge",
+   "sigma": 0.04,
+   "baseCost": 1400000.0,
+   "baseRate": 1400
+  },
+  {
+   "id": "stationClock",
+   "sigma": 2.0,
+   "baseCost": 20000000.0,
+   "baseRate": 7800
+  },
+  {
+   "id": "quartz",
+   "sigma": 0.01,
+   "baseCost": 330000000.0,
+   "baseRate": 44000
+  },
+  {
+   "id": "atomic",
+   "sigma": 0.002,
+   "baseCost": 5100000000.0,
+   "baseRate": 260000
+  },
+  {
+   "id": "gps",
+   "sigma": 0.001,
+   "baseCost": 75000000000.0,
+   "baseRate": 1600000.0
+  },
+  {
+   "id": "pulsar",
+   "sigma": 0.0005,
+   "baseCost": 1000000000000.0,
+   "baseRate": 10000000.0
+  },
+  {
+   "id": "timeMachine",
+   "sigma": 0.0001,
+   "baseCost": 14000000000000.0,
+   "baseRate": 65000000.0
+  },
+  {
+   "id": "schrodinger",
+   "sigma": 0.0001,
+   "baseCost": 170000000000000.0,
+   "baseRate": 430000000.0,
+   "requiresPerk": "unlockSchrodinger"
+  },
+  {
+   "id": "chronos",
+   "sigma": 0.0,
+   "baseCost": 2100000000000000.0,
+   "baseRate": 2900000000.0,
+   "requiresPerk": "unlockChronos"
+  }
+ ],
+ "generatorCostGrowth": 1.15,
+ "generatorSellRefund": 0.25,
+ "generatorUpgrades": {
+  "thresholds": [
+   1,
+   5,
+   25,
+   50,
+   100,
+   150,
+   200,
+   250
+  ],
+  "costMultipliers": [
+   10,
+   50,
+   500,
+   50000,
+   5000000.0,
+   500000000.0,
+   50000000000.0,
+   5000000000000.0
+  ],
+  "multiplier": 2
+ },
+ "synergies": [
+  {
+   "id": "grandparents",
+   "a": "grandpa",
+   "b": "grandma",
+   "aPerB": 0.01,
+   "bPerA": 0.001,
+   "cost": 50000.0
+  },
+  {
+   "id": "birdRhythm",
+   "a": "cuckoo",
+   "b": "metronome",
+   "aPerB": 0.01,
+   "bPerA": 0.001,
+   "cost": 5000000.0
+  },
+  {
+   "id": "craftsmanship",
+   "a": "watchmaker",
+   "b": "quartz",
+   "aPerB": 0.01,
+   "bPerA": 0.001,
+   "cost": 3000000000.0
+  },
+  {
+   "id": "photoFinish",
+   "a": "sprintJudge",
+   "b": "gps",
+   "aPerB": 0.01,
+   "bPerA": 0.001,
+   "cost": 700000000000.0
+  },
+  {
+   "id": "delayedTrain",
+   "a": "stationClock",
+   "b": "timeMachine",
+   "aPerB": 0.01,
+   "bPerA": 0.001,
+   "cost": 140000000000000.0
+  },
+  {
+   "id": "cosmicBeat",
+   "a": "atomic",
+   "b": "pulsar",
+   "aPerB": 0.01,
+   "bPerA": 0.001,
+   "cost": 10000000000000.0
+  }
+ ],
+ "golden": {
+  "intervalMin": 300,
+  "intervalMax": 900,
+  "visibleFor": 12,
+  "tierStrength": {
+   "perfect": 1.0,
+   "great": 0.6,
+   "good": 0.3
+  },
+  "effects": [
+   {
+    "id": "frenzy",
+    "weight": 0.45,
+    "multiplier": 7,
+    "duration": 77
+   },
+   {
+    "id": "lucky",
+    "weight": 0.45,
+    "productionSeconds": 600,
+    "bankFraction": 0.1
+   },
+   {
+    "id": "hotHand",
+    "weight": 0.1,
+    "duration": 30
+   }
+  ]
+ },
+ "modes": {
+  "blind": {
+   "unlockPerfects": 100,
+   "hideDigitsAt": 7.0,
+   "rewardMultiplier": 3
+  },
+  "fastClock": {
+   "unlockPerfects": 500,
+   "clockSpeed": 1.5,
+   "rewardMultiplier": 2
+  }
+ },
+ "offline": {
+  "capHours": 8,
+  "efficiency": 0.5,
+  "minAwaySeconds": 60
+ },
+ "achievements": {
+  "bonusEach": 0.01
+ },
+ "prestige": {
+  "divisor": 100000000.0,
+  "exponent": 0.3333333,
+  "bonusPerChronon": 0.02
+ }
+}
