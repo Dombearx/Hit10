@@ -424,4 +424,447 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shieldSaved => 'SHIELD!';
+
+  @override
+  String ach_earned(String amount) {
+    return 'Earned $amount';
+  }
+
+  @override
+  String ach_earned_desc(String amount) {
+    return 'Earn $amount Ticks in total';
+  }
+
+  @override
+  String ach_owned(String generator, String count) {
+    return '$generator ×$count';
+  }
+
+  @override
+  String ach_owned_desc(String generator, String count) {
+    return 'Own $count × $generator';
+  }
+
+  @override
+  String ach_perfects(String count) {
+    return 'Perfectionist $count';
+  }
+
+  @override
+  String ach_perfects_desc(String count) {
+    return 'Hit PERFECT $count times';
+  }
+
+  @override
+  String ach_perfectStreak(String count) {
+    return 'Flawless $count';
+  }
+
+  @override
+  String ach_perfectStreak_desc(String count) {
+    return '$count PERFECTs in a row';
+  }
+
+  @override
+  String ach_combo(String count) {
+    return 'Combo $count';
+  }
+
+  @override
+  String ach_combo_desc(String count) {
+    return 'Reach a streak of $count';
+  }
+
+  @override
+  String ach_golden(String count) {
+    return 'Gold digger $count';
+  }
+
+  @override
+  String ach_golden_desc(String count) {
+    return 'Catch $count golden seconds';
+  }
+
+  @override
+  String ach_prestige(String count) {
+    return 'Time traveller $count';
+  }
+
+  @override
+  String ach_prestige_desc(String count) {
+    return 'Prestige $count times';
+  }
+
+  @override
+  String get ach_mode_blind => 'Blindfolded';
+
+  @override
+  String get ach_mode_blind_desc => 'PERFECT in blind mode';
+
+  @override
+  String get ach_mode_fast => 'Quick hands';
+
+  @override
+  String get ach_mode_fast_desc => 'PERFECT on the fast clock';
+
+  @override
+  String get ach_mode_both => 'Madman';
+
+  @override
+  String get ach_mode_both_desc => 'PERFECT with both modes on';
+
+  @override
+  String get ach_hidden_impatient => 'Impatient';
+
+  @override
+  String get ach_hidden_impatient_desc => 'TOO EARLY 100 times';
+
+  @override
+  String get ach_hidden_nap => 'Nap time';
+
+  @override
+  String get ach_hidden_nap_desc => '10 rounds in a row without a tap';
+
+  @override
+  String get ach_hidden_almost => 'So close';
+
+  @override
+  String get ach_hidden_almost_desc => '9.99, then 10.01';
+
+  @override
+  String get ach_hidden_punctual => 'Punctual';
+
+  @override
+  String get ach_hidden_punctual_desc => 'PERFECT at 10:00 in the morning';
+
+  @override
+  String get ach_hidden_tenth => 'Ten out of ten';
+
+  @override
+  String get ach_hidden_tenth_desc => '10 PERFECTs on the 10th of a month';
+
+  @override
+  String get ach_hidden_fullCollection => 'Full collection';
+
+  @override
+  String get ach_hidden_fullCollection_desc => 'Every skill maxed out';
+
+  @override
+  String get ach_hidden_museum => 'Museum';
+
+  @override
+  String get ach_hidden_museum_desc => 'One of every clock';
+
+  @override
+  String get ach_hidden_boiledEgg => 'Soft-boiled';
+
+  @override
+  String get ach_hidden_boiledEgg_desc => '100 grandmas';
+
+  @override
+  String get perk_headStart => 'Head start';
+
+  @override
+  String get perk_headStart_desc =>
+      'Start each run with 10 grandpas and 1K Ticks';
+
+  @override
+  String get perk_muscleMemory1 => 'Muscle memory I';
+
+  @override
+  String get perk_muscleMemory1_desc => 'Fast Forward survives the paradox';
+
+  @override
+  String get perk_muscleMemory2 => 'Muscle memory II';
+
+  @override
+  String get perk_muscleMemory2_desc => 'Hawk Eye and Magnet survive too';
+
+  @override
+  String get perk_muscleMemory3 => 'Muscle memory III';
+
+  @override
+  String get perk_muscleMemory3_desc => 'Other skills keep half their level';
+
+  @override
+  String get perk_longNap1 => 'Long nap I';
+
+  @override
+  String get perk_longNap1_desc => 'Offline limit 12 h';
+
+  @override
+  String get perk_longNap2 => 'Long nap II';
+
+  @override
+  String get perk_longNap2_desc => 'Offline limit 24 h';
+
+  @override
+  String get perk_deepSleep1 => 'Deep sleep I';
+
+  @override
+  String get perk_deepSleep1_desc => 'Offline at 75 %';
+
+  @override
+  String get perk_deepSleep2 => 'Deep sleep II';
+
+  @override
+  String get perk_deepSleep2_desc => 'Offline at 100 %';
+
+  @override
+  String get perk_goldRush => 'Gold rush';
+
+  @override
+  String get perk_goldRush_desc => 'Golden seconds 15 % more often';
+
+  @override
+  String get perk_startShield => 'Shield at start';
+
+  @override
+  String get perk_startShield_desc =>
+      'One shield charge, even without the skill';
+
+  @override
+  String get perk_comboFloor => 'Soft landing';
+
+  @override
+  String get perk_comboFloor_desc => 'A miss drops the streak to 5, not 0';
+
+  @override
+  String get perk_autoBuyer => 'Auto buyer';
+
+  @override
+  String get perk_autoBuyer_desc =>
+      'A switch that buys the cheapest clock every 5 s';
+
+  @override
+  String get perk_earlyModes => 'Daredevil';
+
+  @override
+  String get perk_earlyModes_desc => 'Risk modes unlocked from the start';
+
+  @override
+  String get perk_unlockSchrodinger => 'The box';
+
+  @override
+  String get perk_unlockSchrodinger_desc => 'Unlocks Schrödinger\'s Cat';
+
+  @override
+  String get perk_secondClock => 'Second clock';
+
+  @override
+  String get perk_secondClock_desc => 'Play two stopwatches at once';
+
+  @override
+  String get perk_unlockChronos => 'Altar of Chronos';
+
+  @override
+  String get perk_unlockChronos_desc => 'Unlocks Chronos';
+
+  @override
+  String get achievementsTitle => 'Achievements';
+
+  @override
+  String achievementsSummary(int count, int total, String percent) {
+    return '$count/$total · +$percent% income';
+  }
+
+  @override
+  String achievementsUnlocked(int count) {
+    return '$count achievements unlocked!';
+  }
+
+  @override
+  String get achievementUnlocked => 'Achievement unlocked!';
+
+  @override
+  String get hiddenAchievement => 'Hidden achievement';
+
+  @override
+  String get statsTitle => 'Statistics';
+
+  @override
+  String get statEarnedRun => 'Earned this run';
+
+  @override
+  String get statEarnedTotal => 'Earned in total';
+
+  @override
+  String get statRounds => 'Rounds';
+
+  @override
+  String get statTiers => 'Hits';
+
+  @override
+  String get statMeanError => 'Average error';
+
+  @override
+  String get statSpread => 'Spread';
+
+  @override
+  String get statMeanHint => 'negative = you tap early';
+
+  @override
+  String get statBestStreak => 'Best PERFECT streak';
+
+  @override
+  String get statBestCombo => 'Highest combo';
+
+  @override
+  String get statGolden => 'Golden seconds caught';
+
+  @override
+  String get statPlayTime => 'Time played';
+
+  @override
+  String get statPrestiges => 'Prestiges';
+
+  @override
+  String get statChronons => 'Chronons';
+
+  @override
+  String ms(String value) {
+    return '$value ms';
+  }
+
+  @override
+  String get prestigeTitle => 'Time paradox';
+
+  @override
+  String prestigeChronons(int count, String percent) {
+    return 'Chronons: $count (+$percent% forever)';
+  }
+
+  @override
+  String prestigeShards(int count) {
+    return 'Time shards: $count';
+  }
+
+  @override
+  String prestigeGain(int count) {
+    return 'Rewind now for +$count Chronons';
+  }
+
+  @override
+  String prestigeNext(String amount) {
+    return '$amount more Ticks for the next Chronon';
+  }
+
+  @override
+  String get prestigeButton => 'Rewind time';
+
+  @override
+  String get prestigeConfirm1 =>
+      'You lose your clocks, skills and Ticks. Chronons, perks and achievements stay. Continue?';
+
+  @override
+  String get prestigeConfirm2 => 'Really? Time will rewind.';
+
+  @override
+  String get perksTitle => 'Perks';
+
+  @override
+  String perkRequires(String name) {
+    return 'Needs: $name';
+  }
+
+  @override
+  String get perkOwned => 'Owned';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get modeBlind => 'Blind ×3';
+
+  @override
+  String get modeFast => 'Fast clock ×2';
+
+  @override
+  String get modeSecond => 'Second clock';
+
+  @override
+  String get modeAuto => 'Auto buyer';
+
+  @override
+  String get adTurbo => 'Turbo ×2';
+
+  @override
+  String adTurboLeft(String time) {
+    return '×2 · $time';
+  }
+
+  @override
+  String get adGolden => 'Golden second';
+
+  @override
+  String adBag(int minutes) {
+    return '+$minutes min';
+  }
+
+  @override
+  String adRescue(int count) {
+    return 'Streak $count lost! Restore';
+  }
+
+  @override
+  String get adDouble => 'Double it';
+
+  @override
+  String get adUnavailable => 'No ad right now';
+
+  @override
+  String adCooldown(String time) {
+    return 'in $time';
+  }
+
+  @override
+  String get adFull => 'Full';
+
+  @override
+  String get tutorialAim => 'Tap when the clock shows exactly 10.00';
+
+  @override
+  String get tutorialBuy => 'Buy a grandpa: he will try for you!';
+
+  @override
+  String get tutorialInfo =>
+      'Grandpa tries every 10 seconds. More clocks, more Ticks!';
+
+  @override
+  String get tutorialGotIt => 'Got it!';
+
+  @override
+  String get tip_skills => 'New skill! Check the Skills tab.';
+
+  @override
+  String get tip_golden =>
+      'A golden second! Catch the flying clock: the next round turns golden.';
+
+  @override
+  String get tip_combo =>
+      'A streak! GREAT and PERFECT hits keep raising the multiplier.';
+
+  @override
+  String get tip_prestige =>
+      'You can rewind time: a prestige gives Chronons, a permanent bonus.';
+
+  @override
+  String notificationTitle(String amount) {
+    return 'Your clocks collected $amount Ticks! Come back for more.';
+  }
+
+  @override
+  String get notificationAsk => 'Shall we tell you when your clocks are full?';
 }

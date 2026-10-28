@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../engine/ad_offers.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../providers.dart';
 import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -39,6 +43,11 @@ class GeneratorList extends StatelessWidget {
       }
     }
     final total = c.engine.passive();
+    // One bag offer, on the newest clock the player is saving for.
+    final bagId = ids.lastWhere(
+      (id) => c.econ.generatorCost(id) > c.state.tiki,
+      orElse: () => '',
+    );
     return ListView(
       padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
       children: [
@@ -49,6 +58,7 @@ class GeneratorList extends StatelessWidget {
             id: id,
             amount: amount,
             totalIncome: total,
+            offerBag: id == bagId,
           ),
         if (silhouette != null) _LockedTile(controller: c, id: silhouette),
       ],
@@ -63,12 +73,14 @@ class _GeneratorTile extends StatelessWidget {
     required this.id,
     required this.amount,
     required this.totalIncome,
+    required this.offerBag,
   });
 
   final GameController controller;
   final String id;
   final BuyAmount amount;
   final double totalIncome;
+  final bool offerBag;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +100,7 @@ class _GeneratorTile extends StatelessWidget {
     final rate = unit * owned;
     final share = totalIncome > 0 ? rate / totalIncome * 100 : 0.0;
     final gain = c.econ.windowGain(id);
+    final bag = offerBag ? _bagButton(context, c) : null;
     final sub = owned == 0
         ? generatorDescription(l, id)
         : [
@@ -140,6 +153,7 @@ class _GeneratorTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
+          if (!affordable && bag != null) ...[bag, const SizedBox(width: 6)],
           BuyButton(
             key: Key('buy-$id'),
             label: amount == BuyAmount.one ? null : '×$count',
@@ -216,4 +230,33 @@ class _TileFrame extends StatelessWidget {
       child: child,
     );
   }
+}
+
+/// adBag (U-23): "📺 +5 min" on a card the player cannot afford yet.
+Widget? _bagButton(BuildContext context, GameController c) {
+  if (!c.ads.available(AdOffer.bag, c.wallMs())) return null;
+  final l = AppLocalizations.of(context);
+  final ads = ProviderScope.containerOf(context).read(rewardedAdsProvider);
+  return GestureDetector(
+    key: const Key('ad-bag'),
+    onTap: () => c.watchAd(AdOffer.bag, ads),
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      decoration: BoxDecoration(
+        color: Palette.perfect,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Palette.outline, width: 2),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(EmojiArt.path('television'), width: 18, height: 18),
+          Text(
+            l.adBag((c.balance.ads.bagProductionSeconds / 60).round()),
+            style: const TextStyle(fontFamily: Fonts.display, fontSize: 11),
+          ),
+        ],
+      ),
+    ),
+  );
 }

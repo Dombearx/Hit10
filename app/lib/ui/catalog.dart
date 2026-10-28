@@ -163,3 +163,75 @@ String skillLabel(AppLocalizations l, String id) => switch (id) {
   'goldenTouch' => l.skill_goldenTouch_label,
   _ => id,
 };
+
+String perkName(AppLocalizations l, String id) => switch (id) {
+  'headStart' => l.perk_headStart,
+  'muscleMemory1' => l.perk_muscleMemory1,
+  'muscleMemory2' => l.perk_muscleMemory2,
+  'muscleMemory3' => l.perk_muscleMemory3,
+  'longNap1' => l.perk_longNap1,
+  'longNap2' => l.perk_longNap2,
+  'deepSleep1' => l.perk_deepSleep1,
+  'deepSleep2' => l.perk_deepSleep2,
+  'goldRush' => l.perk_goldRush,
+  'startShield' => l.perk_startShield,
+  'comboFloor' => l.perk_comboFloor,
+  'autoBuyer' => l.perk_autoBuyer,
+  'earlyModes' => l.perk_earlyModes,
+  'unlockSchrodinger' => l.perk_unlockSchrodinger,
+  'secondClock' => l.perk_secondClock,
+  'unlockChronos' => l.perk_unlockChronos,
+  _ => id,
+};
+
+String perkDescription(AppLocalizations l, String id) => switch (id) {
+  'headStart' => l.perk_headStart_desc,
+  'muscleMemory1' => l.perk_muscleMemory1_desc,
+  'muscleMemory2' => l.perk_muscleMemory2_desc,
+  'muscleMemory3' => l.perk_muscleMemory3_desc,
+  'longNap1' => l.perk_longNap1_desc,
+  'longNap2' => l.perk_longNap2_desc,
+  'deepSleep1' => l.perk_deepSleep1_desc,
+  'deepSleep2' => l.perk_deepSleep2_desc,
+  'goldRush' => l.perk_goldRush_desc,
+  'startShield' => l.perk_startShield_desc,
+  'comboFloor' => l.perk_comboFloor_desc,
+  'autoBuyer' => l.perk_autoBuyer_desc,
+  'earlyModes' => l.perk_earlyModes_desc,
+  'unlockSchrodinger' => l.perk_unlockSchrodinger_desc,
+  'secondClock' => l.perk_secondClock_desc,
+  'unlockChronos' => l.perk_unlockChronos_desc,
+  _ => '',
+};
+
+/// Names of the one-off achievements (the counted ones use templates).
+String? fixedAchievementName(AppLocalizations l, String id) => switch (id) {
+  'mode_blind' => l.ach_mode_blind,
+  'mode_fast' => l.ach_mode_fast,
+  'mode_both' => l.ach_mode_both,
+  'hidden_impatient' => l.ach_hidden_impatient,
+  'hidden_nap' => l.ach_hidden_nap,
+  'hidden_almost' => l.ach_hidden_almost,
+  'hidden_punctual' => l.ach_hidden_punctual,
+  'hidden_tenth' => l.ach_hidden_tenth,
+  'hidden_fullCollection' => l.ach_hidden_fullCollection,
+  'hidden_museum' => l.ach_hidden_museum,
+  'hidden_boiledEgg' => l.ach_hidden_boiledEgg,
+  _ => null,
+};
+
+String? fixedAchievementDescription(AppLocalizations l, String id) =>
+    switch (id) {
+      'mode_blind' => l.ach_mode_blind_desc,
+      'mode_fast' => l.ach_mode_fast_desc,
+      'mode_both' => l.ach_mode_both_desc,
+      'hidden_impatient' => l.ach_hidden_impatient_desc,
+      'hidden_nap' => l.ach_hidden_nap_desc,
+      'hidden_almost' => l.ach_hidden_almost_desc,
+      'hidden_punctual' => l.ach_hidden_punctual_desc,
+      'hidden_tenth' => l.ach_hidden_tenth_desc,
+      'hidden_fullCollection' => l.ach_hidden_fullCollection_desc,
+      'hidden_museum' => l.ach_hidden_museum_desc,
+      'hidden_boiledEgg' => l.ach_hidden_boiledEgg_desc,
+      _ => null,
+    };

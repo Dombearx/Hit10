@@ -13,11 +13,19 @@ import 'qa_hook.dart';
 import 'shop/generator_list.dart';
 import 'shop/skill_list.dart';
 import 'shop/upgrade_strip.dart';
+import 'catalog.dart';
+import 'screens/achievements_screen.dart';
+import 'screens/prestige_screen.dart';
+import 'screens/stats_screen.dart';
 import 'theme.dart';
 import 'throttled.dart';
 import 'widgets/animated_counter.dart';
 import 'widgets/combo_meter.dart';
+import 'widgets/ad_buttons.dart';
 import 'widgets/effect_chips.dart';
+import 'widgets/mode_row.dart';
+import 'widgets/toasts.dart';
+import 'widgets/tutorial.dart';
 import 'widgets/frenzy_background.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -31,9 +39,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   late final GameController controller = ref.read(gameControllerProvider);
   late final ArenaGame arena = ArenaGame(controller, _labels());
   late final AppLifecycleListener _lifecycle = AppLifecycleListener(
-    onHide: controller.pause,
-    onPause: controller.pause,
+    onHide: _onHide,
+    onPause: _onHide,
     onShow: _onShow,
+  );
+
+  void _onHide() => controller.background(
+    title: AppLocalizations.of(context).notificationTitle,
   );
 
   /// The shop and the upgrade strip repaint at 4 Hz, not at every tick.
@@ -97,6 +109,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     showOfflineDialog(
       context,
       controller,
+      ref.read(rewardedAdsProvider),
     ).whenComplete(() => _offlineOpen = false);
   }
 
@@ -139,7 +152,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               Column(
                 children: [
                   const SizedBox(height: 6),
-                  _Header(controller: controller, onSecretTap: _onSecretTap),
+                  _Header(
+                    controller: controller,
+                    onSecretTap: _onSecretTap,
+                    onAchievements: () => showAchievements(context, controller),
+                    onStats: () => showStats(context, controller),
+                    onPrestige: () => showPrestige(context, controller),
+                  ),
                   Expanded(
                     flex: _shopCollapsed ? 8 : 5,
                     child: Listener(
@@ -153,14 +172,64 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             arena.tapGolden(Vector2(p.dx, p.dy))) {
                           return;
                         }
-                        controller.onPointerDown(e.timeStamp);
+                        // With two clocks each half of the arena is one clock
+                        // (R-DRUGI-1).
+                        final clock =
+                            controller.clocks.length > 1 &&
+                                p.dx > arena.size.x / 2
+                            ? 1
+                            : 0;
+                        controller.onPointerDown(e.timeStamp, clock: clock);
                       },
-                      child: RepaintBoundary(child: GameWidget(game: arena)),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: RepaintBoundary(
+                              child: GameWidget(game: arena),
+                            ),
+                          ),
+                          // Offer tiles float over the arena's top corners but
+                          // swallow their own taps (U-22).
+                          Positioned(
+                            left: 8,
+                            right: 8,
+                            top: 4,
+                            child: ListenableBuilder(
+                              listenable: _slow,
+                              builder: (context, _) =>
+                                  AdCornerButtons(controller: controller),
+                            ),
+                          ),
+                          // A 5-second offer: floats over the arena's foot so
+                          // the shop below doesn't jump.
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: Center(
+                              child: ListenableBuilder(
+                                listenable: controller,
+                                builder: (context, _) =>
+                                    RescuePopup(controller: controller),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   ListenableBuilder(
                     listenable: controller,
+                    builder: (context, _) =>
+                        TutorialBubble(controller: controller),
+                  ),
+                  ListenableBuilder(
+                    listenable: controller,
                     builder: (context, _) => ComboMeter(controller: controller),
+                  ),
+                  ListenableBuilder(
+                    listenable: _slow,
+                    builder: (context, _) => ModeRow(controller: controller),
                   ),
                   RepaintBoundary(
                     child: ListenableBuilder(
@@ -198,6 +267,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     ),
                 ],
               ),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 8,
+                child: AchievementToasts(controller: controller),
+              ),
               if (_diagnostics)
                 Positioned(
                   left: 12,
@@ -214,9 +289,39 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.controller, required this.onSecretTap});
+  const _Header({
+    required this.controller,
+    required this.onSecretTap,
+    required this.onAchievements,
+    required this.onStats,
+    required this.onPrestige,
+  });
   final GameController controller;
   final VoidCallback onSecretTap;
+  final VoidCallback onAchievements;
+  final VoidCallback onStats;
+  final VoidCallback onPrestige;
+
+  Widget _icon(
+    String emoji,
+    Key key,
+    VoidCallback onTap, {
+    bool glow = false,
+  }) => GestureDetector(
+    key: key,
+    onTap: onTap,
+    child: Container(
+      width: 40,
+      height: 40,
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: glow ? Palette.perfect : Colors.white.withValues(alpha: 0.6),
+        shape: BoxShape.circle,
+        border: Border.all(color: Palette.outline, width: 2),
+      ),
+      child: Image.asset(EmojiArt.path(emoji)),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -231,6 +336,26 @@ class _Header extends StatelessWidget {
           final ps = controller.engine.passive();
           return Column(
             children: [
+              Row(
+                children: [
+                  const SizedBox(width: 10),
+                  _icon(
+                    'trophy',
+                    const Key('open-achievements'),
+                    onAchievements,
+                  ),
+                  const SizedBox(width: 6),
+                  _icon('bar_chart', const Key('open-stats'), onStats),
+                  const Spacer(),
+                  _icon(
+                    'cyclone',
+                    const Key('open-prestige'),
+                    onPrestige,
+                    glow: controller.engine.canPrestige(),
+                  ),
+                  const SizedBox(width: 10),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.baseline,

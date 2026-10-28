@@ -7,6 +7,7 @@ import 'balance/balance.dart';
 import 'persistence/save_store.dart';
 import 'ui/app.dart';
 import 'ui/game_controller.dart';
+import 'ui/notifications.dart';
 import 'ui/providers.dart';
 
 Future<void> main() async {
@@ -15,7 +16,11 @@ Future<void> main() async {
   final balance = Balance.fromJsonString(
     await rootBundle.loadString('assets/balance.json'),
   );
-  final controller = await loadGame(balance, createSaveStore());
+  final controller = await loadGame(
+    balance,
+    createSaveStore(),
+    notifications: createNotifications(),
+  );
   // Decode all sounds before play starts so the first hit never stalls; the
   // web must wait for a user gesture instead (GameController.onPointerDown).
   if (!kIsWeb) await controller.sfx.init();

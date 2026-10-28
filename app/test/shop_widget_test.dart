@@ -86,6 +86,12 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.tiki, closeTo(3600, 1)); // 2 h × 1/s × 50 %
     expect(c.pendingOffline, isNull);
+    // R-OFF-5: the notification question comes after the reward, once.
+    expect(find.text('Dać znać, gdy zegary uzbierają limit?'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('notify-yes')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(c.state.tipsSeen, contains('notifyAsked'));
+    expect(c.settings.notifications, isTrue);
   });
 
   testWidgets('shop folds away and back (U-2)', (tester) async {

@@ -309,5 +309,330 @@
     }
   },
   "luckyBump": "LUCKY!",
-  "shieldSaved": "SHIELD!"
+  "shieldSaved": "SHIELD!",
+  "ach_earned": "Earned {amount}",
+  "@ach_earned": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_earned_desc": "Earn {amount} Ticks in total",
+  "@ach_earned_desc": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_owned": "{generator} ×{count}",
+  "@ach_owned": {
+    "placeholders": {
+      "generator": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_owned_desc": "Own {count} × {generator}",
+  "@ach_owned_desc": {
+    "placeholders": {
+      "generator": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_perfects": "Perfectionist {count}",
+  "@ach_perfects": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_perfects_desc": "Hit PERFECT {count} times",
+  "@ach_perfects_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_perfectStreak": "Flawless {count}",
+  "@ach_perfectStreak": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_perfectStreak_desc": "{count} PERFECTs in a row",
+  "@ach_perfectStreak_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_combo": "Combo {count}",
+  "@ach_combo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_combo_desc": "Reach a streak of {count}",
+  "@ach_combo_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_golden": "Gold digger {count}",
+  "@ach_golden": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_golden_desc": "Catch {count} golden seconds",
+  "@ach_golden_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_prestige": "Time traveller {count}",
+  "@ach_prestige": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_prestige_desc": "Prestige {count} times",
+  "@ach_prestige_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_mode_blind": "Blindfolded",
+  "ach_mode_blind_desc": "PERFECT in blind mode",
+  "ach_mode_fast": "Quick hands",
+  "ach_mode_fast_desc": "PERFECT on the fast clock",
+  "ach_mode_both": "Madman",
+  "ach_mode_both_desc": "PERFECT with both modes on",
+  "ach_hidden_impatient": "Impatient",
+  "ach_hidden_impatient_desc": "TOO EARLY 100 times",
+  "ach_hidden_nap": "Nap time",
+  "ach_hidden_nap_desc": "10 rounds in a row without a tap",
+  "ach_hidden_almost": "So close",
+  "ach_hidden_almost_desc": "9.99, then 10.01",
+  "ach_hidden_punctual": "Punctual",
+  "ach_hidden_punctual_desc": "PERFECT at 10:00 in the morning",
+  "ach_hidden_tenth": "Ten out of ten",
+  "ach_hidden_tenth_desc": "10 PERFECTs on the 10th of a month",
+  "ach_hidden_fullCollection": "Full collection",
+  "ach_hidden_fullCollection_desc": "Every skill maxed out",
+  "ach_hidden_museum": "Museum",
+  "ach_hidden_museum_desc": "One of every clock",
+  "ach_hidden_boiledEgg": "Soft-boiled",
+  "ach_hidden_boiledEgg_desc": "100 grandmas",
+  "perk_headStart": "Head start",
+  "perk_headStart_desc": "Start each run with 10 grandpas and 1K Ticks",
+  "perk_muscleMemory1": "Muscle memory I",
+  "perk_muscleMemory1_desc": "Fast Forward survives the paradox",
+  "perk_muscleMemory2": "Muscle memory II",
+  "perk_muscleMemory2_desc": "Hawk Eye and Magnet survive too",
+  "perk_muscleMemory3": "Muscle memory III",
+  "perk_muscleMemory3_desc": "Other skills keep half their level",
+  "perk_longNap1": "Long nap I",
+  "perk_longNap1_desc": "Offline limit 12 h",
+  "perk_longNap2": "Long nap II",
+  "perk_longNap2_desc": "Offline limit 24 h",
+  "perk_deepSleep1": "Deep sleep I",
+  "perk_deepSleep1_desc": "Offline at 75 %",
+  "perk_deepSleep2": "Deep sleep II",
+  "perk_deepSleep2_desc": "Offline at 100 %",
+  "perk_goldRush": "Gold rush",
+  "perk_goldRush_desc": "Golden seconds 15 % more often",
+  "perk_startShield": "Shield at start",
+  "perk_startShield_desc": "One shield charge, even without the skill",
+  "perk_comboFloor": "Soft landing",
+  "perk_comboFloor_desc": "A miss drops the streak to 5, not 0",
+  "perk_autoBuyer": "Auto buyer",
+  "perk_autoBuyer_desc": "A switch that buys the cheapest clock every 5 s",
+  "perk_earlyModes": "Daredevil",
+  "perk_earlyModes_desc": "Risk modes unlocked from the start",
+  "perk_unlockSchrodinger": "The box",
+  "perk_unlockSchrodinger_desc": "Unlocks Schrödinger's Cat",
+  "perk_secondClock": "Second clock",
+  "perk_secondClock_desc": "Play two stopwatches at once",
+  "perk_unlockChronos": "Altar of Chronos",
+  "perk_unlockChronos_desc": "Unlocks Chronos",
+  "achievementsTitle": "Achievements",
+  "achievementsSummary": "{count}/{total} · +{percent}% income",
+  "@achievementsSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "achievementsUnlocked": "{count} achievements unlocked!",
+  "@achievementsUnlocked": {"placeholders": {"count": {"type": "int"}}},
+  "achievementUnlocked": "Achievement unlocked!",
+  "hiddenAchievement": "Hidden achievement",
+  "statsTitle": "Statistics",
+  "statEarnedRun": "Earned this run",
+  "statEarnedTotal": "Earned in total",
+  "statRounds": "Rounds",
+  "statTiers": "Hits",
+  "statMeanError": "Average error",
+  "statSpread": "Spread",
+  "statMeanHint": "negative = you tap early",
+  "statBestStreak": "Best PERFECT streak",
+  "statBestCombo": "Highest combo",
+  "statGolden": "Golden seconds caught",
+  "statPlayTime": "Time played",
+  "statPrestiges": "Prestiges",
+  "statChronons": "Chronons",
+  "ms": "{value} ms",
+  "@ms": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "prestigeTitle": "Time paradox",
+  "prestigeChronons": "Chronons: {count} (+{percent}% forever)",
+  "@prestigeChronons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "prestigeShards": "Time shards: {count}",
+  "@prestigeShards": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prestigeGain": "Rewind now for +{count} Chronons",
+  "@prestigeGain": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prestigeNext": "{amount} more Ticks for the next Chronon",
+  "@prestigeNext": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prestigeButton": "Rewind time",
+  "prestigeConfirm1": "You lose your clocks, skills and Ticks. Chronons, perks and achievements stay. Continue?",
+  "prestigeConfirm2": "Really? Time will rewind.",
+  "perksTitle": "Perks",
+  "perkRequires": "Needs: {name}",
+  "@perkRequires": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "perkOwned": "Owned",
+  "yes": "Yes",
+  "no": "No",
+  "cancel": "Cancel",
+  "ok": "OK",
+  "skip": "Skip",
+  "modeBlind": "Blind ×3",
+  "modeFast": "Fast clock ×2",
+  "modeSecond": "Second clock",
+  "modeAuto": "Auto buyer",
+  "adTurbo": "Turbo ×2",
+  "adTurboLeft": "×2 · {time}",
+  "@adTurboLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "adGolden": "Golden second",
+  "adBag": "+{minutes} min",
+  "@adBag": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "adRescue": "Streak {count} lost! Restore",
+  "@adRescue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adDouble": "Double it",
+  "adUnavailable": "No ad right now",
+  "adCooldown": "in {time}",
+  "@adCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "adFull": "Full",
+  "tutorialAim": "Tap when the clock shows exactly 10.00",
+  "tutorialBuy": "Buy a grandpa: he will try for you!",
+  "tutorialInfo": "Grandpa tries every 10 seconds. More clocks, more Ticks!",
+  "tutorialGotIt": "Got it!",
+  "tip_skills": "New skill! Check the Skills tab.",
+  "tip_golden": "A golden second! Catch the flying clock: the next round turns golden.",
+  "tip_combo": "A streak! GREAT and PERFECT hits keep raising the multiplier.",
+  "tip_prestige": "You can rewind time: a prestige gives Chronons, a permanent bonus.",
+  "notificationTitle": "Your clocks collected {amount} Ticks! Come back for more.",
+  "@notificationTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationAsk": "Shall we tell you when your clocks are full?"
 }

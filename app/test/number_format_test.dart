@@ -1,5 +1,8 @@
+import 'package:flutter/widgets.dart';
+import 'package:hit10/l10n/gen/app_localizations.dart';
 import 'package:hit10/model/number_format.dart';
-import 'package:test/test.dart';
+import 'package:hit10/ui/format.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('small numbers (U-16)', () {
@@ -55,5 +58,15 @@ void main() {
   test('error line', () {
     expect(formatError(0.017), '+0.017 s');
     expect(formatError(-0.2), '−0.200 s');
+  });
+
+  test('round thresholds drop trailing zeros', () async {
+    final pl = await AppLocalizations.delegate.load(const Locale('pl'));
+    final f = Fmt(pl, Notation.short);
+    expect(f.round(1000), '1K');
+    expect(f.round(1e6), '1M');
+    expect(f.round(2.5e6), '2,5M');
+    expect(f.round(100), '100');
+    expect(f.round(1e15), '1aa');
   });
 }
