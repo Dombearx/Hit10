@@ -897,5 +897,7 @@
   "upg_chronos_7": "Eternity",
   "upg_chronos_7_desc": "Has time. Literally.",
   "upg_chronos_8": "The Absolute Second",
-  "upg_chronos_8_desc": "10.00. Always was, always will be."
+  "upg_chronos_8_desc": "10.00. Always was, always will be.",
+  "settingsPrivacyPolicy": "Privacy policy",
+  "settingsAdPrivacy": "Ad privacy choices"
 }

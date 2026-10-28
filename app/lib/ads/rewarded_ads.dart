@@ -32,3 +32,11 @@ class FakeRewardedAds implements RewardedAds {
     return grant;
   }
 }
+
+/// Implemented by ad networks that need a consent form (UMP, EU): the
+/// settings show a "privacy options" entry while [optionsRequired] is true.
+abstract interface class AdPrivacy {
+  Future<bool> optionsRequired();
+
+  Future<void> showOptions();
+}

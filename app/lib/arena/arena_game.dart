@@ -257,6 +257,7 @@ class Stage extends Component {
   Future<void> onLoad() async {
     _syncDials();
     await add(particles);
+    await add(DigitsLayer(this));
   }
 
   void _syncDials() {
@@ -526,6 +527,9 @@ class Dial extends Component {
   final int index;
   double _flash = 0;
   Color _flashColor = Palette.perfect;
+
+  /// This frame's digits; [DigitsLayer] paints them over the particles.
+  void Function(Canvas canvas)? digits;
   double _time = 0; // for idle pulsing
   double _zone = 0; // bullet-time overlay strength 0..1
 
@@ -639,6 +643,7 @@ class Dial extends Component {
   @override
   void render(Canvas canvas) {
     final ctrl = stage.game.controller;
+    digits = null;
     if (index >= ctrl.clocks.length) return;
     final slot = ctrl.clocks[index];
     final round = slot.round;
@@ -764,28 +769,31 @@ class Dial extends Component {
     final digitSize = r * 0.44;
     final throb = _zone > 0 ? 1 + 0.05 * _zone * math.sin(_time * 14) : 1.0;
     final blindFrom = ctrl.balance.blind.hideDigitsAt ?? double.infinity;
-    // The fast-forward ghost must not reveal the time in blind mode.
-    if (speed > 1.6 && !(slot.blind && t >= blindFrom)) {
-      final ghost = Color.lerp(digitColor, Palette.dial, 0.85)!;
+    // Drawn later by the digits layer, above every particle (U-7).
+    digits = (canvas) {
+      // The fast-forward ghost must not reveal the time in blind mode.
+      if (speed > 1.6 && !(slot.blind && t >= blindFrom)) {
+        final ghost = Color.lerp(digitColor, Palette.dial, 0.85)!;
+        _drawDigits(
+          canvas,
+          formatStopwatch(shown),
+          c.translate(0, -r * 0.03),
+          digitSize,
+          ghost,
+        );
+      }
+      final hideAt = ctrl.balance.blind.hideDigitsAt;
+      final hidden = slot.blind && running && hideAt != null && t >= hideAt;
       _drawDigits(
         canvas,
-        formatStopwatch(shown),
-        c.translate(0, -r * 0.03),
+        // Blind mode (docs/02 §7): from 7.00 a pulsing "?" replaces the time.
+        hidden ? '??.??' : formatStopwatch(shown),
+        c,
         digitSize,
-        ghost,
+        hidden ? Palette.miss : digitColor,
+        scale: hidden ? 1 + 0.06 * math.sin(_time * 6) : throb,
       );
-    }
-    final hideAt = ctrl.balance.blind.hideDigitsAt;
-    final hidden = slot.blind && running && hideAt != null && t >= hideAt;
-    _drawDigits(
-      canvas,
-      // Blind mode (docs/02 §7): from 7.00 a pulsing "?" replaces the time.
-      hidden ? '??.??' : formatStopwatch(shown),
-      c,
-      digitSize,
-      hidden ? Palette.miss : digitColor,
-      scale: hidden ? 1 + 0.06 * math.sin(_time * 6) : throb,
-    );
+    };
     if (golden && running) {
       final p = 0.5 + 0.5 * math.sin(_time * 6);
       _outline.color = Palette.perfect.withValues(alpha: 0.6 + 0.4 * p);
@@ -860,5 +868,19 @@ class Shockwave extends Component {
       ..strokeWidth = from * 0.12 * (1 - k) + 1
       ..color = color.withValues(alpha: (1 - k) * 0.9);
     canvas.drawCircle(center.toOffset(), from + (to - from) * e, _paint);
+  }
+}
+
+/// The stopwatch digits of every dial, painted after (over) the particles:
+/// effects never cover the time (docs/04 U-7).
+class DigitsLayer extends Component {
+  DigitsLayer(this.stage) : super(priority: 10);
+  final Stage stage;
+
+  @override
+  void render(Canvas canvas) {
+    for (final d in stage.dials) {
+      d.digits?.call(canvas);
+    }
   }
 }

@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'ads/rewarded_ads.dart';
 import 'balance/balance.dart';
 import 'persistence/save_store.dart';
+import 'ui/ads.dart';
 import 'ui/app.dart';
 import 'ui/audio.dart';
 import 'ui/game_controller.dart';
@@ -36,6 +38,9 @@ Stream<LicenseEntry> _assetLicenses() async* {
 
 /// Loads the save and (re)starts the widget tree. Importing or resetting a
 /// save calls this again, so the new state starts exactly like a cold launch.
+/// One ad provider for the app's whole life, across restarts.
+final RewardedAds _ads = createRewardedAds();
+
 Future<void> _boot(Balance balance, {GameController? previous}) async {
   final controller = await loadGame(
     balance,
@@ -56,6 +61,7 @@ Future<void> _boot(Balance balance, {GameController? previous}) async {
       overrides: [
         balanceProvider.overrideWithValue(balance),
         gameControllerProvider.overrideWithValue(controller),
+        rewardedAdsProvider.overrideWithValue(_ads),
         restartProvider.overrideWithValue(
           () => _boot(balance, previous: controller),
         ),

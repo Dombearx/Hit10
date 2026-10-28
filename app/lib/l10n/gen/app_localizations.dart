@@ -3079,6 +3079,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'10.00. Always was, always will be.'**
   String get upg_chronos_8_desc;
+
+  /// No description provided for @settingsPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get settingsPrivacyPolicy;
+
+  /// No description provided for @settingsAdPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad privacy choices'**
+  String get settingsAdPrivacy;
 }
 
 class _AppLocalizationsDelegate

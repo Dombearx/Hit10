@@ -249,7 +249,12 @@ class GameController extends ChangeNotifier {
   }
 
   /// Called every frame by the arena.
+  /// QA builds only (store screenshots): holds the rounds still, so a
+  /// result can be captured before the next round starts (R-RUNDA-6).
+  bool qaFrozen = false;
+
   void tick() {
+    if (qaFrozen) return;
     final t = now();
     final last = _lastTick;
     _lastTick = t;
