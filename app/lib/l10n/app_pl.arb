@@ -8,6 +8,7 @@
   "tierGood": "DOBRZE",
   "missEarly": "ZA WCZEŚNIE",
   "missLate": "ZA PÓŹNO",
+  "missClose": "BLISKO!",
   "tapToStart": "Dotknij, aby zacząć",
   "decimalSeparator": ",",
   "gen_grandpa": "Dziadek z zegarkiem",
@@ -505,5 +506,8 @@
   "upg_chronos_8": "Sekunda absolutna",
   "upg_chronos_8_desc": "10,00. Od zawsze i na zawsze.",
   "settingsPrivacyPolicy": "Polityka prywatności",
-  "settingsAdPrivacy": "Prywatność reklam"
+  "settingsAdPrivacy": "Prywatność reklam",
+  "dailyTitle": "Dzienna premia",
+  "dailyDay": "Dzień {day} z {total}",
+  "dailyHint": "Wracaj codziennie — przez {total} dni premia rośnie. Przerwa zaczyna od nowa."
 }

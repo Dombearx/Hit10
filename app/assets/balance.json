@@ -516,10 +516,23 @@
   },
   "beginner": {
     "rounds": 10,
-    "perfect": 0.01,
-    "great": 0.04,
-    "good": 0.12,
     "rewardMultiplier": 3,
     "fadeRounds": 20
+  },
+  "close": {
+    "window": 0.15,
+    "reward": 0.3
+  },
+  "daily": {
+    "minutes": [
+      5,
+      10,
+      15,
+      20,
+      30,
+      45,
+      60
+    ],
+    "floorPerDay": 25
   }
 }

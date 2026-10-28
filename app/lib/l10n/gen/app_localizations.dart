@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'TOO LATE'**
   String get missLate;
 
+  /// No description provided for @missClose.
+  ///
+  /// In en, this message translates to:
+  /// **'CLOSE!'**
+  String get missClose;
+
   /// No description provided for @tapToStart.
   ///
   /// In en, this message translates to:
@@ -3091,6 +3097,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ad privacy choices'**
   String get settingsAdPrivacy;
+
+  /// No description provided for @dailyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily bonus'**
+  String get dailyTitle;
+
+  /// No description provided for @dailyDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day} of {total}'**
+  String dailyDay(int day, int total);
+
+  /// No description provided for @dailyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Come back every day — the bonus grows for {total} days. Missing one starts over.'**
+  String dailyHint(int total);
 }
 
 class _AppLocalizationsDelegate

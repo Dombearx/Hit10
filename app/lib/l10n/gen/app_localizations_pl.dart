@@ -34,6 +34,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get missLate => 'ZA PÓŹNO';
 
   @override
+  String get missClose => 'BLISKO!';
+
+  @override
   String get tapToStart => 'Dotknij, aby zacząć';
 
   @override
@@ -1636,4 +1639,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get settingsAdPrivacy => 'Prywatność reklam';
+
+  @override
+  String get dailyTitle => 'Dzienna premia';
+
+  @override
+  String dailyDay(int day, int total) {
+    return 'Dzień $day z $total';
+  }
+
+  @override
+  String dailyHint(int total) {
+    return 'Wracaj codziennie — przez $total dni premia rośnie. Przerwa zaczyna od nowa.';
+  }
 }

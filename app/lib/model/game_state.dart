@@ -70,6 +70,13 @@ class GameState {
   /// Turbo seconds left; only drains while playing (R-AD-1).
   double turboLeft = 0;
 
+  // ------------------------------------------------------- daily bonus --
+  /// Local date (yyyymmdd) of the last daily bonus claimed; 0 = never.
+  int dailyKey = 0;
+
+  /// Day of the 7-day streak that [dailyKey] paid (1–7).
+  int dailyStreak = 0;
+
   void earn(double amount) {
     if (amount <= 0 || amount.isNaN) return;
     tiki += amount;

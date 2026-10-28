@@ -67,7 +67,13 @@ Te dwa czasy różnią się przez Przewijanie i bullet time.
 | **PERFEKT** | < 0.005 s (na ekranie „10.00”) | 10 | 100% | +2 |
 | **ŚWIETNIE** | < 0.020 s | 3 | 33% | +1 |
 | **DOBRZE** | < 0.050 s | 1 | 10% | 0 (combo się utrzymuje) |
+| **BLISKO** | < 0.150 s (tylko dotknięcia gracza) | 0.3 | 0 | reset do 0 |
 | **PUDŁO** | reszta, ZA WCZEŚNIE, ZA PÓŹNO | 0 | 0 | reset do 0 |
+
+- **R-PROG-0:** BLISKO (08, playtest) to pudło z pocieszeniem: płaci mało
+  (1/33 PERFEKTU), ale zeruje combo jak pudło. Okna PERFEKT/ŚWIETNIE/DOBRZE
+  się nie zmieniają — trafienie 10.00 ma zostać wyczynem. Generatory nie
+  mają BLISKO.
 
 - **R-PROG-1:** Okna sprawdzane są od najwęższego. Wygrywa pierwszy pasujący
   próg.
@@ -320,11 +326,19 @@ na wypłatę z dotknięć gracza.
 ### 11.1 Szczęście początkującego (08, playtest)
 
 - **R-TUT-3:** Pierwsze **10 rund** nowej gry (przed pierwszym paradoksem)
-  ma szersze okna gracza (PERFEKT ±10 ms, ŚWIETNIE ±40 ms, DOBRZE ±120 ms)
-  i **potrójną wypłatę**; przez kolejne 20 rund premia maleje liniowo do
-  zera (bez progu — w playteście trafialność spadała z ~90% do ~55% między
-  10. a 11. rundą). Generatory tego nie dostają. Cel: pierwszy zakup
-  w ok. minutę także dla gracza nieprecyzyjnego.
+  płaci **×3** (także BLISKO); przez kolejne 20 rund mnożnik maleje
+  liniowo do ×1. Okna trafienia się nie zmieniają. Generatory tego nie
+  dostają. Cel: pierwszy zakup w ok. minutę także dla gracza
+  nieprecyzyjnego.
+
+### 11.2 Dzienna premia (08, playtest)
+
+- **R-DZIEN-1:** Przy pierwszym uruchomieniu (lub powrocie) danego dnia,
+  po samouczku, gra pokazuje okno „Dzienna premia” z serią 7 dni.
+- **R-DZIEN-2:** Dzień N płaci `max(25·N, dochód pasywny × minuty[N])`,
+  gdzie minuty = 5, 10, 15, 20, 30, 45, 60. Po 7. dniu seria wraca do 1.
+- **R-DZIEN-3:** Pominięty dzień (kalendarzowy, czas lokalny) zaczyna serię
+  od 1. Bez reklam przy tym oknie.
 
 ## 12. Statystyki
 

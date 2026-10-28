@@ -30,8 +30,12 @@ class HitFeedback {
   /// Which stopwatch (0, or 1 for the second clock).
   final int clock;
 
-  Grade get grade =>
-      Grade(outcome.tier, outcome.raw.error, outcome.raw.missKind);
+  Grade get grade => Grade(
+    outcome.tier,
+    outcome.raw.error,
+    outcome.raw.missKind,
+    outcome.raw.close,
+  );
   double get reward => outcome.payout;
 }
 
@@ -355,12 +359,14 @@ class GameController extends ChangeNotifier {
         sfx.play('great', speed: pitch);
       case Tier.good:
         sfx.play('good');
+      case Tier.miss when o.raw.close:
+        sfx.play('good', gain: 0.6, speed: 0.8);
       case Tier.miss:
         sfx.play('miss');
     }
     if (o.comboBroken && o.streakBefore >= 3) sfx.play('combo_break');
     if (o.golden?.effect != null) sfx.play('buy', gain: 0.8);
-    unawaited(haptics.forTier(o.tier));
+    unawaited(o.raw.close ? haptics.light() : haptics.forTier(o.tier));
   }
 
   /// Ticking in the last second and the fast-forward whoosh (docs/04 §3).
@@ -540,8 +546,23 @@ class GameController extends ChangeNotifier {
   /// Checks for offline income (start-up and every resume).
   void checkOffline() {
     pendingOffline = engine.offlineSince(_wallMs());
+    pendingDaily = engine.dailyFor(_localNow());
     state.lastSeenMs = _wallMs();
-    if (pendingOffline != null) notifyListeners();
+    if (pendingOffline != null || pendingDaily != null) notifyListeners();
+  }
+
+  /// Today's daily bonus waiting in its dialog (playtest 08), or null.
+  DailyBonus? pendingDaily;
+
+  void collectDaily() {
+    final d = pendingDaily;
+    if (d == null) return;
+    engine.claimDaily(d);
+    pendingDaily = null;
+    sfx.play('fanfare', gain: 0.7);
+    unawaited(haptics.medium());
+    unawaited(save());
+    notifyListeners();
   }
 
   void collectOffline({double multiplier = 1}) {

@@ -7,6 +7,7 @@ import '../l10n/gen/app_localizations.dart';
 import 'diagnostics_panel.dart';
 import 'format.dart';
 import 'game_controller.dart';
+import 'daily_dialog.dart';
 import 'offline_dialog.dart';
 import 'providers.dart';
 import 'qa_hook.dart';
@@ -74,6 +75,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       good: l.tierGood,
       early: l.missEarly,
       late: l.missLate,
+      close: l.missClose,
       tapToStart: l.tapToStart,
       decimalSeparator: l.decimalSeparator,
       goldenRound: l.goldenRound,
@@ -107,15 +109,23 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     _maybeShowOffline();
   }
 
-  void _maybeShowOffline() {
-    if (_offlineOpen || controller.pendingOffline == null || !mounted) return;
+  /// The "while you were away" dialog, then the daily bonus.
+  Future<void> _maybeShowOffline() async {
+    if (_offlineOpen || !mounted) return;
+    final c = controller;
+    if (c.pendingOffline == null && c.pendingDaily == null) return;
     _offlineOpen = true;
-    controller.pause();
-    showOfflineDialog(
-      context,
-      controller,
-      ref.read(rewardedAdsProvider),
-    ).whenComplete(() => _offlineOpen = false);
+    c.pause();
+    try {
+      if (c.pendingOffline != null) {
+        await showOfflineDialog(context, c, ref.read(rewardedAdsProvider));
+      }
+      if (mounted && c.pendingDaily != null) {
+        await showDailyDialog(context, c);
+      }
+    } finally {
+      _offlineOpen = false;
+    }
   }
 
   @override

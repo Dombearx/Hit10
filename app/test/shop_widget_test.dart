@@ -94,6 +94,22 @@ void main() {
     expect(c.settings.notifications, isTrue);
   });
 
+  testWidgets('daily bonus pops up once a day and pays (playtest 08)', (
+    tester,
+  ) async {
+    final s = GameState()..tutorialDone = true;
+    final c = await pumpGame(tester, state: s);
+    c.checkOffline();
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('Dzienna premia'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('daily-collect')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(c.state.tiki, c.balance.daily.floorPerDay);
+    expect(c.pendingDaily, isNull);
+    c.checkOffline(); // same day: nothing new
+    expect(c.pendingDaily, isNull);
+  });
+
   testWidgets('shop folds away and back (U-2)', (tester) async {
     await pumpGame(tester, state: GameState()..tiki = 20);
     expect(find.byKey(const Key('buy-grandpa')), findsOneWidget);

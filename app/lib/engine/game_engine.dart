@@ -255,7 +255,11 @@ class GameEngine {
       }
     }
     final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
-    final payout = hitPayout(Grade(tier, g.error), combo: combo, mode: mode);
+    final payout = hitPayout(
+      Grade(tier, g.error, g.missKind, g.close),
+      combo: combo,
+      mode: mode,
+    );
     s.earn(payout);
     _recordStats(g, tier);
     GoldenOutcome? golden;
@@ -318,7 +322,16 @@ class GameEngine {
 
   /// R-WYPLATA-1: what a graded tap pays.
   double hitPayout(Grade g, {double combo = 1, double mode = 1}) {
-    if (!g.isHit) return 0;
+    if (!g.isHit) {
+      // BLISKO: a small consolation, no echo (docs/02 §2).
+      if (!g.close) return 0;
+      return b.close.reward *
+          econ.strikePower() *
+          globalMultiplier() *
+          econ.beginnerPay() *
+          combo *
+          mode;
+    }
     final t = b.tier(g.tier.name);
     final flat =
         t.reward * econ.strikePower() * globalMultiplier() * econ.beginnerPay();
@@ -534,6 +547,41 @@ class GameEngine {
     return OfflineReport(away, counted, amount);
   }
 
+  /// Today's daily bonus, or null when already claimed today or the
+  /// tutorial isn't done (playtest 08). [now] is local time.
+  DailyBonus? dailyFor(DateTime now) {
+    if (!s.tutorialDone) return null;
+    final key = dateKey(now);
+    if (key == s.dailyKey) return null;
+    final yesterday = dateKey(
+      DateTime(now.year, now.month, now.day).subtract(const Duration(days: 1)),
+    );
+    final days = b.daily.minutes.length;
+    final day = s.dailyKey == yesterday ? s.dailyStreak % days + 1 : 1;
+    final amount = math.max(
+      b.daily.floorPerDay * day,
+      passive() * 60 * b.daily.minutes[day - 1],
+    );
+    return DailyBonus(key, day, amount);
+  }
+
+  void claimDaily(DailyBonus d) {
+    s.earn(d.amount);
+    s.dailyKey = d.key;
+    s.dailyStreak = d.day;
+  }
+
   void claimOffline(OfflineReport r, {double multiplier = 1}) =>
       s.earn(r.amount * multiplier);
+}
+
+/// yyyymmdd of a local date.
+int dateKey(DateTime d) => d.year * 10000 + d.month * 100 + d.day;
+
+/// The daily bonus on offer: streak [day] (1–7) pays [amount].
+class DailyBonus {
+  const DailyBonus(this.key, this.day, this.amount);
+  final int key;
+  final int day;
+  final double amount;
 }

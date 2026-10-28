@@ -45,19 +45,14 @@ class Economy {
   Windows windows() =>
       windowsAt(magnet: level('magnet'), wideEye: level('wideEye'));
 
-  /// The windows for the player's own taps: [windows] widened by
-  /// beginner's luck at the very start.
+  /// The windows for the player's own taps: [windows] plus BLISKO.
   Windows playerWindows() {
     final w = windows();
-    final k = beginnerShare;
-    if (k == 0) return w;
-    final n = b.beginner;
-    double mix(double base, double wide) =>
-        math.max(base, base + (wide - base) * k);
     return Windows(
-      perfect: mix(w.perfect, n.perfect),
-      great: mix(w.great, n.great),
-      good: mix(w.good, n.good),
+      perfect: w.perfect,
+      great: w.great,
+      good: w.good,
+      close: math.max(b.close.window, w.good),
     );
   }
 

@@ -14,6 +14,7 @@
   "tierGood": "GOOD",
   "missEarly": "TOO EARLY",
   "missLate": "TOO LATE",
+  "missClose": "CLOSE!",
   "tapToStart": "Tap to start",
   "decimalSeparator": ".",
   "@decimalSeparator": {
@@ -899,5 +900,25 @@
   "upg_chronos_8": "The Absolute Second",
   "upg_chronos_8_desc": "10.00. Always was, always will be.",
   "settingsPrivacyPolicy": "Privacy policy",
-  "settingsAdPrivacy": "Ad privacy choices"
+  "settingsAdPrivacy": "Ad privacy choices",
+  "dailyTitle": "Daily bonus",
+  "dailyDay": "Day {day} of {total}",
+  "dailyHint": "Come back every day — the bonus grows for {total} days. Missing one starts over.",
+  "@dailyDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@dailyHint": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -34,6 +34,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missLate => 'TOO LATE';
 
   @override
+  String get missClose => 'CLOSE!';
+
+  @override
   String get tapToStart => 'Tap to start';
 
   @override
@@ -1634,4 +1637,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAdPrivacy => 'Ad privacy choices';
+
+  @override
+  String get dailyTitle => 'Daily bonus';
+
+  @override
+  String dailyDay(int day, int total) {
+    return 'Day $day of $total';
+  }
+
+  @override
+  String dailyHint(int total) {
+    return 'Come back every day — the bonus grows for $total days. Missing one starts over.';
+  }
 }

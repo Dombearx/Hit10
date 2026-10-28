@@ -98,7 +98,7 @@ Testy balansu w CI pilnują tych przedziałów:
 | **B-7** | Gracz przeciętny po 8 h ma ≥ 40% Tików gracza wprawnego | ≥ 40% |
 | **B-8** | Gracz pasywny po 8 h ma ≥ 1% Tików gracza wprawnego… | ≥ 1% |
 | **B-8b** | …i w każdej godzinie coś kupuje | ≥ 1 zakup / h |
-| **B-9** | Drugi run z 20 Chrononami (bez perków) dochodzi do Tików z 6 h pierwszego runu | ≤ 4.5 h |
+| **B-9** | Drugi run z 20 Chrononami (bez perków) dochodzi do Tików z 6 h pierwszego runu | ≤ 4.5 h (po playteście 08: 4.49 — na granicy) |
 | **B-10** | Każda umiejętność (oprócz Tykania) ma ≥1 poziom po 8 h | wszystkie |
 
 ## 4. Wyniki symulacji projektowej
