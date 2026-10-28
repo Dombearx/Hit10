@@ -14,4 +14,28 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tagline => 'Dotknij dokładnie w 10.00';
+
+  @override
+  String get tikiLabel => 'Tiki';
+
+  @override
+  String get tierPerfect => 'PERFEKT!';
+
+  @override
+  String get tierGreat => 'ŚWIETNIE!';
+
+  @override
+  String get tierGood => 'DOBRZE';
+
+  @override
+  String get missEarly => 'ZA WCZEŚNIE';
+
+  @override
+  String get missLate => 'ZA PÓŹNO';
+
+  @override
+  String get tapToStart => 'Dotknij, aby zacząć';
+
+  @override
+  String get decimalSeparator => ',';
 }

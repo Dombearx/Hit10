@@ -109,6 +109,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap at exactly 10.00'**
   String get tagline;
+
+  /// No description provided for @tikiLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticks'**
+  String get tikiLabel;
+
+  /// No description provided for @tierPerfect.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT!'**
+  String get tierPerfect;
+
+  /// No description provided for @tierGreat.
+  ///
+  /// In en, this message translates to:
+  /// **'GREAT!'**
+  String get tierGreat;
+
+  /// No description provided for @tierGood.
+  ///
+  /// In en, this message translates to:
+  /// **'GOOD'**
+  String get tierGood;
+
+  /// No description provided for @missEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'TOO EARLY'**
+  String get missEarly;
+
+  /// No description provided for @missLate.
+  ///
+  /// In en, this message translates to:
+  /// **'TOO LATE'**
+  String get missLate;
+
+  /// No description provided for @tapToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to start'**
+  String get tapToStart;
+
+  /// Decimal separator for numbers in this language (docs/04 U-16)
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get decimalSeparator;
 }
 
 class _AppLocalizationsDelegate

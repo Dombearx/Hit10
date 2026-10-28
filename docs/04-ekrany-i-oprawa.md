@@ -206,9 +206,10 @@ FLUX.1 [dev] odpada, bo ma licencję niekomercyjną.
 
 - **U-13:** Wszystkie dźwięki są **darmowe** i na licencji pozwalającej na
   użycie komercyjne. Każdy jest wpisany do `CREDITS.md` z linkiem i licencją.
-  - **Efekty** (ok. 20 plików, OGG, krótkie): paczki Kenney.nl na licencji
-    CC0 (*Interface Sounds*, *Casino Audio* na monety, *Impact Sounds*)
-    i własne „tiki” z generatora jsfxr.
+  - **Efekty** (ok. 20 plików, OGG, krótkie): **syntetyzowane w repo**
+    skryptem `tools/sfx/generate.py` (oscylatory i szum, numpy + ffmpeg),
+    więc należą do projektu i nie wymagają licencji. Paczki Kenney.nl (CC0)
+    zostają opcją, gdyby własne brzmienia nie wystarczyły.
   - **Muzyka** (3 pętle: spokojna, Szał, złota runda): OpenGameArt z filtrem
     CC0 albo Pixabay Music (licencja Pixabay pozwala na użycie komercyjne).
     Żadnych utworów z serwisów AI na darmowych planach (brak praw

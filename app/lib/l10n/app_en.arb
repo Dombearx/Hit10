@@ -1,7 +1,22 @@
 {
   "@@locale": "en",
   "appTitle": "Hit10",
-  "@appTitle": {"description": "App name shown in the launcher and title bar"},
+  "@appTitle": {
+    "description": "App name shown in the launcher and title bar"
+  },
   "tagline": "Tap at exactly 10.00",
-  "@tagline": {"description": "One-line pitch on the start screen"}
+  "@tagline": {
+    "description": "One-line pitch on the start screen"
+  },
+  "tikiLabel": "Ticks",
+  "tierPerfect": "PERFECT!",
+  "tierGreat": "GREAT!",
+  "tierGood": "GOOD",
+  "missEarly": "TOO EARLY",
+  "missLate": "TOO LATE",
+  "tapToStart": "Tap to start",
+  "decimalSeparator": ".",
+  "@decimalSeparator": {
+    "description": "Decimal separator for numbers in this language (docs/04 U-16)"
+  }
 }

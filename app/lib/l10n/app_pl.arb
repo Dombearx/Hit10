@@ -1,5 +1,13 @@
 {
   "@@locale": "pl",
   "appTitle": "Hit10",
-  "tagline": "Dotknij dokładnie w 10.00"
+  "tagline": "Dotknij dokładnie w 10.00",
+  "tikiLabel": "Tiki",
+  "tierPerfect": "PERFEKT!",
+  "tierGreat": "ŚWIETNIE!",
+  "tierGood": "DOBRZE",
+  "missEarly": "ZA WCZEŚNIE",
+  "missLate": "ZA PÓŹNO",
+  "tapToStart": "Dotknij, aby zacząć",
+  "decimalSeparator": ","
 }
