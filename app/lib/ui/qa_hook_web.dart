@@ -5,6 +5,8 @@ import 'dart:js_interop_unsafe';
 
 import 'package:flutter/scheduler.dart';
 
+import '../ads/rewarded_ads.dart';
+import '../engine/ad_offers.dart';
 import '../engine/round_engine.dart';
 import 'game_controller.dart';
 
@@ -14,12 +16,14 @@ void registerQaHook(GameController c) {
   final api = JSObject();
   api.setProperty(
     'tapAt'.toJS,
-    ((JSNumber t) {
+    ((JSNumber t, [JSNumber? offsetSeconds]) {
       final game = t.toDartDouble;
+      // A human-like error in real seconds (playtest bots), 0 = exact.
+      final off = offsetSeconds?.toDartDouble ?? 0;
       if (c.round.phase != RoundPhase.running) {
         c.onPointerDown(Duration.zero);
       }
-      final dueReal = c.round.startedAt + c.round.timeMap.realAt(game);
+      final dueReal = c.round.startedAt + c.round.timeMap.realAt(game) + off;
       // Timers fire late by a frame or more (slow headless rendering): wake
       // 250 ms early, then spin. QA builds only, so blocking is fine.
       final delayUs = ((dueReal - c.now() - 0.25) * 1e6).round();
@@ -76,6 +80,75 @@ void registerQaHook(GameController c) {
       }).toJS;
     }).toJS,
   );
+  // Playtest bots: what the shop shows right now, with prices.
+  api.setProperty(
+    'shop'.toJS,
+    (() {
+      final e = c.econ;
+      final items = <Map<String, Object?>>[];
+      for (final (i, g) in c.balance.generators.indexed) {
+        if (!e.generatorUnlocked(g.id)) continue;
+        final prevOwned = i == 0 || e.owned(c.balance.generators[i - 1].id) > 0;
+        if (!prevOwned && e.owned(g.id) == 0) break;
+        items.add({
+          'kind': 'gen',
+          'id': g.id,
+          'cost': e.generatorCost(g.id),
+          'owned': e.owned(g.id),
+        });
+      }
+      for (final u in e.availableUpgrades()) {
+        items.add({'kind': 'upg', 'id': u.generator, 'cost': u.cost});
+      }
+      for (final syn in e.availableSynergies()) {
+        items.add({'kind': 'syn', 'id': syn.id, 'cost': syn.cost});
+      }
+      for (final sk in c.balance.skills) {
+        final cost = e.skillCost(sk.id);
+        final shown =
+            e.level(sk.id) > 0 ||
+            c.state.peakTiki >= sk.baseCost * c.balance.ui.skillRevealFraction;
+        if (cost != null && shown) {
+          items.add({
+            'kind': 'skill',
+            'id': sk.id,
+            'cost': cost,
+            'level': e.level(sk.id),
+          });
+        }
+      }
+      return jsonEncode(items).toJS;
+    }).toJS,
+  );
+  api.setProperty(
+    'buyAny'.toJS,
+    ((JSString kind, JSString id) {
+      final r = switch (kind.toDart) {
+        'gen' => c.buyGenerators(id.toDart, 1),
+        'upg' => c.buyUpgrade(id.toDart),
+        'syn' => c.buySynergy(id.toDart),
+        _ => c.buySkill(id.toDart),
+      };
+      return r.name.toJS;
+    }).toJS,
+  );
+  api.setProperty(
+    'ads'.toJS,
+    (() => jsonEncode([
+      for (final o in AdOffer.values)
+        if (c.ads.available(o, c.wallMs())) o.name,
+    ]).toJS).toJS,
+  );
+  api.setProperty(
+    'watchAd'.toJS,
+    ((JSString offer) {
+      final o = AdOffer.values.byName(offer.toDart);
+      unawaited(c.watchAd(o, FakeRewardedAds(delay: Duration.zero)));
+    }).toJS,
+  );
+  api.setProperty('catchGolden'.toJS, (() => c.claimGolden()).toJS);
+  api.setProperty('dismissTip'.toJS, (() => c.dismissTip()).toJS);
+  api.setProperty('collectOffline'.toJS, (() => c.collectOffline()).toJS);
   api.setProperty(
     'grant'.toJS,
     // The next economy tick (≤ 0.1 s) repaints the counter.
