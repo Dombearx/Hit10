@@ -101,9 +101,11 @@ class SimResult {
 /// whatever pays back fastest, catches every golden second and (optionally)
 /// takes every rewarded offer.
 class Simulator {
-  Simulator(this.b, this.cfg)
+  /// [state] continues an existing game (multi-day runs); by default a
+  /// fresh one with [SimConfig.chronons].
+  Simulator(this.b, this.cfg, {GameState? state})
     : rnd = math.Random(cfg.seed),
-      s = GameState()..chronons = cfg.chronons {
+      s = state ?? (GameState()..chronons = cfg.chronons) {
     e = GameEngine(b, s, random: math.Random(cfg.seed * 7919 + 1));
   }
 
