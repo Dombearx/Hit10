@@ -198,16 +198,22 @@ class ArenaGame extends FlameGame {
     final n = controller.clocks.length;
     final c = stage.centerOf(_popupLeft ? 0 : n - 1);
     final r = stage.radiusOf(0);
-    final scale = (r / 150).clamp(0.8, 1.4);
-    // Keep the whole bubble on screen (about 100 px wide at scale 1).
+    // Bubbles live in the margins beside the dial, never on it (playtest:
+    // they distracted from the tap area). About 104 px wide at scale 1;
+    // shrunk to fit the margin, down to a still readable size.
+    final margin = _popupLeft ? c.x - r : size.x - (c.x + r);
+    final scale = math.min(
+      (r / 150).clamp(0.8, 1.4),
+      math.max(0.55, (margin - 8) / 104),
+    );
     final half = 52 * scale;
-    final x = (_popupLeft ? c.x - r * 0.95 : c.x + r * 0.95).clamp(
+    final x = (_popupLeft ? c.x - r - 4 - half : c.x + r + 4 + half).clamp(
       half + 4,
       size.x - half - 4,
     );
-    // Spawn low on the dial: bubbles float up ~0.27 r and must never cover
-    // the digits (U-7), whose lower edge is at about c.y + 0.22 r.
-    final y = c.y + r * (0.55 + 0.35 * _rng.nextDouble());
+    // Beside the dial's middle and lower part, clear of the offer tiles in
+    // the arena's top corners; they float up ~0.27 r.
+    final y = c.y + r * (-0.1 + 0.8 * _rng.nextDouble());
     final side = _popupLeft ? 0 : 1;
     _popups[side]?.dismiss();
     final popup = _popups[side] = GeneratorPopup(
