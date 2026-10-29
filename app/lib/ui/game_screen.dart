@@ -65,6 +65,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   );
 
   bool _diagnostics = false;
+
+  /// Pointers that landed on a widget over the arena (offer tiles): the
+  /// arena's own listener must not take them as a round tap.
+  final _uiPointers = <int>{};
+
+  Widget _ownTaps(Widget child) =>
+      Listener(onPointerDown: (e) => _uiPointers.add(e.pointer), child: child);
+
+  /// Touching the shop pauses the stopwatch (no penalty; the next tap on
+  /// the clock starts a round): shopping must not cost the combo.
+  Widget _pausing(Widget child) =>
+      Listener(onPointerDown: (_) => controller.pause(), child: child);
   bool _shopCollapsed = false;
   bool _offlineOpen = false;
   int _tab = 0;
@@ -222,6 +234,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           key: const Key('arena'),
                           behavior: HitTestBehavior.opaque,
                           onPointerDown: (e) {
+                            // A touch on an offer tile over the arena is not
+                            // a round tap (it used to break the combo).
+                            if (_uiPointers.remove(e.pointer)) return;
                             final p = e.localPosition;
                             // A tap on the flying golden clock is not a round
                             // tap (R-ZLOTA-1).
@@ -251,10 +266,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                 left: 8,
                                 right: 8,
                                 top: 4,
-                                child: ListenableBuilder(
-                                  listenable: _slow,
-                                  builder: (context, _) =>
-                                      AdCornerButtons(controller: controller),
+                                child: _ownTaps(
+                                  ListenableBuilder(
+                                    listenable: _slow,
+                                    builder: (context, _) =>
+                                        AdCornerButtons(controller: controller),
+                                  ),
                                 ),
                               ),
                               // A 5-second offer: floats over the arena's foot so
@@ -264,10 +281,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                 right: 0,
                                 bottom: 0,
                                 child: Center(
-                                  child: ListenableBuilder(
-                                    listenable: controller,
-                                    builder: (context, _) =>
-                                        RescuePopup(controller: controller),
+                                  child: _ownTaps(
+                                    ListenableBuilder(
+                                      listenable: controller,
+                                      builder: (context, _) =>
+                                          RescuePopup(controller: controller),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -285,42 +304,50 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         builder: (context, _) =>
                             ComboMeter(controller: controller),
                       ),
-                      ListenableBuilder(
-                        listenable: _slow,
-                        builder: (context, _) =>
-                            ModeRow(controller: controller),
-                      ),
-                      RepaintBoundary(
-                        child: ListenableBuilder(
+                      _pausing(
+                        ListenableBuilder(
                           listenable: _slow,
                           builder: (context, _) =>
-                              UpgradeStrip(controller: controller),
+                              ModeRow(controller: controller),
                         ),
                       ),
-                      _ShopHeader(
-                        tab: _tab,
-                        amount: _amount,
-                        collapsed: _shopCollapsed,
-                        onTab: (t) => setState(() {
-                          _tab = t;
-                          _shopCollapsed = false;
-                        }),
-                        onAmount: (a) => setState(() => _amount = a),
-                        onToggle: () =>
-                            setState(() => _shopCollapsed = !_shopCollapsed),
+                      _pausing(
+                        RepaintBoundary(
+                          child: ListenableBuilder(
+                            listenable: _slow,
+                            builder: (context, _) =>
+                                UpgradeStrip(controller: controller),
+                          ),
+                        ),
+                      ),
+                      _pausing(
+                        _ShopHeader(
+                          tab: _tab,
+                          amount: _amount,
+                          collapsed: _shopCollapsed,
+                          onTab: (t) => setState(() {
+                            _tab = t;
+                            _shopCollapsed = false;
+                          }),
+                          onAmount: (a) => setState(() => _amount = a),
+                          onToggle: () =>
+                              setState(() => _shopCollapsed = !_shopCollapsed),
+                        ),
                       ),
                       if (!_shopCollapsed)
                         Expanded(
                           flex: 5,
-                          child: RepaintBoundary(
-                            child: ListenableBuilder(
-                              listenable: _slow,
-                              builder: (context, _) => _tab == 0
-                                  ? GeneratorList(
-                                      controller: controller,
-                                      amount: _amount,
-                                    )
-                                  : SkillList(controller: controller),
+                          child: _pausing(
+                            RepaintBoundary(
+                              child: ListenableBuilder(
+                                listenable: _slow,
+                                builder: (context, _) => _tab == 0
+                                    ? GeneratorList(
+                                        controller: controller,
+                                        amount: _amount,
+                                      )
+                                    : SkillList(controller: controller),
+                              ),
                             ),
                           ),
                         ),

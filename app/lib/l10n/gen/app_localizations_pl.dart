@@ -174,16 +174,6 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String incomeShare(String percent) {
-    return '$percent% dochodu';
-  }
-
-  @override
-  String windowBonus(String value) {
-    return 'okna ×$value';
-  }
-
-  @override
   String get lockedName => '???';
 
   @override
@@ -287,10 +277,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_wideEye_desc =>
-      'Szersze okna ŚWIETNIE i DOBRZE. Dla ciebie i dla zegarów.';
+      'Szersze okna ŚWIETNIE i DOBRZE — częściej trafiasz. Zegary też trafiają lepiej.';
 
   @override
-  String get skill_wideEye_label => 'Okno ŚWIETNIE';
+  String get skill_wideEye_label => 'Twoje ŚWIETNIE lub lepiej';
 
   @override
   String get skill_combo => 'Combo';
@@ -307,10 +297,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_magnet_desc =>
-      'Szersze okno PERFEKT. Cyfry same lgną do 10.00.';
+      'Szersze okno PERFEKT: także 9.99 czy 10.01 może być PERFEKTEM. Jackpot 10.00 bez zmian.';
 
   @override
-  String get skill_magnet_label => 'Okno PERFEKT';
+  String get skill_magnet_label => 'Twoje PERFEKTY';
 
   @override
   String get skill_echo => 'Echo';
@@ -326,10 +316,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_bulletTime_desc =>
-      'Ręka pewniejsza przy 10.00: szersze okna trafień, zegar się nie zmienia.';
+      'Wszystkie twoje okna trafień są szersze. Zegar płynie tak samo.';
 
   @override
-  String get skill_bulletTime_label => 'Okna trafień';
+  String get skill_bulletTime_label => 'Twoje trafienia';
 
   @override
   String get skill_luck => 'Szczęście';
@@ -1831,5 +1821,10 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String jackpotPrice(String amount) {
     return '10.00 = +$amount';
+  }
+
+  @override
+  String generatorTotal(String perSecond) {
+    return 'razem $perSecond';
   }
 }
