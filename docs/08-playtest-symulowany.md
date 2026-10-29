@@ -116,7 +116,7 @@ się wynik jednej sesji.)
 | Rekomendacja | Stan |
 |---|---|
 | Pierwsze ~30 s decyduje („czy to ciekawe?”) | runda trwa 10 s, pierwsza nagroda po 10 s, pierwszy zakup ~0,5–2 min |
-| Zawsze widoczny następny cel, ulepszenia zmieniające grę | zakup co ~1 min; przewijanie/tykanie od 2.–6. min |
+| Zawsze widoczny następny cel, ulepszenia zmieniające grę | zakup co ~1 min; Start później/tykanie od 2.–6. min |
 | Samouczek grany, nie czytany; mechaniki stopniowo | jedno zdanie + strzałka; combo ~40 s, Złota Sekunda ~5 min |
 | Sesja 5–9 min (GameAnalytics 2025) | 10-min sesja = 12–59 decyzji zakupowych |
 | Powód do powrotu | dochód offline + powiadomienie o pełnym limicie |
@@ -151,3 +151,18 @@ Okna PERFEKT/ŚWIETNIE/DOBRZE wróciły do normy; pudło w ±150 ms to BLISKO
   bycie blisko, a PERFEKT dalej jest rzadki (1–4 na sesję poza Anią).
 - Pierwszy zakup: ~1–2 min (Bartek 3:48, bo pomija co trzecią rundę).
   Wolniej niż z szerszymi oknami, wyraźnie szybciej niż na starcie.
+
+## Runda 4 — pierwszy test na telefonie
+
+Feedback: Przewijanie zabiera rytm („leci szybko i nagle zwalnia na
+koniec”), przez co trudniej trafić. Zmiana: stoper zawsze płynie równo.
+
+- **Start później** (zamiast Przewijania): stoper rusza od 1.54 … 5.80
+  zamiast od 0.00, w normalnym tempie; do 10.00 zawsze zostają ≥ 4 s.
+- **Zimna krew** (zamiast bullet time): zegar nie zwalnia, za to okna
+  gracza są do ×2.5 szersze — ta sama pomoc w liczbach, bez zmiany tempa.
+  Zostały winieta i bicie serca przy 10.00, zniknął dźwięk „pod wodą”.
+
+Symulator przechodzi wszystkie progi (B-9: 4.46 h ≤ 4.5 h). Runda na max
+Startu później trwa 4.9 s zamiast 3.5 s, więc późne poziomy dają trochę
+mniej niż dawne Przewijanie; balans tego nie odczuł.

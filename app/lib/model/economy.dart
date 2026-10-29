@@ -45,14 +45,16 @@ class Economy {
   Windows windows() =>
       windowsAt(magnet: level('magnet'), wideEye: level('wideEye'));
 
-  /// The windows for the player's own taps: [windows] plus BLISKO.
+  /// The windows for the player's own taps: [windows] plus BLISKO, all
+  /// widened by Zimna krew.
   Windows playerWindows() {
     final w = windows();
+    final f = coldBlood();
     return Windows(
-      perfect: w.perfect,
-      great: w.great,
-      good: w.good,
-      close: math.max(b.close.window, w.good),
+      perfect: w.perfect * f,
+      great: w.great * f,
+      good: w.good * f,
+      close: math.max(b.close.window, w.good) * f,
     );
   }
 
@@ -71,11 +73,21 @@ class Economy {
   /// Chance that a great/good hit is bumped one tier up (Luck).
   double luckChance([int? lvl]) => _per('luck') * (lvl ?? level('luck'));
 
-  double fastForwardSpeed([int? lvl]) =>
-      1 + _per('fastForward') * (lvl ?? level('fastForward'));
+  /// Start później: where the stopwatch starts. Each level closes
+  /// `perLevel` of the remaining gap; the last one reaches
+  /// `round.latestStart`.
+  double laterStart([int? lvl]) {
+    final s = b.skill('fastForward');
+    final q = 1 - s.perLevel;
+    final l = lvl ?? level('fastForward');
+    return b.round.latestStart *
+        (1 - math.pow(q, l)) /
+        (1 - math.pow(q, s.maxLevel));
+  }
 
-  double bulletTimeSpeed([int? lvl]) =>
-      1 - _per('bulletTime') * (lvl ?? level('bulletTime'));
+  /// Zimna krew: how much wider the player's windows are (×1 at level 0).
+  double coldBlood([int? lvl]) =>
+      1 / (1 - _per('bulletTime') * (lvl ?? level('bulletTime')));
 
   int comboCap([int? lvl]) =>
       b.combo.baseCap + (_per('combo') * (lvl ?? level('combo'))).round();
@@ -95,11 +107,9 @@ class Economy {
   TimeMap timeMap({double clock = 1}) {
     final r = b.round;
     return TimeMap(
-      fastForwardEnd: r.fastForwardEnd,
+      start: laterStart(),
       zoneStart: r.target - r.bulletZone,
       zoneEnd: r.target + r.bulletZone,
-      fastForward: fastForwardSpeed(),
-      zoneSpeed: bulletTimeSpeed(),
       clock: clock,
     );
   }

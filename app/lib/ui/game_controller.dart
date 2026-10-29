@@ -48,7 +48,6 @@ class ClockSlot {
   bool blind = false;
   bool fast = false;
   int lastTickTenth = -1;
-  bool whooshed = false;
   double lastHeartbeat = -10;
 }
 
@@ -244,12 +243,12 @@ class GameController extends ChangeNotifier {
     final slot = clocks[clock.clamp(0, clocks.length - 1)];
     final wasWaiting = slot.round.phase == RoundPhase.waiting;
     _handle(slot, slot.round.tap(t));
-    // Starting from rest: the second clock follows 5 game-seconds later.
+    // Starting from rest: the second clock follows half a round later.
     if (wasWaiting && clocks.length > 1 && slot.index == 0) {
       final b = clocks[1].round;
       if (b.phase == RoundPhase.waiting) {
         _startSecondAt =
-            t + slot.round.timeMap.realAt(balance.round.secondClockOffset);
+            t + slot.round.timeMap.realAt(balance.round.target) / 2;
       }
     }
   }
@@ -276,7 +275,6 @@ class GameController extends ChangeNotifier {
       _handle(c, c.round.update(t));
       inZone |= _roundSounds(c, t);
     }
-    sfx.underwater(inZone);
     bulletZone.value = inZone; // notifies only on change
     sfx.music(
       engine.goldenRound
@@ -321,8 +319,7 @@ class GameController extends ChangeNotifier {
           ..mode = engine.modeMultiplier()
           ..blind = engine.blindActive
           ..fast = engine.fastActive
-          ..lastTickTenth = -1
-          ..whooshed = false;
+          ..lastTickTenth = -1;
         if (engine.goldenRound) sfx.play('coins');
         _roundStarts.add((slot.index, engine.goldenRound));
         notifyListeners();
@@ -384,13 +381,9 @@ class GameController extends ChangeNotifier {
         if (settings.haptics) unawaited(HapticFeedback.selectionClick());
       }
     }
-    if (!slot.whooshed &&
-        round.timeMap.fastForward > 1 &&
-        g >= r.fastForwardEnd) {
-      slot.whooshed = true;
-      sfx.play('whoosh', gain: 0.6);
-    }
-    final inZone = round.timeMap.zoneSpeed < 1 && round.timeMap.inBulletZone(g);
+    // Zimna krew: a heartbeat and a vignette around the target, at full
+    // speed; the windows are wider, the clock never slows.
+    final inZone = econ.level('bulletTime') > 0 && round.timeMap.inFocusZone(g);
     if (inZone && now - slot.lastHeartbeat > 0.8) {
       slot.lastHeartbeat = now;
       sfx.play('heartbeat', gain: 0.8);

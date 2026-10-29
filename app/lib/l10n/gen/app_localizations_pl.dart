@@ -263,14 +263,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_power_label => 'Nagroda za trafienie';
 
   @override
-  String get skill_fastForward => 'Przewijanie';
+  String get skill_fastForward => 'Start później';
 
   @override
   String get skill_fastForward_desc =>
-      'Początek rundy leci szybciej. Więcej rund na minutę.';
+      'Stoper rusza później, w tym samym tempie. Krótsze rundy, więcej rund na minutę.';
 
   @override
-  String get skill_fastForward_label => 'Tempo do 9.00';
+  String get skill_fastForward_label => 'Start od';
 
   @override
   String get skill_ticking => 'Tykanie';
@@ -322,14 +322,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_echo_label => 'Echo';
 
   @override
-  String get skill_bulletTime => 'Bullet time';
+  String get skill_bulletTime => 'Zimna krew';
 
   @override
   String get skill_bulletTime_desc =>
-      'Czas zwalnia przy 10.00. Łatwiej trafić.';
+      'Ręka pewniejsza przy 10.00: szersze okna trafień, zegar się nie zmienia.';
 
   @override
-  String get skill_bulletTime_label => 'Tempo przy 10.00';
+  String get skill_bulletTime_label => 'Okna trafień';
 
   @override
   String get skill_luck => 'Szczęście';
@@ -575,7 +575,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get perk_muscleMemory1 => 'Pamięć mięśniowa I';
 
   @override
-  String get perk_muscleMemory1_desc => 'Przewijanie zostaje po paradoksie';
+  String get perk_muscleMemory1_desc => 'Start później zostaje po paradoksie';
 
   @override
   String get perk_muscleMemory2 => 'Pamięć mięśniowa II';

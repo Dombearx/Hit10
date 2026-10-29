@@ -11,19 +11,14 @@ void main() {
     File('assets/balance.json').readAsStringSync(),
   );
   const w = Windows(perfect: 0.005, great: 0.020, good: 0.050);
-  late double ff;
+  late double start;
   late RoundEngine e;
 
   setUp(() {
-    ff = 1;
+    start = 0;
     e = RoundEngine(
       config: b.round,
-      timeMapFor: () => TimeMap(
-        fastForwardEnd: 9,
-        zoneStart: 9.8,
-        zoneEnd: 10.2,
-        fastForward: ff,
-      ),
+      timeMapFor: () => TimeMap(start: start, zoneStart: 9.8, zoneEnd: 10.2),
       windowsFor: () => w,
     );
   });
@@ -84,11 +79,19 @@ void main() {
 
   test('upgrades apply from the next round on', () {
     e.tap(100);
-    ff = 6;
+    start = 5;
     expect(e.gameTime(101), closeTo(1, 1e-9)); // still old map
     e.tap(110);
     e.update(110.7);
     expect(e.gameTime(111.7), closeTo(6, 1e-9));
+  });
+
+  test('a later start shows while waiting and keeps real seconds', () {
+    start = 5.8;
+    expect(e.gameTime(100), 5.8);
+    e.tap(100);
+    final ev = e.tap(104.2) as RoundGraded;
+    expect(ev.grade.tier, Tier.perfect);
   });
 
   test('cancel returns to waiting without grading (R-RUNDA-8)', () {

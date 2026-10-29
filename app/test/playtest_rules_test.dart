@@ -93,8 +93,7 @@ void main() {
   test('without auto-start the stopwatch waits for a touch', () {
     final r = RoundEngine(
       config: b.round,
-      timeMapFor: () =>
-          TimeMap(fastForwardEnd: 9, zoneStart: 9.8, zoneEnd: 10.2),
+      timeMapFor: () => TimeMap(zoneStart: 9.8, zoneEnd: 10.2),
       windowsFor: () => e.econ.windows(),
     )..autoStart = false;
     r.tap(0);

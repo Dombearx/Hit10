@@ -92,18 +92,23 @@ void main() {
     final w = e.windows();
     expect(w.perfect, closeTo(0.008, 1e-12));
     expect(w.great, closeTo(0.028, 1e-12));
-    expect(e.fastForwardSpeed(), 3);
-    expect(e.bulletTimeSpeed(), closeTo(0.4, 1e-12));
+    expect(e.laterStart(), greaterThan(3));
+    expect(e.laterStart(10), closeTo(b.round.latestStart, 1e-12));
+    expect(e.laterStart(0), 0);
+    expect(e.coldBlood(), closeTo(2.5, 1e-12));
+    // Zimna krew widens the player's windows, never the generators'.
+    expect(e.playerWindows().perfect, closeTo(0.008 * 2.5, 1e-12));
+    expect(e.windows().perfect, closeTo(0.008, 1e-12));
     expect(e.comboCap(), 9);
     expect(e.skillCost('magnet'), 2000 * math.pow(7, 3));
     s.skills['ticking'] = 1;
     expect(e.skillCost('ticking'), isNull);
   });
 
-  test('round length matches docs/03 (10.7 s → 3.5 s)', () {
+  test('round length matches docs/03 (10.7 s → 4.9 s)', () {
     expect(e.roundSeconds(), closeTo(10.7, 1e-9));
     s.skills.addAll({'fastForward': 10, 'bulletTime': 10});
-    expect(e.roundSeconds(), closeTo(1.5 + 0.8 + 0.5 + 0.7, 1e-9));
+    expect(e.roundSeconds(), closeTo(4.2 + 0.7, 1e-9));
   });
 
   test('permanent multiplier from Chronons and achievements', () {

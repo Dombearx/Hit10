@@ -42,7 +42,7 @@ const skillArt = <String, EmojiArt>{
   'combo': EmojiArt('fire', Color(0xFFFFB38A)),
   'magnet': EmojiArt('magnet', Color(0xFFFFC2A8)),
   'echo': EmojiArt('speaker_high_volume', Color(0xFFB9A7FF)),
-  'bulletTime': EmojiArt('snail', Color(0xFF9BE7C4)),
+  'bulletTime': EmojiArt('bullseye', Color(0xFFA7D8FF)),
   'luck': EmojiArt('four_leaf_clover', Color(0xFF9BE7C4)),
   'shield': EmojiArt('shield', Color(0xFFB4D8FF)),
   'goldenTouch': EmojiArt('sparkles', Color(0xFFFFE6A7)),

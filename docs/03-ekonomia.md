@@ -57,7 +57,8 @@ P = Σ dochód_i · G                   # dochód pasywny na sekundę
 **Długość rundy (czas rzeczywisty, przy trafieniu w 10.00):**
 
 ```
-t_rundy = 9.0 / (1 + 0.5·L_przew) + 0.8 + 0.2 / (1 − 0.06·L_bullet) + 0.7
+t_rundy = 10.0 − S(L_start) + 0.7          (S z R-RUNDA-10; Zimna krew
+                                            nie zmienia długości rundy)
 ```
 
 **Ceny:**
@@ -129,7 +130,7 @@ kolejne runy, co spełnia życzenie, żeby gracz miał do czego dążyć.
 | 8 | 436M | 2.06B | 4.7× | 2.71T | 30 |
 
 Umiejętności: każdą ktoś kupuje. Pierwsze poziomy pojawiają się między 9.
-a 45. minutą. Przewijanie osiąga max po ok. 2 h, a Sokole oko po ok. 3.5 h.
+a 45. minutą. Start później osiąga max po ok. 2 h, a Sokole oko po ok. 3.5 h.
 Magnes, Combo i Echo dochodzą do max dopiero pod koniec 8 h, więc są
 dobrym celem na długo.
 

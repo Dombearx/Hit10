@@ -49,7 +49,7 @@ class Sfx {
       for (final m in MusicTrack.values) {
         _music[m] = await soloud.loadAsset('assets/audio/music_${m.name}.ogg');
       }
-      // Low-pass for bullet time (U-19); dry until the zone.
+      // Low-pass filter (U-19); dry unless switched on.
       final lp = soloud.filters.biquadResonantFilter;
       lp.activate();
       lp.type.value = 0; // low-pass

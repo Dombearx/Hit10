@@ -132,11 +132,8 @@ class Simulator {
     return pMiss * total;
   }
 
-  TierOdds _playerOdds() => econ.odds(
-    cfg.sigma * econ.bulletTimeSpeed(),
-    econ.windows(),
-    luck: econ.luckChance(),
-  );
+  TierOdds _playerOdds() =>
+      econ.odds(cfg.sigma, econ.playerWindows(), luck: econ.luckChance());
 
   double _activeIncome(double passive) {
     final o = _playerOdds();
@@ -300,7 +297,7 @@ class Simulator {
         // The bot catches every golden clock; the next round is golden.
         e.claimGolden();
         e.onRoundStart();
-        final err = _gauss() * cfg.sigma * econ.bulletTimeSpeed();
+        final err = _gauss() * cfg.sigma;
         final o = e.resolveRound(grade(err, econ.playerWindows()));
         if (ads != null &&
             o.comboBroken &&
