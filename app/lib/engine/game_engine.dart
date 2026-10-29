@@ -34,6 +34,7 @@ class RoundOutcome {
     required this.bumpedByLuck,
     required this.hotHand,
     this.golden,
+    this.jackpot = 0,
   });
 
   /// The grade before Luck / Hot hand.
@@ -48,6 +49,9 @@ class RoundOutcome {
   final bool bumpedByLuck;
   final bool hotHand;
   final GoldenOutcome? golden;
+
+  /// Tiki of the 10.00 jackpot in [payout] (0 = none).
+  final double jackpot;
 }
 
 /// Offline income waiting for the player to collect it (R-OFF-1…2).
@@ -309,11 +313,15 @@ class GameEngine {
       }
     }
     final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
-    final payout = hitPayout(
-      Grade(tier, g.error, g.missKind, g.close),
-      combo: combo,
-      mode: mode,
-    );
+    // The 10.00 jackpot goes by the raw tap: Luck and Hot hand don't win it.
+    final jackpot = isJackpot(g) ? jackpotAmount() * combo * mode : 0.0;
+    final payout =
+        hitPayout(
+          Grade(tier, g.error, g.missKind, g.close),
+          combo: combo,
+          mode: mode,
+        ) +
+        jackpot;
     s.earn(payout);
     _recordStats(g, tier);
     GoldenOutcome? golden;
@@ -333,6 +341,27 @@ class GameEngine {
       bumpedByLuck: bumped,
       hotHand: hot,
       golden: golden,
+      jackpot: jackpot,
+    );
+  }
+
+  /// A tap that shows 10.00 on the dial (docs/02 §2): within the jackpot
+  /// window whatever skills widen the PERFECT window.
+  bool isJackpot(Grade g) =>
+      g.tier == Tier.perfect && g.error.abs() < b.jackpot.window;
+
+  /// The jackpot before combo and mode: seconds of the clocks' income, at
+  /// least a few base PERFECTs (so it counts from the first minute).
+  double jackpotAmount() {
+    final j = b.jackpot;
+    final perfect =
+        b.tier('perfect').reward *
+        econ.strikePower() *
+        globalMultiplier() *
+        econ.beginnerPay();
+    return math.max(
+      j.productionSeconds * passive(),
+      j.perfectMultiple * perfect,
     );
   }
 
@@ -394,12 +423,15 @@ class GameEngine {
   }
 
   /// What a [tier] hit would pay on the next tap: the combo after that
-  /// hit's step and the risk mode on now (the header's price list).
+  /// hit's step and the risk mode on now. A PERFECT is priced as a 10.00,
+  /// jackpot included (the header's "10.00 = +X").
   double nextHitPayout(Tier tier) {
     final step = b.tier(tier.name).comboStep;
     final streak = math.min(econ.comboCap(), s.comboStreak + step);
     final combo = 1 + b.combo.multiplierPerStep * streak;
-    return hitPayout(Grade(tier, 0), combo: combo, mode: modeMultiplier());
+    final mode = modeMultiplier();
+    final jackpot = tier == Tier.perfect ? jackpotAmount() * combo * mode : 0;
+    return hitPayout(Grade(tier, 0), combo: combo, mode: mode) + jackpot;
   }
 
   // ------------------------------------------------------------- shopping --

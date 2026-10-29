@@ -3403,6 +3403,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PERFECT now: +{amount} (≈ {seconds} s of clock income)'**
   String perfectNowSeconds(String amount, String seconds);
+
+  /// No description provided for @jackpotPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'10.00 = +{amount}'**
+  String jackpotPrice(String amount);
 }
 
 class _AppLocalizationsDelegate

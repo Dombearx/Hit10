@@ -557,5 +557,6 @@
   "diagSeason": "Podgląd wydarzenia",
   "diagSeasonNone": "Według daty",
   "perfectNow": "PERFEKT teraz: +{amount}",
-  "perfectNowSeconds": "PERFEKT teraz: +{amount} (≈ {seconds} s dochodu zegarów)"
+  "perfectNowSeconds": "PERFEKT teraz: +{amount} (≈ {seconds} s dochodu zegarów)",
+  "jackpotPrice": "10.00 = +{amount}"
 }

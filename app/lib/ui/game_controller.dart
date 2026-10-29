@@ -368,6 +368,10 @@ class GameController extends ChangeNotifier {
     }
     if (o.comboBroken && o.streakBefore >= 3) sfx.play('combo_break');
     if (o.golden?.effect != null) sfx.play('buy', gain: 0.8);
+    if (o.jackpot > 0) {
+      sfx.play('fanfare', gain: 0.9);
+      unawaited(haptics.medium());
+    }
     unawaited(o.raw.close ? haptics.light() : haptics.forTier(o.tier));
   }
 

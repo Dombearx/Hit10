@@ -69,7 +69,7 @@ void main() {
       s.skills.addAll({'echo': 2, 'combo': 10});
       s.comboStreak = 7; // → 10 after this perfect
       final o = e.resolveRound(perfect);
-      expect(o.payout, closeTo((10 + 1 * 1.0 * 10) * 1.5, 1e-9));
+      expect(o.payout - o.jackpot, closeTo((10 + 1 * 1.0 * 10) * 1.5, 1e-9));
     });
 
     test('shield absorbs a miss and recharges every 10 steps', () {

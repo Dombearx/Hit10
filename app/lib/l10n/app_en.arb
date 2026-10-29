@@ -1071,5 +1071,13 @@
         "type": "String"
       }
     }
+  },
+  "jackpotPrice": "10.00 = +{amount}",
+  "@jackpotPrice": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   }
 }

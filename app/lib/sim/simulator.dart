@@ -140,7 +140,11 @@ class Simulator {
   double _activeIncome(double passive) {
     final o = _playerOdds();
     var pMiss = 1 - o.hit;
-    final inc = 2 * o.perfect + o.great;
+    // Expected combo steps per round (docs/02 §2).
+    final inc =
+        o.perfect * b.tier('perfect').comboStep +
+        o.great * b.tier('great').comboStep +
+        o.good * b.tier('good').comboStep;
     if (econ.shieldCharges() > 0) {
       pMiss = pMiss * math.max(0.0, 1 - (inc / 10) / math.max(1e-9, pMiss));
     }
@@ -156,7 +160,12 @@ class Simulator {
             o.great * b.tier('great').echoShare +
             o.good * b.tier('good').echoShare) *
         passive;
-    return (flat + echo) * combo / econ.roundSeconds();
+    // The 10.00 jackpot: its own window, never widened (docs/02 §2).
+    final jackpot =
+        pWithin(b.jackpot.window, cfg.sigma) *
+        b.jackpot.productionSeconds *
+        passive;
+    return (flat + echo + jackpot) * combo / econ.roundSeconds();
   }
 
   double _goldenStrength() {
