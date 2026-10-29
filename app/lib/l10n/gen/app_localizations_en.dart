@@ -1816,11 +1816,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get diagSeasonNone => 'By date';
 
   @override
-  String tapIncome(String perSecond) {
-    return 'hits +$perSecond';
-  }
-
-  @override
   String perfectNow(String amount) {
     return 'PERFECT now: +$amount';
   }

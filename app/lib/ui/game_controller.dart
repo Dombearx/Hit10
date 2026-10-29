@@ -329,11 +329,6 @@ class GameController extends ChangeNotifier {
         notifyListeners();
       case RoundGraded(:final grade, :final gameTime):
         final o = engine.resolveRound(grade, mode: slot.mode);
-        final golden = o.golden;
-        _recordTapIncome(
-          o.payout +
-              (golden?.effect == GoldenEffect.lucky ? golden!.amount : 0),
-        );
         ads.onRound(o, _wallMs());
         final local = _localNow();
         if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
@@ -408,28 +403,6 @@ class GameController extends ChangeNotifier {
     if (settings.haptics) unawaited(HapticFeedback.mediumImpact());
     _afterSeasonProgress();
     notifyListeners();
-  }
-
-  // ---------------------------------------------------------- tap income --
-
-  /// What the player's own taps earned (play time, Tiki), for the header's
-  /// "hits +X/s" next to the clocks' income: is tapping worth it?
-  final _tapIncome = <(double, double)>[];
-  static const tapIncomeWindow = 60.0;
-
-  void _recordTapIncome(double amount) {
-    if (amount > 0) _tapIncome.add((now(), amount));
-  }
-
-  /// Tiki per second from taps over the last minute; 0 when not playing.
-  double tapIncomePerSecond() {
-    final from = now() - tapIncomeWindow;
-    _tapIncome.removeWhere((e) => e.$1 < from);
-    var sum = 0.0;
-    for (final (_, a) in _tapIncome) {
-      sum += a;
-    }
-    return sum / tapIncomeWindow;
   }
 
   // ------------------------------------------------------------- seasons --

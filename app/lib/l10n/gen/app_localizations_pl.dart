@@ -1819,11 +1819,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get diagSeasonNone => 'Według daty';
 
   @override
-  String tapIncome(String perSecond) {
-    return 'trafienia +$perSecond';
-  }
-
-  @override
   String perfectNow(String amount) {
     return 'PERFEKT teraz: +$amount';
   }
