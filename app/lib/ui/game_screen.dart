@@ -466,7 +466,7 @@ class _Header extends StatelessWidget {
               // What the next hit pays, per tier (playtest: is tapping
               // worth it at high income?).
               if (controller.state.tutorialDone)
-                _HitPrices(controller: controller, f: f),
+                _PerfectPrice(controller: controller, f: f),
             ],
           );
         },
@@ -610,40 +610,24 @@ class _ShopHeader extends StatelessWidget {
   }
 }
 
-/// "PERFEKT +540 · ŚWIETNIE +170 · DOBRZE +58": what the next hit pays,
-/// with the current combo and mode (docs/04 U-3a).
-class _HitPrices extends StatelessWidget {
-  const _HitPrices({required this.controller, required this.f});
+/// "PERFEKT +540": what the next PERFECT pays, with the current combo and
+/// mode (docs/04 U-3a).
+class _PerfectPrice extends StatelessWidget {
+  const _PerfectPrice({required this.controller, required this.f});
   final GameController controller;
   final Fmt f;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final e = controller.engine;
-    String name(String s) => s.replaceAll('!', '');
-    final tiers = [
-      (name(l.tierPerfect), Tier.perfect, Palette.perfectDeep),
-      (name(l.tierGreat), Tier.great, Palette.great),
-      (name(l.tierGood), Tier.good, Palette.good),
-    ];
-    return Text.rich(
-      key: const Key('hit-prices'),
-      TextSpan(
-        children: [
-          for (final (i, (label, tier, color)) in tiers.indexed) ...[
-            if (i > 0) const TextSpan(text: '  ·  '),
-            TextSpan(
-              text: '$label +${f.n(e.nextHitPayout(tier))}',
-              style: TextStyle(color: color),
-            ),
-          ],
-        ],
-      ),
+    final pay = controller.engine.nextHitPayout(Tier.perfect);
+    return Text(
+      '${l.tierPerfect.replaceAll('!', '')} +${f.n(pay)}',
+      key: const Key('perfect-price'),
       style: TextStyle(
         fontFamily: Fonts.display,
         fontSize: 13,
-        color: Palette.outline.withValues(alpha: 0.6),
+        color: Palette.perfectDeep.withValues(alpha: 0.85),
       ),
     );
   }
