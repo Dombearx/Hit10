@@ -539,19 +539,19 @@ abstract class AppLocalizations {
   /// No description provided for @skill_fastForward.
   ///
   /// In en, this message translates to:
-  /// **'Fast Forward'**
+  /// **'Late Start'**
   String get skill_fastForward;
 
   /// No description provided for @skill_fastForward_desc.
   ///
   /// In en, this message translates to:
-  /// **'The start of a round flies by. More rounds per minute.'**
+  /// **'The stopwatch starts later, at the same pace. Shorter rounds, more of them per minute.'**
   String get skill_fastForward_desc;
 
   /// No description provided for @skill_fastForward_label.
   ///
   /// In en, this message translates to:
-  /// **'Speed up to 9.00'**
+  /// **'Starts at'**
   String get skill_fastForward_label;
 
   /// No description provided for @skill_ticking.
@@ -647,19 +647,19 @@ abstract class AppLocalizations {
   /// No description provided for @skill_bulletTime.
   ///
   /// In en, this message translates to:
-  /// **'Bullet Time'**
+  /// **'Cold Blood'**
   String get skill_bulletTime;
 
   /// No description provided for @skill_bulletTime_desc.
   ///
   /// In en, this message translates to:
-  /// **'Time slows down around 10.00. Easier to hit.'**
+  /// **'A steadier hand at 10.00: wider hit windows, the clock stays the same.'**
   String get skill_bulletTime_desc;
 
   /// No description provided for @skill_bulletTime_label.
   ///
   /// In en, this message translates to:
-  /// **'Speed near 10.00'**
+  /// **'Hit windows'**
   String get skill_bulletTime_label;
 
   /// No description provided for @skill_luck.
@@ -1061,7 +1061,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory1_desc.
   ///
   /// In en, this message translates to:
-  /// **'Fast Forward survives the paradox'**
+  /// **'Late Start survives the paradox'**
   String get perk_muscleMemory1_desc;
 
   /// No description provided for @perk_muscleMemory2.

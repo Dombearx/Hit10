@@ -42,7 +42,7 @@ void main() {
       ..peakTiki = 100;
     await pump(tester, s);
     expect(find.text('Siła trafienia'), findsOneWidget); // 50 → 25 ≤ 100
-    expect(find.text('Przewijanie'), findsOneWidget); // 150 → 75 ≤ 100
+    expect(find.text('Start później'), findsOneWidget); // 150 → 75 ≤ 100
     expect(find.text('Magnes'), findsNothing); // 2000 → 1000 > 100
   });
 

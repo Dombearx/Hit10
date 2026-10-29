@@ -6,9 +6,8 @@
     "autoEndAfter": 0.3,
     "inputGraceAfterStart": 0.25,
     "resultPause": 0.7,
-    "fastForwardEnd": 9.0,
+    "latestStart": 5.8,
     "bulletZone": 0.2,
-    "secondClockOffset": 5.0,
     "idleStopAfter": 2
   },
   "tiers": [
@@ -52,7 +51,7 @@
       "maxLevel": 10,
       "baseCost": 150,
       "costGrowth": 5,
-      "perLevel": 0.5
+      "perLevel": 0.25
     },
     {
       "id": "ticking",

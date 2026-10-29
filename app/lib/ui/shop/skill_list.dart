@@ -51,7 +51,7 @@ class SkillList extends StatelessWidget {
       case 'power':
         return '×${n(1 + e.b.skill('power').perLevel * lv, 1)}';
       case 'fastForward':
-        return '×${n(e.fastForwardSpeed(lv), 1)}';
+        return n(e.laterStart(lv), 2);
       case 'ticking':
         return lv > 0 ? l.on : l.off;
       case 'wideEye':
@@ -63,7 +63,7 @@ class SkillList extends StatelessWidget {
       case 'echo':
         return '${n(e.b.skill('echo').perLevel * lv, 1)} s';
       case 'bulletTime':
-        return '×${n(e.bulletTimeSpeed(lv), 2)}';
+        return '×${n(e.coldBlood(lv), 2)}';
       case 'luck':
         return '${(e.luckChance(lv) * 100).round()}%';
       case 'shield':

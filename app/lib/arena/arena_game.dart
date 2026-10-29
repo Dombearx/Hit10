@@ -672,10 +672,13 @@ class Dial extends Component {
     final running = round.phase == RoundPhase.running;
     final map = round.phase == RoundPhase.waiting ? null : round.timeMap;
     final inZone =
-        running && map != null && map.zoneSpeed < 1 && map.inBulletZone(t);
+        running &&
+        map != null &&
+        engine.econ.level('bulletTime') > 0 &&
+        map.inFocusZone(t);
     final golden = engine.goldenRound;
 
-    // Bullet time: the whole arena cools and darkens at the edges (docs/04 §3).
+    // Zimna krew: the arena cools and darkens at the edges (docs/04 §3).
     _zone = inZone ? math.min(1, _zone + 0.12) : math.max(0, _zone - 0.08);
     if (_zone > 0) {
       // A dark aura around the dial that fades out before the arena edges.
@@ -775,24 +778,11 @@ class Dial extends Component {
             Tier.good => Palette.good,
             Tier.miss => Palette.miss,
           };
-    // Fast forward smears the digits; bullet time makes them throb.
-    final speed = running && map != null ? map.speedAt(t) : 1.0;
+    // Zimna krew makes the digits throb near the target.
     final digitSize = r * 0.44;
     final throb = _zone > 0 ? 1 + 0.05 * _zone * math.sin(_time * 14) : 1.0;
-    final blindFrom = ctrl.balance.blind.hideDigitsAt ?? double.infinity;
     // Drawn later by the digits layer, above every particle (U-7).
     digits = (canvas) {
-      // The fast-forward ghost must not reveal the time in blind mode.
-      if (speed > 1.6 && !(slot.blind && t >= blindFrom)) {
-        final ghost = Color.lerp(digitColor, Palette.dial, 0.85)!;
-        _drawDigits(
-          canvas,
-          formatStopwatch(shown),
-          c.translate(0, -r * 0.03),
-          digitSize,
-          ghost,
-        );
-      }
       final hideAt = ctrl.balance.blind.hideDigitsAt;
       final hidden = slot.blind && running && hideAt != null && t >= hideAt;
       _drawDigits(

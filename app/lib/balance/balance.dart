@@ -25,17 +25,17 @@ class RoundConfig {
       autoEndAfter = _d(j['autoEndAfter']),
       inputGraceAfterStart = _d(j['inputGraceAfterStart']),
       resultPause = _d(j['resultPause']),
-      fastForwardEnd = _d(j['fastForwardEnd']),
+      latestStart = _d(j['latestStart']),
       bulletZone = _d(j['bulletZone']),
-      secondClockOffset = _d(j['secondClockOffset']),
       idleStopAfter = _i(j['idleStopAfter']);
   final double target;
   final double autoEndAfter;
   final double inputGraceAfterStart;
   final double resultPause;
-  final double fastForwardEnd;
+
+  /// Where Start później's last level starts the stopwatch.
+  final double latestStart;
   final double bulletZone;
-  final double secondClockOffset;
 
   /// Untapped rounds in a row after which the stopwatch waits for a touch
   /// instead of starting the next round (phone put down, playtest 08).
@@ -446,7 +446,11 @@ class Balance {
       if (wide.perLevel < 0) e.add('wideEye perLevel must be ≥ 0');
       final bt = skill('bulletTime');
       if (1 - bt.perLevel * bt.maxLevel <= 0) {
-        e.add('bulletTime at max level must leave a positive speed');
+        e.add('bulletTime at max level must leave a positive divisor');
+      }
+      final ff = skill('fastForward');
+      if (ff.perLevel <= 0 || ff.perLevel >= 1) {
+        e.add('fastForward perLevel must be within (0, 1)');
       }
     }
     unique('generator', generators.map((g) => g.id));
@@ -515,8 +519,9 @@ class Balance {
     if (prestige.divisor <= 0 || prestige.root <= 0) {
       e.add('prestige divisor and root must be > 0');
     }
-    if (round.fastForwardEnd >= round.target - round.bulletZone) {
-      e.add('fastForwardEnd must end before the bullet-time zone');
+    if (round.latestStart < 0 ||
+        round.latestStart > round.target - round.bulletZone - 4) {
+      e.add('latestStart must leave at least 4 s before the focus zone');
     }
     if (ads.turboMaxStock < ads.turboDuration) {
       e.add('ads turbo maxStock must be ≥ duration');

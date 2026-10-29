@@ -260,14 +260,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_power_label => 'Hit reward';
 
   @override
-  String get skill_fastForward => 'Fast Forward';
+  String get skill_fastForward => 'Late Start';
 
   @override
   String get skill_fastForward_desc =>
-      'The start of a round flies by. More rounds per minute.';
+      'The stopwatch starts later, at the same pace. Shorter rounds, more of them per minute.';
 
   @override
-  String get skill_fastForward_label => 'Speed up to 9.00';
+  String get skill_fastForward_label => 'Starts at';
 
   @override
   String get skill_ticking => 'Ticking';
@@ -320,14 +320,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_echo_label => 'Echo';
 
   @override
-  String get skill_bulletTime => 'Bullet Time';
+  String get skill_bulletTime => 'Cold Blood';
 
   @override
   String get skill_bulletTime_desc =>
-      'Time slows down around 10.00. Easier to hit.';
+      'A steadier hand at 10.00: wider hit windows, the clock stays the same.';
 
   @override
-  String get skill_bulletTime_label => 'Speed near 10.00';
+  String get skill_bulletTime_label => 'Hit windows';
 
   @override
   String get skill_luck => 'Luck';
@@ -576,7 +576,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get perk_muscleMemory1 => 'Muscle memory I';
 
   @override
-  String get perk_muscleMemory1_desc => 'Fast Forward survives the paradox';
+  String get perk_muscleMemory1_desc => 'Late Start survives the paradox';
 
   @override
   String get perk_muscleMemory2 => 'Muscle memory II';

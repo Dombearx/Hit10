@@ -10,7 +10,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | Obszar | Co sprawdzamy | Wymagania |
 |---|---|---|
 | Ocena | granice okien (dokładnie na granicy, ±1 µs), kolejność progów, ZA WCZEŚNIE/ZA PÓŹNO, PERFEKT ≤ ŚWIETNIE przy max poziomach | R-RUNDA-3/5, R-PROG-1/2 |
-| Mapowanie czasu | rzeczywisty ↔ gra przy każdej kombinacji Przewijania, bullet time i Szybkiego zegara; ciągłość na granicach stref; odwrotność | R-RUNDA-10…12, T-11 |
+| Mapowanie czasu | rzeczywisty ↔ gra przy każdym Starcie później i Szybkim zegarze; stałe tempo; odwrotność | R-RUNDA-10…12, T-11 |
 | Szczęście | podbicie tylko o jeden próg, nigdy z PUDŁA; rozkład przy stałym ziarnie losowania | 02 §4 |
 | Combo | kroki, limit, reset, Tarcza (zużycie, ładowanie), Twarde lądowanie | R-COMBO-1…3 |
 | Wypłata | wzór R-WYPLATA-1 na przykładach liczonych ręcznie (w tym Echo × combo × tryb) | R-WYPLATA-1 |

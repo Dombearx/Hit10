@@ -63,8 +63,8 @@ wyglądać, brzmieć i reagować.
 | **DOBRZE** | „DOBRZE”, 8 cząsteczek | krótkie „tik” | lekka |
 | **PUDŁO / ZA WCZEŚNIE / ZA PÓŹNO** | szare drgnięcie tarczy w poziomie, napis wpada i opada | głuche „bonk” | podwójna krótka |
 | **Utrata combo** | licznik combo pęka na kawałki | „brzdęk” | – |
-| **Przewijanie (0→9.0)** | rozmycie ruchu cyfr, pierścień kręci się szybko; przy 9.0 „hamowanie” | szum przewijania → „whoosh” | – |
-| **Strefa bullet time** | desaturacja tła, winieta, pulsujące cyfry, poświata | dźwięki obniżone, bicie serca | – |
+| **Start później** | stoper czeka na starcie z wyższą wartością, tempo jak zwykle | – | – |
+| **Zimna krew (9.8–10.2)** | desaturacja tła, winieta, pulsujące cyfry, poświata | bicie serca | – |
 | **Tykanie (umiejętność)** | delikatne pulsowanie co 0.1 s w ostatniej sekundzie | „tik” | mikro |
 | **Złoty zegarek na ekranie** | lata po łuku, złoty ślad, świeci | dzwoneczki | – |
 | **Złota runda** | złota tarcza, iskry dookoła | inna muzyka | – |
@@ -101,7 +101,7 @@ pliku motywu):
 | dobrze | `#6C9BFF` (błękit) | DOBRZE |
 | pudło | `#8D99AE` (szarość) | PUDŁO |
 | akcent | `#FF3D7F` (róż) | przyciski kupna, combo |
-| neon | `#00F5FF` / `#FF00E5` | Szał, bullet time |
+| neon | `#00F5FF` / `#FF00E5` | Szał, Zimna krew |
 | kontur | `#2B2D42` | wszystkie kontury i tekst |
 
 - **U-8:** Progi są rozróżnialne **nie tylko kolorem** (napis i kształt
@@ -152,13 +152,13 @@ styl **3D** (PNG 256×256, licencja MIT). Do repo trafiają tylko używane pliki
 | Umiejętność | Emoji | | Perk | Emoji |
 |---|---|---|---|---|
 | Siła trafienia | Flexed biceps | | Szybki start | Rocket |
-| Przewijanie | Fast-forward button | | Pamięć mięśniowa I–III | Brain |
+| Start później | Fast-forward button | | Pamięć mięśniowa I–III | Brain |
 | Tykanie | Bell | | Długa drzemka I–II | Sleeping face |
 | Sokole oko | Eagle | | Głęboki sen I–II | Bed |
 | Combo | Fire | | Gorączka złota | Pick |
 | Magnes | Magnet | | Tarcza na start | Shield |
 | Echo | Speaker high volume | | Twarde lądowanie | Parachute |
-| Bullet time | Snail | | Automatyczny kupiec | Shopping cart |
+| Zimna krew | Bullseye | | Automatyczny kupiec | Shopping cart |
 | Szczęście | Four leaf clover | | Śmiałek | Smiling face with sunglasses |
 | Tarcza | Shield | | Pudełko z kotem | Package |
 | Złoty dotyk | Sparkles | | Drugi zegar | Stopwatch |
@@ -221,8 +221,8 @@ FLUX.1 [dev] odpada, bo ma licencję niekomercyjną.
   (wstępnie załadowane próbki).
 - **U-15:** Wysokość „ding” rośnie z serią (np. +1 półton co 2 kroki, max
   +12). To prosty, a bardzo skuteczny „juice”.
-- **U-19:** W strefie bullet time muzyka i efekty przechodzą przez filtr
-  dolnoprzepustowy („jak pod wodą”). W Szale gra osobna, szybsza pętla.
+- **U-19:** Tempo dźwięku się nie zmienia (playtest: „pod wodą” sugerowało
+  zwolnienie, którego już nie ma). W Szale gra osobna, szybsza pętla.
   Wszystko robione filtrami silnika dźwięku, bez osobnych plików.
 - **U-20:** Efekty są domyślnie włączone, muzyka też, ale cicha (ok. 40%).
   Jeśli przy starcie w telefonie gra inna muzyka, muzyka gry startuje

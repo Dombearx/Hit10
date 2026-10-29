@@ -9,7 +9,8 @@ Pojęcia:
 - **czas gry** to wartość na stoperze;
 - **czas rzeczywisty** to czas na zegarku gracza.
 
-Te dwa czasy różnią się przez Przewijanie i bullet time.
+Stoper zawsze płynie w stałym tempie (×1, ×1.5 z Szybkim zegarem). Start
+później zmienia tylko to, od czego zaczyna.
 
 ---
 
@@ -44,21 +45,28 @@ Te dwa czasy różnią się przez Przewijanie i bullet time.
   cyfry „przyciągają się” do `10.00` (efekt Magnesu), a błąd jest pokazany
   małym drukiem.
 
-### 1.1 Przewijanie i bullet time (zmiana tempa czasu gry)
+### 1.1 Start później i Zimna krew (tempo się nie zmienia)
 
-- **R-RUNDA-10:** W przedziale czasu gry `[0, 9.0)` czas gry płynie
-  `1 + 0.5·L` razy szybciej, gdzie `L` to poziom Przewijania (0–10).
-- **R-RUNDA-11:** W strefie bullet time (`9.8–10.2` czasu gry) czas gry płynie
-  `1 − 0.06·L` razy wolniej, gdzie `L` to poziom Bullet time (0–10, minimum
-  `0.4`). Poza strefą tempo wynosi 1.
-- **R-RUNDA-12:** Ocena trafienia jest **w czasie gry**. Bullet time poszerza
-  więc okno w czasie rzeczywistym: przy tempie `0.4` okno PERFEKT
-  ±0.005 s to dla palca ±0.0125 s.
-- **R-RUNDA-13:** Przejścia tempa są wyraźnie widoczne i słyszalne
-  („whoosh” przy 9.0, przygaszenie i niski dźwięk w strefie bullet time),
-  żeby gracz nie czuł się oszukany zmianą tempa.
+Playtest na telefonie: zmiana tempa w trakcie rundy (dawne Przewijanie
+i bullet time) zabierała rytm — gracz liczy w głowie, a przyspieszony
+start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
+**zawsze płynie równo**, a obie umiejętności dają tę samą pomoc inaczej.
+
+- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 5.8 ·
+  (1 − 0.75^L) / (1 − 0.75^10)` (L = poziom 0–10: 0, 1.54, 2.69, 3.55 …
+  5.8), w normalnym tempie. Cel zostaje `10.00`, a do celu zawsze zostają
+  co najmniej 4 s (`round.latestStart` ≤ cel − strefa − 4), żeby złapać
+  rytm.
+- **R-RUNDA-11:** Zimna krew: okna gracza (PERFEKT, ŚWIETNIE, DOBRZE,
+  BLISKO) są `1 / (1 − 0.06·L)` razy szersze (×2.5 na max). Matematycznie
+  to ta sama pomoc co dawne zwolnienie zegara, ale bez zmiany tempa.
+  Generatory jej nie dostają.
+- **R-RUNDA-12:** Ocena trafienia jest w czasie gry, który przy stałym tempie
+  równa się czasowi rzeczywistemu.
+- **R-RUNDA-13:** Z Zimną krwią strefa `9.8–10.2` ma tylko wskazówki:
+  winietę, pulsujące cyfry i bicie serca. Tempo i dźwięk się nie zmieniają.
 - Długość rundy w czasie rzeczywistym: od ok. **10.7 s** (bez ulepszeń) do
-  ok. **3.5 s** (max Przewijanie i max Bullet time).
+  ok. **4.9 s** (max Start później).
 
 ## 2. Progi trafienia
 
@@ -104,13 +112,13 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 | id | Nazwa PL / EN | Max | Koszt bazowy | Wzrost | Efekt na poziomie L |
 |---|---|---|---|---|---|
 | `power` | Siła trafienia / Strike Power | 10 | 50 | ×7 | nagroda progu ×(1+1.5L) |
-| `fastForward` | Przewijanie / Fast Forward | 10 | 150 | ×5 | czas gry przed 9.0 ×(1+0.5L) |
+| `fastForward` | Start później / Late Start | 10 | 150 | ×5 | stoper rusza od S(L), max 5.8 |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
 | `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×5 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
 | `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +2 na poziom (5 → 25) |
 | `magnet` | Magnes / Magnet | 10 | 2 000 | ×7 | okno PERFEKT +0.001 s na poziom, max ±0.015 |
 | `echo` | Echo / Echo | 10 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 5 s) |
-| `bulletTime` | Bullet time / Bullet Time | 10 | 5 000 | ×7 | tempo w strefie 1−0.06L, min 0.4 |
+| `bulletTime` | Zimna krew / Cold Blood | 10 | 5 000 | ×7 | okna gracza ×1/(1−0.06L), max ×2.5 |
 | `luck` | Szczęście / Luck | 10 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
 | `shield` | Tarcza / Shield | 3 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
 | `goldenTouch` | Złoty dotyk / Golden Touch | 5 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.05L), czyli pojawia się częściej; jej efekt jest ×(1+0.05L) silniejszy |
@@ -218,7 +226,7 @@ na wypłatę z dotknięć gracza.
 | Tryb | Odblokowanie | Działanie | Mnożnik wypłaty |
 |---|---|---|---|
 | **Na ślepo** / Blind | 100 PERFEKTÓW łącznie | cyfry znikają od 7.00 czasu gry (zostaje pulsujące „?”) | ×3 |
-| **Szybki zegar** / Fast Clock | 500 PERFEKTÓW łącznie | cały czas gry płynie ×1.5 (łącznie z bullet time) | ×2 |
+| **Szybki zegar** / Fast Clock | 500 PERFEKTÓW łącznie | cały czas gry płynie ×1.5 | ×2 |
 
 - **R-TRYB-1:** Tryby można łączyć (×6). Zmiana trybu działa od następnej
   rundy.
@@ -268,7 +276,7 @@ na wypłatę z dotknięć gracza.
 | id | Nazwa | Koszt (Okruchy) | Działanie | Wymaga |
 |---|---|---|---|---|
 | `headStart` | Szybki start | 5 | start runu z 10 dziadkami i 1K Tików | – |
-| `muscleMemory1` | Pamięć mięśniowa I | 10 | Przewijanie zostaje po resecie | – |
+| `muscleMemory1` | Pamięć mięśniowa I | 10 | Start później zostaje po resecie | – |
 | `muscleMemory2` | Pamięć mięśniowa II | 50 | Sokole oko i Magnes zostają | I |
 | `muscleMemory3` | Pamięć mięśniowa III | 250 | pozostałe umiejętności zostają na połowie poziomu (w dół) | II |
 | `longNap1` | Długa drzemka I | 10 | limit offline 12 h | – |
@@ -288,9 +296,9 @@ na wypłatę z dotknięć gracza.
 
 - **R-DRUGI-1:** Z perkiem `secondClock` gracz może włączyć drugi zegar. Ekran
   dzieli się na lewą i prawą połowę, każda z własnym stoperem. Prawy startuje
-  z przesunięciem 5 s czasu gry.
+  pół rundy później.
 - **R-DRUGI-2:** Każda połowa oceniana jest osobno, według własnego czasu.
-  Combo jest wspólne. Bullet time i Przewijanie działają na oba zegary.
+  Combo jest wspólne. Zimna krew i Start później działają na oba zegary.
 
 ## 10. Dochód offline
 

@@ -80,7 +80,7 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
           Color.lerp(Palette.neonCyan, Palette.neonMagenta, p),
           _mix * 0.85,
         )!;
-        // Bullet time: the world drains of colour, edges darken.
+        // Zimna krew's focus zone: the world drains of colour, edges darken.
         return TweenAnimationBuilder<double>(
           tween: Tween(end: _zone ? 1 : 0),
           duration: const Duration(milliseconds: 250),

@@ -3,7 +3,7 @@ import '../model/grading.dart';
 import '../model/time_map.dart';
 
 enum RoundPhase {
-  /// Clock at 0.00, "tap to start"; the starting tap is not graded (R-RUNDA-7).
+  /// Clock at its start, "tap to start"; the starting tap is not graded (R-RUNDA-7).
   waiting,
   running,
 
@@ -63,9 +63,10 @@ class RoundEngine {
   /// Real time the current round started at.
   double get startedAt => _start;
 
-  /// Stopwatch reading at [now]: frozen on the result, 0 while waiting.
+  /// Stopwatch reading at [now]: frozen on the result, the start (0.00, or
+  /// later with Start później) while waiting.
   double gameTime(double now) => switch (_phase) {
-    RoundPhase.waiting => 0,
+    RoundPhase.waiting => timeMapFor().start,
     RoundPhase.running => _map.gameAt(now - _start),
     RoundPhase.result => _resultGameTime,
   };

@@ -23,8 +23,8 @@ pomocników, którzy też próbują trafić — i zarabiają, nawet gdy nie gras
 i kukułki, przez zegarmistrza i sędziego sprintu, aż po zegar atomowy,
 pulsar, maszynę czasu, kota Schrödingera i samego Chronosa.
 
-🎯 Umiejętności, które zmieniają rundę: przewijanie do 9 sekund, bullet
-time spowalniający czas tuż przed celem, tykanie w ostatniej sekundzie,
+🎯 Umiejętności, które zmieniają rundę: późniejszy start stopera, zimna
+krew poszerzająca okna trafienia, tykanie w ostatniej sekundzie,
 szersze okna trafienia, combo, tarcza na serię i szczęście.
 
 ✨ Złota Sekunda: złap latający złoty zegarek, a następna runda będzie
@@ -58,8 +58,8 @@ egg timer and a cuckoo, through a watchmaker and a sprint judge, all the
 way to an atomic clock, a pulsar, a time machine, Schrödinger's cat and
 Chronos himself.
 
-🎯 Skills that change the round: fast-forward to 9 seconds, bullet time
-that slows the clock right before the target, ticking in the last second,
+🎯 Skills that change the round: a later start for the stopwatch, cold
+blood that widens your hit windows, ticking in the last second,
 wider hit windows, combos, a streak shield and luck.
 
 ✨ The golden second: catch the flying golden clock and your next round
