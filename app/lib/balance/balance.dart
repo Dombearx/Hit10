@@ -25,6 +25,7 @@ class RoundConfig {
       autoEndAfter = _d(j['autoEndAfter']),
       inputGraceAfterStart = _d(j['inputGraceAfterStart']),
       resultPause = _d(j['resultPause']),
+      baseStart = _d(j['baseStart']),
       latestStart = _d(j['latestStart']),
       bulletZone = _d(j['bulletZone']),
       idleStopAfter = _i(j['idleStopAfter']);
@@ -32,6 +33,9 @@ class RoundConfig {
   final double autoEndAfter;
   final double inputGraceAfterStart;
   final double resultPause;
+
+  /// Where every round starts the stopwatch (5.00: a shorter wait).
+  final double baseStart;
 
   /// Where Start później's last level starts the stopwatch.
   final double latestStart;
@@ -578,6 +582,9 @@ class Balance {
     }
     if (prestige.divisor <= 0 || prestige.root <= 0) {
       e.add('prestige divisor and root must be > 0');
+    }
+    if (round.baseStart < 0 || round.baseStart > round.latestStart) {
+      e.add('baseStart must be within 0..latestStart');
     }
     if (round.latestStart < 0 ||
         round.latestStart > round.target - round.bulletZone - 4) {

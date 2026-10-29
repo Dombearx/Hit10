@@ -141,7 +141,8 @@ jobs:
   # Only an APK that started and played a round on the emulator is released.
   release:
     needs: [apk, aab, smoke]
-    if: github.ref == 'refs/heads/main'
+    # exp/* branches are experiments: their milestone is a pre-release.
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/exp/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -155,7 +156,6 @@ jobs:
       # Release with this APK the first time it appears (docs/07-plan.md).
       - name: Read milestone
         id: milestone
-        if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -167,9 +167,10 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Milestone release
-        if: github.ref == 'refs/heads/main' && steps.milestone.outputs.exists == 'false'
+        if: steps.milestone.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
+          prerelease: ${{ github.ref != 'refs/heads/main' }}
           tag_name: ${{ steps.milestone.outputs.name }}
           target_commitish: ${{ github.sha }}
           name: Hit10 ${{ steps.milestone.outputs.name }}

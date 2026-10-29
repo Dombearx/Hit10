@@ -16,7 +16,8 @@ sekunda. Start później zmienia tylko to, od czego zaczyna.
 
 ## 1. Runda
 
-- **R-RUNDA-1:** Stoper liczy czas gry w górę od `0.00`. Cel to `10.000`.
+- **R-RUNDA-1:** Stoper liczy czas gry w górę od `5.00` (`round.baseStart`;
+  test na telefonie: 10 s czekania na start to za długo). Cel to `10.000`.
 - **R-RUNDA-2:** Gracz dotyka **dowolnego miejsca obszaru zegara**. Liczy się
   moment **dotknięcia** (pointer down), nie puszczenia palca.
 - **R-RUNDA-3:** Błąd `e = czas_gry_w_chwili_dotknięcia − 10.000`. Ocena
@@ -34,7 +35,7 @@ sekunda. Start później zmienia tylko to, od czego zaczyna.
   nie zeruje serii, nie zużywa Tarczy, nic nie płaci i nie liczy się do
   statystyk trafień (08: zaglądanie do sklepu nie może karać).
 - **R-RUNDA-7:** Przy pierwszym uruchomieniu i po powrocie do aplikacji zegar
-  stoi na `0.00` z napisem „Dotknij, aby zacząć”. Pierwsze dotknięcie startuje
+  stoi na `5.00` z napisem „Dotknij, aby zacząć”. Pierwsze dotknięcie startuje
   rundę i nie jest oceniane.
 - **R-RUNDA-8:** Wyjście z aplikacji, rozmowa przychodząca albo otwarcie
   panelu przykrywającego zegar **anuluje** bieżącą rundę bez kary (combo
@@ -52,8 +53,8 @@ i bullet time) zabierała rytm — gracz liczy w głowie, a przyspieszony
 start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 **zawsze płynie równo**, a obie umiejętności dają tę samą pomoc inaczej.
 
-- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.58·L` (L =
-  poziom 0–10: 0, 0.58, 1.16 … 5.80) — każdy poziom daje tyle samo, a
+- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 5.00 + 0.08·L` (L =
+  poziom 0–10: 5.00, 5.08 … 5.80) — każdy poziom daje tyle samo, a
   kolejne są coraz droższe (×7) — w normalnym tempie. Cel zostaje `10.00`, a do celu zawsze zostają
   co najmniej 4 s (`round.latestStart` ≤ cel − strefa − 4), żeby złapać
   rytm.
@@ -65,7 +66,7 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
   równa się czasowi rzeczywistemu.
 - **R-RUNDA-13:** Z Zimną krwią strefa `9.8–10.2` ma tylko wskazówki:
   winietę, pulsujące cyfry i bicie serca. Tempo i dźwięk się nie zmieniają.
-- Długość rundy w czasie rzeczywistym: od ok. **10.7 s** (bez ulepszeń) do
+- Długość rundy w czasie rzeczywistym: od ok. **5.7 s** (bez ulepszeń) do
   ok. **4.9 s** (max Start później).
 
 ## 2. Progi trafienia
