@@ -72,9 +72,9 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 
 | Próg | Okno bazowe `|e|` | Nagroda bazowa (Tiki) | Udział Echa | Krok combo |
 |---|---|---|---|---|
-| **PERFEKT** | < 0.005 s (na ekranie „10.00”) | 10 | 100% | +2 |
-| **ŚWIETNIE** | < 0.020 s | 3 | 33% | +1 |
-| **DOBRZE** | < 0.050 s | 1 | 10% | 0 (combo się utrzymuje) |
+| **PERFEKT** | < 0.005 s (na ekranie „10.00”) | 10 | 100% | +3 |
+| **ŚWIETNIE** | < 0.020 s | 3 | 33% | +2 |
+| **DOBRZE** | < 0.050 s | 1 | 10% | +1 |
 | **BLISKO** | < 0.150 s (tylko dotknięcia gracza) | 0.3 | 0 | reset do 0 |
 | **PUDŁO** | reszta, ZA WCZEŚNIE, ZA PÓŹNO | 0 | 0 | reset do 0 |
 
@@ -87,8 +87,14 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
   próg.
 - **R-PROG-2:** Okno PERFEKT nigdy nie może być szersze niż okno ŚWIETNIE.
   Gra pilnuje tego niezależnie od ulepszeń.
-- Uzasadnienie liczb: typowy gracz po rozgrzewce ma rozrzut ok. 30 ms, co daje
-  ok. 13% PERFEKT, 50% w ŚWIETNIE i 90% w DOBRZE. Szczegóły w 03.
+- Uzasadnienie liczb: wprawny gracz ma rozrzut ok. 30 ms, co daje ok. 13%
+  PERFEKT, 50% w ŚWIETNIE i 90% w DOBRZE; przeciętny ok. 60 ms: 7% / 26% /
+  60%. Szczegóły w 03. Okno PERFEKT (10 ms) jest węższe niż jedna klatka
+  ekranu 60 Hz (16,7 ms) i niż najostrzejsze oceny gier rytmicznych — ma
+  zostać wyczynem (playtest na telefonie: ok. 1 PERFEKT na 20 prób).
+- Kroki combo (playtest na telefonie): każde trafienie, także DOBRZE,
+  podnosi serię (+1/+2/+3), bo przy przeciętnym rozrzucie PERFEKT pod rząd
+  praktycznie się nie zdarza; serię dalej zeruje BLISKO i pudło.
 
 ## 3. Wypłata za trafienie i combo
 
