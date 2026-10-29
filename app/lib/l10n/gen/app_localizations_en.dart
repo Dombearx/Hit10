@@ -1824,4 +1824,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String perfectNowSeconds(String amount, String seconds) {
     return 'PERFECT now: +$amount (≈ $seconds s of clock income)';
   }
+
+  @override
+  String jackpotPrice(String amount) {
+    return '10.00 = +$amount';
+  }
 }

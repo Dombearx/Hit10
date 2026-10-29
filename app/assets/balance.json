@@ -571,5 +571,10 @@
         "to": "01-02"
       }
     ]
+  },
+  "jackpot": {
+    "window": 0.005,
+    "productionSeconds": 10,
+    "perfectMultiple": 5
   }
 }

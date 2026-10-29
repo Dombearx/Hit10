@@ -156,19 +156,53 @@ void main() {
         ..lifetime.perfects = 1000; // Blind unlocked
       final step = b.tier('perfect').comboStep;
       final combo = 1 + b.combo.multiplierPerStep * (2 + step);
+      final price = e.nextHitPayout(Tier.perfect);
       expect(
-        e.nextHitPayout(Tier.perfect),
+        price,
         closeTo(
-          e.hitPayout(const Grade(Tier.perfect, 0), combo: combo, mode: 3),
+          (e.hitPayout(const Grade(Tier.perfect, 0)) + e.jackpotAmount()) *
+              combo *
+              3,
           1e-9,
         ),
       );
-      // What the price list says is what the hit then pays.
-      final paid = e.resolveRound(const Grade(Tier.perfect, 0), mode: 3).payout;
-      expect(
-        paid,
-        closeTo(combo * e.hitPayout(const Grade(Tier.perfect, 0)) * 3, 1e-6),
-      );
+      // What the header says is what a 10.00 then pays.
+      final o = e.resolveRound(const Grade(Tier.perfect, 0), mode: 3);
+      expect(o.payout, closeTo(price, 1e-6));
     },
   );
+
+  group('the 10.00 jackpot', () {
+    setUp(() {
+      s.stats.rounds = 100; // past beginner's luck
+      s.owned['grandma'] = 100; // 100/s
+    });
+
+    test('a tap that reads 10.00 pays seconds of the clocks\' income', () {
+      final o = e.resolveRound(const Grade(Tier.perfect, 0.003));
+      final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
+      expect(
+        o.jackpot,
+        closeTo(b.jackpot.productionSeconds * 100 * combo, 1e-6),
+      );
+      expect(o.payout, greaterThan(o.jackpot));
+    });
+
+    test('Magnet widens PERFECT, not the jackpot; Luck never wins it', () {
+      s.skills['magnet'] = 10;
+      final wide = grade(0.008, e.econ.playerWindows());
+      expect(wide.tier, Tier.perfect);
+      expect(e.resolveRound(wide).jackpot, 0);
+      // A GREAT bumped to PERFECT by Luck is not a 10.00.
+      expect(e.isJackpot(const Grade(Tier.great, 0.004)), isFalse);
+    });
+
+    test('early on it is worth at least a few PERFECTs', () {
+      s.owned.clear();
+      expect(
+        e.jackpotAmount(),
+        closeTo(b.jackpot.perfectMultiple * b.tier('perfect').reward, 1e-9),
+      );
+    });
+  });
 }

@@ -54,6 +54,19 @@ class CloseConfig {
 
 /// Daily bonus (playtest 08): a 7-day streak; day N pays [minutes][N-1]
 /// minutes of passive income, at least [floorPerDay]·N Tiki.
+/// The 10.00 jackpot (docs/02 §2): a tap within [window] of 10.00 (as the
+/// dial shows it; no skill widens it) also pays [productionSeconds] of the
+/// clocks' income, at least [perfectMultiple] base PERFECTs.
+class JackpotConfig {
+  JackpotConfig(Map<String, Object?> j)
+    : window = _d(j['window']),
+      productionSeconds = _d(j['productionSeconds']),
+      perfectMultiple = _d(j['perfectMultiple']);
+  final double window;
+  final double productionSeconds;
+  final double perfectMultiple;
+}
+
 /// Calendar events (docs/02 §14): dates, the goal and its reward.
 class SeasonsConfig {
   SeasonsConfig(Map<String, Object?> j)
@@ -375,6 +388,7 @@ class Balance {
       close = CloseConfig(_m(j['close'])),
       daily = DailyConfig(_m(j['daily'])),
       seasons = SeasonsConfig(_m(j['seasons'])),
+      jackpot = JackpotConfig(_m(j['jackpot'])),
       ui = UiConfig(_m(j['ui']));
 
   /// Parses and validates; throws [BalanceException] listing every problem.
@@ -417,6 +431,7 @@ class Balance {
   final CloseConfig close;
   final DailyConfig daily;
   final SeasonsConfig seasons;
+  final JackpotConfig jackpot;
   final UiConfig ui;
 
   TierConfig tier(String id) => tiers.firstWhere((t) => t.id == id);
@@ -574,6 +589,9 @@ class Balance {
       }
     }
     unique('season', seasons.list.map((x) => x.id));
+    if (jackpot.window > tier('perfect').window) {
+      e.add('the jackpot window must not exceed the base PERFECT window');
+    }
     if (seasons.catches < 1 || seasons.hits < 1) {
       e.add('season goals must be ≥ 1');
     }

@@ -610,8 +610,8 @@ class _ShopHeader extends StatelessWidget {
   }
 }
 
-/// "PERFEKT +540": what the next PERFECT pays, with the current combo and
-/// mode (docs/04 U-3a).
+/// "10.00 = +5,4K": what the next 10.00 pays (PERFECT and the jackpot),
+/// with the current combo and mode (docs/04 U-3a).
 class _PerfectPrice extends StatelessWidget {
   const _PerfectPrice({required this.controller, required this.f});
   final GameController controller;
@@ -622,7 +622,7 @@ class _PerfectPrice extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final pay = controller.engine.nextHitPayout(Tier.perfect);
     return Text(
-      '${l.tierPerfect.replaceAll('!', '')} +${f.n(pay)}',
+      l.jackpotPrice(f.n(pay)),
       key: const Key('perfect-price'),
       style: TextStyle(
         fontFamily: Fonts.display,

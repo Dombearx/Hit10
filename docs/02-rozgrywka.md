@@ -83,6 +83,14 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
   się nie zmieniają — trafienie 10.00 ma zostać wyczynem. Generatory nie
   mają BLISKO.
 
+- **R-PROG-3 (10.00 — jackpot):** dotknięcie, które na tarczy daje 10.00
+  (|błąd| < 0.005 s; żadna umiejętność tego okna nie poszerza, Fart i
+  Gorąca ręka go nie dają), płaci oprócz PERFEKTU **10 s dochodu zegarów**
+  (co najmniej 5 bazowych PERFEKTÓW), razy combo i tryb. Oprawa: „10.00!”,
+  deszcz złota, fanfara. Nagłówek pokazuje „10.00 = +X”. Wielkość 10 s to
+  górna granica z symulatora: przy 15 s gracz grający bez przerwy wyprzedza
+  założone tempo, a gracz nieprecyzyjny zostaje za daleko w tyle (B-6c,
+  B-7). Przy grze po kilka minut dziennie i tak przeważa dochód offline.
 - **R-PROG-1:** Okna sprawdzane są od najwęższego. Wygrywa pierwszy pasujący
   próg.
 - **R-PROG-2:** Okno PERFEKT nigdy nie może być szersze niż okno ŚWIETNIE.

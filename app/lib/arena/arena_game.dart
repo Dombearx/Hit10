@@ -331,6 +331,29 @@ class Stage extends Component {
       shadows: const [Shadow(color: Palette.outline, offset: Offset(0, 3))],
     );
     final labelAt = Vector2(c.x, c.y - r * 0.52);
+    // 10.00 on the dial: the jackpot gets the loudest show (docs/02 §2).
+    final jackpot = f.outcome.jackpot > 0;
+    if (jackpot) {
+      particles.burst(
+        origin: c,
+        count: 120,
+        colors: const [Palette.perfect, Color(0xFFFFE066), Palette.perfectDeep],
+        speedMin: 500,
+        speedMax: 1600,
+        sizeMin: 8,
+        sizeMax: 20,
+        life: 1.6,
+      );
+      add(
+        Shockwave(
+          center: c,
+          from: r * 0.6,
+          to: r * 2.6,
+          color: Palette.perfect,
+        ),
+      );
+      shake(16, 0.45);
+    }
     switch (g.tier) {
       case Tier.perfect:
         particles
@@ -364,10 +387,10 @@ class Stage extends Component {
         shake(8, 0.25);
         add(
           PopText(
-            text: l.perfect,
-            style: label(Palette.perfect, r * 0.24),
+            text: jackpot ? '10.00!' : l.perfect,
+            style: label(Palette.perfect, r * (jackpot ? 0.32 : 0.24)),
             at: labelAt,
-            life: 0.85,
+            life: jackpot ? 1.4 : 0.85,
           ),
         );
       case Tier.great:
@@ -499,12 +522,14 @@ class Stage extends Component {
         PopText(
           text:
               '+${formatNumber(f.reward, decimalSeparator: l.decimalSeparator)}',
-          style: label(Palette.dial, r * 0.2),
+          style: jackpot
+              ? label(Palette.perfect, r * 0.3)
+              : label(Palette.dial, r * 0.2),
           // Flies up towards the balance counter (docs/04 §3) and fades
           // before reaching it.
           at: Vector2(c.x, c.y - r * 1.12),
           rise: r * 0.45,
-          life: 0.8,
+          life: jackpot ? 1.6 : 0.8,
         ),
       );
     }
@@ -773,8 +798,9 @@ class Dial extends Component {
     // Digits; a perfect result snaps to 10.00 (R-RUNDA-9).
     final grade = round.lastGrade;
     final inResult = round.phase == RoundPhase.result && grade != null;
-    var shown = t;
-    if (inResult && grade.tier == Tier.perfect) shown = target;
+    // The dial shows the real time: 10.00 only for a true 10.00 (the
+    // jackpot), a PERFECT widened by Magnet may read 9.99.
+    final shown = t;
     final digitColor = !inResult
         ? Palette.outline
         : switch (grade.tier) {
