@@ -1052,5 +1052,32 @@
   "themeClassic": "Classic",
   "themeHint": "“Seasonal” follows the events. Themes from completed events are yours for good.",
   "diagSeason": "Event preview",
-  "diagSeasonNone": "By date"
+  "diagSeasonNone": "By date",
+  "tapIncome": "hits +{perSecond}",
+  "@tapIncome": {
+    "placeholders": {
+      "perSecond": {
+        "type": "String"
+      }
+    }
+  },
+  "perfectNow": "PERFECT now: +{amount}",
+  "@perfectNow": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "perfectNowSeconds": "PERFECT now: +{amount} (≈ {seconds} s of clock income)",
+  "@perfectNowSeconds": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  }
 }

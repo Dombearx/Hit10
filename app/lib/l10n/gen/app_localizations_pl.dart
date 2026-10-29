@@ -1817,4 +1817,19 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get diagSeasonNone => 'Według daty';
+
+  @override
+  String tapIncome(String perSecond) {
+    return 'trafienia +$perSecond';
+  }
+
+  @override
+  String perfectNow(String amount) {
+    return 'PERFEKT teraz: +$amount';
+  }
+
+  @override
+  String perfectNowSeconds(String amount, String seconds) {
+    return 'PERFEKT teraz: +$amount (≈ $seconds s dochodu zegarów)';
+  }
 }
