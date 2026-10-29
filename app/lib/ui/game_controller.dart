@@ -483,7 +483,8 @@ class GameController extends ChangeNotifier {
         offlineAmount: pendingOffline?.amount ?? 0,
       );
       if (amount > 0) sfx.play('coins');
-      if (offer == AdOffer.offline) pendingOffline = null;
+      // The ad adds the extra; the base amount is collected with it.
+      if (offer == AdOffer.offline) collectOffline();
       unawaited(save());
       return true;
     } finally {

@@ -11,7 +11,7 @@ import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
-import '../widgets/ad_buttons.dart';
+import '../widgets/ad_offer_sheet.dart';
 import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
 
@@ -339,7 +339,7 @@ Widget? _bagButton(BuildContext context, GameController c) {
   final ads = ProviderScope.containerOf(context).read(rewardedAdsProvider);
   return GestureDetector(
     key: const Key('ad-bag'),
-    onTap: () => watchAdWithReward(context, c, AdOffer.bag, ads),
+    onTap: () => offerAd(context, c, AdOffer.bag, ads),
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
       decoration: BoxDecoration(

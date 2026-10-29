@@ -1499,13 +1499,13 @@ abstract class AppLocalizations {
   /// No description provided for @adRescue.
   ///
   /// In en, this message translates to:
-  /// **'Streak {count} lost! Restore'**
+  /// **'Streak {count} lost! ▶ Restore for an ad'**
   String adRescue(int count);
 
   /// No description provided for @adDouble.
   ///
   /// In en, this message translates to:
-  /// **'Double it'**
+  /// **'▶ ×2 for an ad'**
   String get adDouble;
 
   /// No description provided for @adUnavailable.
@@ -3115,6 +3115,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Come back every day — the bonus grows for {total} days. Missing one starts over.'**
   String dailyHint(int total);
+
+  /// No description provided for @adOfferHow.
+  ///
+  /// In en, this message translates to:
+  /// **'A short video ad. The reward comes after it ends.'**
+  String get adOfferHow;
+
+  /// No description provided for @adWatch.
+  ///
+  /// In en, this message translates to:
+  /// **'▶ Watch'**
+  String get adWatch;
+
+  /// No description provided for @adNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get adNotNow;
+
+  /// No description provided for @adOfferTurboTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turbo'**
+  String get adOfferTurboTitle;
+
+  /// No description provided for @adOfferTurboReward.
+  ///
+  /// In en, this message translates to:
+  /// **'×{mult} Ticks for {minutes} min'**
+  String adOfferTurboReward(int mult, int minutes);
+
+  /// No description provided for @adOfferTurboDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'All earnings — clocks and your hits — are doubled. Turbo time runs only while you play; stock up to {hours} h.'**
+  String adOfferTurboDetail(int hours);
+
+  /// No description provided for @adOfferTurboStock.
+  ///
+  /// In en, this message translates to:
+  /// **'You still have {time} — the ad adds another 30 min.'**
+  String adOfferTurboStock(String time);
+
+  /// No description provided for @adOfferGoldenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Second'**
+  String get adOfferGoldenTitle;
+
+  /// No description provided for @adOfferGoldenReward.
+  ///
+  /// In en, this message translates to:
+  /// **'A golden clock right away'**
+  String get adOfferGoldenReward;
+
+  /// No description provided for @adOfferGoldenDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'After the ad a golden clock flies in. Catch it and the next round gives a random bonus: Frenzy, Lucky or Hot Hand.'**
+  String get adOfferGoldenDetail;
+
+  /// No description provided for @adOfferBagTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bag of Ticks'**
+  String get adOfferBagTitle;
+
+  /// No description provided for @adOfferBagDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Right away, as much as your clocks earn in {minutes} min.'**
+  String adOfferBagDetail(int minutes);
+
+  /// No description provided for @adNoReward.
+  ///
+  /// In en, this message translates to:
+  /// **'The ad didn\'t finish — no reward. You can try again.'**
+  String get adNoReward;
+
+  /// No description provided for @adDoneTurbo.
+  ///
+  /// In en, this message translates to:
+  /// **'Turbo on! ×2 for {time}.'**
+  String adDoneTurbo(String time);
+
+  /// No description provided for @adDoneGolden.
+  ///
+  /// In en, this message translates to:
+  /// **'The golden clock is coming — catch it!'**
+  String get adDoneGolden;
+
+  /// No description provided for @adDoneBag.
+  ///
+  /// In en, this message translates to:
+  /// **'Bag of Ticks collected!'**
+  String get adDoneBag;
+
+  /// No description provided for @adDoneRescue.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak restored!'**
+  String get adDoneRescue;
+
+  /// No description provided for @adDoneOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline income doubled!'**
+  String get adDoneOffline;
 }
 
 class _AppLocalizationsDelegate
