@@ -1814,4 +1814,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagSeasonNone => 'By date';
+
+  @override
+  String tapIncome(String perSecond) {
+    return 'hits +$perSecond';
+  }
+
+  @override
+  String perfectNow(String amount) {
+    return 'PERFECT now: +$amount';
+  }
+
+  @override
+  String perfectNowSeconds(String amount, String seconds) {
+    return 'PERFECT now: +$amount (≈ $seconds s of clock income)';
+  }
 }

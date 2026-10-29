@@ -3391,6 +3391,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'By date'**
   String get diagSeasonNone;
+
+  /// No description provided for @tapIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'hits +{perSecond}'**
+  String tapIncome(String perSecond);
+
+  /// No description provided for @perfectNow.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT now: +{amount}'**
+  String perfectNow(String amount);
+
+  /// No description provided for @perfectNowSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT now: +{amount} (≈ {seconds} s of clock income)'**
+  String perfectNowSeconds(String amount, String seconds);
 }
 
 class _AppLocalizationsDelegate

@@ -70,9 +70,26 @@ void main() {
       find.byKey(const Key('skill-ticking')),
       200,
     );
+    // Cards differ in height: bring the whole button into view.
+    await tester.ensureVisible(find.byKey(const Key('skill-ticking')));
+    await tester.pump(const Duration(milliseconds: 300));
     await tester.tap(find.byKey(const Key('skill-ticking')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.skills['ticking'], 1);
     expect(find.text('MAX'), findsWidgets);
+  });
+
+  testWidgets('Power and Echo say what a PERFECT pays now', (tester) async {
+    final s = GameState()
+      ..tiki = 10
+      ..peakTiki = 10000
+      ..stats.rounds = 100; // past beginner's luck
+    s.owned['grandma'] = 10; // 10/s
+    await pump(tester, s);
+    final power = tester.widget<Text>(
+      find.byKey(const Key('perfect-now-power')),
+    );
+    // 10 Tiki for a PERFECT = 1 s of the clocks' 10/s.
+    expect(power.data, contains('≈ 1,0 s dochodu zegarów'));
   });
 }

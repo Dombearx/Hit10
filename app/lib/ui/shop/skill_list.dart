@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../../model/economy.dart';
+import '../../model/grading.dart';
 import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -137,6 +138,15 @@ class _SkillTile extends StatelessWidget {
                     color: Palette.perfectDeep,
                   ),
                 ),
+                if (id == 'power' || id == 'echo')
+                  Text(
+                    _perfectNow(c, l, f),
+                    key: Key('perfect-now-$id'),
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 Text(
                   skillDescription(l, id),
                   maxLines: 2,
@@ -216,4 +226,17 @@ class _LockedSkill extends StatelessWidget {
       ),
     );
   }
+}
+
+/// What a PERFECT pays right now (without combo), and how many seconds of
+/// the clocks' income that is: tells whether tapping is worth it.
+String _perfectNow(GameController c, AppLocalizations l, Fmt f) {
+  final pay = c.engine.hitPayout(const Grade(Tier.perfect, 0));
+  final ps = c.engine.passive();
+  if (ps <= 0) return l.perfectNow(f.n(pay));
+  final secs = (pay / ps).toStringAsFixed(pay / ps < 10 ? 1 : 0);
+  return l.perfectNowSeconds(
+    f.n(pay),
+    secs.replaceAll('.', l.decimalSeparator),
+  );
 }

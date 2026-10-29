@@ -34,6 +34,11 @@ wyglądać, brzmieć i reagować.
   ~80% ekranu.
 - **U-3:** Saldo „nabija się” płynnie (animowany licznik) i podskakuje przy
   każdym wpływie.
+- **U-3a:** Pod saldem: dochód zegarów „/s”, a gdy gracz gra, obok
+  „trafienia +X/s” — to, co dały jego trafienia w ostatniej minucie
+  (playtest: przy dużym dochodzie nie było widać, czy klikanie się
+  opłaca). Karty Siły trafienia i Echa pokazują, ile teraz płaci PERFEKT
+  i ile to sekund dochodu zegarów.
 - **U-4:** Pozostałe ekrany to pełnoekranowe arkusze nad grą:
   - Osiągnięcia: siatka odznak;
   - Prestiż: drzewko perków i przycisk resetu;

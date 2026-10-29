@@ -396,6 +396,7 @@ class _Header extends StatelessWidget {
         builder: (context, _) {
           final f = Fmt.of(context, controller);
           final ps = controller.engine.passive();
+          final taps = controller.tapIncomePerSecond();
           return Column(
             children: [
               Row(
@@ -451,10 +452,21 @@ class _Header extends StatelessWidget {
               ),
               EffectChips(controller: controller),
               AnimatedOpacity(
-                opacity: ps > 0 ? 1 : 0,
+                opacity: ps > 0 || taps > 0 ? 1 : 0,
                 duration: const Duration(milliseconds: 300),
-                child: Text(
-                  f.perSecond(ps),
+                child: Text.rich(
+                  key: const Key('income'),
+                  TextSpan(
+                    text: f.perSecond(ps),
+                    children: [
+                      // What tapping adds, averaged over the last minute.
+                      if (taps > 0)
+                        TextSpan(
+                          text: '  ·  ${l.tapIncome(f.perSecond(taps))}',
+                          style: const TextStyle(color: Palette.perfectDeep),
+                        ),
+                    ],
+                  ),
                   style: TextStyle(
                     fontFamily: Fonts.display,
                     fontSize: 16,
