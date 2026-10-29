@@ -194,23 +194,15 @@ class _GeneratorTile extends StatelessWidget {
     final affordable = price <= c.state.tiki;
     final unit = c.econ.unitRate(id) * c.econ.permanentMultiplier();
     final rate = unit * owned;
-    final share = totalIncome > 0 ? rate / totalIncome * 100 : 0.0;
-    final gain = c.econ.windowGain(id);
     final bag = offerBag ? _bagButton(context, c) : null;
     final sub = owned == 0
         ? generatorDescription(l, id)
         : [
             l.unitRate(f.n(unit)),
-            if (owned > 0)
-              l.incomeShare(
-                share
-                    .toStringAsFixed(share < 10 ? 1 : 0)
-                    .replaceAll('.', l.decimalSeparator),
-              ),
-            if (gain > 1.005)
-              l.windowBonus(
-                gain.toStringAsFixed(2).replaceAll('.', l.decimalSeparator),
-              ),
+            // All of this clock together (playtest: "% of income" and
+            // "windows ×1.06" told the player nothing; the skills' gain is
+            // already in the rate).
+            l.generatorTotal(f.perSecond(rate)),
           ].join(' · ');
     return _TileFrame(
       child: Row(

@@ -47,6 +47,16 @@ class SkillList extends StatelessWidget {
 ) {
   String n(double v, int digits) =>
       v.toStringAsFixed(digits).replaceAll('.', l.decimalSeparator);
+  TierOdds odds(int lv) => e.odds(
+    e.playerSpread(),
+    e.playerWindowsWith(id, lv),
+    luck: e.luckChance(),
+  );
+  String pct(TierOdds o, double Function(TierOdds) pick) {
+    final p = pick(o) * 100;
+    return '${n(p, p < 10 ? 1 : 0)}%';
+  }
+
   String at(int lv) {
     switch (id) {
       case 'power':
@@ -55,16 +65,18 @@ class SkillList extends StatelessWidget {
         return n(e.laterStart(lv), 2);
       case 'ticking':
         return lv > 0 ? l.on : l.off;
+      // Window skills: what they mean for this player's own taps, at
+      // their measured spread (playtest: "±0.022 → 0.023 s" said nothing).
       case 'wideEye':
-        return '±${n(e.windowsAt(wideEye: lv).great, 3)} s';
+        return pct(odds(lv), (o) => o.perfect + o.great);
       case 'combo':
         return '${e.comboCap(lv)}';
       case 'magnet':
-        return '±${n(e.windowsAt(magnet: lv).perfect, 3)} s';
+        return pct(odds(lv), (o) => o.perfect);
       case 'echo':
         return '${n(e.b.skill('echo').perLevel * lv, 1)} s';
       case 'bulletTime':
-        return '×${n(e.coldBlood(lv), 2)}';
+        return pct(odds(lv), (o) => o.hit);
       case 'luck':
         return '${(e.luckChance(lv) * 100).round()}%';
       case 'shield':

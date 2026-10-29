@@ -81,22 +81,6 @@
       }
     }
   },
-  "incomeShare": "{percent}% of income",
-  "@incomeShare": {
-    "placeholders": {
-      "percent": {
-        "type": "String"
-      }
-    }
-  },
-  "windowBonus": "windows ×{value}",
-  "@windowBonus": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
   "lockedName": "???",
   "lockedHint": "Buy the previous clock to reveal",
   "upgradesTitle": "Upgrades",
@@ -202,20 +186,20 @@
   "skill_ticking_desc": "A tick in the last second helps you find the beat.",
   "skill_ticking_label": "Ticking",
   "skill_wideEye": "Hawk Eye",
-  "skill_wideEye_desc": "Wider GREAT and GOOD windows. For you and your clocks.",
-  "skill_wideEye_label": "GREAT window",
+  "skill_wideEye_desc": "Wider GREAT and GOOD windows — you hit more often. Your clocks hit better too.",
+  "skill_wideEye_label": "Your GREAT or better",
   "skill_combo": "Combo",
   "skill_combo_desc": "A higher streak cap; the streak multiplies the whole payout.",
   "skill_combo_label": "Streak cap",
   "skill_magnet": "Magnet",
-  "skill_magnet_desc": "A wider PERFECT window. The digits stick to 10.00.",
-  "skill_magnet_label": "PERFECT window",
+  "skill_magnet_desc": "A wider PERFECT window: 9.99 or 10.01 can be a PERFECT. The 10.00 jackpot stays as is.",
+  "skill_magnet_label": "Your PERFECTs",
   "skill_echo": "Echo",
   "skill_echo_desc": "Hits also pay seconds of your clocks' income.",
   "skill_echo_label": "Echo",
   "skill_bulletTime": "Cold Blood",
-  "skill_bulletTime_desc": "A steadier hand at 10.00: wider hit windows, the clock stays the same.",
-  "skill_bulletTime_label": "Hit windows",
+  "skill_bulletTime_desc": "All your hit windows are wider. The clock runs the same.",
+  "skill_bulletTime_label": "Your hits",
   "skill_luck": "Luck",
   "skill_luck_desc": "A chance that a hit jumps one tier up.",
   "skill_luck_label": "Chance",
@@ -1076,6 +1060,14 @@
   "@jackpotPrice": {
     "placeholders": {
       "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "generatorTotal": "{perSecond} in total",
+  "@generatorTotal": {
+    "placeholders": {
+      "perSecond": {
         "type": "String"
       }
     }

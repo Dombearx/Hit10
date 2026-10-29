@@ -81,6 +81,32 @@ class Economy {
     return math.min(b.round.latestStart, _per('fastForward') * l);
   }
 
+  /// The player's timing spread from their recent taps (outliers such as
+  /// a tap at 9.20 left out); 60 ms until there are enough taps.
+  double playerSpread() {
+    final e = s.stats.recentErrors.where((x) => x.abs() < 0.3).toList();
+    if (e.length < 10) return 0.06;
+    final m = e.reduce((a, c) => a + c) / e.length;
+    final v =
+        e.map((x) => (x - m) * (x - m)).reduce((a, c) => a + c) /
+        (e.length - 1);
+    return math.sqrt(v).clamp(0.005, 0.2);
+  }
+
+  /// The player's windows with skill [id] at level [lv] (the rest as owned).
+  Windows playerWindowsWith(String id, int lv) {
+    final w = windowsAt(
+      magnet: id == 'magnet' ? lv : level('magnet'),
+      wideEye: id == 'wideEye' ? lv : level('wideEye'),
+    );
+    final f = coldBlood(id == 'bulletTime' ? lv : null);
+    return Windows(
+      perfect: w.perfect * f,
+      great: w.great * f,
+      good: w.good * f,
+    );
+  }
+
   /// Zimna krew: how much wider the player's windows are (×1 at level 0).
   double coldBlood([int? lvl]) =>
       1 / (1 - _per('bulletTime') * (lvl ?? level('bulletTime')));

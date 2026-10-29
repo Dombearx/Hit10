@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/ads/rewarded_ads.dart';
 import 'package:hit10/engine/game_engine.dart';
+import 'package:hit10/engine/round_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
@@ -100,5 +101,32 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
     expect(c.state.tiki, closeTo(2 * amount, amount * 1e-6));
     expect(c.pendingOffline, isNull);
+  });
+
+  testWidgets('touching an offer tile is not a round tap; the combo stays', (
+    tester,
+  ) async {
+    final ads = FakeRewardedAds(delay: Duration.zero);
+    final c = await pumpGame(tester, played()..comboStreak = 5, ads);
+    await tester.tap(find.byKey(const Key('arena')));
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(c.round.phase, RoundPhase.running);
+    await tester.tap(find.byKey(const Key('ad-turbo')));
+    await tester.pumpAndSettle();
+    expect(c.state.comboStreak, 5);
+    expect(c.round.phase, RoundPhase.waiting); // paused, not graded
+    expect(c.state.stats.rounds, 0);
+  });
+
+  testWidgets('touching the shop pauses the stopwatch', (tester) async {
+    final ads = FakeRewardedAds(delay: Duration.zero);
+    final c = await pumpGame(tester, played()..comboStreak = 5, ads);
+    await tester.tap(find.byKey(const Key('arena')));
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(c.round.phase, RoundPhase.running);
+    await tester.tap(find.byKey(const Key('buy-grandpa')));
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(c.round.phase, RoundPhase.waiting);
+    expect(c.state.comboStreak, 5);
   });
 }
