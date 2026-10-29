@@ -166,3 +166,23 @@ koniec”), przez co trudniej trafić. Zmiana: stoper zawsze płynie równo.
 Symulator przechodzi wszystkie progi (B-9: 4.46 h ≤ 4.5 h). Runda na max
 Startu później trwa 4.9 s zamiast 3.5 s, więc późne poziomy dają trochę
 mniej niż dawne Przewijanie; balans tego nie odczuł.
+
+## Runda 5 — po zmianach z testu na telefonie (combo +1/+2/+3, 10.00 = jackpot)
+
+Boty, pierwsze 10 minut (jeden przebieg na personę, wyniki się wahają):
+
+| Persona | Pierwszy zakup | Zakupy | Dochód po 10 min | PERFEKT/ŚWIETNIE/DOBRZE/pudło |
+|---|---|---|---|---|
+| Marek | 0:33 | 39 | 22/s | 8/25/16/8 |
+| Ola | 0:56 | 63 | 151/s | 4/11/8/26 |
+| Kasia | 1:05 | 41 | 35/s | 2/11/12/24 |
+| Ania | 1:06 | 36 | 59/s | 3/12/23/16 |
+| Bartek | 2:13 | 22 | 15/s | 1/5/11/18 |
+| Pan Zdzisław | 3:38 | 15 | 2,5/s | 3/3/6/28 |
+
+Odstęp między zakupami najwyżej ~1 min u wszystkich. Gra po 8 min dziennie
+(symulator wielodniowy): koniec po 72–74 dniach niezależnie od precyzji
+(30–80 ms), bo przeważa dochód offline; w czasie gry trafienia dają
+8–100% dochodu zegarów w pierwszych dniach i 15–180% później, z czego
+jackpot 10.00 to zwykle największa część. Progi B-1…A-2 przechodzą
+(B-7 na granicy: 0,41 przy progu 0,4).

@@ -52,9 +52,9 @@ i bullet time) zabierała rytm — gracz liczy w głowie, a przyspieszony
 start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 **zawsze płynie równo**, a obie umiejętności dają tę samą pomoc inaczej.
 
-- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 5.8 ·
-  (1 − 0.75^L) / (1 − 0.75^10)` (L = poziom 0–10: 0, 1.54, 2.69, 3.55 …
-  5.8), w normalnym tempie. Cel zostaje `10.00`, a do celu zawsze zostają
+- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.58·L` (L =
+  poziom 0–10: 0, 0.58, 1.16 … 5.80) — każdy poziom daje tyle samo, a
+  kolejne są coraz droższe (×7) — w normalnym tempie. Cel zostaje `10.00`, a do celu zawsze zostają
   co najmniej 4 s (`round.latestStart` ≤ cel − strefa − 4), żeby złapać
   rytm.
 - **R-RUNDA-11:** Zimna krew: okna gracza (PERFEKT, ŚWIETNIE, DOBRZE,
@@ -79,18 +79,20 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 | **PUDŁO** | reszta, ZA WCZEŚNIE, ZA PÓŹNO | 0 | 0 | reset do 0 |
 
 - **R-PROG-0:** BLISKO (08, playtest) to pudło z pocieszeniem: płaci mało
-  (1/33 PERFEKTU), ale zeruje combo jak pudło. Okna PERFEKT/ŚWIETNIE/DOBRZE
+  (1/33 PERFEKTU), ale zeruje combo jak pudło. W czasie szczęścia
+  początkującego płaci jak DOBRZE (1 zamiast 0.3, wygasa razem z ×3), żeby
+  bardzo nieprecyzyjni gracze też szybko kupili pierwszy zegar. Okna PERFEKT/ŚWIETNIE/DOBRZE
   się nie zmieniają — trafienie 10.00 ma zostać wyczynem. Generatory nie
   mają BLISKO.
 
 - **R-PROG-3 (10.00 — jackpot):** dotknięcie, które na tarczy daje 10.00
   (|błąd| < 0.005 s; żadna umiejętność tego okna nie poszerza, Fart i
-  Gorąca ręka go nie dają), płaci oprócz PERFEKTU **10 s dochodu zegarów**
+  Gorąca ręka go nie dają), płaci oprócz PERFEKTU **8 s dochodu zegarów**
   (co najmniej 5 bazowych PERFEKTÓW), razy combo i tryb. Oprawa: „10.00!”,
-  deszcz złota, fanfara. Nagłówek pokazuje „10.00 = +X”. Wielkość 10 s to
-  górna granica z symulatora: przy 15 s gracz grający bez przerwy wyprzedza
+  deszcz złota, fanfara. Nagłówek pokazuje „10.00 = +X”. Wielkość 8 s to
+  granica z symulatora: przy 15 s gracz grający bez przerwy wyprzedza
   założone tempo, a gracz nieprecyzyjny zostaje za daleko w tyle (B-6c,
-  B-7). Przy grze po kilka minut dziennie i tak przeważa dochód offline.
+  B-7); 10 s mieściło się tylko na styk. Przy grze po kilka minut dziennie i tak przeważa dochód offline.
 - **R-PROG-1:** Okna sprawdzane są od najwęższego. Wygrywa pierwszy pasujący
   próg.
 - **R-PROG-2:** Okno PERFEKT nigdy nie może być szersze niż okno ŚWIETNIE.
@@ -126,7 +128,7 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 | id | Nazwa PL / EN | Max | Koszt bazowy | Wzrost | Efekt na poziomie L |
 |---|---|---|---|---|---|
 | `power` | Siła trafienia / Strike Power | 10 | 50 | ×7 | nagroda progu ×(1+1.5L) |
-| `fastForward` | Start później / Late Start | 10 | 150 | ×5 | stoper rusza od S(L), max 5.8 |
+| `fastForward` | Start później / Late Start | 10 | 150 | ×7 | stoper rusza od 0.58·L, max 5.8 |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
 | `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×5 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
 | `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +2 na poziom (5 → 25) |
