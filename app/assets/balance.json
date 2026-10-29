@@ -16,21 +16,21 @@
       "window": 0.005,
       "reward": 10,
       "echoShare": 1.0,
-      "comboStep": 2
+      "comboStep": 3
     },
     {
       "id": "great",
       "window": 0.02,
       "reward": 3,
       "echoShare": 0.333,
-      "comboStep": 1
+      "comboStep": 2
     },
     {
       "id": "good",
       "window": 0.05,
       "reward": 1,
       "echoShare": 0.1,
-      "comboStep": 0
+      "comboStep": 1
     }
   ],
   "combo": {

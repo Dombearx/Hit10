@@ -40,10 +40,11 @@ void main() {
   });
 
   group('combo (R-COMBO-1…3)', () {
-    test('steps: perfect +2, great +1, good keeps, miss resets', () {
-      expect(e.resolveRound(perfect).streak, 2);
-      expect(e.resolveRound(great).streak, 3);
-      expect(e.resolveRound(good).streak, 3);
+    test('steps: perfect +3, great +2, good +1, miss resets', () {
+      s.skills['combo'] = 1; // cap 7
+      expect(e.resolveRound(perfect).streak, 3);
+      expect(e.resolveRound(great).streak, 5);
+      expect(e.resolveRound(good).streak, 6);
       final miss = e.resolveRound(early);
       expect(miss.streak, 0);
       expect(miss.comboBroken, isTrue);
@@ -66,7 +67,7 @@ void main() {
       s.stats.rounds = 30; // past beginner's luck
       s.owned['grandma'] = 10;
       s.skills.addAll({'echo': 2, 'combo': 10});
-      s.comboStreak = 8; // → 10 after this perfect
+      s.comboStreak = 7; // → 10 after this perfect
       final o = e.resolveRound(perfect);
       expect(o.payout, closeTo((10 + 1 * 1.0 * 10) * 1.5, 1e-9));
     });
