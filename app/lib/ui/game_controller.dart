@@ -46,7 +46,6 @@ class ClockSlot {
   final RoundEngine round;
   double mode = 1;
   bool blind = false;
-  bool fast = false;
   int lastTickTenth = -1;
   double lastHeartbeat = -10;
 }
@@ -198,7 +197,7 @@ class GameController extends ChangeNotifier {
 
   RoundEngine _newRound() => RoundEngine(
     config: balance.round,
-    timeMapFor: () => econ.timeMap(clock: engine.clockSpeed()),
+    timeMapFor: econ.timeMap,
     windowsFor: econ.playerWindows,
   );
 
@@ -217,9 +216,8 @@ class GameController extends ChangeNotifier {
   }
 
   /// Toggles from the mode row (R-TRYB-1, docs/02 §9.2).
-  void setMode({bool? blind, bool? fast, bool? secondClock, bool? autoBuyer}) {
+  void setMode({bool? blind, bool? secondClock, bool? autoBuyer}) {
     if (blind != null) state.modeBlind = blind;
-    if (fast != null) state.modeFast = fast;
     if (autoBuyer != null) state.autoBuyerOn = autoBuyer;
     if (secondClock != null && secondClock != state.secondClockOn) {
       state.secondClockOn = secondClock;
@@ -318,7 +316,6 @@ class GameController extends ChangeNotifier {
         slot
           ..mode = engine.modeMultiplier()
           ..blind = engine.blindActive
-          ..fast = engine.fastActive
           ..lastTickTenth = -1;
         if (engine.goldenRound) sfx.play('coins');
         _roundStarts.add((slot.index, engine.goldenRound));
@@ -336,7 +333,7 @@ class GameController extends ChangeNotifier {
             now: local,
             lastHitPerfect: o.tier == Tier.perfect,
             lastHitBlind: slot.blind,
-            lastHitFast: slot.fast,
+            streak: state.comboStreak,
           ),
         );
         notifyListeners();
@@ -366,7 +363,7 @@ class GameController extends ChangeNotifier {
     unawaited(o.raw.close ? haptics.light() : haptics.forTier(o.tier));
   }
 
-  /// Ticking in the last second and the fast-forward whoosh (docs/04 §3).
+  /// Ticking in the last second and Zimna krew's heartbeat (docs/04 §3).
   /// Returns whether the clock is inside the bullet-time zone (U-19).
   bool _roundSounds(ClockSlot slot, double now) {
     final round = slot.round;

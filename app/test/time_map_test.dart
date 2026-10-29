@@ -27,18 +27,11 @@ void main() {
     expect(m.inFocusZone(10.2), isFalse);
   });
 
-  test('fast clock speeds everything up', () {
-    final m = TimeMap(zoneStart: 9.8, zoneEnd: 10.2, clock: 1.5);
-    expect(m.realAt(10), closeTo(10 / 1.5, eps));
-  });
-
   test('round trip for every combination', () {
     for (final s in <double>[0, 3, 5.8]) {
-      for (final c in [1.0, 1.5]) {
-        final m = TimeMap(start: s, zoneStart: 9.8, zoneEnd: 10.2, clock: c);
-        for (var g = s + 0.01; g < 12; g += 0.0137) {
-          expect(m.gameAt(m.realAt(g)), closeTo(g, 1e-9));
-        }
+      final m = TimeMap(start: s, zoneStart: 9.8, zoneEnd: 10.2);
+      for (var g = s + 0.01; g < 12; g += 0.0137) {
+        expect(m.gameAt(m.realAt(g)), closeTo(g, 1e-9));
       }
     }
   });

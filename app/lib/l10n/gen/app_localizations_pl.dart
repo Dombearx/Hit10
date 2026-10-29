@@ -505,16 +505,16 @@ class AppLocalizationsPl extends AppLocalizations {
   String get ach_mode_blind_desc => 'PERFEKT w trybie na ślepo';
 
   @override
-  String get ach_mode_fast => 'Szybkie ręce';
+  String get ach_mode_fast => 'Czuję rytm';
 
   @override
-  String get ach_mode_fast_desc => 'PERFEKT w szybkim zegarze';
+  String get ach_mode_fast_desc => 'PERFEKT na ślepo przy serii 10+';
 
   @override
-  String get ach_mode_both => 'Szaleniec';
+  String get ach_mode_both => 'Metronom w głowie';
 
   @override
-  String get ach_mode_both_desc => 'PERFEKT w obu trybach naraz';
+  String get ach_mode_both_desc => 'PERFEKT na ślepo przy serii 25+';
 
   @override
   String get ach_hidden_impatient => 'Niecierpliwy';
@@ -644,7 +644,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get perk_earlyModes => 'Śmiałek';
 
   @override
-  String get perk_earlyModes_desc => 'Tryby ryzyka odblokowane od razu';
+  String get perk_earlyModes_desc => 'Tryb Na ślepo odblokowany od razu';
 
   @override
   String get perk_unlockSchrodinger => 'Pudełko z kotem';
@@ -791,9 +791,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get modeBlind => 'Na ślepo ×3';
-
-  @override
-  String get modeFast => 'Szybki zegar ×2';
 
   @override
   String get modeSecond => 'Drugi zegar';

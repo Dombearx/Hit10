@@ -19,16 +19,12 @@ void main() {
   group('risk modes (R-TRYB-1)', () {
     test('locked until enough perfects or the perk', () {
       s.modeBlind = true;
-      s.modeFast = true;
       expect(e.modeMultiplier(), 1);
       s.lifetime.perfects = 100;
       expect(e.modeMultiplier(), 3);
-      s.lifetime.perfects = 500;
-      expect(e.modeMultiplier(), 6);
-      expect(e.clockSpeed(), 1.5);
       s.lifetime.perfects = 0;
       s.perks.add('earlyModes');
-      expect(e.modeMultiplier(), 6);
+      expect(e.modeMultiplier(), 3);
     });
   });
 
@@ -234,19 +230,19 @@ void main() {
       );
     });
 
-    test('modes need a perfect in that mode', () {
-      expect(
-        unlockAchievements(
-          all,
-          s,
-          const AchievementContext(
-            lastHitPerfect: true,
-            lastHitBlind: true,
-            lastHitFast: true,
-          ),
-        ).map((a) => a.id),
-        containsAll(['mode_blind', 'mode_fast', 'mode_both']),
-      );
+    test('blind perfects, then on a 10+ and a 25+ streak', () {
+      Iterable<String> at(int streak) => unlockAchievements(
+        all,
+        s,
+        AchievementContext(
+          lastHitPerfect: true,
+          lastHitBlind: true,
+          streak: streak,
+        ),
+      ).map((a) => a.id);
+      expect(at(3), ['mode_blind']);
+      expect(at(12), ['mode_fast']); // mode_blind is already unlocked
+      expect(at(25), ['mode_both']);
     });
   });
 }

@@ -923,25 +923,25 @@ abstract class AppLocalizations {
   /// No description provided for @ach_mode_fast.
   ///
   /// In en, this message translates to:
-  /// **'Quick hands'**
+  /// **'Feel the beat'**
   String get ach_mode_fast;
 
   /// No description provided for @ach_mode_fast_desc.
   ///
   /// In en, this message translates to:
-  /// **'PERFECT on the fast clock'**
+  /// **'PERFECT in Blind mode on a 10+ streak'**
   String get ach_mode_fast_desc;
 
   /// No description provided for @ach_mode_both.
   ///
   /// In en, this message translates to:
-  /// **'Madman'**
+  /// **'Metronome inside'**
   String get ach_mode_both;
 
   /// No description provided for @ach_mode_both_desc.
   ///
   /// In en, this message translates to:
-  /// **'PERFECT with both modes on'**
+  /// **'PERFECT in Blind mode on a 25+ streak'**
   String get ach_mode_both_desc;
 
   /// No description provided for @ach_hidden_impatient.
@@ -1193,7 +1193,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_earlyModes_desc.
   ///
   /// In en, this message translates to:
-  /// **'Risk modes unlocked from the start'**
+  /// **'Blind mode unlocked from the start'**
   String get perk_earlyModes_desc;
 
   /// No description provided for @perk_unlockSchrodinger.
@@ -1453,12 +1453,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Blind ×3'**
   String get modeBlind;
-
-  /// No description provided for @modeFast.
-  ///
-  /// In en, this message translates to:
-  /// **'Fast clock ×2'**
-  String get modeFast;
 
   /// No description provided for @modeSecond.
   ///

@@ -33,7 +33,7 @@ złota — Szał, Fart albo Gorąca ręka.
 🌀 Paradoks czasowy: cofnij czas, zdobądź Chronony na stały bonus i odkryj
 drzewko perków — od szybkiego startu po drugi zegar.
 
-🏆 97 osiągnięć, tryby „Na ślepo” i „Szybki zegar”, ponad sto ulepszeń
+🏆 97 osiągnięć, tryb „Na ślepo”, ponad sto ulepszeń
 z własnym poczuciem humoru.
 
 📴 Gra działa bez internetu i bez konta. Reklamy są tylko nagradzane
@@ -68,7 +68,7 @@ turns golden — Frenzy, Lucky or Hot hand.
 🌀 Time paradox: rewind time, earn Chronons for a permanent bonus and
 unlock a perk tree — from a head start to a second clock.
 
-🏆 97 achievements, Blind and Fast clock modes, over a hundred upgrades
+🏆 97 achievements, Blind mode, over a hundred upgrades
 with a sense of humour.
 
 📴 Plays offline, no account needed. Ads are rewarded only, and only when

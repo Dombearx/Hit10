@@ -56,7 +56,6 @@ class GameState {
 
   // -------------------------------------------------------- toggles (M4) --
   bool modeBlind = false;
-  bool modeFast = false;
   bool secondClockOn = false;
   bool autoBuyerOn = false;
 

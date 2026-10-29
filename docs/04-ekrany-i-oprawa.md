@@ -16,7 +16,7 @@ wyglądać, brzmieć i reagować.
 │       │    ●●●○    │          │     postępu, cyfry, cząsteczki
 │        ╰───────────╯          │
 │   COMBO ×2.3  🔥 seria 13     │
-│  [Na ślepo] [Szybki zegar]    │  ← tryby (po odblokowaniu)
+│  [Na ślepo]                   │  ← tryby (po odblokowaniu)
 │  ░ dziadek: 10.02! +3 ░       │  ← „trafienia” generatorów lecące z boku
 ├───────────────────────────────┤
 │ [ulepszenie][ulepszenie][...] │  ← pasek dostępnych ulepszeń (przewijany)

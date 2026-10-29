@@ -55,6 +55,23 @@ jobs:
           name: hit10-apk
           path: hit10-*.apk
           retention-days: 30
+
+  # Its own runner: building the AAB right after the APK on one runner got
+  # the runner shut down twice, which held back the APK release.
+  aab:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
       # The Play upload (docs/05 §9): signed with the upload key and built
       # with the real AdMob ids — but only when those secrets exist, and
       # never for the APKs above, which are for testing on our own phones
@@ -70,6 +87,7 @@ jobs:
           ADMOB_REWARDED_ID: ${{ secrets.ADMOB_REWARDED_ID }}
         run: |
           cd app
+          flutter pub get
           if [ -n "$KEYSTORE_B64" ]; then
             echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
             export HIT10_KEYSTORE="$RUNNER_TEMP/upload.jks"
@@ -122,7 +140,7 @@ jobs:
 
   # Only an APK that started and played a round on the emulator is released.
   release:
-    needs: [apk, smoke]
+    needs: [apk, aab, smoke]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:

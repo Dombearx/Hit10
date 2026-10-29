@@ -80,8 +80,8 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
   rzeczywistego stosuje się mapowanie z R-RUNDA-10/11.
 - **T-10:** Pomiar musi być odporny na spadki klatek: ocena nie zależy od
   tego, kiedy wyrenderowała się ostatnia klatka.
-- **T-11:** Mapowanie czas rzeczywisty → czas gry (Start później, Szybki
-  zegar) to czysta funkcja liniowa w `lib/model`,
+- **T-11:** Mapowanie czas rzeczywisty → czas gry (Start później) to
+  czysta funkcja w `lib/model`,
   z odwrotnością (do planowania animacji). Pokrywają ją testy.
 - **T-12:** Tryb diagnostyczny (ukryty, np. 7 dotknięć w wersję w
   ustawieniach) pokazuje:

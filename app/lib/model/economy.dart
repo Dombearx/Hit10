@@ -104,13 +104,12 @@ class Economy {
   double goldenStrengthFactor() =>
       1 + _per('goldenTouch') * level('goldenTouch');
 
-  TimeMap timeMap({double clock = 1}) {
+  TimeMap timeMap() {
     final r = b.round;
     return TimeMap(
       start: laterStart(),
       zoneStart: r.target - r.bulletZone,
       zoneEnd: r.target + r.bulletZone,
-      clock: clock,
     );
   }
 

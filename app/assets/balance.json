@@ -313,11 +313,6 @@
       "unlockPerfects": 100,
       "hideDigitsAt": 7.0,
       "rewardMultiplier": 3
-    },
-    "fastClock": {
-      "unlockPerfects": 500,
-      "clockSpeed": 1.5,
-      "rewardMultiplier": 2
     }
   },
   "offline": {

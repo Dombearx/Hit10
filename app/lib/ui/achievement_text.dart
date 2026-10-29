@@ -50,7 +50,7 @@ EmojiArt achievementArt(AchievementDef a) {
     AchievementCategory.golden => const EmojiArt('glowing_star', _gold),
     AchievementCategory.prestige => const EmojiArt('cyclone', _lilac),
     AchievementCategory.mode => EmojiArt(
-      a.id == 'mode_fast' ? 'high_voltage' : 'see_no_evil_monkey',
+      a.id == 'mode_fast' ? 'musical_note' : 'see_no_evil_monkey',
       _lilac,
     ),
     AchievementCategory.hidden => const EmojiArt('trophy', _gold),
