@@ -205,4 +205,16 @@ void main() {
       );
     });
   });
+
+  test("beginner's luck lifts BLISKO towards a GOOD, then fades", () {
+    final w = e.econ.playerWindows();
+    final close = grade(0.1, w);
+    final start = e.hitPayout(close);
+    expect(
+      start,
+      closeTo(b.beginner.closeReward * b.beginner.rewardMultiplier, 1e-9),
+    );
+    s.stats.rounds = b.beginner.rounds + b.beginner.fadeRounds;
+    expect(e.hitPayout(close), closeTo(b.close.reward, 1e-9));
+  });
 }

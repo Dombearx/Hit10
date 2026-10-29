@@ -50,8 +50,8 @@
       "id": "fastForward",
       "maxLevel": 10,
       "baseCost": 150,
-      "costGrowth": 5,
-      "perLevel": 0.25
+      "costGrowth": 7,
+      "perLevel": 0.58
     },
     {
       "id": "ticking",
@@ -511,7 +511,8 @@
   "beginner": {
     "rounds": 10,
     "rewardMultiplier": 3,
-    "fadeRounds": 20
+    "fadeRounds": 20,
+    "closeReward": 1.0
   },
   "close": {
     "window": 0.15,
@@ -574,7 +575,7 @@
   },
   "jackpot": {
     "window": 0.005,
-    "productionSeconds": 10,
+    "productionSeconds": 8,
     "perfectMultiple": 5
   }
 }

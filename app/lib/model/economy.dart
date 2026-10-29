@@ -73,16 +73,12 @@ class Economy {
   /// Chance that a great/good hit is bumped one tier up (Luck).
   double luckChance([int? lvl]) => _per('luck') * (lvl ?? level('luck'));
 
-  /// Start później: where the stopwatch starts. Each level closes
-  /// `perLevel` of the remaining gap; the last one reaches
-  /// `round.latestStart`.
+  /// Start później: where the stopwatch starts — the same step every
+  /// level (playtest: the first levels used to give almost everything),
+  /// never past `round.latestStart`.
   double laterStart([int? lvl]) {
-    final s = b.skill('fastForward');
-    final q = 1 - s.perLevel;
     final l = lvl ?? level('fastForward');
-    return b.round.latestStart *
-        (1 - math.pow(q, l)) /
-        (1 - math.pow(q, s.maxLevel));
+    return math.min(b.round.latestStart, _per('fastForward') * l);
   }
 
   /// Zimna krew: how much wider the player's windows are (×1 at level 0).

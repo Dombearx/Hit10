@@ -92,7 +92,7 @@ void main() {
     final w = e.windows();
     expect(w.perfect, closeTo(0.008, 1e-12));
     expect(w.great, closeTo(0.028, 1e-12));
-    expect(e.laterStart(), greaterThan(3));
+    expect(e.laterStart(), closeTo(4 * 0.58, 1e-12)); // the same step each
     expect(e.laterStart(10), closeTo(b.round.latestStart, 1e-12));
     expect(e.laterStart(0), 0);
     expect(e.coldBlood(), closeTo(2.5, 1e-12));

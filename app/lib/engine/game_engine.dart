@@ -408,7 +408,12 @@ class GameEngine {
     if (!g.isHit) {
       // BLISKO: a small consolation, no echo (docs/02 §2).
       if (!g.close) return 0;
-      return b.close.reward *
+      // Beginner's luck lifts BLISKO towards a GOOD (playtest: imprecise
+      // players waited minutes for the first grandpa).
+      final reward =
+          b.close.reward +
+          (b.beginner.closeReward - b.close.reward) * econ.beginnerShare;
+      return reward *
           econ.strikePower() *
           globalMultiplier() *
           econ.beginnerPay() *

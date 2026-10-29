@@ -130,7 +130,7 @@ kolejne runy, co spełnia życzenie, żeby gracz miał do czego dążyć.
 | 8 | 436M | 2.06B | 4.7× | 2.71T | 30 |
 
 Umiejętności: każdą ktoś kupuje. Pierwsze poziomy pojawiają się między 9.
-a 45. minutą. Start później osiąga max po ok. 2 h, a Sokole oko po ok. 3.5 h.
+a 45. minutą. Start później osiąga max po ok. 3–4 h, a Sokole oko po ok. 3.5 h.
 Magnes, Combo i Echo dochodzą do max dopiero pod koniec 8 h, więc są
 dobrym celem na długo.
 

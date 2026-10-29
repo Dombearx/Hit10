@@ -127,13 +127,17 @@ class BeginnerConfig {
   BeginnerConfig(Map<String, Object?> j)
     : rounds = _i(j['rounds']),
       rewardMultiplier = _d(j['rewardMultiplier']),
-      fadeRounds = _i(j['fadeRounds']);
+      fadeRounds = _i(j['fadeRounds']),
+      closeReward = _d(j['closeReward']);
   final int rounds;
 
   /// After [rounds], the bonus fades out linearly over this many rounds
   /// instead of stopping at once.
   final int fadeRounds;
   final double rewardMultiplier;
+
+  /// What BLISKO pays during beginner's luck (instead of `close.reward`).
+  final double closeReward;
 }
 
 class TierConfig {
@@ -507,9 +511,7 @@ class Balance {
         e.add('bulletTime at max level must leave a positive divisor');
       }
       final ff = skill('fastForward');
-      if (ff.perLevel <= 0 || ff.perLevel >= 1) {
-        e.add('fastForward perLevel must be within (0, 1)');
-      }
+      if (ff.perLevel <= 0) e.add('fastForward perLevel must be > 0');
     }
     unique('generator', generators.map((g) => g.id));
     double? prevCost;
