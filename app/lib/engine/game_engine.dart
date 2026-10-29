@@ -4,6 +4,7 @@ import '../balance/balance.dart';
 import '../model/economy.dart';
 import '../model/game_state.dart';
 import '../model/grading.dart';
+import '../model/seasons.dart';
 
 enum BuyResult { ok, tooExpensive, unavailable }
 
@@ -130,7 +131,56 @@ class GameEngine {
     if (goldenVisibleLeft <= 0) return false;
     goldenVisibleLeft = 0;
     goldenArmed = true;
+    if (_seasonRunning) {
+      s.seasonCatches++;
+      _checkSeasonGoal();
+    }
     return true;
+  }
+
+  // ------------------------------------------------------------- seasons --
+
+  /// The calendar event running now (docs/02 §14), set by the controller
+  /// from the local date.
+  Season? season;
+
+  /// Tiki paid when the season's goal was reached; the UI shows it once
+  /// and clears it.
+  double? seasonRewardPaid;
+
+  /// Switches to [se]; a new run of a season counts from zero, one seen
+  /// before picks up where it was.
+  void setSeason(Season? se) {
+    season = se;
+    if (se != null && s.seasonKey != se.key) {
+      if (s.seasonKey.isNotEmpty && !s.seasonsDone.contains(s.seasonKey)) {
+        s.seasonStash[s.seasonKey] = [s.seasonCatches, s.seasonHits];
+      }
+      final back = s.seasonStash.remove(se.key);
+      s
+        ..seasonKey = se.key
+        ..seasonCatches = back?[0] ?? 0
+        ..seasonHits = back?[1] ?? 0;
+    }
+  }
+
+  bool get seasonDone => season != null && s.seasonsDone.contains(season!.key);
+
+  bool get _seasonRunning => season != null && !seasonDone;
+
+  /// What finishing the season pays: minutes of passive income.
+  double seasonReward() {
+    final c = b.seasons;
+    return math.max(c.rewardFloor, passive() * 60 * c.rewardMinutes);
+  }
+
+  void _checkSeasonGoal() {
+    final c = b.seasons;
+    if (s.seasonCatches < c.catches || s.seasonHits < c.hits) return;
+    final amount = seasonReward();
+    s.seasonsDone.add(season!.key);
+    s.earn(amount);
+    seasonRewardPaid = amount;
   }
 
   /// Ad offer "Golden second now" (R-AD): show the clock immediately.
@@ -230,6 +280,10 @@ class GameEngine {
         rng.nextDouble() < econ.luckChance()) {
       tier = tier == Tier.great ? Tier.perfect : Tier.great;
       bumped = true;
+    }
+    if (tier != Tier.miss && _seasonRunning) {
+      s.seasonHits++;
+      _checkSeasonGoal();
     }
     final before = s.comboStreak;
     var broken = false;

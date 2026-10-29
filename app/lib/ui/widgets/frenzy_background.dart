@@ -3,9 +3,11 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
+import '../seasons_ui.dart';
 import '../theme.dart';
 
-/// The warm gradient; during Frenzy it turns neon and pulses (docs/04 §3).
+/// The warm gradient (or the season's, §3.1); during Frenzy it turns neon
+/// and pulses (docs/04 §3).
 class FrenzyBackground extends StatefulWidget {
   const FrenzyBackground({
     super.key,
@@ -40,8 +42,11 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
   }
 
   bool _zone = false;
+  late String? _theme = widget.controller.themeId;
 
   void _onChange() {
+    final theme = widget.controller.themeId;
+    if (theme != _theme) setState(() => _theme = theme);
     final on = widget.controller.engine.frenzyLeft > 0;
     if (on && !_pulse.isAnimating) _pulse.repeat();
     if (!on && _pulse.isAnimating) {
@@ -70,13 +75,14 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
         final p = widget.controller.settings.reduceMotion
             ? 0.5
             : 0.5 + 0.5 * math.sin(_pulse.value * math.pi * 2);
+        final look = seasonLooks[_theme];
         final top = Color.lerp(
-          Palette.bgTop,
+          look?.bgTop ?? Palette.bgTop,
           Color.lerp(Palette.neonMagenta, Palette.neonCyan, p),
           _mix * 0.85,
         )!;
         final bottom = Color.lerp(
-          Palette.bgBottom,
+          look?.bgBottom ?? Palette.bgBottom,
           Color.lerp(Palette.neonCyan, Palette.neonMagenta, p),
           _mix * 0.85,
         )!;

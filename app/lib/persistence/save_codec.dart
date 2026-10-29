@@ -66,6 +66,12 @@ Map<String, Object?> encodeSave(SaveData d) {
     'turboLeft': s.turboLeft,
     'dailyKey': s.dailyKey,
     'dailyStreak': s.dailyStreak,
+    'seasonKey': s.seasonKey,
+    'seasonCatches': s.seasonCatches,
+    'seasonHits': s.seasonHits,
+    'seasonsDone': s.seasonsDone.toList(),
+    'seasonStash': s.seasonStash,
+    'theme': s.theme,
     'stats': {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
@@ -148,7 +154,15 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..autoBuyerOn = j['autoBuyerOn'] == true
     ..turboLeft = _d(j['turboLeft'])
     ..dailyKey = _i(j['dailyKey'])
-    ..dailyStreak = _i(j['dailyStreak']);
+    ..dailyStreak = _i(j['dailyStreak'])
+    ..seasonKey = j['seasonKey'] is String ? j['seasonKey']! as String : ''
+    ..seasonCatches = _i(j['seasonCatches'])
+    ..seasonHits = _i(j['seasonHits'])
+    ..theme = j['theme'] is String ? j['theme']! as String : '';
+  s.seasonsDone.addAll(_sl(j['seasonsDone']));
+  _m(j['seasonStash']).forEach((k, v) {
+    if (v is List && v.length == 2) s.seasonStash[k] = [_i(v[0]), _i(v[1])];
+  });
   s.tipsSeen.addAll(_sl(j['tipsSeen']));
   _m(j['adCooldownUntil']).forEach((k, v) => s.adCooldownUntil[k] = _i(v));
   _m(j['owned']).forEach((k, v) => s.owned[k] = _i(v));

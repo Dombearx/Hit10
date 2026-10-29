@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +11,8 @@ import 'format.dart';
 import 'game_controller.dart';
 import 'daily_dialog.dart';
 import 'offline_dialog.dart';
+import 'season_dialog.dart';
+import 'seasons_ui.dart';
 import 'providers.dart';
 import 'qa_hook.dart';
 import 'shop/generator_list.dart';
@@ -93,6 +97,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     super.initState();
     if (qaEnabled) registerQaHook(controller);
     controller.addListener(_maybeShowOffline);
+    _seasonSub = controller.seasonCompleted.listen(_onSeasonCompleted);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _maybeShowOffline();
       if (controller.saveWasCorrupt && mounted) {
@@ -109,11 +114,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     _maybeShowOffline();
   }
 
-  /// The "while you were away" dialog, then the daily bonus.
+  /// The "while you were away" dialog, then the daily bonus, then a new
+  /// season's intro.
   Future<void> _maybeShowOffline() async {
     if (_offlineOpen || !mounted) return;
     final c = controller;
-    if (c.pendingOffline == null && c.pendingDaily == null) return;
+    if (c.pendingOffline == null &&
+        c.pendingDaily == null &&
+        !c.seasonIntroPending) {
+      return;
+    }
     _offlineOpen = true;
     c.pause();
     try {
@@ -122,6 +132,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       }
       if (mounted && c.pendingDaily != null) {
         await showDailyDialog(context, c);
+      }
+      if (mounted && c.seasonIntroPending) {
+        c.seasonIntroShown();
+        await showSeasonDialog(context, c);
       }
     } finally {
       _offlineOpen = false;
@@ -135,8 +149,28 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     arena.labels = _labels();
   }
 
+  StreamSubscription<double>? _seasonSub;
+
+  void _onSeasonCompleted(double amount) {
+    final s = controller.season;
+    if (!mounted || s == null) return;
+    final l = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          l.seasonCompleted(
+            seasonName(l, s.id),
+            Fmt.of(context, controller).n(amount),
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   void dispose() {
+    unawaited(_seasonSub?.cancel());
     controller.removeListener(_maybeShowOffline);
     _slow.dispose();
     _lifecycle.dispose();
@@ -374,7 +408,14 @@ class _Header extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   _icon('bar_chart', const Key('open-stats'), onStats),
-                  const Spacer(),
+                  Expanded(
+                    child: Center(
+                      child: SeasonBadge(
+                        controller: controller,
+                        onTap: () => showSeasonDialog(context, controller),
+                      ),
+                    ),
+                  ),
                   _icon('gear', const Key('open-settings'), onSettings),
                   const SizedBox(width: 6),
                   _icon(

@@ -54,6 +54,51 @@ class CloseConfig {
 
 /// Daily bonus (playtest 08): a 7-day streak; day N pays [minutes][N-1]
 /// minutes of passive income, at least [floorPerDay]·N Tiki.
+/// Calendar events (docs/02 §14): dates, the goal and its reward.
+class SeasonsConfig {
+  SeasonsConfig(Map<String, Object?> j)
+    : catches = _i(j['catches']),
+      hits = _i(j['hits']),
+      rewardMinutes = _d(j['rewardMinutes']),
+      rewardFloor = _d(j['rewardFloor']),
+      list = _ml(j['list']).map(SeasonConfig.new).toList(growable: false);
+
+  /// Seasonal items to catch (they replace the golden clock).
+  final int catches;
+
+  /// Hits (GOOD or better) to make while the season runs.
+  final int hits;
+
+  /// The reward: this many minutes of passive income, at least the floor.
+  final double rewardMinutes;
+  final double rewardFloor;
+  final List<SeasonConfig> list;
+}
+
+class SeasonConfig {
+  SeasonConfig(Map<String, Object?> j)
+    : id = j['id']! as String,
+      from = _md(j['from']),
+      to = _md(j['to']),
+      easterFrom = j['easterFrom'] == null ? null : _i(j['easterFrom']),
+      easterTo = j['easterTo'] == null ? null : _i(j['easterTo']);
+  final String id;
+
+  /// Fixed dates as (month, day), inclusive…
+  final (int, int)? from;
+  final (int, int)? to;
+
+  /// …or days relative to Easter Sunday.
+  final int? easterFrom;
+  final int? easterTo;
+
+  static (int, int)? _md(Object? v) {
+    if (v == null) return null;
+    final p = (v as String).split('-');
+    return (int.parse(p[0]), int.parse(p[1]));
+  }
+}
+
 class DailyConfig {
   DailyConfig(Map<String, Object?> j)
     : minutes = [for (final m in j['minutes']! as List) _d(m)],
@@ -329,6 +374,7 @@ class Balance {
       beginner = BeginnerConfig(_m(j['beginner'])),
       close = CloseConfig(_m(j['close'])),
       daily = DailyConfig(_m(j['daily'])),
+      seasons = SeasonsConfig(_m(j['seasons'])),
       ui = UiConfig(_m(j['ui']));
 
   /// Parses and validates; throws [BalanceException] listing every problem.
@@ -370,6 +416,7 @@ class Balance {
   final BeginnerConfig beginner;
   final CloseConfig close;
   final DailyConfig daily;
+  final SeasonsConfig seasons;
   final UiConfig ui;
 
   TierConfig tier(String id) => tiers.firstWhere((t) => t.id == id);
@@ -518,6 +565,17 @@ class Balance {
     if (round.latestStart < 0 ||
         round.latestStart > round.target - round.bulletZone - 4) {
       e.add('latestStart must leave at least 4 s before the focus zone');
+    }
+    for (final se in seasons.list) {
+      final fixed = se.from != null && se.to != null;
+      final easter = se.easterFrom != null && se.easterTo != null;
+      if (fixed == easter) {
+        e.add('season ${se.id} needs from/to or easterFrom/easterTo');
+      }
+    }
+    unique('season', seasons.list.map((x) => x.id));
+    if (seasons.catches < 1 || seasons.hits < 1) {
+      e.add('season goals must be ≥ 1');
     }
     if (ads.turboMaxStock < ads.turboDuration) {
       e.add('ads turbo maxStock must be ≥ duration');

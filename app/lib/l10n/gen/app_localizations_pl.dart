@@ -1716,4 +1716,105 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get adDoneOffline => 'Dochód offline podwojony!';
+
+  @override
+  String get season_valentine => 'Walentynki';
+
+  @override
+  String get season_valentine_items => 'Serca';
+
+  @override
+  String get season_easter => 'Wielkanoc';
+
+  @override
+  String get season_easter_items => 'Pisklęta';
+
+  @override
+  String get season_summer => 'Lato';
+
+  @override
+  String get season_summer_items => 'Słońca';
+
+  @override
+  String get season_tenDay => 'Dzień Dziesiątki';
+
+  @override
+  String get season_tenDay_items => 'Dziesiątki';
+
+  @override
+  String get season_halloween => 'Halloween';
+
+  @override
+  String get season_halloween_items => 'Dynie';
+
+  @override
+  String get season_christmas => 'Boże Narodzenie';
+
+  @override
+  String get season_christmas_items => 'Prezenty';
+
+  @override
+  String get season_newYear => 'Sylwester';
+
+  @override
+  String get season_newYear_items => 'Konfetti';
+
+  @override
+  String seasonUntil(String date) {
+    return 'Wydarzenie do $date';
+  }
+
+  @override
+  String get seasonHow =>
+      'Złoty zegarek przybiera świąteczną postać. Łap go i trafiaj (DOBRZE lub lepiej), a zdobędziesz nagrodę.';
+
+  @override
+  String get seasonHits => 'Trafienia';
+
+  @override
+  String seasonReward(String amount, String name) {
+    return 'Nagroda: +$amount Tików, motyw „$name” na zawsze i osiągnięcie (+1%).';
+  }
+
+  @override
+  String seasonDone(String name) {
+    return 'Ukończone! Motyw „$name” możesz wybrać w Ustawieniach.';
+  }
+
+  @override
+  String seasonCompleted(String name, String amount) {
+    return '$name ukończone! +$amount Tików';
+  }
+
+  @override
+  String get seasonStart => 'Zaczynamy!';
+
+  @override
+  String ach_season(String name) {
+    return '$name';
+  }
+
+  @override
+  String ach_season_desc(String name) {
+    return 'Ukończ wydarzenie „$name”';
+  }
+
+  @override
+  String get themeTitle => 'Motyw';
+
+  @override
+  String get themeAuto => 'Sezonowy';
+
+  @override
+  String get themeClassic => 'Klasyczny';
+
+  @override
+  String get themeHint =>
+      '„Sezonowy” zmienia się sam z wydarzeniami. Motywy z ukończonych wydarzeń zostają na zawsze.';
+
+  @override
+  String get diagSeason => 'Podgląd wydarzenia';
+
+  @override
+  String get diagSeasonNone => 'Według daty';
 }

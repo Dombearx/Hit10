@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flutter/painting.dart';
@@ -14,7 +15,11 @@ class GoldenClock extends PositionComponent {
     required this.radius,
     required this.life,
     required this.fromLeft,
+    this.item,
   }) : super(anchor: Anchor.center);
+
+  /// A season's item (docs/02 §14) drawn instead of the golden clock.
+  final ui.Image? item;
 
   final Vector2 arenaSize;
   final double dialTop;
@@ -104,7 +109,17 @@ class GoldenClock extends PositionComponent {
     ).createShader(Rect.fromCircle(center: Offset.zero, radius: r * 1.6));
     canvas.drawCircle(Offset.zero, r * 1.6, _glow);
     _drawRays(canvas, r);
-    _drawClock(canvas, r);
+    final item = this.item;
+    if (item != null) {
+      paintImage(
+        canvas: canvas,
+        rect: Rect.fromCircle(center: Offset.zero, radius: r * 1.25),
+        image: item,
+        filterQuality: FilterQuality.medium,
+      );
+    } else {
+      _drawClock(canvas, r);
+    }
     if (alpha < 1) canvas.restore();
     canvas.restore();
   }

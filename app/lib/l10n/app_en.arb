@@ -975,5 +975,82 @@
   "adDoneGolden": "The golden clock is coming — catch it!",
   "adDoneBag": "Bag of Ticks collected!",
   "adDoneRescue": "Streak restored!",
-  "adDoneOffline": "Offline income doubled!"
+  "adDoneOffline": "Offline income doubled!",
+  "season_valentine": "Valentine's",
+  "season_valentine_items": "Hearts",
+  "season_easter": "Easter",
+  "season_easter_items": "Chicks",
+  "season_summer": "Summer",
+  "season_summer_items": "Suns",
+  "season_tenDay": "Ten Day",
+  "season_tenDay_items": "Tens",
+  "season_halloween": "Halloween",
+  "season_halloween_items": "Pumpkins",
+  "season_christmas": "Christmas",
+  "season_christmas_items": "Gifts",
+  "season_newYear": "New Year",
+  "season_newYear_items": "Party poppers",
+  "seasonUntil": "Event until {date}",
+  "@seasonUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonHow": "The golden clock dresses up for the occasion. Catch it and hit (GOOD or better) to earn the reward.",
+  "seasonHits": "Hits",
+  "seasonReward": "Reward: +{amount} Ticks, the “{name}” theme for good and an achievement (+1%).",
+  "@seasonReward": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonDone": "Done! Pick the “{name}” theme in Settings.",
+  "@seasonDone": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonCompleted": "{name} complete! +{amount} Ticks",
+  "@seasonCompleted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonStart": "Let's go!",
+  "ach_season": "{name}",
+  "@ach_season": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_season_desc": "Complete the “{name}” event",
+  "@ach_season_desc": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "themeTitle": "Theme",
+  "themeAuto": "Seasonal",
+  "themeClassic": "Classic",
+  "themeHint": "“Seasonal” follows the events. Themes from completed events are yours for good.",
+  "diagSeason": "Event preview",
+  "diagSeasonNone": "By date"
 }

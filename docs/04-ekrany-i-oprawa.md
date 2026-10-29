@@ -65,6 +65,7 @@ wyglądać, brzmieć i reagować.
 | **Utrata combo** | licznik combo pęka na kawałki | „brzdęk” | – |
 | **Start później** | stoper czeka na starcie z wyższą wartością, tempo jak zwykle | – | – |
 | **Zimna krew (9.8–10.2)** | desaturacja tła, winieta, pulsujące cyfry, poświata | bicie serca | – |
+| **Wydarzenie sezonowe** (02 §14) | tło w kolorach sezonu, przedmiot sezonowy zamiast złotego zegarka, plakietka z postępem w nagłówku | fanfara po ukończeniu | – |
 | **Tykanie (umiejętność)** | delikatne pulsowanie co 0.1 s w ostatniej sekundzie | „tik” | mikro |
 | **Złoty zegarek na ekranie** | lata po łuku, złoty ślad, świeci | dzwoneczki | – |
 | **Złota runda** | złota tarcza, iskry dookoła | inna muzyka | – |

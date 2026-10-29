@@ -4,6 +4,7 @@ import '../l10n/gen/app_localizations.dart';
 import '../model/achievements.dart';
 import 'catalog.dart';
 import 'format.dart';
+import 'seasons_ui.dart';
 
 /// Localized name and description of an achievement (templates for the
 /// counted ones, fixed texts for the rest).
@@ -26,6 +27,9 @@ import 'format.dart';
       return (l.ach_golden(count), l.ach_golden_desc(count));
     case AchievementCategory.prestige:
       return (l.ach_prestige(count), l.ach_prestige_desc(count));
+    case AchievementCategory.season:
+      final name = seasonName(l, a.id.substring('season_'.length));
+      return (l.ach_season(name), l.ach_season_desc(name));
     case AchievementCategory.mode:
     case AchievementCategory.hidden:
       return (
@@ -53,6 +57,9 @@ EmojiArt achievementArt(AchievementDef a) {
       a.id == 'mode_fast' ? 'musical_note' : 'see_no_evil_monkey',
       _lilac,
     ),
+    AchievementCategory.season =>
+      seasonLooks[a.id.substring('season_'.length)]?.art ??
+          const EmojiArt('trophy', _gold),
     AchievementCategory.hidden => const EmojiArt('trophy', _gold),
   };
 }
