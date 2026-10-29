@@ -194,12 +194,10 @@ class ModeConfig {
   ModeConfig(Map<String, Object?> j)
     : unlockPerfects = _i(j['unlockPerfects']),
       rewardMultiplier = _d(j['rewardMultiplier']),
-      hideDigitsAt = j['hideDigitsAt'] == null ? null : _d(j['hideDigitsAt']),
-      clockSpeed = j['clockSpeed'] == null ? 1 : _d(j['clockSpeed']);
+      hideDigitsAt = j['hideDigitsAt'] == null ? null : _d(j['hideDigitsAt']);
   final int unlockPerfects;
   final double rewardMultiplier;
   final double? hideDigitsAt;
-  final double clockSpeed;
 }
 
 class OfflineConfig {
@@ -324,7 +322,6 @@ class Balance {
       synergies = _ml(j['synergies']).map(SynergyConfig.new).toList(),
       golden = GoldenConfig(_m(j['golden'])),
       blind = ModeConfig(_m(_m(j['modes'])['blind'])),
-      fastClock = ModeConfig(_m(_m(j['modes'])['fastClock'])),
       offline = OfflineConfig(_m(j['offline'])),
       achievements = AchievementsConfig(_m(j['achievements'])),
       prestige = PrestigeConfig(_m(j['prestige'])),
@@ -366,7 +363,6 @@ class Balance {
   final List<SynergyConfig> synergies;
   final GoldenConfig golden;
   final ModeConfig blind;
-  final ModeConfig fastClock;
   final OfflineConfig offline;
   final AchievementsConfig achievements;
   final PrestigeConfig prestige;

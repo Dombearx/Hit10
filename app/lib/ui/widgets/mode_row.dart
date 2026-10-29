@@ -24,13 +24,6 @@ class ModeRow extends StatelessWidget {
           on: s.modeBlind,
           onTap: () => c.setMode(blind: !s.modeBlind),
         ),
-      if (e.fastUnlocked())
-        _Toggle(
-          key: const Key('mode-fast'),
-          label: l.modeFast,
-          on: s.modeFast,
-          onTap: () => c.setMode(fast: !s.modeFast),
-        ),
       if (s.perks.contains('secondClock'))
         _Toggle(
           key: const Key('mode-second'),

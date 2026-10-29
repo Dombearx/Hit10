@@ -505,16 +505,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ach_mode_blind_desc => 'PERFECT in blind mode';
 
   @override
-  String get ach_mode_fast => 'Quick hands';
+  String get ach_mode_fast => 'Feel the beat';
 
   @override
-  String get ach_mode_fast_desc => 'PERFECT on the fast clock';
+  String get ach_mode_fast_desc => 'PERFECT in Blind mode on a 10+ streak';
 
   @override
-  String get ach_mode_both => 'Madman';
+  String get ach_mode_both => 'Metronome inside';
 
   @override
-  String get ach_mode_both_desc => 'PERFECT with both modes on';
+  String get ach_mode_both_desc => 'PERFECT in Blind mode on a 25+ streak';
 
   @override
   String get ach_hidden_impatient => 'Impatient';
@@ -644,7 +644,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get perk_earlyModes => 'Daredevil';
 
   @override
-  String get perk_earlyModes_desc => 'Risk modes unlocked from the start';
+  String get perk_earlyModes_desc => 'Blind mode unlocked from the start';
 
   @override
   String get perk_unlockSchrodinger => 'The box';
@@ -791,9 +791,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modeBlind => 'Blind ×3';
-
-  @override
-  String get modeFast => 'Fast clock ×2';
 
   @override
   String get modeSecond => 'Second clock';

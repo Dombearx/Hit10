@@ -18,14 +18,16 @@ class AchievementContext {
   const AchievementContext({
     this.now,
     this.lastHitBlind = false,
-    this.lastHitFast = false,
+    this.streak = 0,
     this.lastHitPerfect = false,
   });
 
   /// Local wall-clock time of the event (punctual / tenth-day badges).
   final DateTime? now;
   final bool lastHitBlind;
-  final bool lastHitFast;
+
+  /// The combo streak right after the hit.
+  final int streak;
   final bool lastHitPerfect;
 }
 
@@ -134,12 +136,12 @@ List<AchievementDef> buildAchievements(Balance b) {
     AchievementDef(
       'mode_fast',
       AchievementCategory.mode,
-      (s, c) => c.lastHitPerfect && c.lastHitFast,
+      (s, c) => c.lastHitPerfect && c.lastHitBlind && c.streak >= 10,
     ),
     AchievementDef(
       'mode_both',
       AchievementCategory.mode,
-      (s, c) => c.lastHitPerfect && c.lastHitBlind && c.lastHitFast,
+      (s, c) => c.lastHitPerfect && c.lastHitBlind && c.streak >= 25,
     ),
     AchievementDef(
       'hidden_impatient',

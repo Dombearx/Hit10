@@ -386,19 +386,10 @@ class GameEngine {
       s.perks.contains('earlyModes') ||
       s.lifetime.perfects >= b.blind.unlockPerfects;
 
-  bool fastUnlocked() =>
-      s.perks.contains('earlyModes') ||
-      s.lifetime.perfects >= b.fastClock.unlockPerfects;
-
   bool get blindActive => s.modeBlind && blindUnlocked();
-  bool get fastActive => s.modeFast && fastUnlocked();
 
-  /// Reward multiplier of the modes switched on (R-TRYB-1: ×3 · ×2).
-  double modeMultiplier() =>
-      (blindActive ? b.blind.rewardMultiplier : 1) *
-      (fastActive ? b.fastClock.rewardMultiplier : 1);
-
-  double clockSpeed() => fastActive ? b.fastClock.clockSpeed : 1;
+  /// Reward multiplier of the mode switched on (R-TRYB-1).
+  double modeMultiplier() => blindActive ? b.blind.rewardMultiplier : 1;
 
   /// "Dziesiątka": counts perfects made on a 10th of the month.
   void recordPerfectDate(DateTime local) {

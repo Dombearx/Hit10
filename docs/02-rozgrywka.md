@@ -9,8 +9,8 @@ Pojęcia:
 - **czas gry** to wartość na stoperze;
 - **czas rzeczywisty** to czas na zegarku gracza.
 
-Stoper zawsze płynie w stałym tempie (×1, ×1.5 z Szybkim zegarem). Start
-później zmienia tylko to, od czego zaczyna.
+Stoper zawsze płynie w tempie prawdziwego zegara: sekunda na stoperze to
+sekunda. Start później zmienia tylko to, od czego zaczyna.
 
 ---
 
@@ -226,10 +226,11 @@ na wypłatę z dotknięć gracza.
 | Tryb | Odblokowanie | Działanie | Mnożnik wypłaty |
 |---|---|---|---|
 | **Na ślepo** / Blind | 100 PERFEKTÓW łącznie | cyfry znikają od 7.00 czasu gry (zostaje pulsujące „?”) | ×3 |
-| **Szybki zegar** / Fast Clock | 500 PERFEKTÓW łącznie | cały czas gry płynie ×1.5 | ×2 |
 
-- **R-TRYB-1:** Tryby można łączyć (×6). Zmiana trybu działa od następnej
-  rundy.
+Szybki zegar (stoper ×1.5) został usunięty po teście na telefonie: sekunda
+na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
+
+- **R-TRYB-1:** Zmiana trybu działa od następnej rundy.
 
 ## 8. Osiągnięcia
 
@@ -287,7 +288,7 @@ na wypłatę z dotknięć gracza.
 | `startShield` | Tarcza na start | 20 | +1 ładunek Tarczy na start runu, nawet bez umiejętności | – |
 | `comboFloor` | Twarde lądowanie | 40 | pudło zrzuca serię do 5, nie do 0 | – |
 | `autoBuyer` | Automatyczny kupiec | 30 | przełącznik: automatycznie kupuje najtańszy generator co 5 s | – |
-| `earlyModes` | Śmiałek | 10 | tryby ryzyka odblokowane od razu | – |
+| `earlyModes` | Śmiałek | 10 | tryb Na ślepo odblokowany od razu | – |
 | `unlockSchrodinger` | Pudełko z kotem | 25 | odblokowuje generator 13 | – |
 | `secondClock` | Drugi zegar | 100 | patrz 9.2 | – |
 | `unlockChronos` | Ołtarz Chronosa | 500 | odblokowuje generator 14 | `unlockSchrodinger` |
