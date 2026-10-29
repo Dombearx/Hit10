@@ -556,7 +556,6 @@
   "themeHint": "„Sezonowy” zmienia się sam z wydarzeniami. Motywy z ukończonych wydarzeń zostają na zawsze.",
   "diagSeason": "Podgląd wydarzenia",
   "diagSeasonNone": "Według daty",
-  "tapIncome": "trafienia +{perSecond}",
   "perfectNow": "PERFEKT teraz: +{amount}",
   "perfectNowSeconds": "PERFEKT teraz: +{amount} (≈ {seconds} s dochodu zegarów)"
 }

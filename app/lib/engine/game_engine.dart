@@ -393,6 +393,15 @@ class GameEngine {
     return (flat + echo) * combo * mode;
   }
 
+  /// What a [tier] hit would pay on the next tap: the combo after that
+  /// hit's step and the risk mode on now (the header's price list).
+  double nextHitPayout(Tier tier) {
+    final step = b.tier(tier.name).comboStep;
+    final streak = math.min(econ.comboCap(), s.comboStreak + step);
+    final combo = 1 + b.combo.multiplierPerStep * streak;
+    return hitPayout(Grade(tier, 0), combo: combo, mode: modeMultiplier());
+  }
+
   // ------------------------------------------------------------- shopping --
 
   BuyResult buyGenerators(String id, int count) {

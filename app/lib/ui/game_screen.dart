@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../arena/arena_game.dart';
 import '../l10n/gen/app_localizations.dart';
+import '../model/grading.dart';
 import 'diagnostics_panel.dart';
 import 'format.dart';
 import 'game_controller.dart';
@@ -396,7 +397,6 @@ class _Header extends StatelessWidget {
         builder: (context, _) {
           final f = Fmt.of(context, controller);
           final ps = controller.engine.passive();
-          final taps = controller.tapIncomePerSecond();
           return Column(
             children: [
               Row(
@@ -452,21 +452,10 @@ class _Header extends StatelessWidget {
               ),
               EffectChips(controller: controller),
               AnimatedOpacity(
-                opacity: ps > 0 || taps > 0 ? 1 : 0,
+                opacity: ps > 0 ? 1 : 0,
                 duration: const Duration(milliseconds: 300),
-                child: Text.rich(
-                  key: const Key('income'),
-                  TextSpan(
-                    text: f.perSecond(ps),
-                    children: [
-                      // What tapping adds, averaged over the last minute.
-                      if (taps > 0)
-                        TextSpan(
-                          text: '  ·  ${l.tapIncome(f.perSecond(taps))}',
-                          style: const TextStyle(color: Palette.perfectDeep),
-                        ),
-                    ],
-                  ),
+                child: Text(
+                  f.perSecond(ps),
                   style: TextStyle(
                     fontFamily: Fonts.display,
                     fontSize: 16,
@@ -474,6 +463,10 @@ class _Header extends StatelessWidget {
                   ),
                 ),
               ),
+              // What the next hit pays, per tier (playtest: is tapping
+              // worth it at high income?).
+              if (controller.state.tutorialDone)
+                _HitPrices(controller: controller, f: f),
             ],
           );
         },
@@ -612,6 +605,45 @@ class _ShopHeader extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// "PERFEKT +540 · ŚWIETNIE +170 · DOBRZE +58": what the next hit pays,
+/// with the current combo and mode (docs/04 U-3a).
+class _HitPrices extends StatelessWidget {
+  const _HitPrices({required this.controller, required this.f});
+  final GameController controller;
+  final Fmt f;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final e = controller.engine;
+    String name(String s) => s.replaceAll('!', '');
+    final tiers = [
+      (name(l.tierPerfect), Tier.perfect, Palette.perfectDeep),
+      (name(l.tierGreat), Tier.great, Palette.great),
+      (name(l.tierGood), Tier.good, Palette.good),
+    ];
+    return Text.rich(
+      key: const Key('hit-prices'),
+      TextSpan(
+        children: [
+          for (final (i, (label, tier, color)) in tiers.indexed) ...[
+            if (i > 0) const TextSpan(text: '  ·  '),
+            TextSpan(
+              text: '$label +${f.n(e.nextHitPayout(tier))}',
+              style: TextStyle(color: color),
+            ),
+          ],
+        ],
+      ),
+      style: TextStyle(
+        fontFamily: Fonts.display,
+        fontSize: 13,
+        color: Palette.outline.withValues(alpha: 0.6),
       ),
     );
   }

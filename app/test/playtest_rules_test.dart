@@ -144,4 +144,31 @@ void main() {
       expect(d.amount, closeTo(100 * 60 * b.daily.minutes[0], 1e-6));
     });
   });
+
+  test(
+    "the header's price list: the next hit with its combo step and mode",
+    () {
+      s
+        ..stats.rounds = 100
+        ..comboStreak =
+            2 // cap 5 without the Combo skill
+        ..modeBlind = true
+        ..lifetime.perfects = 1000; // Blind unlocked
+      final step = b.tier('perfect').comboStep;
+      final combo = 1 + b.combo.multiplierPerStep * (2 + step);
+      expect(
+        e.nextHitPayout(Tier.perfect),
+        closeTo(
+          e.hitPayout(const Grade(Tier.perfect, 0), combo: combo, mode: 3),
+          1e-9,
+        ),
+      );
+      // What the price list says is what the hit then pays.
+      final paid = e.resolveRound(const Grade(Tier.perfect, 0), mode: 3).payout;
+      expect(
+        paid,
+        closeTo(combo * e.hitPayout(const Grade(Tier.perfect, 0)) * 3, 1e-6),
+      );
+    },
+  );
 }

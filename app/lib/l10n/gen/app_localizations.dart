@@ -3392,12 +3392,6 @@ abstract class AppLocalizations {
   /// **'By date'**
   String get diagSeasonNone;
 
-  /// No description provided for @tapIncome.
-  ///
-  /// In en, this message translates to:
-  /// **'hits +{perSecond}'**
-  String tapIncome(String perSecond);
-
   /// No description provided for @perfectNow.
   ///
   /// In en, this message translates to:

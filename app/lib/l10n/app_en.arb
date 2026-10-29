@@ -1053,14 +1053,6 @@
   "themeHint": "“Seasonal” follows the events. Themes from completed events are yours for good.",
   "diagSeason": "Event preview",
   "diagSeasonNone": "By date",
-  "tapIncome": "hits +{perSecond}",
-  "@tapIncome": {
-    "placeholders": {
-      "perSecond": {
-        "type": "String"
-      }
-    }
-  },
   "perfectNow": "PERFECT now: +{amount}",
   "@perfectNow": {
     "placeholders": {
