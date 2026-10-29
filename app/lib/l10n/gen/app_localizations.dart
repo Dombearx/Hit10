@@ -404,18 +404,6 @@ abstract class AppLocalizations {
   /// **'{value}/s each'**
   String unitRate(String value);
 
-  /// No description provided for @incomeShare.
-  ///
-  /// In en, this message translates to:
-  /// **'{percent}% of income'**
-  String incomeShare(String percent);
-
-  /// No description provided for @windowBonus.
-  ///
-  /// In en, this message translates to:
-  /// **'windows ×{value}'**
-  String windowBonus(String value);
-
   /// No description provided for @lockedName.
   ///
   /// In en, this message translates to:
@@ -581,13 +569,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_wideEye_desc.
   ///
   /// In en, this message translates to:
-  /// **'Wider GREAT and GOOD windows. For you and your clocks.'**
+  /// **'Wider GREAT and GOOD windows — you hit more often. Your clocks hit better too.'**
   String get skill_wideEye_desc;
 
   /// No description provided for @skill_wideEye_label.
   ///
   /// In en, this message translates to:
-  /// **'GREAT window'**
+  /// **'Your GREAT or better'**
   String get skill_wideEye_label;
 
   /// No description provided for @skill_combo.
@@ -617,13 +605,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_magnet_desc.
   ///
   /// In en, this message translates to:
-  /// **'A wider PERFECT window. The digits stick to 10.00.'**
+  /// **'A wider PERFECT window: 9.99 or 10.01 can be a PERFECT. The 10.00 jackpot stays as is.'**
   String get skill_magnet_desc;
 
   /// No description provided for @skill_magnet_label.
   ///
   /// In en, this message translates to:
-  /// **'PERFECT window'**
+  /// **'Your PERFECTs'**
   String get skill_magnet_label;
 
   /// No description provided for @skill_echo.
@@ -653,13 +641,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_bulletTime_desc.
   ///
   /// In en, this message translates to:
-  /// **'A steadier hand at 10.00: wider hit windows, the clock stays the same.'**
+  /// **'All your hit windows are wider. The clock runs the same.'**
   String get skill_bulletTime_desc;
 
   /// No description provided for @skill_bulletTime_label.
   ///
   /// In en, this message translates to:
-  /// **'Hit windows'**
+  /// **'Your hits'**
   String get skill_bulletTime_label;
 
   /// No description provided for @skill_luck.
@@ -3409,6 +3397,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'10.00 = +{amount}'**
   String jackpotPrice(String amount);
+
+  /// No description provided for @generatorTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{perSecond} in total'**
+  String generatorTotal(String perSecond);
 }
 
 class _AppLocalizationsDelegate

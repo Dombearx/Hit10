@@ -171,16 +171,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String incomeShare(String percent) {
-    return '$percent% of income';
-  }
-
-  @override
-  String windowBonus(String value) {
-    return 'windows ×$value';
-  }
-
-  @override
   String get lockedName => '???';
 
   @override
@@ -284,10 +274,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_wideEye_desc =>
-      'Wider GREAT and GOOD windows. For you and your clocks.';
+      'Wider GREAT and GOOD windows — you hit more often. Your clocks hit better too.';
 
   @override
-  String get skill_wideEye_label => 'GREAT window';
+  String get skill_wideEye_label => 'Your GREAT or better';
 
   @override
   String get skill_combo => 'Combo';
@@ -304,10 +294,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_magnet_desc =>
-      'A wider PERFECT window. The digits stick to 10.00.';
+      'A wider PERFECT window: 9.99 or 10.01 can be a PERFECT. The 10.00 jackpot stays as is.';
 
   @override
-  String get skill_magnet_label => 'PERFECT window';
+  String get skill_magnet_label => 'Your PERFECTs';
 
   @override
   String get skill_echo => 'Echo';
@@ -324,10 +314,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_bulletTime_desc =>
-      'A steadier hand at 10.00: wider hit windows, the clock stays the same.';
+      'All your hit windows are wider. The clock runs the same.';
 
   @override
-  String get skill_bulletTime_label => 'Hit windows';
+  String get skill_bulletTime_label => 'Your hits';
 
   @override
   String get skill_luck => 'Luck';
@@ -1828,5 +1818,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String jackpotPrice(String amount) {
     return '10.00 = +$amount';
+  }
+
+  @override
+  String generatorTotal(String perSecond) {
+    return '$perSecond in total';
   }
 }
