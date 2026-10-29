@@ -391,3 +391,12 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
   5 minutach gry. Pierwsze wrażenie ma być „bez reklam”.
 - **R-AD-6:** Brak reklam przy starcie aplikacji i przy wychodzeniu z niej.
   Nie ma też żadnej reklamy, której gracz sam nie wybrał.
+- **R-AD-7:** Przed reklamą gracz widzi ofertę: co dostanie (konkretnie, np.
+  „×2 Tików przez 30 min”, kwota Worka), że to krótka reklama wideo
+  z nagrodą po obejrzeniu do końca, oraz przyciski „▶ Obejrzyj” i „Nie
+  teraz” (zasady AdMob: nagroda i wymagane działanie ujawnione przed każdą
+  reklamą, osobna zgoda na każdą). Ratunek combo i „Podwój” offline mówią
+  to na samym przycisku („▶ … za reklamę”), bo już są ofertą.
+- **R-AD-8:** Po reklamie komunikat potwierdza nagrodę („Turbo włączone!
+  ×2 jeszcze przez 30:00”) albo jej brak („Reklama nie została obejrzana
+  do końca — bez nagrody”).

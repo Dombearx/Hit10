@@ -10,6 +10,7 @@ import '../catalog.dart';
 import '../game_controller.dart';
 import '../providers.dart';
 import '../theme.dart';
+import 'ad_offer_sheet.dart';
 import 'burst.dart';
 
 String clockText(double seconds) {
@@ -44,7 +45,7 @@ class AdCornerButtons extends ConsumerWidget {
       return GestureDetector(
         key: key,
         onTap: can
-            ? () => unawaited(watchAdWithReward(context, c, o, adsProvider))
+            ? () => unawaited(offerAd(context, c, o, adsProvider))
             : null,
         child: Opacity(
           opacity: can ? 1 : 0.55,
@@ -120,8 +121,16 @@ class RescuePopup extends ConsumerWidget {
     final left = (r.expiresAtPlay - c.state.playSeconds).clamp(0.0, 9.0);
     return GestureDetector(
       key: const Key('ad-rescue'),
-      onTap: () =>
-          unawaited(watchAdWithReward(context, c, AdOffer.rescue, adsProvider)),
+      // The 5 s offer says it all on the button: no second screen.
+      onTap: () => unawaited(() async {
+        final ok = await watchAdWithReward(
+          context,
+          c,
+          AdOffer.rescue,
+          adsProvider,
+        );
+        if (context.mounted) confirmAdResult(context, c, AdOffer.rescue, ok);
+      }()),
       child: Container(
         margin: const EdgeInsets.only(bottom: 4),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

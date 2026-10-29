@@ -5,6 +5,7 @@ import 'format.dart';
 import 'game_controller.dart';
 import 'theme.dart';
 import 'widgets/ad_buttons.dart';
+import 'widgets/ad_offer_sheet.dart';
 import 'widgets/buy_button.dart';
 import 'widgets/emoji_card.dart';
 import 'catalog.dart';
@@ -152,10 +153,10 @@ Future<void> _show(
                           AdOffer.offline,
                           ads,
                         );
-                        if (ok) {
-                          c.collectOffline();
-                        }
-                        if (context.mounted) Navigator.of(context).pop();
+                        if (!context.mounted) return;
+                        confirmAdResult(context, c, AdOffer.offline, ok);
+                        // No reward: the plain "Collect" stays available.
+                        if (ok) Navigator.of(context).pop();
                       },
                     ),
                 ],

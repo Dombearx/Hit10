@@ -606,7 +606,7 @@
       }
     }
   },
-  "adRescue": "Streak {count} lost! Restore",
+  "adRescue": "Streak {count} lost! ▶ Restore for an ad",
   "@adRescue": {
     "placeholders": {
       "count": {
@@ -614,7 +614,7 @@
       }
     }
   },
-  "adDouble": "Double it",
+  "adDouble": "▶ ×2 for an ad",
   "adUnavailable": "No ad right now",
   "adCooldown": "in {time}",
   "@adCooldown": {
@@ -920,5 +920,61 @@
         "type": "int"
       }
     }
-  }
+  },
+  "adOfferHow": "A short video ad. The reward comes after it ends.",
+  "adWatch": "▶ Watch",
+  "adNotNow": "Not now",
+  "adOfferTurboTitle": "Turbo",
+  "adOfferTurboReward": "×{mult} Ticks for {minutes} min",
+  "@adOfferTurboReward": {
+    "placeholders": {
+      "mult": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "adOfferTurboDetail": "All earnings — clocks and your hits — are doubled. Turbo time runs only while you play; stock up to {hours} h.",
+  "@adOfferTurboDetail": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "adOfferTurboStock": "You still have {time} — the ad adds another 30 min.",
+  "@adOfferTurboStock": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "adOfferGoldenTitle": "Golden Second",
+  "adOfferGoldenReward": "A golden clock right away",
+  "adOfferGoldenDetail": "After the ad a golden clock flies in. Catch it and the next round gives a random bonus: Frenzy, Lucky or Hot Hand.",
+  "adOfferBagTitle": "Bag of Ticks",
+  "adOfferBagDetail": "Right away, as much as your clocks earn in {minutes} min.",
+  "@adOfferBagDetail": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "adNoReward": "The ad didn't finish — no reward. You can try again.",
+  "adDoneTurbo": "Turbo on! ×2 for {time}.",
+  "@adDoneTurbo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "adDoneGolden": "The golden clock is coming — catch it!",
+  "adDoneBag": "Bag of Ticks collected!",
+  "adDoneRescue": "Streak restored!",
+  "adDoneOffline": "Offline income doubled!"
 }

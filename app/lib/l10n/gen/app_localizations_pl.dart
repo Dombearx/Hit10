@@ -819,11 +819,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String adRescue(int count) {
-    return 'Seria $count przepadła! Przywróć';
+    return 'Seria $count przepadła! ▶ Przywróć za reklamę';
   }
 
   @override
-  String get adDouble => 'Podwój';
+  String get adDouble => '▶ ×2 za reklamę';
 
   @override
   String get adUnavailable => 'Reklama niedostępna';
@@ -1652,4 +1652,71 @@ class AppLocalizationsPl extends AppLocalizations {
   String dailyHint(int total) {
     return 'Wracaj codziennie — przez $total dni premia rośnie. Przerwa zaczyna od nowa.';
   }
+
+  @override
+  String get adOfferHow =>
+      'Krótka reklama wideo. Nagroda po obejrzeniu do końca.';
+
+  @override
+  String get adWatch => '▶ Obejrzyj';
+
+  @override
+  String get adNotNow => 'Nie teraz';
+
+  @override
+  String get adOfferTurboTitle => 'Turbo';
+
+  @override
+  String adOfferTurboReward(int mult, int minutes) {
+    return '×$mult Tików przez $minutes min';
+  }
+
+  @override
+  String adOfferTurboDetail(int hours) {
+    return 'Wszystkie zarobki — zegary i twoje trafienia — są podwojone. Czas Turbo płynie tylko, gdy grasz; zapas do $hours h.';
+  }
+
+  @override
+  String adOfferTurboStock(String time) {
+    return 'Masz jeszcze $time — reklama doda kolejne 30 min.';
+  }
+
+  @override
+  String get adOfferGoldenTitle => 'Złota Sekunda';
+
+  @override
+  String get adOfferGoldenReward => 'Złoty zegarek od razu';
+
+  @override
+  String get adOfferGoldenDetail =>
+      'Po reklamie przyleci złoty zegarek. Złap go, a następna runda da losową premię: Szał, Fart albo Gorącą rękę.';
+
+  @override
+  String get adOfferBagTitle => 'Worek Tików';
+
+  @override
+  String adOfferBagDetail(int minutes) {
+    return 'Od razu tyle, ile twoje zegary zarabiają w $minutes min.';
+  }
+
+  @override
+  String get adNoReward =>
+      'Reklama nie została obejrzana do końca — bez nagrody. Możesz spróbować ponownie.';
+
+  @override
+  String adDoneTurbo(String time) {
+    return 'Turbo włączone! ×2 jeszcze przez $time.';
+  }
+
+  @override
+  String get adDoneGolden => 'Złoty zegarek leci — złap go!';
+
+  @override
+  String get adDoneBag => 'Worek Tików odebrany!';
+
+  @override
+  String get adDoneRescue => 'Seria przywrócona!';
+
+  @override
+  String get adDoneOffline => 'Dochód offline podwojony!';
 }

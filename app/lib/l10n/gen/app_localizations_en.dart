@@ -819,11 +819,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String adRescue(int count) {
-    return 'Streak $count lost! Restore';
+    return 'Streak $count lost! ▶ Restore for an ad';
   }
 
   @override
-  String get adDouble => 'Double it';
+  String get adDouble => '▶ ×2 for an ad';
 
   @override
   String get adUnavailable => 'No ad right now';
@@ -1650,4 +1650,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String dailyHint(int total) {
     return 'Come back every day — the bonus grows for $total days. Missing one starts over.';
   }
+
+  @override
+  String get adOfferHow => 'A short video ad. The reward comes after it ends.';
+
+  @override
+  String get adWatch => '▶ Watch';
+
+  @override
+  String get adNotNow => 'Not now';
+
+  @override
+  String get adOfferTurboTitle => 'Turbo';
+
+  @override
+  String adOfferTurboReward(int mult, int minutes) {
+    return '×$mult Ticks for $minutes min';
+  }
+
+  @override
+  String adOfferTurboDetail(int hours) {
+    return 'All earnings — clocks and your hits — are doubled. Turbo time runs only while you play; stock up to $hours h.';
+  }
+
+  @override
+  String adOfferTurboStock(String time) {
+    return 'You still have $time — the ad adds another 30 min.';
+  }
+
+  @override
+  String get adOfferGoldenTitle => 'Golden Second';
+
+  @override
+  String get adOfferGoldenReward => 'A golden clock right away';
+
+  @override
+  String get adOfferGoldenDetail =>
+      'After the ad a golden clock flies in. Catch it and the next round gives a random bonus: Frenzy, Lucky or Hot Hand.';
+
+  @override
+  String get adOfferBagTitle => 'Bag of Ticks';
+
+  @override
+  String adOfferBagDetail(int minutes) {
+    return 'Right away, as much as your clocks earn in $minutes min.';
+  }
+
+  @override
+  String get adNoReward =>
+      'The ad didn\'t finish — no reward. You can try again.';
+
+  @override
+  String adDoneTurbo(String time) {
+    return 'Turbo on! ×2 for $time.';
+  }
+
+  @override
+  String get adDoneGolden => 'The golden clock is coming — catch it!';
+
+  @override
+  String get adDoneBag => 'Bag of Ticks collected!';
+
+  @override
+  String get adDoneRescue => 'Streak restored!';
+
+  @override
+  String get adDoneOffline => 'Offline income doubled!';
 }
