@@ -34,10 +34,10 @@ wyglądać, brzmieć i reagować.
   ~80% ekranu.
 - **U-3:** Saldo „nabija się” płynnie (animowany licznik) i podskakuje przy
   każdym wpływie.
-- **U-3a:** Pod saldem: dochód zegarów „/s”, a pod nim cennik trafień:
-  ile zapłaci następne trafienie każdego progu („PERFEKT +540 · ŚWIETNIE
-  +170 · DOBRZE +58”), z obecnym combo i trybem (playtest: przy dużym
-  dochodzie nie było widać, czy klikanie się opłaca). Karty Siły trafienia i Echa pokazują, ile teraz płaci PERFEKT
+- **U-3a:** Pod saldem: dochód zegarów „/s”, a pod nim ile zapłaci
+  następny PERFEKT („PERFEKT +540”), z obecnym combo i trybem (playtest:
+  przy dużym dochodzie nie było widać, czy klikanie się opłaca; pełny
+  cennik trzech progów był za gęsty). Karty Siły trafienia i Echa pokazują, ile teraz płaci PERFEKT
   i ile to sekund dochodu zegarów.
 - **U-4:** Pozostałe ekrany to pełnoekranowe arkusze nad grą:
   - Osiągnięcia: siatka odznak;
