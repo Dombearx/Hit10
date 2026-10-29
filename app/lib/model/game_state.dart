@@ -76,6 +76,23 @@ class GameState {
   /// Day of the 7-day streak that [dailyKey] paid (1–7).
   int dailyStreak = 0;
 
+  // ---------------------------------------------------------- seasons --
+  /// The season run being counted ("halloween-2026", docs/02 §14); the
+  /// counters below reset when it changes.
+  String seasonKey = '';
+  int seasonCatches = 0;
+  int seasonHits = 0;
+
+  /// Counters of other season runs [catches, hits], kept when the running
+  /// season changes (e.g. a QA preview) and restored when it comes back.
+  final Map<String, List<int>> seasonStash = {};
+
+  /// Season runs whose goal was reached; their themes stay unlocked.
+  final Set<String> seasonsDone = {};
+
+  /// Chosen look: '' follows the running season, 'classic' or a season id.
+  String theme = '';
+
   void earn(double amount) {
     if (amount <= 0 || amount.isNaN) return;
     tiki += amount;

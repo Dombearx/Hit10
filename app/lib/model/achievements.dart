@@ -10,6 +10,7 @@ enum AchievementCategory {
   golden,
   prestige,
   mode,
+  season,
   hidden,
 }
 
@@ -143,6 +144,13 @@ List<AchievementDef> buildAchievements(Balance b) {
       AchievementCategory.mode,
       (s, c) => c.lastHitPerfect && c.lastHitBlind && c.streak >= 25,
     ),
+    // One per calendar event, for reaching its goal in any year (§14).
+    for (final se in b.seasons.list)
+      AchievementDef(
+        'season_${se.id}',
+        AchievementCategory.season,
+        (s, _) => s.seasonsDone.any((k) => k.startsWith('${se.id}-')),
+      ),
     AchievementDef(
       'hidden_impatient',
       AchievementCategory.hidden,

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../l10n/gen/app_localizations.dart';
 import 'game_controller.dart';
+import 'seasons_ui.dart';
 import 'theme.dart';
 
 /// Hidden diagnostics (T-12): error histogram of the last 100 rounds, input
@@ -85,6 +87,42 @@ class _DiagnosticsPanelState extends State<DiagnosticsPanel>
             'frame avg ${avgFrame.toStringAsFixed(1)} max ${maxFrame.toStringAsFixed(1)} ms '
             '(${avgFrame > 0 ? (1000 / avgFrame).round() : 0} fps)',
             style: style,
+          ),
+          const SizedBox(height: 8),
+          // QA: try any season without changing the phone's date (§14).
+          Text(AppLocalizations.of(context).diagSeason, style: style),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: [
+              for (final id in <String?>[
+                null,
+                ...widget.controller.balance.seasons.list.map((s) => s.id),
+              ])
+                GestureDetector(
+                  key: Key('diag-season-${id ?? 'date'}'),
+                  onTap: () => widget.controller.previewSeason(id),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: widget.controller.seasonPreview == id
+                          ? Palette.great
+                          : Colors.white24,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      id == null
+                          ? AppLocalizations.of(context).diagSeasonNone
+                          : seasonName(AppLocalizations.of(context), id),
+                      style: style,
+                    ),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(height: 8),
           SizedBox(

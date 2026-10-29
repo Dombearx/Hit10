@@ -14,6 +14,7 @@ import '../model/grading.dart';
 import '../model/number_format.dart';
 import '../model/showcase.dart';
 import '../ui/game_controller.dart';
+import '../ui/seasons_ui.dart';
 import '../ui/theme.dart';
 import '../ui/catalog.dart';
 import 'baked.dart';
@@ -77,9 +78,12 @@ class ArenaGame extends FlameGame {
     Baked.devicePixelRatio =
         WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
     images.prefix = 'assets/';
-    for (final art in generatorArt.values) {
+    for (final name in {
+      for (final art in generatorArt.values) art.main,
+      for (final look in seasonLooks.values) look.item,
+    }) {
       try {
-        _emoji[art.main] = await images.load('emoji/${art.main}.png');
+        _emoji[name] = await images.load('emoji/$name.png');
       } on Object {
         // A missing emoji just leaves the bubble without an icon.
       }
@@ -160,6 +164,7 @@ class ArenaGame extends FlameGame {
         radius: stage.radius * 0.2,
         life: controller.engine.goldenVisibleLeft,
         fromLeft: _goldenFromLeft,
+        item: _emoji[seasonLooks[controller.season?.id]?.item],
       );
       _golden = g;
       stage.add(g);

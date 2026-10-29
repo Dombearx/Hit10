@@ -75,6 +75,10 @@ void registerQaHook(GameController c) {
         'shards': s.shards,
         'perks': s.perks.toList(),
         'tutorial': c.tutorialStep.name,
+        'season': c.season?.key,
+        'seasonCatches': s.seasonCatches,
+        'seasonHits': s.seasonHits,
+        'seasonsDone': s.seasonsDone.toList(),
         'clocks': c.clocks.length,
         'clockPhases': [for (final k in c.clocks) k.round.phase.name],
         'turboLeft': s.turboLeft,
@@ -149,6 +153,10 @@ void registerQaHook(GameController c) {
     }).toJS,
   );
   api.setProperty('catchGolden'.toJS, (() => c.claimGolden()).toJS);
+  api.setProperty(
+    'previewSeason'.toJS,
+    ((JSString? id) => c.previewSeason(id?.toDart)).toJS,
+  );
   api.setProperty('dismissTip'.toJS, (() => c.dismissTip()).toJS);
   api.setProperty('collectOffline'.toJS, (() => c.collectOffline()).toJS);
   api.setProperty(

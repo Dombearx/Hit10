@@ -528,5 +528,48 @@
       60
     ],
     "floorPerDay": 25
+  },
+  "seasons": {
+    "catches": 5,
+    "hits": 50,
+    "rewardMinutes": 30,
+    "rewardFloor": 1000,
+    "list": [
+      {
+        "id": "valentine",
+        "from": "02-10",
+        "to": "02-16"
+      },
+      {
+        "id": "easter",
+        "easterFrom": -7,
+        "easterTo": 1
+      },
+      {
+        "id": "summer",
+        "from": "07-01",
+        "to": "07-14"
+      },
+      {
+        "id": "tenDay",
+        "from": "10-08",
+        "to": "10-12"
+      },
+      {
+        "id": "halloween",
+        "from": "10-24",
+        "to": "11-02"
+      },
+      {
+        "id": "christmas",
+        "from": "12-18",
+        "to": "12-27"
+      },
+      {
+        "id": "newYear",
+        "from": "12-28",
+        "to": "01-02"
+      }
+    ]
   }
 }

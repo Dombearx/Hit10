@@ -3217,6 +3217,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offline income doubled!'**
   String get adDoneOffline;
+
+  /// No description provided for @season_valentine.
+  ///
+  /// In en, this message translates to:
+  /// **'Valentine\'s'**
+  String get season_valentine;
+
+  /// No description provided for @season_valentine_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Hearts'**
+  String get season_valentine_items;
+
+  /// No description provided for @season_easter.
+  ///
+  /// In en, this message translates to:
+  /// **'Easter'**
+  String get season_easter;
+
+  /// No description provided for @season_easter_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicks'**
+  String get season_easter_items;
+
+  /// No description provided for @season_summer.
+  ///
+  /// In en, this message translates to:
+  /// **'Summer'**
+  String get season_summer;
+
+  /// No description provided for @season_summer_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Suns'**
+  String get season_summer_items;
+
+  /// No description provided for @season_tenDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Ten Day'**
+  String get season_tenDay;
+
+  /// No description provided for @season_tenDay_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Tens'**
+  String get season_tenDay_items;
+
+  /// No description provided for @season_halloween.
+  ///
+  /// In en, this message translates to:
+  /// **'Halloween'**
+  String get season_halloween;
+
+  /// No description provided for @season_halloween_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Pumpkins'**
+  String get season_halloween_items;
+
+  /// No description provided for @season_christmas.
+  ///
+  /// In en, this message translates to:
+  /// **'Christmas'**
+  String get season_christmas;
+
+  /// No description provided for @season_christmas_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Gifts'**
+  String get season_christmas_items;
+
+  /// No description provided for @season_newYear.
+  ///
+  /// In en, this message translates to:
+  /// **'New Year'**
+  String get season_newYear;
+
+  /// No description provided for @season_newYear_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Party poppers'**
+  String get season_newYear_items;
+
+  /// No description provided for @seasonUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Event until {date}'**
+  String seasonUntil(String date);
+
+  /// No description provided for @seasonHow.
+  ///
+  /// In en, this message translates to:
+  /// **'The golden clock dresses up for the occasion. Catch it and hit (GOOD or better) to earn the reward.'**
+  String get seasonHow;
+
+  /// No description provided for @seasonHits.
+  ///
+  /// In en, this message translates to:
+  /// **'Hits'**
+  String get seasonHits;
+
+  /// No description provided for @seasonReward.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward: +{amount} Ticks, the “{name}” theme for good and an achievement (+1%).'**
+  String seasonReward(String amount, String name);
+
+  /// No description provided for @seasonDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done! Pick the “{name}” theme in Settings.'**
+  String seasonDone(String name);
+
+  /// No description provided for @seasonCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} complete! +{amount} Ticks'**
+  String seasonCompleted(String name, String amount);
+
+  /// No description provided for @seasonStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s go!'**
+  String get seasonStart;
+
+  /// No description provided for @ach_season.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}'**
+  String ach_season(String name);
+
+  /// No description provided for @ach_season_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the “{name}” event'**
+  String ach_season_desc(String name);
+
+  /// No description provided for @themeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeTitle;
+
+  /// No description provided for @themeAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Seasonal'**
+  String get themeAuto;
+
+  /// No description provided for @themeClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get themeClassic;
+
+  /// No description provided for @themeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'“Seasonal” follows the events. Themes from completed events are yours for good.'**
+  String get themeHint;
+
+  /// No description provided for @diagSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Event preview'**
+  String get diagSeason;
+
+  /// No description provided for @diagSeasonNone.
+  ///
+  /// In en, this message translates to:
+  /// **'By date'**
+  String get diagSeasonNone;
 }
 
 class _AppLocalizationsDelegate

@@ -1713,4 +1713,105 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adDoneOffline => 'Offline income doubled!';
+
+  @override
+  String get season_valentine => 'Valentine\'s';
+
+  @override
+  String get season_valentine_items => 'Hearts';
+
+  @override
+  String get season_easter => 'Easter';
+
+  @override
+  String get season_easter_items => 'Chicks';
+
+  @override
+  String get season_summer => 'Summer';
+
+  @override
+  String get season_summer_items => 'Suns';
+
+  @override
+  String get season_tenDay => 'Ten Day';
+
+  @override
+  String get season_tenDay_items => 'Tens';
+
+  @override
+  String get season_halloween => 'Halloween';
+
+  @override
+  String get season_halloween_items => 'Pumpkins';
+
+  @override
+  String get season_christmas => 'Christmas';
+
+  @override
+  String get season_christmas_items => 'Gifts';
+
+  @override
+  String get season_newYear => 'New Year';
+
+  @override
+  String get season_newYear_items => 'Party poppers';
+
+  @override
+  String seasonUntil(String date) {
+    return 'Event until $date';
+  }
+
+  @override
+  String get seasonHow =>
+      'The golden clock dresses up for the occasion. Catch it and hit (GOOD or better) to earn the reward.';
+
+  @override
+  String get seasonHits => 'Hits';
+
+  @override
+  String seasonReward(String amount, String name) {
+    return 'Reward: +$amount Ticks, the “$name” theme for good and an achievement (+1%).';
+  }
+
+  @override
+  String seasonDone(String name) {
+    return 'Done! Pick the “$name” theme in Settings.';
+  }
+
+  @override
+  String seasonCompleted(String name, String amount) {
+    return '$name complete! +$amount Ticks';
+  }
+
+  @override
+  String get seasonStart => 'Let\'s go!';
+
+  @override
+  String ach_season(String name) {
+    return '$name';
+  }
+
+  @override
+  String ach_season_desc(String name) {
+    return 'Complete the “$name” event';
+  }
+
+  @override
+  String get themeTitle => 'Theme';
+
+  @override
+  String get themeAuto => 'Seasonal';
+
+  @override
+  String get themeClassic => 'Classic';
+
+  @override
+  String get themeHint =>
+      '“Seasonal” follows the events. Themes from completed events are yours for good.';
+
+  @override
+  String get diagSeason => 'Event preview';
+
+  @override
+  String get diagSeasonNone => 'By date';
 }

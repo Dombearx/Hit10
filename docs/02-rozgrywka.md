@@ -401,3 +401,38 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 - **R-AD-8:** Po reklamie komunikat potwierdza nagrodę („Turbo włączone!
   ×2 jeszcze przez 30:00”) albo jej brak („Reklama nie została obejrzana
   do końca — bez nagrody”).
+
+## 14. Wydarzenia sezonowe
+
+Wzór: sezony Cookie Clickera. Gra sama włącza wydarzenie według lokalnej
+daty telefonu — bez serwera i bez stałych kosztów — i każde wraca co roku.
+Daty i cel są w `balance.json` (`seasons`).
+
+| id | Wydarzenie | Daty (włącznie) | Zamiast złotego zegarka |
+|---|---|---|---|
+| `valentine` | Walentynki / Valentine's | 10–16 lutego | serce |
+| `easter` | Wielkanoc / Easter | od Niedzieli Palmowej do Poniedziałku Wielkanocnego | pisklę |
+| `summer` | Lato / Summer | 1–14 lipca | słońce |
+| `tenDay` | Dzień Dziesiątki / Ten Day | 8–12 października | „10” |
+| `halloween` | Halloween | 24 października – 2 listopada | dynia |
+| `christmas` | Boże Narodzenie / Christmas | 18–27 grudnia | prezent |
+| `newYear` | Sylwester / New Year | 28 grudnia – 2 stycznia | konfetti |
+
+- **R-SEZ-1:** W czasie wydarzenia tło ma kolory sezonu, a zamiast złotego
+  zegarka przylatuje przedmiot sezonowy. Działa tak samo jak Złota Sekunda
+  (te same efekty, ten sam czas); stoper i okna trafień się nie zmieniają.
+- **R-SEZ-2:** Cel: złapać 5 przedmiotów i trafić 50 razy (DOBRZE lub
+  lepiej; BLISKO się nie liczy) w czasie wydarzenia. Postęp liczy się
+  osobno dla każdego roku (`halloween-2026`).
+- **R-SEZ-3:** Nagroda (raz na wydarzenie w roku): 30 min dochodu
+  pasywnego (co najmniej 1000 Tików), motyw wydarzenia na zawsze do wyboru
+  w Ustawieniach i osiągnięcie sezonowe (+1%, jedno na wydarzenie).
+  Nagrody są kosmetyczne albo jednorazowe — przegapione wydarzenie nie
+  zostawia trwałej straty (bez presji FOMO).
+- **R-SEZ-4:** Przy pierwszym uruchomieniu w czasie wydarzenia (po oknach
+  offline i dziennej premii) gra pokazuje okno wydarzenia; potem otwiera je
+  plakietka w nagłówku z postępem („2/5 · 31/50”).
+- **R-SEZ-5:** Motyw: „Sezonowy” (domyślny, zmienia się z wydarzeniami),
+  „Klasyczny” albo motyw ukończonego wydarzenia.
+- **R-SEZ-6:** Panel diagnostyczny (T-12) ma podgląd każdego wydarzenia bez
+  zmiany daty; postęp innych wydarzeń zostaje zapamiętany.

@@ -11,6 +11,7 @@ import '../../model/number_format.dart';
 import '../../persistence/save_codec.dart';
 import '../game_controller.dart';
 import '../providers.dart';
+import '../seasons_ui.dart';
 import '../theme.dart';
 import 'sheet.dart';
 
@@ -103,6 +104,22 @@ class _Settings extends ConsumerWidget {
               hint: l.settingsReduceMotionHint,
               value: s.reduceMotion,
               onChanged: (v) => apply(() => s.reduceMotion = v),
+            ),
+            // Seasons (docs/02 §14): completed events leave their theme.
+            ListenableBuilder(
+              listenable: c,
+              builder: (context, _) => _Choice<String>(
+                key: const Key('set-theme'),
+                label: l.themeTitle,
+                hint: l.themeHint,
+                value: c.state.theme,
+                options: {
+                  '': l.themeAuto,
+                  'classic': l.themeClassic,
+                  for (final id in c.unlockedThemes) id: seasonName(l, id),
+                },
+                onChanged: c.setTheme,
+              ),
             ),
           ],
         ),
@@ -443,11 +460,13 @@ class _Choice<T> extends StatelessWidget {
   const _Choice({
     super.key,
     required this.label,
+    this.hint,
     required this.value,
     required this.options,
     required this.onChanged,
   });
   final String label;
+  final String? hint;
   final T value;
   final Map<T, String> options;
   final ValueChanged<T> onChanged;
@@ -460,6 +479,14 @@ class _Choice<T> extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: _labelStyle),
+          if (hint != null)
+            Text(
+              hint!,
+              style: TextStyle(
+                fontSize: 12.5,
+                color: Palette.outline.withValues(alpha: 0.7),
+              ),
+            ),
           const SizedBox(height: 6),
           Wrap(
             spacing: 6,

@@ -13,6 +13,7 @@ import '../model/achievements.dart';
 import '../model/economy.dart';
 import '../model/game_state.dart';
 import '../model/grading.dart';
+import '../model/seasons.dart';
 import '../model/settings.dart';
 import '../model/showcase.dart';
 import '../persistence/save_codec.dart';
@@ -79,6 +80,7 @@ class GameController extends ChangeNotifier {
     _rebuildClocks();
     _applySettings();
     engine.goldenEnabled = this.state.tutorialDone;
+    syncSeason();
   }
 
   final Balance balance;
@@ -119,6 +121,10 @@ class GameController extends ChangeNotifier {
 
   final _unlocked = StreamController<AchievementDef>.broadcast();
   Stream<AchievementDef> get achievementUnlocked => _unlocked.stream;
+
+  /// Tiki paid for finishing the running season (docs/02 §14).
+  final _seasonCompleted = StreamController<double>.broadcast();
+  Stream<double> get seasonCompleted => _seasonCompleted.stream;
 
   /// Offline income waiting in the "while you were away" dialog.
   OfflineReport? pendingOffline;
@@ -312,6 +318,7 @@ class GameController extends ChangeNotifier {
       case null:
         return;
       case RoundStarted():
+        if (slot.index == 0) syncSeason(); // a session can cross midnight
         engine.onRoundStart();
         slot
           ..mode = engine.modeMultiplier()
@@ -328,6 +335,7 @@ class GameController extends ChangeNotifier {
         if (state.comboStreak >= 3) _tip('combo');
         _playFeedback(o);
         _feedback.add(HitFeedback(o, gameTime, clock: slot.index));
+        _afterSeasonProgress();
         _checkAchievements(
           AchievementContext(
             now: local,
@@ -393,7 +401,73 @@ class GameController extends ChangeNotifier {
     if (!engine.claimGolden()) return;
     sfx.play('coins');
     if (settings.haptics) unawaited(HapticFeedback.mediumImpact());
+    _afterSeasonProgress();
     notifyListeners();
+  }
+
+  // ------------------------------------------------------------- seasons --
+
+  /// QA only (diagnostics, docs/05 T-12): runs this season whatever the
+  /// date says. Not saved.
+  String? seasonPreview;
+
+  Season? get season => engine.season;
+
+  /// Picks the season for today's local date (or the preview).
+  void syncSeason() {
+    final now = _localNow();
+    final p = seasonPreview;
+    engine.setSeason(
+      p != null
+          ? seasonIn(balance.seasons, p, now.year)
+          : seasonAt(balance.seasons, now),
+    );
+  }
+
+  void previewSeason(String? id) {
+    seasonPreview = id;
+    syncSeason();
+    notifyListeners();
+  }
+
+  /// Season ids whose theme is unlocked for good.
+  List<String> get unlockedThemes => [
+    for (final s in balance.seasons.list)
+      if (state.seasonsDone.any((k) => k.startsWith('${s.id}-'))) s.id,
+  ];
+
+  /// The theme to draw: the running season, unless the player chose one.
+  String? get themeId => switch (state.theme) {
+    '' => season?.id,
+    'classic' => null,
+    final id => unlockedThemes.contains(id) ? id : season?.id,
+  };
+
+  void setTheme(String theme) {
+    state.theme = theme;
+    unawaited(save());
+    notifyListeners();
+  }
+
+  /// The season's intro dialog is due: once per season run, checked with
+  /// the offline income and the daily bonus.
+  bool seasonIntroPending = false;
+
+  void seasonIntroShown() {
+    seasonIntroPending = false;
+    final s = season;
+    if (s != null) state.tipsSeen.add('season:${s.key}');
+  }
+
+  void _afterSeasonProgress() {
+    final paid = engine.seasonRewardPaid;
+    if (paid == null) return;
+    engine.seasonRewardPaid = null;
+    sfx.play('fanfare', gain: 0.8);
+    unawaited(haptics.medium());
+    _seasonCompleted.add(paid);
+    _checkAchievements(const AchievementContext());
+    unawaited(save());
   }
 
   // -------------------------------------------------------- achievements --
@@ -536,10 +610,18 @@ class GameController extends ChangeNotifier {
 
   /// Checks for offline income (start-up and every resume).
   void checkOffline() {
+    syncSeason();
+    final s = season;
+    seasonIntroPending =
+        s != null &&
+        state.tutorialDone &&
+        !state.tipsSeen.contains('season:${s.key}');
     pendingOffline = engine.offlineSince(_wallMs());
     pendingDaily = engine.dailyFor(_localNow());
     state.lastSeenMs = _wallMs();
-    if (pendingOffline != null || pendingDaily != null) notifyListeners();
+    if (pendingOffline != null || pendingDaily != null || seasonIntroPending) {
+      notifyListeners();
+    }
   }
 
   /// Today's daily bonus waiting in its dialog (playtest 08), or null.
@@ -626,6 +708,7 @@ class GameController extends ChangeNotifier {
   @override
   void dispose() {
     _feedback.close();
+    _seasonCompleted.close();
     _roundStarts.close();
     _unlocked.close();
     super.dispose();
