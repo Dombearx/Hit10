@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// App name shown in the launcher and title bar
   ///
   /// In en, this message translates to:
-  /// **'Hit10'**
+  /// **'Hit5'**
   String get appTitle;
 
   /// One-line pitch on the start screen
@@ -977,19 +977,19 @@ abstract class AppLocalizations {
   /// No description provided for @ach_hidden_punctual_desc.
   ///
   /// In en, this message translates to:
-  /// **'PERFECT at 10:00 in the morning'**
+  /// **'A PERFECT at 5:00 or 17:00'**
   String get ach_hidden_punctual_desc;
 
   /// No description provided for @ach_hidden_tenth.
   ///
   /// In en, this message translates to:
-  /// **'Ten out of ten'**
+  /// **'High five'**
   String get ach_hidden_tenth;
 
   /// No description provided for @ach_hidden_tenth_desc.
   ///
   /// In en, this message translates to:
-  /// **'10 PERFECTs on the 10th of a month'**
+  /// **'10 PERFECTs on the 5th of a month'**
   String get ach_hidden_tenth_desc;
 
   /// No description provided for @ach_hidden_fullCollection.
@@ -1679,7 +1679,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsImportBad.
   ///
   /// In en, this message translates to:
-  /// **'That doesn\'t look like a Hit10 save.'**
+  /// **'That doesn\'t look like a Hit5 save.'**
   String get settingsImportBad;
 
   /// No description provided for @settingsReset.
@@ -3242,18 +3242,6 @@ abstract class AppLocalizations {
   /// **'Suns'**
   String get season_summer_items;
 
-  /// No description provided for @season_tenDay.
-  ///
-  /// In en, this message translates to:
-  /// **'Ten Day'**
-  String get season_tenDay;
-
-  /// No description provided for @season_tenDay_items.
-  ///
-  /// In en, this message translates to:
-  /// **'Tens'**
-  String get season_tenDay_items;
-
   /// No description provided for @season_halloween.
   ///
   /// In en, this message translates to:
@@ -3403,6 +3391,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{perSecond} in total'**
   String generatorTotal(String perSecond);
+
+  /// No description provided for @season_fiveDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Five Day'**
+  String get season_fiveDay;
+
+  /// No description provided for @season_fiveDay_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Fives'**
+  String get season_fiveDay_items;
 }
 
 class _AppLocalizationsDelegate

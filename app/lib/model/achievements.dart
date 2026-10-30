@@ -176,7 +176,7 @@ List<AchievementDef> buildAchievements(Balance b) {
       (s, c) =>
           c.lastHitPerfect &&
           c.now != null &&
-          c.now!.hour == 10 &&
+          (c.now!.hour == 5 || c.now!.hour == 17) &&
           c.now!.minute == 0,
     ),
     AchievementDef(
@@ -184,7 +184,7 @@ List<AchievementDef> buildAchievements(Balance b) {
       AchievementCategory.hidden,
       (s, c) =>
           c.now != null &&
-          c.now!.day == 10 &&
+          c.now!.day == 5 &&
           s.lifetime.tenthDayPerfects >= a.tenthDayPerfects,
     ),
     AchievementDef(

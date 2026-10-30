@@ -2,7 +2,7 @@
 
 ## Jednym zdaniem
 
-**Hit10** to mobilna gra typu idle/clicker, w której trzeba dotknąć ekranu,
+**Hit5** to mobilna gra typu idle/clicker, w której trzeba dotknąć ekranu,
 gdy stoper pokaże **równo 10.00 s**. Za trafienia dostajesz **Tiki**, za Tiki
 kupujesz umiejętności i coraz dokładniejsze „zegary”, które grają za ciebie.
 Wzorem jest Cookie Clicker. Różnica: tutaj liczy się wyczucie czasu, a nie

@@ -203,28 +203,29 @@ void main() {
     });
 
     test('hidden: almost, punctual, tenth day', () {
-      s.stats.recentErrors.addAll([-0.0101, 0.0098]); // 9.99 then 10.01
+      s.stats.recentErrors.addAll([-0.0101, 0.0098]); // 4.99 then 5.01
       expect(
         unlockAchievements(all, s, const AchievementContext()).map((a) => a.id),
         contains('hidden_almost'),
       );
-      final at10 = DateTime(2026, 3, 10, 10, 0);
+      // 17:00 on the 5th: punctual (5:00 or 17:00) and "Piątka".
+      final at5 = DateTime(2026, 3, 5, 17, 0);
       expect(
         unlockAchievements(
           all,
           s,
-          AchievementContext(now: at10, lastHitPerfect: true),
+          AchievementContext(now: at5, lastHitPerfect: true),
         ).map((a) => a.id),
         contains('hidden_punctual'),
       );
       for (var i = 0; i < 10; i++) {
-        e.recordPerfectDate(at10);
+        e.recordPerfectDate(at5);
       }
       expect(
         unlockAchievements(
           all,
           s,
-          AchievementContext(now: at10),
+          AchievementContext(now: at5),
         ).map((a) => a.id),
         contains('hidden_tenth'),
       );

@@ -1,5 +1,5 @@
 name: hit10
-description: "Hit10 — tap at exactly 10.00"
+description: "Hit5 — tap at exactly 5.00"
 publish_to: 'none'
 
 # versionName+versionCode; bumped per release (docs/05-technika.md §9).

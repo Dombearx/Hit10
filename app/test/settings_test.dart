@@ -39,7 +39,7 @@ void main() {
           gameControllerProvider.overrideWithValue(c),
           restartProvider.overrideWithValue(() async => restarts.add(1)),
         ],
-        child: Hit10App(locale: locale),
+        child: Hit5App(locale: locale),
       ),
     );
     await tester.pump(const Duration(milliseconds: 200));

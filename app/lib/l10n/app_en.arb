@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Hit10",
+  "appTitle": "Hit5",
   "@appTitle": {
     "description": "App name shown in the launcher and title bar"
   },
@@ -426,9 +426,9 @@
   "ach_hidden_almost": "So close",
   "ach_hidden_almost_desc": "4.99, then 5.01",
   "ach_hidden_punctual": "Punctual",
-  "ach_hidden_punctual_desc": "PERFECT at 10:00 in the morning",
-  "ach_hidden_tenth": "Ten out of ten",
-  "ach_hidden_tenth_desc": "10 PERFECTs on the 10th of a month",
+  "ach_hidden_punctual_desc": "A PERFECT at 5:00 or 17:00",
+  "ach_hidden_tenth": "High five",
+  "ach_hidden_tenth_desc": "10 PERFECTs on the 5th of a month",
   "ach_hidden_fullCollection": "Full collection",
   "ach_hidden_fullCollection_desc": "Every skill maxed out",
   "ach_hidden_museum": "Museum",
@@ -643,7 +643,7 @@
   "settingsImport": "Import",
   "settingsImportHint": "Paste the save text here",
   "settingsImportConfirm": "Replace the current game with this save?",
-  "settingsImportBad": "That doesn't look like a Hit10 save.",
+  "settingsImportBad": "That doesn't look like a Hit5 save.",
   "settingsReset": "Start over",
   "settingsResetConfirm1": "Sure? You lose everything: Tiki, clocks, Chronons and achievements. Settings stay.",
   "settingsResetConfirm2": "Type {word} to confirm.",
@@ -966,8 +966,6 @@
   "season_easter_items": "Chicks",
   "season_summer": "Summer",
   "season_summer_items": "Suns",
-  "season_tenDay": "Ten Day",
-  "season_tenDay_items": "Tens",
   "season_halloween": "Halloween",
   "season_halloween_items": "Pumpkins",
   "season_christmas": "Christmas",
@@ -1074,5 +1072,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "season_fiveDay": "Five Day",
+  "season_fiveDay_items": "Fives"
 }

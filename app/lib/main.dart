@@ -66,7 +66,7 @@ Future<void> _boot(Balance balance, {GameController? previous}) async {
           () => _boot(balance, previous: controller),
         ),
       ],
-      child: const Hit10App(),
+      child: const Hit5App(),
     ),
   );
 }

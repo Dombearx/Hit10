@@ -4,7 +4,7 @@
 # for the artifact.
 set -u
 PKG=io.github.dombearx.hit10
-APK=$(ls hit10-*.apk | head -1)
+APK=$(ls hit5-*.apk | head -1)
 out=smoke-out
 mkdir -p "$out"
 

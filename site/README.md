@@ -9,15 +9,15 @@ domain's root. So this folder is the content of that repository:
 
 ```
 app-ads.txt          → https://dombearx.github.io/app-ads.txt
-hit10/index.html     → https://dombearx.github.io/hit10/
-hit10/privacy.html   → https://dombearx.github.io/hit10/privacy.html
+hit5/index.html     → https://dombearx.github.io/hit5/
+hit5/privacy.html   → https://dombearx.github.io/hit5/privacy.html
 ```
 
 Before publishing, replace the two placeholders:
 
 - `pub-0000000000000000` in `app-ads.txt` — your AdMob publisher id
   (AdMob → Settings → Account information);
-- `CONTACT_EMAIL` in `hit10/privacy.html` — the address shown on the
+- `CONTACT_EMAIL` in `hit5/privacy.html` — the address shown on the
   Play listing.
 
 Then copy the folder into the `Dombearx.github.io` repository and enable

@@ -315,7 +315,7 @@ class _AskDialogState extends State<_AskDialog> {
 }
 
 /// The privacy policy on the game's site (docs/05 T-26).
-const privacyPolicyUrl = 'https://dombearx.github.io/hit10/privacy.html';
+const privacyPolicyUrl = 'https://dombearx.github.io/hit5/privacy.html';
 
 /// UMP's "privacy options" entry, shown only where the law requires it.
 class _AdPrivacyButton extends StatelessWidget {

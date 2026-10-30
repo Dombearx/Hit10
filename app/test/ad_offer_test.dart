@@ -48,7 +48,7 @@ void main() {
           gameControllerProvider.overrideWithValue(c),
           rewardedAdsProvider.overrideWithValue(ads),
         ],
-        child: const Hit10App(locale: Locale('pl')),
+        child: const Hit5App(locale: Locale('pl')),
       ),
     );
     await tester.pump(const Duration(milliseconds: 300));

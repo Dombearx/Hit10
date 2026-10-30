@@ -537,24 +537,24 @@
     "rewardFloor": 1000,
     "list": [
       {
-        "id": "valentine",
-        "from": "02-10",
-        "to": "02-16"
-      },
-      {
         "id": "easter",
         "easterFrom": -7,
         "easterTo": 1
       },
       {
+        "id": "valentine",
+        "from": "02-10",
+        "to": "02-16"
+      },
+      {
+        "id": "fiveDay",
+        "from": "05-03",
+        "to": "05-07"
+      },
+      {
         "id": "summer",
         "from": "07-01",
         "to": "07-14"
-      },
-      {
-        "id": "tenDay",
-        "from": "10-08",
-        "to": "10-12"
       },
       {
         "id": "halloween",

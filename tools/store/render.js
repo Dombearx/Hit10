@@ -21,10 +21,10 @@ const fonts = `
 const url = process.env.QA_URL || 'http://localhost:8713/';
 
 const captions = {
-  pl: ['Zatrzymaj stoper na 10.00!', 'Zatrudnij dziadka, babcię… i Chronosa',
+  pl: ['Zatrzymaj stoper na 5.00!', 'Zatrudnij dziadka, babcię… i Chronosa',
        'Złap złoty zegarek', 'Szał! Wszystko razy więcej', 'Ulepszenia i umiejętności',
        'Cofnij czas, wróć silniejszy'],
-  en: ['Stop the watch at 10.00!', 'Hire grandpa, grandma… and Chronos',
+  en: ['Stop the watch at 5.00!', 'Hire grandpa, grandma… and Chronos',
        'Catch the golden clock', 'Frenzy! Everything multiplied', 'Upgrades and skills',
        'Rewind time, come back stronger'],
 };
@@ -47,7 +47,7 @@ async function featureGraphic(browser) {
     .card::after { content:''; position:absolute; left:0; right:0; top:0; height:40%; background:rgba(255,255,255,.3); }
     .card img { position:absolute; left:16px; top:16px; width:68px; height:68px; }
   </style></head><body>
-    <img class="icon" src="${icon}"><h1>Hit10</h1><div class="tag">10.00 — trafisz? · can you?</div>
+    <img class="icon" src="${icon}"><h1>Hit5</h1><div class="tag">5.00 — trafisz? · can you?</div>
     <div class="row">${cards}</div></body></html>`);
   await p.evaluate(() => document.fonts.ready);
   await p.screenshot({ path: path.join(out, 'feature-1024x500.png') });
@@ -68,6 +68,7 @@ async function scenes(browser, lang) {
       h.grant(5e9);
       for (const [g, n] of [['grandpa', 60], ['grandma', 50], ['cuckoo', 40], ['metronome', 30], ['watchmaker', 25], ['sprintJudge', 15], ['stationClock', 5]]) h.buy(g, n);
       h.setSkill('power', 4); h.setSkill('combo', 3); h.setSkill('bulletTime', 2); h.setSkill('wideEye', 2);
+      h.previewSeason(''); // store screenshots show no seasonal event
     });
     await p.waitForTimeout(1500);
   };
@@ -92,10 +93,10 @@ async function scenes(browser, lang) {
     await p.waitForTimeout(wait);
   };
   const thaw = () => q(() => window.hit10Qa.freeze(false));
-  // 1: a PERFECT hit, mid-celebration (retried until it is one).
-  // The next round starts 0.7 s after a result (R-RUNDA-6): shoot at once.
+  // 1: a PERFECT hit (retried until it is one), once the burst has settled
+  // enough to see the dial; the result is frozen meanwhile.
   for (let i = 0; i < 8; i++) {
-    await round(10.0, 30);
+    await round(5.0, 1800);
     const s = JSON.parse(await q(() => window.hit10Qa.state()));
     if (Math.abs(s.lastError ?? 1) < 0.01) break;
     await thaw(); await p.waitForTimeout(1200);
@@ -105,11 +106,16 @@ async function scenes(browser, lang) {
   // 2: the shop full of clocks.
   await p.mouse.wheel(0, 0); await snap();
   // 3: the golden clock in flight.
-  await q(() => window.hit10Qa.summonGolden()); await p.waitForTimeout(2200);
+  // Summon until it is in the air (a just-finished round may swallow it).
+  await p.waitForFunction(() => {
+    window.hit10Qa.summonGolden();
+    return JSON.parse(window.hit10Qa.state()).goldenVisible > 0;
+  }, null, { timeout: 15000, polling: 300 });
+  await p.waitForTimeout(2200);
   await snap();
   // 4: Frenzy.
   await q(() => window.hit10Qa.effect('frenzy', 20)); await p.waitForTimeout(1200);
-  await round(10.0, 30); await snap(); await thaw();
+  await round(5.0, 30); await snap(); await thaw();
   await p.waitForTimeout(1500);
   // 5: skills tab.
   await p.getByText(lang === 'pl' ? 'Umiejętności' : 'Skills', { exact: true }).first().click().catch(() => {});

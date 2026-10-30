@@ -7,8 +7,8 @@ import 'game_screen.dart';
 import 'providers.dart';
 import 'theme.dart';
 
-class Hit10App extends ConsumerWidget {
-  const Hit10App({super.key, this.locale});
+class Hit5App extends ConsumerWidget {
+  const Hit5App({super.key, this.locale});
 
   /// Forced locale (tests); otherwise the language from the settings, and
   /// null there follows the system (01-wizja).

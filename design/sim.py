@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Design-time balance simulator for Hit10.
+"""Design-time balance simulator for Hit5.
 
 Reads design/balance.json and plays one run with a greedy bot that always buys
 whatever pays itself back soonest. Prints when each generator is first bought,

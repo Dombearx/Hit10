@@ -10,11 +10,11 @@ ids until you add yours), release signing, a CI-built AAB, the listing texts
 On your computer (Java's `keytool`, comes with Android Studio):
 
 ```sh
-keytool -genkeypair -v -keystore hit10-upload.jks -alias upload \
+keytool -genkeypair -v -keystore hit5-upload.jks -alias upload \
   -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-Keep `hit10-upload.jks` and both passwords somewhere safe (password
+Keep `hit5-upload.jks` and both passwords somewhere safe (password
 manager + a backup copy). Never commit it. Play App Signing (default for
 new apps) keeps the real app key at Google; this is only the *upload* key,
 which Google can reset if lost — but it takes days.
@@ -22,7 +22,7 @@ which Google can reset if lost — but it takes days.
 For local builds, create `app/android/key.properties` (gitignored):
 
 ```
-storeFile=/full/path/to/hit10-upload.jks
+storeFile=/full/path/to/hit5-upload.jks
 storePassword=…
 keyAlias=upload
 keyPassword=…
@@ -30,11 +30,11 @@ keyPassword=…
 
 ## 2. AdMob
 
-1. AdMob → Apps → Add app → Android, "not published yet", name Hit10.
+1. AdMob → Apps → Add app → Android, "not published yet", name Hit5.
 2. Copy the **App ID** (`ca-app-pub-…~…`).
-3. Ad units → Add → **Rewarded** → name "Hit10 rewarded". Copy the
+3. Ad units → Add → **Rewarded** → name "Hit5 rewarded". Copy the
    **ad unit ID** (`ca-app-pub-…/…`).
-4. Privacy & messaging → **GDPR** → create a message for Hit10 (this is
+4. Privacy & messaging → **GDPR** → create a message for Hit5 (this is
    the UMP consent form the game already shows). Publish it.
 5. Settings → Account information → copy the **Publisher ID**
    (`pub-…`) for `app-ads.txt`.
@@ -43,18 +43,18 @@ Never tap your own real ads (account ban risk, docs/05 T-28). The APKs CI
 builds for testing always use Google's test ids; only the signed AAB gets
 the real ones.
 
-## 3. GitHub secrets (Hit10 repo → Settings → Secrets and variables → Actions)
+## 3. GitHub secrets (Hit5 repo → Settings → Secrets and variables → Actions)
 
 | Secret | Value |
 |---|---|
-| `HIT10_KEYSTORE_B64` | `base64 -w0 hit10-upload.jks` (macOS: `base64 -i hit10-upload.jks`) |
+| `HIT10_KEYSTORE_B64` | `base64 -w0 hit5-upload.jks` (macOS: `base64 -i hit5-upload.jks`) |
 | `HIT10_KEYSTORE_PASSWORD` | store password |
 | `HIT10_KEY_ALIAS` | `upload` |
 | `HIT10_KEY_PASSWORD` | key password |
 | `ADMOB_APP_ID` | App ID from step 2 |
 | `ADMOB_REWARDED_ID` | rewarded ad unit ID from step 2 |
 
-After the next push, the CI run's **hit10-aab** artifact contains
+After the next push, the CI run's **hit5-aab** artifact contains
 `…-signed.aab`. (Without the secrets it is `…-unsigned.aab`, test ids,
 not uploadable.)
 
@@ -63,23 +63,23 @@ not uploadable.)
 1. Create the public repo **`Dombearx/Dombearx.github.io`**.
 2. Copy everything from `site/` into it.
 3. Replace `pub-0000000000000000` in `app-ads.txt` with your Publisher ID
-   and `CONTACT_EMAIL` in `hit10/privacy.html` with your contact address.
+   and `CONTACT_EMAIL` in `hit5/privacy.html` with your contact address.
 4. Settings → Pages → Deploy from branch `main`, `/ (root)`.
-5. Check: `https://dombearx.github.io/hit10/privacy.html` and
+5. Check: `https://dombearx.github.io/hit5/privacy.html` and
    `https://dombearx.github.io/app-ads.txt` open.
 6. In Play Console (step 5) set the **website** to
-   `https://dombearx.github.io/hit10/` — AdMob finds `app-ads.txt` through it.
+   `https://dombearx.github.io/hit5/` — AdMob finds `app-ads.txt` through it.
 
 ## 5. Play Console
 
-1. Create app: name "Hit10", default language **Polish**, Game, Free.
+1. Create app: name "Hit5", default language **Polish**, Game, Free.
 2. **Store listing** (Main store listing + add translation English):
    texts from `listing.md`; graphics from this folder:
    icon `icon-512.png`, feature graphic `feature-1024x500.png`, phone
    screenshots `screens/pl/1–6.png` (PL) and `screens/en/1–6.png` (EN).
    Category: **Casual** (or Arcade). Contact email + website (step 4).
 3. **App content**:
-   - Privacy policy URL: `https://dombearx.github.io/hit10/privacy.html`
+   - Privacy policy URL: `https://dombearx.github.io/hit5/privacy.html`
    - Ads: **Yes, contains ads**.
    - App access: all functionality available without special access.
    - Target audience: **13–15, 16–17, 18+** (not under 13 — the privacy

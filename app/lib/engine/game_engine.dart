@@ -499,7 +499,7 @@ class GameEngine {
       l.tenthDayKey = key;
       l.tenthDayPerfects = 0;
     }
-    if (local.day == 10) l.tenthDayPerfects++;
+    if (local.day == 5) l.tenthDayPerfects++; // "Piątka": the 5th
   }
 
   // ------------------------------------------------------------- prestige --

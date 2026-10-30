@@ -19,7 +19,7 @@ Widget app(Locale locale) {
         GameController(balance: balance),
       ),
     ],
-    child: Hit10App(locale: locale),
+    child: Hit5App(locale: locale),
   );
 }
 
