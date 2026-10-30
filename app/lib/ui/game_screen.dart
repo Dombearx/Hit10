@@ -649,7 +649,10 @@ class _PerfectPrice extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final pay = controller.engine.nextHitPayout(Tier.perfect);
     return Text(
-      l.jackpotPrice(f.n(pay)),
+      l.jackpotPrice(
+        controller.balance.round.target.toStringAsFixed(2),
+        f.n(pay),
+      ),
       key: const Key('perfect-price'),
       style: TextStyle(
         fontFamily: Fonts.display,

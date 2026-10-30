@@ -54,10 +54,10 @@ P = Σ dochód_i · G                   # dochód pasywny na sekundę
 
 **Wypłata za trafienie gracza:** wzór `R-WYPLATA-1` w 02.
 
-**Długość rundy (czas rzeczywisty, przy trafieniu w 10.00):**
+**Długość rundy (czas rzeczywisty, przy trafieniu w 5.00):**
 
 ```
-t_rundy = 10.0 − S(L_start) + 0.7          (S z R-RUNDA-10; Zimna krew
+t_rundy = 5.0 − S(L_start) + 0.7          (S z R-RUNDA-10; Zimna krew
                                             nie zmienia długości rundy)
 ```
 

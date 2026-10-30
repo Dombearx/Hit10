@@ -92,7 +92,7 @@ void main() {
     final w = e.windows();
     expect(w.perfect, closeTo(0.008, 1e-12));
     expect(w.great, closeTo(0.028, 1e-12));
-    expect(e.laterStart(), closeTo(4 * 0.58, 1e-12)); // the same step each
+    expect(e.laterStart(), closeTo(4 * 0.08, 1e-12)); // the same step each
     expect(e.laterStart(10), closeTo(b.round.latestStart, 1e-12));
     expect(e.laterStart(0), 0);
     expect(e.coldBlood(), closeTo(2.5, 1e-12));
@@ -105,8 +105,8 @@ void main() {
     expect(e.skillCost('ticking'), isNull);
   });
 
-  test('round length matches docs/03 (10.7 s → 4.9 s)', () {
-    expect(e.roundSeconds(), closeTo(10.7, 1e-9));
+  test('round length matches docs/03 (5.7 s → 4.9 s)', () {
+    expect(e.roundSeconds(), closeTo(5.7, 1e-9));
     s.skills.addAll({'fastForward': 10, 'bulletTime': 10});
     expect(e.roundSeconds(), closeTo(4.2 + 0.7, 1e-9));
   });

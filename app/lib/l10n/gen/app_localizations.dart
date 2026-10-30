@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// One-line pitch on the start screen
   ///
   /// In en, this message translates to:
-  /// **'Tap at exactly 10.00'**
+  /// **'Tap at exactly 5.00'**
   String get tagline;
 
   /// No description provided for @tikiLabel.
@@ -185,7 +185,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_grandma_desc.
   ///
   /// In en, this message translates to:
-  /// **'Soft-boiled eggs since 1974. Ten seconds? Child\'s play.'**
+  /// **'Soft-boiled eggs since 1974. Five seconds? Child\'s play.'**
   String get gen_grandma_desc;
 
   /// No description provided for @gen_cuckoo.
@@ -197,7 +197,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_cuckoo_desc.
   ///
   /// In en, this message translates to:
-  /// **'Cuckoos every ten seconds. Usually.'**
+  /// **'Cuckoos every five seconds. Usually.'**
   String get gen_cuckoo_desc;
 
   /// No description provided for @gen_metronome.
@@ -233,7 +233,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_sprintJudge_desc.
   ///
   /// In en, this message translates to:
-  /// **'False start! Then a perfect 10.00.'**
+  /// **'False start! Then a perfect 5.00.'**
   String get gen_sprintJudge_desc;
 
   /// No description provided for @gen_stationClock.
@@ -605,7 +605,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_magnet_desc.
   ///
   /// In en, this message translates to:
-  /// **'A wider PERFECT window: 9.99 or 10.01 can be a PERFECT. The 10.00 jackpot stays as is.'**
+  /// **'A wider PERFECT window: 4.99 or 5.01 can be a PERFECT. The 5.00 jackpot stays as is.'**
   String get skill_magnet_desc;
 
   /// No description provided for @skill_magnet_label.
@@ -965,7 +965,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_hidden_almost_desc.
   ///
   /// In en, this message translates to:
-  /// **'9.99, then 10.01'**
+  /// **'4.99, then 5.01'**
   String get ach_hidden_almost_desc;
 
   /// No description provided for @ach_hidden_punctual.
@@ -1511,7 +1511,7 @@ abstract class AppLocalizations {
   /// No description provided for @tutorialAim.
   ///
   /// In en, this message translates to:
-  /// **'Tap when the clock shows exactly 10.00'**
+  /// **'Tap when the clock shows exactly 5.00'**
   String get tutorialAim;
 
   /// No description provided for @tutorialBuy.
@@ -1523,7 +1523,7 @@ abstract class AppLocalizations {
   /// No description provided for @tutorialInfo.
   ///
   /// In en, this message translates to:
-  /// **'Grandpa tries every 10 seconds. More clocks, more Ticks!'**
+  /// **'Grandpa tries every 5 seconds. More clocks, more Ticks!'**
   String get tutorialInfo;
 
   /// No description provided for @tutorialGotIt.
@@ -1769,7 +1769,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_grandpa_4_desc.
   ///
   /// In en, this message translates to:
-  /// **'Solved in exactly 10.00 s.'**
+  /// **'Solved in exactly 5.00 s.'**
   String get upg_grandpa_4_desc;
 
   /// No description provided for @upg_grandpa_5.
@@ -1871,7 +1871,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_grandma_5.
   ///
   /// In en, this message translates to:
-  /// **'“Ten-Second Recipes”'**
+  /// **'“Five-Second Recipes”'**
   String get upg_grandma_5;
 
   /// No description provided for @upg_grandma_5_desc.
@@ -1901,7 +1901,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_grandma_7_desc.
   ///
   /// In en, this message translates to:
-  /// **'Films every perfect 10.00.'**
+  /// **'Films every perfect 5.00.'**
   String get upg_grandma_7_desc;
 
   /// No description provided for @upg_grandma_8.
@@ -2333,7 +2333,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_stationClock_3_desc.
   ///
   /// In en, this message translates to:
-  /// **'“The 10.00 will arrive on time.”'**
+  /// **'“The 5.00 will arrive on time.”'**
   String get upg_stationClock_3_desc;
 
   /// No description provided for @upg_stationClock_4.
@@ -2825,7 +2825,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_timeMachine_4_desc.
   ///
   /// In en, this message translates to:
-  /// **'Practises the same ten seconds forever.'**
+  /// **'Practises the same five seconds forever.'**
   String get upg_timeMachine_4_desc;
 
   /// No description provided for @upg_timeMachine_5.
@@ -2843,7 +2843,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_timeMachine_6.
   ///
   /// In en, this message translates to:
-  /// **'Tours to 10.00'**
+  /// **'Tours to 5.00'**
   String get upg_timeMachine_6;
 
   /// No description provided for @upg_timeMachine_6_desc.
@@ -2957,7 +2957,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_schrodinger_7_desc.
   ///
   /// In en, this message translates to:
-  /// **'In one of them it\'s always 10.00.'**
+  /// **'In one of them it\'s always 5.00.'**
   String get upg_schrodinger_7_desc;
 
   /// No description provided for @upg_schrodinger_8.
@@ -3065,7 +3065,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_chronos_8_desc.
   ///
   /// In en, this message translates to:
-  /// **'10.00. Always was, always will be.'**
+  /// **'5.00. Always was, always will be.'**
   String get upg_chronos_8_desc;
 
   /// No description provided for @settingsPrivacyPolicy.
@@ -3395,8 +3395,8 @@ abstract class AppLocalizations {
   /// No description provided for @jackpotPrice.
   ///
   /// In en, this message translates to:
-  /// **'10.00 = +{amount}'**
-  String jackpotPrice(String amount);
+  /// **'{target} = +{amount}'**
+  String jackpotPrice(String target, String amount);
 
   /// No description provided for @generatorTotal.
   ///
