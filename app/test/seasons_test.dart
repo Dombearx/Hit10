@@ -25,7 +25,7 @@ void main() {
       expect(seasonAt(cfg, DateTime(2026, 10, 29, 23))!.key, 'halloween-2026');
       expect(seasonAt(cfg, DateTime(2026, 11, 2))!.id, 'halloween');
       expect(seasonAt(cfg, DateTime(2026, 11, 3)), isNull);
-      expect(seasonAt(cfg, DateTime(2026, 10, 10))!.id, 'tenDay');
+      expect(seasonAt(cfg, DateTime(2027, 5, 5))!.id, 'fiveDay');
       expect(seasonAt(cfg, DateTime(2026, 12, 24))!.id, 'christmas');
       expect(seasonAt(cfg, DateTime(2027, 3, 21))!.id, 'easter');
       expect(seasonAt(cfg, DateTime(2027, 3, 20)), isNull);

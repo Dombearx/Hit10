@@ -157,7 +157,7 @@ async function play(browser, key) {
         if (!skip) {
           const sigma = P.s1 + (P.s0 - P.s1) * Math.exp(-rounds / P.learn);
           const off = P.bias + sigma * gauss();
-          await q(([t, o]) => window.hit10Qa.tapAt(t, o), [10.0, off]);
+          await q(([t, o]) => window.hit10Qa.tapAt(t, o), [5.0, off]);
         }
       }
       // Combo rescue offer right after a big loss.

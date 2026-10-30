@@ -1,6 +1,6 @@
-# Hit10
+# Hit5
 
-Mobilna gra idle/clicker: dotknij ekranu, gdy stoper pokaże **równo 10.00 s**.
+Mobilna gra idle/clicker: dotknij ekranu, gdy stoper pokaże **równo 5.00 s**.
 Za trafienia zbierasz Tiki, kupujesz umiejętności i coraz dokładniejsze
 zegary, od dziadka z zegarkiem po maszynę czasu, które grają za ciebie.
 

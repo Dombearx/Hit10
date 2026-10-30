@@ -1,6 +1,6 @@
 {
   "@@locale": "pl",
-  "appTitle": "Hit10",
+  "appTitle": "Hit5",
   "tagline": "Dotknij dokładnie w 5.00",
   "tikiLabel": "Tiki",
   "tierPerfect": "PERFEKT!",
@@ -146,9 +146,9 @@
   "ach_hidden_almost": "Prawie",
   "ach_hidden_almost_desc": "4.99, a potem 5.01",
   "ach_hidden_punctual": "Punktualny",
-  "ach_hidden_punctual_desc": "PERFEKT o 10:00 rano",
-  "ach_hidden_tenth": "Dziesiątka",
-  "ach_hidden_tenth_desc": "10 PERFEKTÓW 10. dnia miesiąca",
+  "ach_hidden_punctual_desc": "PERFEKT o 5:00 albo 17:00",
+  "ach_hidden_tenth": "Piątka",
+  "ach_hidden_tenth_desc": "10 PERFEKTÓW 5. dnia miesiąca",
   "ach_hidden_fullCollection": "Pełna kolekcja",
   "ach_hidden_fullCollection_desc": "Wszystkie umiejętności na max",
   "ach_hidden_museum": "Muzeum",
@@ -270,7 +270,7 @@
   "settingsImport": "Importuj",
   "settingsImportHint": "Wklej tutaj tekst zapisu",
   "settingsImportConfirm": "Nadpisać obecną grę tym zapisem?",
-  "settingsImportBad": "To nie wygląda na zapis Hit10.",
+  "settingsImportBad": "To nie wygląda na zapis Hit5.",
   "settingsReset": "Zacznij od nowa",
   "settingsResetConfirm1": "Na pewno? Stracisz wszystko: Tiki, zegary, Chronony i osiągnięcia. Ustawienia zostaną.",
   "settingsResetConfirm2": "Wpisz {word}, aby potwierdzić.",
@@ -531,8 +531,6 @@
   "season_easter_items": "Pisklęta",
   "season_summer": "Lato",
   "season_summer_items": "Słońca",
-  "season_tenDay": "Dzień Dziesiątki",
-  "season_tenDay_items": "Dziesiątki",
   "season_halloween": "Halloween",
   "season_halloween_items": "Dynie",
   "season_christmas": "Boże Narodzenie",
@@ -557,5 +555,7 @@
   "perfectNow": "PERFEKT teraz: +{amount}",
   "perfectNowSeconds": "PERFEKT teraz: +{amount} (≈ {seconds} s dochodu zegarów)",
   "jackpotPrice": "{target} = +{amount}",
-  "generatorTotal": "razem {perSecond}"
+  "generatorTotal": "razem {perSecond}",
+  "season_fiveDay": "Dzień Piątki",
+  "season_fiveDay_items": "Piątki"
 }

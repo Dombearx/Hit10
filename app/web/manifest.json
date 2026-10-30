@@ -1,11 +1,11 @@
 {
-    "name": "Hit10",
-    "short_name": "Hit10",
+    "name": "Hit5",
+    "short_name": "Hit5",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFD36E",
     "theme_color": "#FF8A5B",
-    "description": "Hit10 — tap at exactly 10.00",
+    "description": "Hit5 — tap at exactly 5.00",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

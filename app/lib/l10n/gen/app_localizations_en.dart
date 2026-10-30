@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Hit10';
+  String get appTitle => 'Hit5';
 
   @override
   String get tagline => 'Tap at exactly 5.00';
@@ -529,13 +529,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ach_hidden_punctual => 'Punctual';
 
   @override
-  String get ach_hidden_punctual_desc => 'PERFECT at 10:00 in the morning';
+  String get ach_hidden_punctual_desc => 'A PERFECT at 5:00 or 17:00';
 
   @override
-  String get ach_hidden_tenth => 'Ten out of ten';
+  String get ach_hidden_tenth => 'High five';
 
   @override
-  String get ach_hidden_tenth_desc => '10 PERFECTs on the 10th of a month';
+  String get ach_hidden_tenth_desc => '10 PERFECTs on the 5th of a month';
 
   @override
   String get ach_hidden_fullCollection => 'Full collection';
@@ -917,7 +917,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Replace the current game with this save?';
 
   @override
-  String get settingsImportBad => 'That doesn\'t look like a Hit10 save.';
+  String get settingsImportBad => 'That doesn\'t look like a Hit5 save.';
 
   @override
   String get settingsReset => 'Start over';
@@ -1723,12 +1723,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get season_summer_items => 'Suns';
 
   @override
-  String get season_tenDay => 'Ten Day';
-
-  @override
-  String get season_tenDay_items => 'Tens';
-
-  @override
   String get season_halloween => 'Halloween';
 
   @override
@@ -1824,4 +1818,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String generatorTotal(String perSecond) {
     return '$perSecond in total';
   }
+
+  @override
+  String get season_fiveDay => 'Five Day';
+
+  @override
+  String get season_fiveDay_items => 'Fives';
 }

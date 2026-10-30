@@ -36,7 +36,7 @@ telefonie.
 - [x] `CREDITS.md` z pierwszymi wpisami (czcionki)
 
 **Gotowe, gdy:** APK z `m0` instaluje się na twoim telefonie i pokazuje
-ekran z napisem „Hit10” po polsku albo po angielsku, zależnie od języka
+ekran z napisem „Hit5” po polsku albo po angielsku, zależnie od języka
 telefonu.
 
 ## M1 — Rdzeń
@@ -162,7 +162,7 @@ test zamknięty) opisuje `store/PLAY_CONSOLE.md`.
 | Co | Do kiedy |
 |---|---|
 | Testy M1 na twoim telefonie (i najlepiej drugim, 120 Hz) | koniec M1 |
-| Nazwa w sklepie PL/EN (robocza: Hit10); sprawdzić, czy nie jest zajęta | M5 |
+| Nazwa w sklepie PL/EN (robocza: Hit5); sprawdzić, czy nie jest zajęta | M5 |
 | Konto Google Play Console (25 USD jednorazowo, weryfikacja tożsamości trwa kilka dni) | przed M6 |
 | Konto AdMob | przed M6 |
 | Repo `Dombearx/Dombearx.github.io` na stronę WWW | przed M6 |

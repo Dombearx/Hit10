@@ -27,7 +27,7 @@ void main() {
           balanceProvider.overrideWithValue(balance),
           gameControllerProvider.overrideWithValue(c),
         ],
-        child: const Hit10App(locale: Locale('pl')),
+        child: const Hit5App(locale: Locale('pl')),
       ),
     );
     await tester.pump(const Duration(milliseconds: 200));

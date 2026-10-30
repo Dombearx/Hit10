@@ -7,15 +7,15 @@ Limits: name ≤ 30 characters, short description ≤ 80, full ≤ 4000
 
 ## Polski (pl-PL)
 
-**Nazwa:** Hit10: Trafisz w 10.00?
+**Nazwa:** Hit5: Trafisz w 5.00?
 
-**Krótki opis:** Zatrzymaj stoper dokładnie na 10.00. Precyzja, zegary i dziadek z zegarkiem.
+**Krótki opis:** Zatrzymaj stoper dokładnie na 5.00. Precyzja, zegary i dziadek z zegarkiem.
 
 **Pełny opis:**
 
-Zatrzymaj stoper dokładnie na 10.00. Brzmi prosto? To spróbuj.
+Zatrzymaj stoper dokładnie na 5.00. Brzmi prosto? To spróbuj.
 
-Każda runda trwa dziesięć sekund. Im bliżej trafisz, tym więcej Tików
+Każda runda trwa pięć sekund. Im bliżej trafisz, tym więcej Tików
 zarobisz: PERFEKT, ŚWIETNIE, DOBRZE… albo ZA WCZEŚNIE. Za Tiki zatrudniasz
 pomocników, którzy też próbują trafić — i zarabiają, nawet gdy nie grasz.
 
@@ -41,17 +41,17 @@ i tylko wtedy, gdy sam je wybierzesz.
 
 ## English (en-US)
 
-**Name:** Hit10: Stop at 10.00
+**Name:** Hit5: Stop at 5.00
 
-**Short description:** Stop the watch at exactly 10.00. Precision, clocks and a grandpa with a watch.
+**Short description:** Stop the watch at exactly 5.00. Precision, clocks and a grandpa with a watch.
 
 **Full description:**
 
-Stop the watch at exactly 10.00. Sounds easy? Go on, try.
+Stop the watch at exactly 5.00. Sounds easy? Go on, try.
 
-Every round lasts ten seconds. The closer you hit, the more Ticks you
+Every round lasts five seconds. The closer you hit, the more Ticks you
 earn: PERFECT, GREAT, GOOD… or TOO EARLY. Spend Ticks on helpers who try
-to hit 10.00 too — and keep earning while you're away.
+to hit 5.00 too — and keep earning while you're away.
 
 ⏱️ Fourteen clocks: from a grandpa with a pocket watch, a grandma with an
 egg timer and a cuckoo, through a watchmaker and a sprint judge, all the

@@ -36,8 +36,8 @@ aab:
 
 # Store graphics from the QA build (docs/04 U-28); serves it on :8713.
 store: web-qa icon
-	cd $(APP)/build/web-qa && (python3 -m http.server 8713 >/dev/null 2>&1 & echo $$! > /tmp/hit10-store.pid)
-	sleep 1; node tools/store/render.js; kill $$(cat /tmp/hit10-store.pid)
+	cd $(APP)/build/web-qa && (python3 -m http.server 8713 >/dev/null 2>&1 & echo $$! > /tmp/hit5-store.pid)
+	sleep 1; node tools/store/render.js; kill $$(cat /tmp/hit5-store.pid)
 
 # Launcher and store icons from tools/icon/icon.svg (docs/04 U-26).
 icon:

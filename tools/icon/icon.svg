@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-  <!-- Hit10 app icon (docs/04 U-26): the game's stopwatch showing 10.00.
+  <!-- Hit5 app icon (docs/04 U-26): the game's stopwatch showing 5.00.
        Layers: #bg is the adaptive-icon background, #fg the foreground. -->
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
@@ -41,6 +41,6 @@
     <!-- glossy highlight -->
     <path d="M330 470 A 200 200 0 0 1 560 330" fill="none" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round" opacity="0.9"/>
     <text x="512" y="618" text-anchor="middle" font-family="Paytone One" font-size="165"
-          fill="#2B2D42" letter-spacing="-4">10.00</text>
+          fill="#2B2D42" letter-spacing="-4">5.00</text>
   </g>
 </svg>

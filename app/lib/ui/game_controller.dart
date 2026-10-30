@@ -412,7 +412,7 @@ class GameController extends ChangeNotifier {
   // ------------------------------------------------------------- seasons --
 
   /// QA only (diagnostics, docs/05 T-12): runs this season whatever the
-  /// date says. Not saved.
+  /// date says; '' runs none (store screenshots). Not saved.
   String? seasonPreview;
 
   Season? get season => engine.season;
@@ -422,9 +422,11 @@ class GameController extends ChangeNotifier {
     final now = _localNow();
     final p = seasonPreview;
     engine.setSeason(
-      p != null
-          ? seasonIn(balance.seasons, p, now.year)
-          : seasonAt(balance.seasons, now),
+      p == null
+          ? seasonAt(balance.seasons, now)
+          : p.isEmpty
+          ? null
+          : seasonIn(balance.seasons, p, now.year),
     );
   }
 

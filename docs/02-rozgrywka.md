@@ -267,7 +267,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Złapane Złote Sekundy | 1, 10, 50, 200 | 4 |
 | Prestiże | 1, 5, 10, 25 | 4 |
 | Tryby | PERFEKT na ślepo; PERFEKT w szybkim zegarze; PERFEKT w obu naraz | 3 |
-| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 10:00 rano, czas lokalny), „Dziesiątka” (10× PERFEKT 10. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć) | 8 |
+| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć) | 8 |
 
 - **R-OSIAG-3:** Ukryte osiągnięcia wyglądają jak „???” do momentu zdobycia.
 
@@ -431,7 +431,7 @@ Daty i cel są w `balance.json` (`seasons`).
 | `valentine` | Walentynki / Valentine's | 10–16 lutego | serce |
 | `easter` | Wielkanoc / Easter | od Niedzieli Palmowej do Poniedziałku Wielkanocnego | pisklę |
 | `summer` | Lato / Summer | 1–14 lipca | słońce |
-| `tenDay` | Dzień Dziesiątki / Ten Day | 8–12 października | „10” |
+| `fiveDay` | Dzień Piątki / Five Day | 3–7 maja | „5” |
 | `halloween` | Halloween | 24 października – 2 listopada | dynia |
 | `christmas` | Boże Narodzenie / Christmas | 18–27 grudnia | prezent |
 | `newYear` | Sylwester / New Year | 28 grudnia – 2 stycznia | konfetti |
