@@ -393,7 +393,9 @@ class Stage extends Component {
         shake(8, 0.25);
         add(
           PopText(
-            text: jackpot ? '10.00!' : l.perfect,
+            text: jackpot
+                ? '${game.controller.balance.round.target.toStringAsFixed(2)}!'
+                : l.perfect,
             style: label(Palette.perfect, r * (jackpot ? 0.32 : 0.24)),
             at: labelAt,
             life: jackpot ? 1.4 : 0.85,

@@ -27,7 +27,7 @@ class GeneratorShowcase {
   double _budget = 0;
 
   /// Each unit attempts once per [attemptEvery] seconds.
-  static const attemptEvery = 10.0;
+  static const attemptEvery = 5.0;
 
   List<ShowcaseHit> update(double dt, Economy econ) {
     final ids = [

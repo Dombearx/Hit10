@@ -16,15 +16,16 @@ sekunda. Start później zmienia tylko to, od czego zaczyna.
 
 ## 1. Runda
 
-- **R-RUNDA-1:** Stoper liczy czas gry w górę od `0.00`. Cel to `10.000`.
+- **R-RUNDA-1:** Stoper liczy czas gry w górę od `0.00`. Cel to `5.000`
+  (test na telefonie: 10 s czekania na rundę to za długo; było `10.000`).
 - **R-RUNDA-2:** Gracz dotyka **dowolnego miejsca obszaru zegara**. Liczy się
   moment **dotknięcia** (pointer down), nie puszczenia palca.
-- **R-RUNDA-3:** Błąd `e = czas_gry_w_chwili_dotknięcia − 10.000`. Ocena
+- **R-RUNDA-3:** Błąd `e = czas_gry_w_chwili_dotknięcia − 5.000`. Ocena
   zależy od `|e|` i aktualnych okien (sekcja 2).
 - **R-RUNDA-4:** Dotknięcia w pierwszych `0.25 s` czasu rzeczywistego rundy
   i w trakcie pauzy na wynik są ignorowane. Chroni to przed podwójnym tapnięciem.
 - **R-RUNDA-5:** Dotknięcie przed oknem DOBRZE to wynik **ZA WCZEŚNIE**
-  (pudło). Jeśli gracz nie dotknie do `10.30`, runda kończy się wynikiem
+  (pudło). Jeśli gracz nie dotknie do `5.30`, runda kończy się wynikiem
   **ZA PÓŹNO** (pudło).
 - **R-RUNDA-6:** Po wyniku trwa pauza `0.7 s` (efekty, liczby), po której
   **następna runda startuje automatycznie** — chyba że 2 ostatnie rundy
@@ -42,7 +43,7 @@ sekunda. Start później zmienia tylko to, od czego zaczyna.
   z otwartym sklepem.
 - **R-RUNDA-9:** Wynik pokazuje dokładny czas trafienia z dwoma miejscami po
   przecinku i błąd z trzema, np. `10.02` i `+0.017 s`. Przy wyniku PERFEKT
-  cyfry „przyciągają się” do `10.00` (efekt Magnesu), a błąd jest pokazany
+  cyfry „przyciągają się” do `5.00` (efekt Magnesu), a błąd jest pokazany
   małym drukiem.
 
 ### 1.1 Start później i Zimna krew (tempo się nie zmienia)
@@ -52,9 +53,10 @@ i bullet time) zabierała rytm — gracz liczy w głowie, a przyspieszony
 start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 **zawsze płynie równo**, a obie umiejętności dają tę samą pomoc inaczej.
 
-- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.58·L` (L =
-  poziom 0–10: 0, 0.58, 1.16 … 5.80) — każdy poziom daje tyle samo, a
-  kolejne są coraz droższe (×7) — w normalnym tempie. Cel zostaje `10.00`, a do celu zawsze zostają
+- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.08·L` (L =
+  poziom 0–10: 0, 0.08 … 0.80) — każdy poziom daje tyle samo, a
+  kolejne są coraz droższe (×7) — w normalnym tempie. Przy celu 5.00 to
+  już mały bonus (do ~15% więcej rund); kandydat do zastąpienia. Cel zostaje `5.00`, a do celu zawsze zostają
   co najmniej 4 s (`round.latestStart` ≤ cel − strefa − 4), żeby złapać
   rytm.
 - **R-RUNDA-11:** Zimna krew: okna gracza (PERFEKT, ŚWIETNIE, DOBRZE,
@@ -63,16 +65,16 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
   Generatory jej nie dostają.
 - **R-RUNDA-12:** Ocena trafienia jest w czasie gry, który przy stałym tempie
   równa się czasowi rzeczywistemu.
-- **R-RUNDA-13:** Z Zimną krwią strefa `9.8–10.2` ma tylko wskazówki:
+- **R-RUNDA-13:** Z Zimną krwią strefa `4.8–5.2` ma tylko wskazówki:
   winietę, pulsujące cyfry i bicie serca. Tempo i dźwięk się nie zmieniają.
-- Długość rundy w czasie rzeczywistym: od ok. **10.7 s** (bez ulepszeń) do
+- Długość rundy w czasie rzeczywistym: od ok. **5.7 s** (bez ulepszeń) do
   ok. **4.9 s** (max Start później).
 
 ## 2. Progi trafienia
 
 | Próg | Okno bazowe `|e|` | Nagroda bazowa (Tiki) | Udział Echa | Krok combo |
 |---|---|---|---|---|
-| **PERFEKT** | < 0.005 s (na ekranie „10.00”) | 10 | 100% | +3 |
+| **PERFEKT** | < 0.005 s (na ekranie „5.00”) | 10 | 100% | +3 |
 | **ŚWIETNIE** | < 0.020 s | 3 | 33% | +2 |
 | **DOBRZE** | < 0.050 s | 1 | 10% | +1 |
 | **BLISKO** | < 0.150 s (tylko dotknięcia gracza) | 0.3 | 0 | reset do 0 |
@@ -82,14 +84,14 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
   (1/33 PERFEKTU), ale zeruje combo jak pudło. W czasie szczęścia
   początkującego płaci jak DOBRZE (1 zamiast 0.3, wygasa razem z ×3), żeby
   bardzo nieprecyzyjni gracze też szybko kupili pierwszy zegar. Okna PERFEKT/ŚWIETNIE/DOBRZE
-  się nie zmieniają — trafienie 10.00 ma zostać wyczynem. Generatory nie
+  się nie zmieniają — trafienie 5.00 ma zostać wyczynem. Generatory nie
   mają BLISKO.
 
-- **R-PROG-3 (10.00 — jackpot):** dotknięcie, które na tarczy daje 10.00
+- **R-PROG-3 (5.00 — jackpot):** dotknięcie, które na tarczy daje 5.00
   (|błąd| < 0.005 s; żadna umiejętność tego okna nie poszerza, Fart i
   Gorąca ręka go nie dają), płaci oprócz PERFEKTU **8 s dochodu zegarów**
-  (co najmniej 5 bazowych PERFEKTÓW), razy combo i tryb. Oprawa: „10.00!”,
-  deszcz złota, fanfara. Nagłówek pokazuje „10.00 = +X”. Wielkość 8 s to
+  (co najmniej 5 bazowych PERFEKTÓW), razy combo i tryb. Oprawa: „5.00!”,
+  deszcz złota, fanfara. Nagłówek pokazuje „5.00 = +X”. Wielkość 8 s to
   granica z symulatora: przy 15 s gracz grający bez przerwy wyprzedza
   założone tempo, a gracz nieprecyzyjny zostaje za daleko w tyle (B-6c,
   B-7); 10 s mieściło się tylko na styk. Przy grze po kilka minut dziennie i tak przeważa dochód offline.
@@ -128,7 +130,7 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 | id | Nazwa PL / EN | Max | Koszt bazowy | Wzrost | Efekt na poziomie L |
 |---|---|---|---|---|---|
 | `power` | Siła trafienia / Strike Power | 10 | 50 | ×7 | nagroda progu ×(1+1.5L) |
-| `fastForward` | Start później / Late Start | 10 | 150 | ×7 | stoper rusza od 0.58·L, max 5.8 |
+| `fastForward` | Start później / Late Start | 10 | 150 | ×7 | stoper rusza od 0.08·L, max 0.8 |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
 | `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×5 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
 | `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +2 na poziom (5 → 25) |
@@ -150,7 +152,7 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 
 ## 5. Generatory (sklep „Zegary”)
 
-Każdy generator „gra w tę samą grę” co gracz: próbuje trafić 10.00 co 10 s
+Każdy generator „gra w tę samą grę” co gracz: próbuje trafić 5.00 co 10 s
 z własnym rozrzutem σ. Dochód liczony jest z wartości oczekiwanej (03), a na
 ekranie losowo wyskakują jego „trafienia” (sekcja 04).
 
@@ -241,7 +243,7 @@ na wypłatę z dotknięć gracza.
 
 | Tryb | Odblokowanie | Działanie | Mnożnik wypłaty |
 |---|---|---|---|
-| **Na ślepo** / Blind | 100 PERFEKTÓW łącznie | cyfry znikają od 7.00 czasu gry (zostaje pulsujące „?”) | ×3 |
+| **Na ślepo** / Blind | 100 PERFEKTÓW łącznie | cyfry znikają od 2.00 czasu gry (zostaje pulsujące „?”) | ×3 |
 
 Szybki zegar (stoper ×1.5) został usunięty po teście na telefonie: sekunda
 na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
@@ -265,7 +267,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Złapane Złote Sekundy | 1, 10, 50, 200 | 4 |
 | Prestiże | 1, 5, 10, 25 | 4 |
 | Tryby | PERFEKT na ślepo; PERFEKT w szybkim zegarze; PERFEKT w obu naraz | 3 |
-| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (9.99, a potem 10.01), „Punktualny” (PERFEKT o 10:00 rano, czas lokalny), „Dziesiątka” (10× PERFEKT 10. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć) | 8 |
+| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 10:00 rano, czas lokalny), „Dziesiątka” (10× PERFEKT 10. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć) | 8 |
 
 - **R-OSIAG-3:** Ukryte osiągnięcia wyglądają jak „???” do momentu zdobycia.
 
@@ -339,7 +341,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 ## 11. Samouczek (pierwsze uruchomienie)
 
 - **R-TUT-1:**
-  1. Ekran z zegarem i jednym zdaniem: „Dotknij, gdy będzie dokładnie 10.00”.
+  1. Ekran z zegarem i jednym zdaniem: „Dotknij, gdy będzie dokładnie 5.00”.
   2. Pierwsze 3 rundy z podpowiedzią (strzałka, pulsowanie przy 9.5).
   3. Po pierwszym trafieniu strzałka do sklepu i do Dziadka (15 Tików).
   4. Po zakupie krótki dymek „Dziadek będzie próbował za ciebie”.

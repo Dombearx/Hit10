@@ -162,12 +162,13 @@ List<AchievementDef> buildAchievements(Balance b) {
       (s, _) => s.lifetime.missedInARow >= a.napMissedRounds,
     ),
     AchievementDef('hidden_almost', AchievementCategory.hidden, (s, _) {
-      // 9.99 and then 10.01 (as shown on the stopwatch).
+      // Just under, then just over the target (4.99, 5.01 on the dial).
       final e = s.stats.recentErrors;
       if (e.length < 2) return false;
-      final prev = ((10 + e[e.length - 2]) * 100).round();
-      final last = ((10 + e.last) * 100).round();
-      return prev == 999 && last == 1001;
+      final t = (b.round.target * 100).round();
+      final prev = ((b.round.target + e[e.length - 2]) * 100).round();
+      final last = ((b.round.target + e.last) * 100).round();
+      return prev == t - 1 && last == t + 1;
     }),
     AchievementDef(
       'hidden_punctual',

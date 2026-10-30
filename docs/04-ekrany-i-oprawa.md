@@ -69,7 +69,7 @@ wyglądać, brzmieć i reagować.
 | **PUDŁO / ZA WCZEŚNIE / ZA PÓŹNO** | szare drgnięcie tarczy w poziomie, napis wpada i opada | głuche „bonk” | podwójna krótka |
 | **Utrata combo** | licznik combo pęka na kawałki | „brzdęk” | – |
 | **Start później** | stoper czeka na starcie z wyższą wartością, tempo jak zwykle | – | – |
-| **Zimna krew (9.8–10.2)** | desaturacja tła, winieta, pulsujące cyfry, poświata | bicie serca | – |
+| **Zimna krew (4.8–5.2)** | desaturacja tła, winieta, pulsujące cyfry, poświata | bicie serca | – |
 | **Wydarzenie sezonowe** (02 §14) | tło w kolorach sezonu, przedmiot sezonowy zamiast złotego zegarka, plakietka z postępem w nagłówku | fanfara po ukończeniu | – |
 | **Tykanie (umiejętność)** | delikatne pulsowanie co 0.1 s w ostatniej sekundzie | „tik” | mikro |
 | **Złoty zegarek na ekranie** | lata po łuku, złoty ślad, świeci | dzwoneczki | – |
@@ -79,7 +79,7 @@ wyglądać, brzmieć i reagować.
 | **Nowy generator odkryty** | sylwetka „???” zamienia się w portret z błyskiem | fanfara krótka | średnia |
 | **Osiągnięcie** | toast z odznaką wjeżdża z góry, konfetti | fanfara | średnia |
 | **Prestiż** | cały ekran „przewija się wstecz” (cyfry lecą do 0), biały błysk, spokojny start | dźwięk przewijania taśmy | długa |
-| **Trafienie generatora** | mały dymek z portretem i wynikiem („10.00! +12K”) wylatuje z boku; najwyżej 3 na sekundę | ciche, tylko przy PERFEKT | – |
+| **Trafienie generatora** | mały dymek z portretem i wynikiem („5.00! +12K”) wylatuje z boku; najwyżej 3 na sekundę | ciche, tylko przy PERFEKT | – |
 
 - **U-5:** Wszystkie efekty są w jednej warstwie (efekty areny w Flame,
   efekty UI we Flutterze). Siła każdego jest parametrem w jednym pliku
@@ -181,7 +181,7 @@ styl **3D** (PNG 256×256, licencja MIT). Do repo trafiają tylko używane pliki
   - **oferty reklam:** Television w rogu przycisku.
 
 ### 4.2 Rysowane wektorowo przez nas
-- **U-26:** **Ikona aplikacji:** tarcza stopera z „10.00” w stylu gry
+- **U-26:** **Ikona aplikacji:** tarcza stopera z „5.00” w stylu gry
   (kontur, gradient, odblask), jako SVG. Eksport: ikona adaptacyjna
   Androida (warstwy przednia i tylna) oraz 512×512 do sklepu.
 - **U-27:** **Złoty zegarek** (Złota Sekunda) jako wektor w kodzie albo SVG,

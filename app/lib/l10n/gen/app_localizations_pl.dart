@@ -13,7 +13,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get appTitle => 'Hit10';
 
   @override
-  String get tagline => 'Dotknij dokładnie w 10.00';
+  String get tagline => 'Dotknij dokładnie w 5.00';
 
   @override
   String get tikiLabel => 'Tiki';
@@ -53,13 +53,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get gen_grandma_desc =>
-      'Jajka na miękko od 1974. Dziesięć sekund to dla niej pestka.';
+      'Jajka na miękko od 1974. Pięć sekund to dla niej pestka.';
 
   @override
   String get gen_cuckoo => 'Kukułka';
 
   @override
-  String get gen_cuckoo_desc => 'Kuka co dziesięć sekund. Zwykle.';
+  String get gen_cuckoo_desc => 'Kuka co pięć sekund. Zwykle.';
 
   @override
   String get gen_metronome => 'Metronom';
@@ -77,7 +77,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get gen_sprintJudge => 'Sędzia sprintu';
 
   @override
-  String get gen_sprintJudge_desc => 'Falstart! A potem idealne 10.00.';
+  String get gen_sprintJudge_desc => 'Falstart! A potem idealne 5.00.';
 
   @override
   String get gen_stationClock => 'Zegar dworcowy';
@@ -297,7 +297,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_magnet_desc =>
-      'Szersze okno PERFEKT: także 9.99 czy 10.01 może być PERFEKTEM. Jackpot 10.00 bez zmian.';
+      'Szersze okno PERFEKT: także 4.99 czy 5.01 może być PERFEKTEM. Jackpot 5.00 bez zmian.';
 
   @override
   String get skill_magnet_label => 'Twoje PERFEKTY';
@@ -522,7 +522,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get ach_hidden_almost => 'Prawie';
 
   @override
-  String get ach_hidden_almost_desc => '9.99, a potem 10.01';
+  String get ach_hidden_almost_desc => '4.99, a potem 5.01';
 
   @override
   String get ach_hidden_punctual => 'Punktualny';
@@ -824,14 +824,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get adFull => 'Pełne';
 
   @override
-  String get tutorialAim => 'Dotknij, gdy będzie dokładnie 10.00';
+  String get tutorialAim => 'Dotknij, gdy będzie dokładnie 5.00';
 
   @override
   String get tutorialBuy => 'Kup dziadka — będzie trafiał za ciebie!';
 
   @override
   String get tutorialInfo =>
-      'Dziadek próbuje co 10 sekund. Im więcej zegarów, tym więcej Tików!';
+      'Dziadek próbuje co 5 sekund. Im więcej zegarów, tym więcej Tików!';
 
   @override
   String get tutorialGotIt => 'Super!';
@@ -966,7 +966,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_grandpa_4 => 'Krzyżówka z hasłem „CZAS”';
 
   @override
-  String get upg_grandpa_4_desc => 'Rozwiązana w równe 10,00 s.';
+  String get upg_grandpa_4_desc => 'Rozwiązana w równe 5,00 s.';
 
   @override
   String get upg_grandpa_5 => 'Sanatorium';
@@ -1018,7 +1018,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_grandma_4_desc => 'Szkolenie z kuchennej precyzji. Z ciastem.';
 
   @override
-  String get upg_grandma_5 => 'Książka „Dania w 10 sekund”';
+  String get upg_grandma_5 => 'Książka „Dania w 5 sekund”';
 
   @override
   String get upg_grandma_5_desc => 'Same szybkie przepisy.';
@@ -1033,7 +1033,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_grandma_7 => 'Wnuczka influencerka';
 
   @override
-  String get upg_grandma_7_desc => 'Nagrywa każde idealne 10,00.';
+  String get upg_grandma_7_desc => 'Nagrywa każde idealne 5,00.';
 
   @override
   String get upg_grandma_8 => 'Złoty wałek';
@@ -1251,7 +1251,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get upg_stationClock_3_desc =>
-      '„Pociąg o 10,00 przyjedzie punktualnie.”';
+      '„Pociąg o 5,00 przyjedzie punktualnie.”';
 
   @override
   String get upg_stationClock_4 => 'Zawiadowca stacji';
@@ -1499,7 +1499,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_timeMachine_4 => 'Pętla czasowa';
 
   @override
-  String get upg_timeMachine_4_desc => 'Ćwiczy te same 10 sekund w kółko.';
+  String get upg_timeMachine_4_desc => 'Ćwiczy te same 5 sekund w kółko.';
 
   @override
   String get upg_timeMachine_5 => 'Zapasowa linia czasu';
@@ -1508,7 +1508,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_timeMachine_5_desc => 'Tak na wszelki wypadek.';
 
   @override
-  String get upg_timeMachine_6 => 'Wycieczki do 10,00';
+  String get upg_timeMachine_6 => 'Wycieczki do 5,00';
 
   @override
   String get upg_timeMachine_6_desc => 'Z przewodnikiem.';
@@ -1565,7 +1565,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_schrodinger_7 => 'Wiele światów';
 
   @override
-  String get upg_schrodinger_7_desc => 'W którymś zawsze jest 10,00.';
+  String get upg_schrodinger_7_desc => 'W którymś zawsze jest 5,00.';
 
   @override
   String get upg_schrodinger_8 => 'Otwarte pudełko';
@@ -1619,7 +1619,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_chronos_8 => 'Sekunda absolutna';
 
   @override
-  String get upg_chronos_8_desc => '10,00. Od zawsze i na zawsze.';
+  String get upg_chronos_8_desc => '5,00. Od zawsze i na zawsze.';
 
   @override
   String get settingsPrivacyPolicy => 'Polityka prywatności';
@@ -1819,8 +1819,8 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String jackpotPrice(String amount) {
-    return '10.00 = +$amount';
+  String jackpotPrice(String target, String amount) {
+    return '$target = +$amount';
   }
 
   @override
