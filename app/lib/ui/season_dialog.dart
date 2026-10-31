@@ -172,10 +172,28 @@ class SeasonBadge extends StatelessWidget {
     final look = seasonLooks[season.id]!;
     final cfg = c.balance.seasons;
     final done = c.engine.seasonDone;
-    final text = done
-        ? '✓'
-        : '${c.state.seasonCatches.clamp(0, cfg.catches)}/${cfg.catches} · '
-              '${c.state.seasonHits.clamp(0, cfg.hits)}/${cfg.hits}';
+    const style = TextStyle(fontFamily: Fonts.display, fontSize: 13);
+    Widget icon(String name) =>
+        Image.asset('assets/emoji/$name.png', width: 18, height: 18);
+    // Each count next to what it counts (playtest: a bare "0/5 · 0/50"
+    // meant nothing).
+    final progress = done
+        ? [const Text('✓', style: style)]
+        : [
+            icon(look.item),
+            const SizedBox(width: 2),
+            Text(
+              '${c.state.seasonCatches.clamp(0, cfg.catches)}/${cfg.catches}',
+              style: style,
+            ),
+            const SizedBox(width: 6),
+            icon('bullseye'),
+            const SizedBox(width: 2),
+            Text(
+              '${c.state.seasonHits.clamp(0, cfg.hits)}/${cfg.hits}',
+              style: style,
+            ),
+          ];
     return GestureDetector(
       key: const Key('open-season'),
       onTap: onTap,
@@ -196,10 +214,7 @@ class SeasonBadge extends StatelessWidget {
               height: 30,
             ),
             const SizedBox(width: 4),
-            Text(
-              text,
-              style: const TextStyle(fontFamily: Fonts.display, fontSize: 13),
-            ),
+            ...progress,
           ],
         ),
       ),

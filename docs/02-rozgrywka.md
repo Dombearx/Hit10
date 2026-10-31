@@ -340,15 +340,34 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 
 ## 11. Samouczek (pierwsze uruchomienie)
 
-- **R-TUT-1:**
-  1. Ekran z zegarem i jednym zdaniem: „Dotknij, gdy będzie dokładnie 5.00”.
-  2. Pierwsze 3 rundy z podpowiedzią (strzałka, pulsowanie przy 9.5).
-  3. Po pierwszym trafieniu strzałka do sklepu i do Dziadka (15 Tików).
-  4. Po zakupie krótki dymek „Dziadek będzie próbował za ciebie”.
+- **R-TUT-1:** (przebudowane po playteście z prawdziwymi testerami: gracze
+  długo nie wiedzieli, że jest coś poza klikaniem, ani co daje Dziadek)
+  1. Dymek: „Zatrzymaj stoper na 5.00! … im bliżej, tym więcej Tików”.
+  2. Po pierwszych Tikach (jeśli nie starcza na Dziadka): skąd są Tiki
+     (licznik u góry) i że wydaje się je w sklepie na dole.
+  3. Gdy stać gracza na Dziadka: dymek ze strzałką w dół, przycisk zakupu
+     Dziadka pulsuje, sklep sam się rozwija na zakładce Zegary.
+  4. Po zakupie (przycisk „Dalej”): Dziadek zarabia X/s sam, także offline;
+     kolejne zegary dokładają więcej.
+  5. (przycisk „Super!”) Dwie zakładki sklepu: Zegary zarabiają same,
+     Umiejętności wzmacniają trafienia; czerwona kropka = coś nowego,
+     „?” u góry wyjaśnia wszystko.
 
-  Koniec samouczka. Każdy krok da się pominąć.
-- **R-TUT-2:** Nowe mechaniki (pierwsza umiejętność, Złota Sekunda, combo,
-  prestiż) mają jednorazowy dymek z wyjaśnieniem przy pierwszym pojawieniu się.
+  Koniec samouczka. Każdy krok da się pominąć. W czasie samouczka nie ma
+  znaczka wydarzenia ani czerwonych kropek (jedna nowa rzecz naraz).
+- **R-TUT-2:** Nowe mechaniki mają jednorazowy dymek z wyjaśnieniem przy
+  pierwszym pojawieniu się, niezależnie od tego, na którą zakładkę gracz
+  patrzy: pierwsze ulepszenie nad sklepem, pierwsza odkryta umiejętność,
+  pierwszy przełącznik trybu, Złota Sekunda, combo, prestiż.
+- **R-TUT-4:** Czerwona kropka na zakładce Zegary / Umiejętności, gdy za
+  nią jest coś, na co gracza stać.
+- **R-TUT-5:** Przycisk „?” w nagłówku otwiera „Jak grać”: cel, Tiki,
+  zegary, ulepszenia, umiejętności, seria, Złota Sekunda, przełączniki,
+  wydarzenia, paradoks i ikony nagłówka, plus „Pokaż samouczek od nowa”.
+- **R-TUT-6:** Karta zegara, którego gracz jeszcze nie ma, mówi najpierw,
+  ile zarabia („+0,1/s za sztukę”), dopiero potem żart. Przycisk
+  umiejętności mówi, co kupuje („Kup poz. 3”), a nie „Poziom 2/10”.
+  Znaczek wydarzenia ma przy liczbach ikony (świąteczny zegarek, tarcza strzelnicza).
 
 ### 11.1 Szczęście początkującego (08, playtest)
 

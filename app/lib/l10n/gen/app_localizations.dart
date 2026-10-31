@@ -1508,36 +1508,6 @@ abstract class AppLocalizations {
   /// **'Full'**
   String get adFull;
 
-  /// No description provided for @tutorialAim.
-  ///
-  /// In en, this message translates to:
-  /// **'Tap when the clock shows exactly 5.00'**
-  String get tutorialAim;
-
-  /// No description provided for @tutorialBuy.
-  ///
-  /// In en, this message translates to:
-  /// **'Buy a grandpa: he will try for you!'**
-  String get tutorialBuy;
-
-  /// No description provided for @tutorialInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'Grandpa tries every 5 seconds. More clocks, more Ticks!'**
-  String get tutorialInfo;
-
-  /// No description provided for @tutorialGotIt.
-  ///
-  /// In en, this message translates to:
-  /// **'Got it!'**
-  String get tutorialGotIt;
-
-  /// No description provided for @tip_skills.
-  ///
-  /// In en, this message translates to:
-  /// **'New skill! Check the Skills tab.'**
-  String get tip_skills;
-
   /// No description provided for @tip_golden.
   ///
   /// In en, this message translates to:
@@ -1555,6 +1525,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can rewind time: a prestige gives Chronons, a permanent bonus.'**
   String get tip_prestige;
+
+  /// No description provided for @tutorialAim.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop the clock at 5.00! Tap the screen exactly when it shows 5.00 — the closer, the more Ticks.'**
+  String get tutorialAim;
+
+  /// No description provided for @tutorialEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Nice! Hits earn you Ticks — see the counter at the top. Collect {cost} to buy your first clock in the shop below.'**
+  String tutorialEarned(String cost);
+
+  /// No description provided for @tutorialBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'You can afford a Grandpa ({cost} Ticks)! Buy him: tap the glowing button in the shop below.'**
+  String tutorialBuy(String cost);
+
+  /// No description provided for @tutorialInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandpa plays for you: he earns {rate} Ticks a second, even when you don\'t tap and when the game is closed. Every clock adds more.'**
+  String tutorialInfo(String rate);
+
+  /// No description provided for @tutorialShop.
+  ///
+  /// In en, this message translates to:
+  /// **'The shop has two tabs: Clocks earn on their own, Skills make your own hits pay more. A red dot marks something new, and the ? button at the top explains everything.'**
+  String get tutorialShop;
+
+  /// No description provided for @tutorialNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get tutorialNext;
+
+  /// No description provided for @tutorialGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get tutorialGotIt;
+
+  /// No description provided for @tip_skills.
+  ///
+  /// In en, this message translates to:
+  /// **'A skill unlocked! Check the Skills tab: it boosts your own hits.'**
+  String get tip_skills;
+
+  /// No description provided for @tip_upgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'An upgrade appeared above the shop! Tap its icon to see what it does — usually it doubles a clock\'s income.'**
+  String get tip_upgrade;
+
+  /// No description provided for @tip_modes.
+  ///
+  /// In en, this message translates to:
+  /// **'A new toggle above the shop! Tap it to switch it on or off — the ? button explains it.'**
+  String get tip_modes;
+
+  /// No description provided for @skillBuyLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Lv {level}'**
+  String skillBuyLevel(String level);
+
+  /// No description provided for @generatorEarnsEach.
+  ///
+  /// In en, this message translates to:
+  /// **'+{value}/s each'**
+  String generatorEarnsEach(String value);
+
+  /// No description provided for @helpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to play'**
+  String get helpTitle;
+
+  /// No description provided for @helpReplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the tutorial again'**
+  String get helpReplay;
+
+  /// No description provided for @help_goal_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get help_goal_t;
+
+  /// No description provided for @help_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'The stopwatch counts seconds. Tap the screen when it shows exactly 5.00. The closer, the better: PERFECT pays the most, then GREAT and GOOD. Too early or too late is a miss — it pays nothing and breaks your streak.'**
+  String get help_goal;
+
+  /// No description provided for @help_tiki_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticks'**
+  String get help_tiki_t;
+
+  /// No description provided for @help_tiki.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticks are the game\'s money. The big counter at the top shows how many you have, the smaller one below it how much you earn per second. You spend them in the shop at the bottom.'**
+  String get help_tiki;
+
+  /// No description provided for @help_clocks_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Clocks'**
+  String get help_clocks_t;
+
+  /// No description provided for @help_clocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Clocks (the Clocks tab) play for you and add Ticks every second — even while the game is closed. Grandpa comes first; buying a clock reveals the next, stronger one. The number on the icon is how many you own. ×1, ×10, ×100 and MAX set how many you buy at once.'**
+  String get help_clocks;
+
+  /// No description provided for @help_upgrades_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrades'**
+  String get help_upgrades_t;
+
+  /// No description provided for @help_upgrades.
+  ///
+  /// In en, this message translates to:
+  /// **'Once you own enough of one clock, an upgrade icon shows up above the shop. Tap it to see what it does — usually it doubles that clock\'s income. Double icons are synergies: two clocks boosting each other.'**
+  String get help_upgrades;
+
+  /// No description provided for @help_skills_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get help_skills_t;
+
+  /// No description provided for @help_skills.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills (the Skills tab) boost your own hits: bigger rewards, wider windows, longer streaks. They have levels — \"Level 2/10\" means the second of ten. Tap a card to read the details.'**
+  String get help_skills;
+
+  /// No description provided for @help_combo_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak (combo)'**
+  String get help_combo_t;
+
+  /// No description provided for @help_combo.
+  ///
+  /// In en, this message translates to:
+  /// **'Hits in a row build a streak, and the streak multiplies every payout (the COMBO bar under the clock). A miss resets it, unless you have a Shield.'**
+  String get help_combo;
+
+  /// No description provided for @help_golden_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Second'**
+  String get help_golden_t;
+
+  /// No description provided for @help_golden.
+  ///
+  /// In en, this message translates to:
+  /// **'Now and then a golden clock flies across the screen. Tap it and the next round turns golden with a bonus: frenzy, lucky or hot hand.'**
+  String get help_golden;
+
+  /// No description provided for @help_modes_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggles'**
+  String get help_modes_t;
+
+  /// No description provided for @help_modes.
+  ///
+  /// In en, this message translates to:
+  /// **'Later, toggles appear above the shop: \"Blind\" (the stopwatch hides before the end but pays ×3), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).'**
+  String get help_modes;
+
+  /// No description provided for @help_season_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get help_season_t;
+
+  /// No description provided for @help_season.
+  ///
+  /// In en, this message translates to:
+  /// **'On holidays the golden clock changes its look. The badge at the top shows your progress: how many holiday clocks you caught (e.g. 0/5) and how many hits you made (e.g. 0/50). Finishing pays a reward.'**
+  String get help_season;
+
+  /// No description provided for @help_prestige_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Time paradox'**
+  String get help_prestige_t;
+
+  /// No description provided for @help_prestige.
+  ///
+  /// In en, this message translates to:
+  /// **'Once you\'ve collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster.'**
+  String get help_prestige;
+
+  /// No description provided for @help_icons_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Icons at the top'**
+  String get help_icons_t;
+
+  /// No description provided for @help_icons.
+  ///
+  /// In en, this message translates to:
+  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help.'**
+  String get help_icons;
 
   /// No description provided for @notificationTitle.
   ///

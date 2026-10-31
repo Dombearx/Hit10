@@ -51,7 +51,9 @@ class ClockSlot {
   double lastHeartbeat = -10;
 }
 
-enum TutorialStep { aim, buyGrandpa, grandpaInfo, done }
+/// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does, what
+/// the shop holds.
+enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, shopTour, done }
 
 /// Glue between the pure engine and the screen: owns the monotonic clock
 /// (T-8), turns pointer-downs into grades (T-9), runs the economy tick
@@ -308,6 +310,7 @@ class GameController extends ChangeNotifier {
       _sinceAchievementCheck = 0;
       _checkAchievements(const AchievementContext());
       if (engine.canPrestige()) _tip('prestige');
+      checkTips();
     }
     _sinceSave += dt;
     if (_sinceSave >= _saveEvery) unawaited(save());
@@ -576,15 +579,33 @@ class GameController extends ChangeNotifier {
   TutorialStep get tutorialStep {
     if (state.tutorialDone) return TutorialStep.done;
     if (econ.owned('grandpa') == 0) {
-      return state.tiki >= balance.generators.first.baseCost
-          ? TutorialStep.buyGrandpa
-          : TutorialStep.aim;
+      if (state.tiki >= balance.generators.first.baseCost) {
+        return TutorialStep.buyGrandpa;
+      }
+      return state.tiki > 0 ? TutorialStep.earned : TutorialStep.aim;
     }
-    return TutorialStep.grandpaInfo;
+    return state.tipsSeen.contains(_grandpaSeen)
+        ? TutorialStep.shopTour
+        : TutorialStep.grandpaInfo;
   }
+
+  static const _grandpaSeen = 'tut:grandpa';
 
   void _advanceTutorial() {
     if (!state.tutorialDone) notifyListeners();
+  }
+
+  /// "Next" on a tutorial step that only explains something.
+  void nextTutorialStep() {
+    switch (tutorialStep) {
+      case TutorialStep.grandpaInfo:
+        state.tipsSeen.add(_grandpaSeen);
+        notifyListeners();
+      case TutorialStep.shopTour:
+        finishTutorial();
+      default:
+        return;
+    }
   }
 
   /// Finishes (or skips) the tutorial (R-TUT-1).
@@ -595,10 +616,39 @@ class GameController extends ChangeNotifier {
     unawaited(save());
   }
 
+  /// Shows the tutorial again from where the player is (help screen).
+  /// Tips already seen stay seen.
+  void replayTutorial() {
+    state.tutorialDone = false;
+    state.tipsSeen.remove(_grandpaSeen);
+    pendingTip = null;
+    engine.goldenEnabled = false;
+    notifyListeners();
+    unawaited(save());
+  }
+
   void _tip(String id) {
     if (!state.tutorialDone || pendingTip != null) return;
     if (state.tipsSeen.contains(id)) return;
     pendingTip = id;
+  }
+
+  /// Tips for things that appear outside the screen the player looks at
+  /// (playtest: the skills tab, the upgrade strip and the toggles went
+  /// unnoticed for a long time).
+  void checkTips() {
+    if (!state.tutorialDone || pendingTip != null) return;
+    if (econ.availableUpgrades().isNotEmpty ||
+        econ.availableSynergies().isNotEmpty) {
+      _tip('upgrade');
+    }
+    if (balance.skills.any((sk) => skillRevealed(sk.id))) _tip('skills');
+    if (engine.blindUnlocked() ||
+        state.perks.contains('secondClock') ||
+        state.perks.contains('autoBuyer')) {
+      _tip('modes');
+    }
+    if (pendingTip != null) notifyListeners();
   }
 
   void dismissTip() {
@@ -609,8 +659,34 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Called by the skills tab when a skill card first appears.
-  void skillRevealed() => _tip('skills');
+  /// R-UMIEJ-3: a skill card shows once the player has held half its first
+  /// price.
+  bool skillRevealed(String id) =>
+      econ.level(id) > 0 ||
+      state.peakTiki >=
+          balance.skill(id).baseCost * balance.ui.skillRevealFraction;
+
+  /// A skill the player can buy right now (the red dot on its tab).
+  bool get skillAffordable => balance.skills.any((sk) {
+    if (!skillRevealed(sk.id)) return false;
+    final cost = econ.skillCost(sk.id);
+    return cost != null && cost <= state.tiki;
+  });
+
+  /// A clock the player can buy right now (the red dot on its tab).
+  bool get generatorAffordable => balance.generators.any(
+    (g) =>
+        econ.generatorUnlocked(g.id) &&
+        econ.generatorCost(g.id) <= state.tiki &&
+        _generatorShown(g.id),
+  );
+
+  bool _generatorShown(String id) {
+    final i = balance.generators.indexWhere((g) => g.id == id);
+    return i == 0 ||
+        econ.owned(id) > 0 ||
+        econ.owned(balance.generators[i - 1].id) > 0;
+  }
 
   // -------------------------------------------------------- offline/save --
 

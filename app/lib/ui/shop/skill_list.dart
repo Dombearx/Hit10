@@ -24,18 +24,12 @@ class SkillList extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
       children: [
         for (final sk in skills)
-          _revealed(c, sk.id)
+          c.skillRevealed(sk.id)
               ? _SkillTile(key: ValueKey(sk.id), controller: c, id: sk.id)
               : _LockedSkill(controller: c, id: sk.id),
       ],
     );
   }
-
-  /// R-UMIEJ-3: shown once the player has held half its first price.
-  static bool _revealed(GameController c, String id) =>
-      c.econ.level(id) > 0 ||
-      c.state.peakTiki >=
-          c.balance.skill(id).baseCost * c.balance.ui.skillRevealFraction;
 }
 
 /// "now → next" texts for each skill's effect.
@@ -191,7 +185,9 @@ class _SkillTile extends StatelessWidget {
           const SizedBox(width: 8),
           BuyButton(
             key: Key('skill-$id'),
-            label: maxed ? null : l.skillLevel(level, cfg.maxLevel),
+            // What the tap buys (playtest: a bare "Level 0/10" on the
+            // button read as a score).
+            label: maxed ? null : l.skillBuyLevel('${level + 1}'),
             price: maxed ? l.skillMaxed : f.price(cost!),
             enabled: affordable,
             onPressed: () => c.buySkill(id),
@@ -355,7 +351,7 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                 Center(
                   child: BuyButton(
                     key: const Key('skill-info-buy'),
-                    label: maxed ? null : l.skillLevel(level + 1, cfg.maxLevel),
+                    label: maxed ? null : l.skillBuyLevel('${level + 1}'),
                     price: maxed ? l.skillMaxed : f.price(cost!),
                     enabled: cost != null && cost <= c.state.tiki,
                     minWidth: 160,
