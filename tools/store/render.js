@@ -14,7 +14,7 @@ const root = path.resolve(__dirname, '../..');
 const out = path.join(root, 'store');
 const font = (f) => fs.readFileSync(path.join(root, 'app/assets/fonts', f)).toString('base64');
 const emoji = (n) => 'data:image/png;base64,' +
-  fs.readFileSync(path.join(root, 'app/assets/emoji', n + '.png')).toString('base64');
+  fs.readFileSync(path.join(root, 'app/assets', n.includes('/') ? n : 'emoji/' + n) + '.png').toString('base64');
 const fonts = `
   @font-face { font-family: Display; src: url(data:font/ttf;base64,${font('PaytoneOne-Regular.ttf')}); }
   @font-face { font-family: Body; font-weight: 800; src: url(data:font/ttf;base64,${font('Nunito-800.ttf')}); }`;
@@ -31,7 +31,7 @@ const captions = {
 
 async function featureGraphic(browser) {
   const p = await browser.newPage({ viewport: { width: 1024, height: 500 } });
-  const cards = ['old_man', 'old_woman', 'bird', 'man_mechanic', 'atom_symbol', 'hourglass_done', 'cat']
+  const cards = ['art/grandpa', 'art/grandma', 'art/cuckoo', 'art/watchmaker', 'art/atomic', 'art/timeMachine', 'art/schrodinger']
     .map((n, i) => `<div class="card" style="background:${['#FFD36E','#FFB38A','#9BE7C4','#FFC9DE','#D7C4FF','#FFC2A8','#E2D2FF'][i]}"><img src="${emoji(n)}"></div>`).join('');
   const icon = 'data:image/png;base64,' + fs.readFileSync(path.join(out, 'icon-512.png')).toString('base64');
   await p.setContent(`<html><head><style>${fonts}

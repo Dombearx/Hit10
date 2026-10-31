@@ -10,28 +10,30 @@ class EmojiArt {
   final String? corner;
   final Color background;
 
-  static String path(String name) => 'assets/emoji/$name.png';
+  /// Asset path below `assets/`: a name with a folder (`art/grandpa`) is
+  /// our own generated art (tools/art/), a bare name a Fluent emoji.
+  static String file(String name) =>
+      name.contains('/') ? '$name.png' : 'emoji/$name.png';
+
+  static String path(String name) => 'assets/${file(name)}';
 }
 
+// Generated art (docs/10, tools/art/); the whole group is swapped at once.
 const generatorArt = <String, EmojiArt>{
-  'grandpa': EmojiArt('old_man', Color(0xFFFFD36E), 'stopwatch'),
-  'grandma': EmojiArt('old_woman', Color(0xFFFFB38A), 'egg'),
-  'cuckoo': EmojiArt('bird', Color(0xFF9BE7C4), 'mantelpiece_clock'),
-  'metronome': EmojiArt('musical_note', Color(0xFFB9A7FF)),
-  'watchmaker': EmojiArt(
-    'man_mechanic',
-    Color(0xFFFFC9DE),
-    'magnifying_glass_tilted_left',
-  ),
-  'sprintJudge': EmojiArt('chequered_flag', Color(0xFFA7E0FF), 'stopwatch'),
-  'stationClock': EmojiArt('station', Color(0xFFFFE29A), 'snail'),
-  'quartz': EmojiArt('gem_stone', Color(0xFFC8F2FF)),
-  'atomic': EmojiArt('atom_symbol', Color(0xFFD7C4FF)),
-  'gps': EmojiArt('satellite', Color(0xFFB4D8FF)),
-  'pulsar': EmojiArt('dizzy', Color(0xFFFFE6A7)),
-  'timeMachine': EmojiArt('hourglass_done', Color(0xFFFFC2A8), 'cyclone'),
-  'schrodinger': EmojiArt('cat', Color(0xFFE2D2FF), 'package'),
-  'chronos': EmojiArt('mantelpiece_clock', Color(0xFFFFD86E), 'dizzy'),
+  'grandpa': EmojiArt('art/grandpa', Color(0xFFFFD36E)),
+  'grandma': EmojiArt('art/grandma', Color(0xFFFFB38A)),
+  'cuckoo': EmojiArt('art/cuckoo', Color(0xFF9BE7C4)),
+  'metronome': EmojiArt('art/metronome', Color(0xFFB9A7FF)),
+  'watchmaker': EmojiArt('art/watchmaker', Color(0xFFFFC9DE)),
+  'sprintJudge': EmojiArt('art/sprintJudge', Color(0xFFA7E0FF)),
+  'stationClock': EmojiArt('art/stationClock', Color(0xFFFFE29A)),
+  'quartz': EmojiArt('art/quartz', Color(0xFFC8F2FF)),
+  'atomic': EmojiArt('art/atomic', Color(0xFFD7C4FF)),
+  'gps': EmojiArt('art/gps', Color(0xFFB4D8FF)),
+  'pulsar': EmojiArt('art/pulsar', Color(0xFFFFE6A7)),
+  'timeMachine': EmojiArt('art/timeMachine', Color(0xFFFFC2A8)),
+  'schrodinger': EmojiArt('art/schrodinger', Color(0xFFE2D2FF)),
+  'chronos': EmojiArt('art/chronos', Color(0xFFFFD86E)),
 };
 
 const skillArt = <String, EmojiArt>{
