@@ -1,6 +1,6 @@
 # 09 — Generowanie grafik AI (ikony, skórki)
 
-Research z 29.10.2026. Cel: lokalny model na **RTX 3060 Ti (8 GB VRAM)**,
+Research z 29.10.2026. **Aktualny plan generowania przez RunPod: `10-grafika-runpod.md`.** Cel: lokalny model na **RTX 3060 Ti (8 GB VRAM)**,
 wystawiony przez API, którym Claude generuje ikony, skórki tarczy i grafiki
 eventów, a potem sam je ogląda i odrzuca niespójne. Warunek: licencja
 pozwala na komercyjne użycie (gra idzie do Sklepu Play z reklamami).
