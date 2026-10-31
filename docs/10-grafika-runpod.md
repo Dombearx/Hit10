@@ -5,6 +5,32 @@ ComfyUI na 3060 Ti, generujemy przez **gotowe publiczne endpointy RunPod**
 (płatność za obraz, bez zarządzania GPU). Plik jest napisany tak, żeby
 sesja Claude'a na komputerze z kluczem API mogła od razu ruszyć.
 
+## Stan (31.10.2026)
+
+Pipeline działa, zegary (14) podmienione w `playtest18`:
+
+```
+python3 tools/art/generate.py [--only id,id] [--model qwen|zimage|qwen-edit]   # → tools/art/out/<model>/
+python3 tools/art/sheet.py qwen /tmp/cand.png        # arkusz kandydatów do wyboru seeda
+# wpisać wybrane do tools/art/picks.json
+tools/art/.venv/bin/python tools/art/process.py [id] # wycięcie tła + 160 px → app/assets/art/
+```
+
+- Endpointy: `qwen-image-t2i`, `qwen-image-edit-2511` (referencje tylko jako
+  URL — bierzemy raw.githubusercontent z publicznego repo), `z-image-turbo`.
+  Wynik: `output.result` (URL, ważny 7 dni), `output.cost`.
+- **Test modeli:** Qwen t2i najlepiej trzyma się promptu; Qwen Edit z
+  ikonami Fluent jako referencją kopiuje ich kształty (atomowy wyszedł jako
+  stoper); Z-Image Turbo przyzwoity i 4× tańszy, ale blady i z małym
+  obiektem. Finały: **Qwen t2i**, 2 seedy na ikonę, wybór ręczny.
+- Wycinanie: `rembg` z `birefnet-general-lite` (pełny BiRefNet nie mieści się
+  w 7 GB RAM na CPU). Venv: `python3 -m venv tools/art/.venv &&
+  tools/art/.venv/bin/pip install "rembg[cpu]" pillow`.
+- `generatorArt` używa nazw `art/<id>` (`EmojiArt.file` rozróżnia
+  `art/…` i emoji Fluent). Bez ikonek w rogu — nowe grafiki same pokazują
+  zegar.
+- Koszt zegarów razem z testem: ~$0.75.
+
 ## Cel
 
 Zastąpić gotowe ikony Fluent Emoji (Microsoft, MIT) własnymi, spójnymi

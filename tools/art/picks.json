@@ -1,0 +1,16 @@
+{
+  "grandpa": "qwen/grandpa_s1010",
+  "grandma": "qwen/grandma_s2020",
+  "cuckoo": "qwen/cuckoo_s2020",
+  "metronome": "qwen/metronome_s2020",
+  "watchmaker": "qwen/watchmaker_s1010",
+  "sprintJudge": "qwen/sprintJudge_s1010",
+  "stationClock": "qwen/stationClock_s1010",
+  "quartz": "qwen/quartz_s1010",
+  "atomic": "qwen/atomic_s1010",
+  "gps": "qwen/gps_s2020",
+  "pulsar": "qwen/pulsar_s2020",
+  "timeMachine": "qwen/timeMachine_s1010",
+  "schrodinger": "qwen/schrodinger_s1010",
+  "chronos": "qwen/chronos_s1010"
+}

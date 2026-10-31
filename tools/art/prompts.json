@@ -1,0 +1,20 @@
+{
+  "style": "glossy 3D cartoon icon, soft studio lighting, rounded chunky shapes, saturated friendly colors, smooth outline-free shading, single subject centered and large, filling most of the frame, plain flat light-grey background, no text",
+  "negative": "text, letters, numbers on background, watermark, logo, multiple separate objects, cropped, photo, realistic, dark background, frame, border",
+  "items": [
+    {"id": "grandpa", "seeds": [1010, 2020], "prompt": "a cheerful bald grandpa with white mustache and round glasses, bust portrait, holding up a golden pocket watch on a chain"},
+    {"id": "grandma", "seeds": [1010, 2020], "prompt": "a sweet grandma with grey hair bun and glasses, bust portrait, holding a white egg-shaped kitchen egg timer"},
+    {"id": "cuckoo", "seeds": [1010, 2020], "prompt": "a carved wooden cuckoo clock shaped like a little house, a small yellow bird popping out of the little door above the clock face, pine cone weights"},
+    {"id": "metronome", "seeds": [1010, 2020], "prompt": "a classic wooden pyramid metronome with a silver swinging pendulum arm, a small floating music note beside it"},
+    {"id": "watchmaker", "seeds": [1010, 2020], "prompt": "a friendly watchmaker man with a jeweler's loupe on one eye and an apron, bust portrait, holding tiny tweezers and an open pocket watch with gears"},
+    {"id": "sprintJudge", "seeds": [1010, 2020], "prompt": "a sports referee in a striped shirt with a whistle, bust portrait, holding up a silver stopwatch"},
+    {"id": "stationClock", "seeds": [1010, 2020], "prompt": "a classic round railway station clock hanging from an ornate cast-iron bracket, white face, black hands"},
+    {"id": "quartz", "seeds": [1010, 2020], "prompt": "a sleek modern digital quartz wristwatch with a glowing light-blue crystal set in the dial"},
+    {"id": "atomic", "seeds": [1010, 2020], "prompt": "a futuristic atomic clock: a round clock face at the center of glowing electron orbit rings, purple and cyan glow"},
+    {"id": "gps", "seeds": [1010, 2020], "prompt": "a cute GPS satellite with blue solar panel wings and a dish antenna, a small clock face on its body"},
+    {"id": "pulsar", "seeds": [1010, 2020], "prompt": "a glowing pulsar star: a bright small sphere shooting two beams of light up and down, with swirling energy rings, yellow and white glow"},
+    {"id": "timeMachine", "seeds": [1010, 2020], "prompt": "a steampunk time machine: a brass and wood chair-like vehicle with a big spinning clock dial and swirling blue vortex behind it"},
+    {"id": "schrodinger", "seeds": [1010, 2020], "prompt": "a cute grey cat peeking out of a half-open cardboard box, one paw on the edge"},
+    {"id": "chronos", "seeds": [1010, 2020], "prompt": "Chronos the god of time as a friendly bearded old titan with a golden laurel wreath, bust portrait, holding a large golden hourglass"}
+  ]
+}

@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+tools/art/out/
+tools/art/.venv/

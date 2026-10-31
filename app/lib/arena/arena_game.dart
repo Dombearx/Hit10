@@ -83,7 +83,7 @@ class ArenaGame extends FlameGame {
       for (final look in seasonLooks.values) look.item,
     }) {
       try {
-        _emoji[name] = await images.load('emoji/$name.png');
+        _emoji[name] = await images.load(EmojiArt.file(name));
       } on Object {
         // A missing emoji just leaves the bubble without an icon.
       }
