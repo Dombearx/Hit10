@@ -51,7 +51,8 @@ class ClockSlot {
   double lastHeartbeat = -10;
 }
 
-enum TutorialStep { aim, buyGrandpa, grandpaInfo, done }
+/// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does.
+enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, done }
 
 /// Glue between the pure engine and the screen: owns the monotonic clock
 /// (T-8), turns pointer-downs into grades (T-9), runs the economy tick
@@ -229,6 +230,7 @@ class GameController extends ChangeNotifier {
       state.secondClockOn = secondClock;
       _rebuildClocks();
     }
+    tipActed('modes');
     sfx.play('tick');
     notifyListeners();
     unawaited(save());
@@ -298,7 +300,13 @@ class GameController extends ChangeNotifier {
       final golden = engine.goldenVisibleLeft > 0;
       if (golden && !_goldenShown) sfx.play('chimes', gain: 0.7);
       _goldenShown = golden;
-      if (golden) _tip('golden');
+      if (golden) {
+        _tip('golden');
+      } else if (pendingTip == 'golden') {
+        // It flew away: say it again next time (not marked as seen).
+        pendingTip = null;
+      }
+      _autoAdvance();
       if (engine.autoBuy(_econAcc) != null) sfx.play('buy', gain: 0.4);
       _econAcc = 0;
       notifyListeners();
@@ -308,6 +316,7 @@ class GameController extends ChangeNotifier {
       _sinceAchievementCheck = 0;
       _checkAchievements(const AchievementContext());
       if (engine.canPrestige()) _tip('prestige');
+      checkTips();
     }
     _sinceSave += dt;
     if (_sinceSave >= _saveEvery) unawaited(save());
@@ -403,6 +412,7 @@ class GameController extends ChangeNotifier {
   /// The player tapped the flying golden clock (R-ZLOTA-1).
   void claimGolden() {
     if (!engine.claimGolden()) return;
+    tipActed('golden');
     sfx.play('coins');
     if (settings.haptics) unawaited(HapticFeedback.mediumImpact());
     _afterSeasonProgress();
@@ -515,9 +525,21 @@ class GameController extends ChangeNotifier {
     return r;
   }
 
-  BuyResult buyUpgrade(String id) => _afterBuy(engine.buyUpgrade(id));
-  BuyResult buySynergy(String id) => _afterBuy(engine.buySynergy(id));
-  BuyResult buySkill(String id) => _afterBuy(engine.buySkill(id));
+  BuyResult buyUpgrade(String id) {
+    tipActed('upgrade');
+    return _afterBuy(engine.buyUpgrade(id));
+  }
+
+  BuyResult buySynergy(String id) {
+    tipActed('upgrade');
+    return _afterBuy(engine.buySynergy(id));
+  }
+
+  BuyResult buySkill(String id) {
+    tipActed('skills');
+    return _afterBuy(engine.buySkill(id));
+  }
+
   BuyResult buyPerk(String id) => _afterBuy(engine.buyPerk(id));
 
   /// The rewind animation's sound and long buzz (docs/04 §3).
@@ -576,29 +598,138 @@ class GameController extends ChangeNotifier {
   TutorialStep get tutorialStep {
     if (state.tutorialDone) return TutorialStep.done;
     if (econ.owned('grandpa') == 0) {
-      return state.tiki >= balance.generators.first.baseCost
-          ? TutorialStep.buyGrandpa
-          : TutorialStep.aim;
+      if (state.tiki >= balance.generators.first.baseCost) {
+        return TutorialStep.buyGrandpa;
+      }
+      return state.tiki > 0 ? TutorialStep.earned : TutorialStep.aim;
     }
     return TutorialStep.grandpaInfo;
   }
 
+  /// The stopwatch shows when to tap (closing gold ring, R-TUT-1): during
+  /// the tutorial and the first rounds of a new player.
+  bool get coachTiming =>
+      !state.tutorialDone ||
+      (state.prestiges == 0 && state.stats.rounds < coachRounds);
+  static const coachRounds = 10;
+
   void _advanceTutorial() {
     if (!state.tutorialDone) notifyListeners();
+  }
+
+  /// "OK" on Grandpa's step (it also closes by itself, [_autoAdvance]).
+  void nextTutorialStep() {
+    if (tutorialStep == TutorialStep.grandpaInfo) finishTutorial();
   }
 
   /// Finishes (or skips) the tutorial (R-TUT-1).
   void finishTutorial() {
     state.tutorialDone = true;
     engine.goldenEnabled = true;
+    // A breather before the first tip (R-TUT-2: tips are spaced out).
+    _tipQuietUntil = state.playSeconds + tipGapAfterTutorial;
+    _shownAt = null;
     notifyListeners();
     unawaited(save());
   }
 
+  /// Shows the tutorial again from where the player is (help screen).
+  /// Tips already seen stay seen.
+  void replayTutorial() {
+    state.tutorialDone = false;
+    pendingTip = null;
+    _shownAt = null;
+    engine.goldenEnabled = false;
+    notifyListeners();
+    unawaited(save());
+  }
+
+  // Tips (R-TUT-2): one at a time, spaced out, and gone as soon as the
+  // player does what they say.
+  static const tipGap = 45.0; // s of play between two tips
+  static const tipGapAfterTutorial = 20.0;
+  static const infoSeconds = 7.0; // tips that ask for nothing close alone
+  static const tipLife = 15.0; // s of play an ignored tip stays up
+  double _tipQuietUntil = 0;
+
+  /// Play time when the current info bubble appeared.
+  double? _shownAt;
+  Object? _shownFor;
+
   void _tip(String id) {
     if (!state.tutorialDone || pendingTip != null) return;
     if (state.tipsSeen.contains(id)) return;
+    if (state.playSeconds < _tipQuietUntil) return;
     pendingTip = id;
+  }
+
+  /// The player did what tip [id] asked: it closes and is never shown again.
+  void tipActed(String id) {
+    if (pendingTip == id) {
+      dismissTip();
+    } else {
+      state.tipsSeen.add(id);
+    }
+  }
+
+  /// Info-only bubbles (Grandpa's step, the combo tip) close by themselves
+  /// after [infoSeconds] of play; a tip asking for something the player
+  /// ignores goes after [tipLife] and comes back once, later (onboarding
+  /// playtest: an ignored upgrade tip stayed for minutes and held back
+  /// every tip after it).
+  void _autoAdvance() {
+    final Object? key = tutorialStep == TutorialStep.grandpaInfo
+        ? TutorialStep.grandpaInfo
+        : pendingTip;
+    if (key == null || key == 'golden') {
+      _shownAt = null;
+      _shownFor = null;
+      return;
+    }
+    if (_shownFor != key) {
+      _shownFor = key;
+      _shownAt = state.playSeconds;
+      return;
+    }
+    final age = state.playSeconds - _shownAt!;
+    final info = key == TutorialStep.grandpaInfo || key == 'combo';
+    if (age < (info ? infoSeconds : tipLife)) return;
+    _shownAt = null;
+    _shownFor = null;
+    if (key == TutorialStep.grandpaInfo) {
+      nextTutorialStep();
+    } else if (info || state.tipsSeen.contains('$key#1')) {
+      dismissTip();
+    } else {
+      // Not now: once more after the usual gap.
+      state.tipsSeen.add('$key#1');
+      pendingTip = null;
+      _tipQuietUntil = state.playSeconds + tipGap;
+      notifyListeners();
+    }
+  }
+
+  @visibleForTesting
+  void debugAutoAdvance() => _autoAdvance();
+
+  /// Tips for things that appear outside the screen the player looks at
+  /// (playtest: the skills tab, the upgrade strip and the toggles went
+  /// unnoticed for a long time).
+  void checkTips() {
+    if (!state.tutorialDone || pendingTip != null) return;
+    // Only once one can be bought: a tip the player can't act on just
+    // hangs there (onboarding playtest).
+    if (econ.availableUpgrades().any((u) => u.cost <= state.tiki) ||
+        econ.availableSynergies().any((x) => x.cost <= state.tiki)) {
+      _tip('upgrade');
+    }
+    if (skillAffordable) _tip('skills');
+    if (engine.blindUnlocked() ||
+        state.perks.contains('secondClock') ||
+        state.perks.contains('autoBuyer')) {
+      _tip('modes');
+    }
+    if (pendingTip != null) notifyListeners();
   }
 
   void dismissTip() {
@@ -606,11 +737,38 @@ class GameController extends ChangeNotifier {
     if (t == null) return;
     state.tipsSeen.add(t);
     pendingTip = null;
+    _tipQuietUntil = state.playSeconds + tipGap;
     notifyListeners();
   }
 
-  /// Called by the skills tab when a skill card first appears.
-  void skillRevealed() => _tip('skills');
+  /// R-UMIEJ-3: a skill card shows once the player has held half its first
+  /// price.
+  bool skillRevealed(String id) =>
+      econ.level(id) > 0 ||
+      state.peakTiki >=
+          balance.skill(id).baseCost * balance.ui.skillRevealFraction;
+
+  /// A skill the player can buy right now (the red dot on its tab).
+  bool get skillAffordable => balance.skills.any((sk) {
+    if (!skillRevealed(sk.id)) return false;
+    final cost = econ.skillCost(sk.id);
+    return cost != null && cost <= state.tiki;
+  });
+
+  /// A clock the player can buy right now (the red dot on its tab).
+  bool get generatorAffordable => balance.generators.any(
+    (g) =>
+        econ.generatorUnlocked(g.id) &&
+        econ.generatorCost(g.id) <= state.tiki &&
+        _generatorShown(g.id),
+  );
+
+  bool _generatorShown(String id) {
+    final i = balance.generators.indexWhere((g) => g.id == id);
+    return i == 0 ||
+        econ.owned(id) > 0 ||
+        econ.owned(balance.generators[i - 1].id) > 0;
+  }
 
   // -------------------------------------------------------- offline/save --
 

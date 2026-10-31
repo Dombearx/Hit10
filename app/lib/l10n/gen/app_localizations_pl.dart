@@ -821,33 +821,135 @@ class AppLocalizationsPl extends AppLocalizations {
   String get adFull => 'Pełne';
 
   @override
-  String get tutorialAim => 'Dotknij, gdy będzie dokładnie 5.00';
+  String get tip_golden => 'Złap złoty zegarek — będzie złota runda!';
 
   @override
-  String get tutorialBuy => 'Kup dziadka — będzie trafiał za ciebie!';
+  String get tip_combo => 'Seria! Trafiaj dalej, mnożnik rośnie.';
 
   @override
-  String get tutorialInfo =>
-      'Dziadek próbuje co 5 sekund. Im więcej zegarów, tym więcej Tików!';
+  String get tip_prestige => 'Cofnij czas: od nowa, ale ze stałym bonusem.';
 
   @override
-  String get tutorialGotIt => 'Super!';
+  String get tutorialAim =>
+      'Dotknij, gdy złoty okrąg dojdzie do zegara — na 5.00!';
 
   @override
-  String get tip_skills =>
-      'Nowa umiejętność! Zajrzyj do zakładki Umiejętności.';
+  String tutorialEarned(String cost) {
+    return 'To twoje Tiki. Zbierz $cost na pierwszy zegar!';
+  }
 
   @override
-  String get tip_golden =>
-      'Złota Sekunda! Złap latający zegarek: następna runda będzie złota.';
+  String get tutorialBuy => 'Kup Dziadka — będzie grał za ciebie!';
 
   @override
-  String get tip_combo =>
-      'Seria! Kolejne ŚWIETNIE i PERFEKT podbijają mnożnik.';
+  String tutorialInfo(String rate) {
+    return 'Dziadek zarabia $rate/s za ciebie, nawet offline.';
+  }
 
   @override
-  String get tip_prestige =>
-      'Możesz cofnąć czas: prestiż daje Chronony, czyli stały bonus.';
+  String get tutorialGotIt => 'OK';
+
+  @override
+  String get tip_skills => 'Umiejętności wzmacniają twoje trafienia.';
+
+  @override
+  String get tip_upgrade => 'Ulepszenie: zegar zarabia ×2!';
+
+  @override
+  String get tip_modes => 'Nowy tryb! Dotknij, żeby włączyć.';
+
+  @override
+  String skillBuyLevel(String level) {
+    return 'Kup poz. $level';
+  }
+
+  @override
+  String generatorEarnsEach(String value) {
+    return '+$value/s za sztukę';
+  }
+
+  @override
+  String get helpTitle => 'Jak grać';
+
+  @override
+  String get helpReplay => 'Pokaż samouczek od nowa';
+
+  @override
+  String get help_goal_t => 'Cel';
+
+  @override
+  String get help_goal =>
+      'Stoper liczy sekundy. Dotknij ekranu, gdy pokaże dokładnie 5.00. Im bliżej, tym lepszy wynik: PERFEKT płaci najwięcej, potem ŚWIETNIE i DOBRZE. Za wcześnie albo za późno to pudło — nic nie płaci i przerywa serię.';
+
+  @override
+  String get help_tiki_t => 'Tiki';
+
+  @override
+  String get help_tiki =>
+      'Tiki to pieniądze w grze. Duży licznik u góry pokazuje, ile ich masz, a mniejszy pod nim — ile zarabiasz na sekundę. Wydajesz je w sklepie na dole ekranu.';
+
+  @override
+  String get help_clocks_t => 'Zegary';
+
+  @override
+  String get help_clocks =>
+      'Zegary (zakładka Zegary) grają za ciebie i co sekundę dokładają Tiki — także gdy gra jest zamknięta. Pierwszy jest Dziadek; kupienie zegara odkrywa następny, mocniejszy. Liczba na ikonie to ile ich masz. Przyciski ×1, ×10, ×100 i MAX ustalają, ile kupujesz naraz.';
+
+  @override
+  String get help_upgrades_t => 'Ulepszenia';
+
+  @override
+  String get help_upgrades =>
+      'Gdy masz dość zegarów jednego rodzaju, nad sklepem pojawia się ikona ulepszenia. Dotknij jej, by zobaczyć, co daje — zwykle podwaja zarobek tego zegara. Podwójne ikony to synergie: dwa zegary wzmacniają się nawzajem.';
+
+  @override
+  String get help_skills_t => 'Umiejętności';
+
+  @override
+  String get help_skills =>
+      'Umiejętności (zakładka Umiejętności) wzmacniają twoje własne trafienia: większa nagroda, szersze okna, dłuższa seria. Mają poziomy — „Poziom 2/10” to drugi z dziesięciu możliwych. Dotknij karty, by przeczytać szczegóły.';
+
+  @override
+  String get help_combo_t => 'Seria (combo)';
+
+  @override
+  String get help_combo =>
+      'Kolejne trafienia bez pudła budują serię, a seria mnoży każdą wypłatę (pasek COMBO pod zegarem). Pudło ją zeruje, chyba że masz Tarczę.';
+
+  @override
+  String get help_golden_t => 'Złota Sekunda';
+
+  @override
+  String get help_golden =>
+      'Co jakiś czas po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota i da bonus: szał, fart albo gorącą rękę.';
+
+  @override
+  String get help_modes_t => 'Przełączniki';
+
+  @override
+  String get help_modes =>
+      'Później nad sklepem pojawią się przełączniki: „Na ślepo” (stoper znika przed końcem, ale płaci ×3), „Drugi zegar” (dwa stopery naraz, każda połowa ekranu to jeden) i „Auto-kupiec” (sam kupuje zegary).';
+
+  @override
+  String get help_season_t => 'Wydarzenia';
+
+  @override
+  String get help_season =>
+      'W święta złoty zegarek zmienia wygląd. Znaczek u góry pokazuje postęp: ile świątecznych zegarków udało się złapać (np. 0/5) i ile było trafień (np. 0/50). Za ukończenie jest nagroda.';
+
+  @override
+  String get help_prestige_t => 'Paradoks czasowy';
+
+  @override
+  String get help_prestige =>
+      'Gdy uzbierasz naprawdę dużo, wir u góry zaświeci się. Możesz wtedy cofnąć czas: zaczynasz od nowa, ale dostajesz Chronony — stały bonus do wszystkiego, więc kolejna gra idzie dużo szybciej.';
+
+  @override
+  String get help_icons_t => 'Ikony u góry';
+
+  @override
+  String get help_icons =>
+      'Puchar — osiągnięcia (każde daje +1% dochodu). Wykres — statystyki. Zębatka — ustawienia. Wir — paradoks czasowy. Znak zapytania — ta pomoc.';
 
   @override
   String notificationTitle(String amount) {

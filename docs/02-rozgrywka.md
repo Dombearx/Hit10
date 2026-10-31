@@ -340,15 +340,62 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 
 ## 11. Samouczek (pierwsze uruchomienie)
 
-- **R-TUT-1:**
-  1. Ekran z zegarem i jednym zdaniem: „Dotknij, gdy będzie dokładnie 5.00”.
-  2. Pierwsze 3 rundy z podpowiedzią (strzałka, pulsowanie przy 9.5).
-  3. Po pierwszym trafieniu strzałka do sklepu i do Dziadka (15 Tików).
-  4. Po zakupie krótki dymek „Dziadek będzie próbował za ciebie”.
+Zasady ogólne (po playteście z prawdziwymi testerami i przeglądzie
+dobrych praktyk samouczków mobilnych): uczymy przez działanie, nie przez
+czytanie; jeden dymek = jedna myśl, najwyżej ~10 słów; dymek jest
+przypięty strzałką do rzeczy, o której mówi; nic nie blokuje gry (dymki,
+przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
 
-  Koniec samouczka. Każdy krok da się pominąć.
-- **R-TUT-2:** Nowe mechaniki (pierwsza umiejętność, Złota Sekunda, combo,
-  prestiż) mają jednorazowy dymek z wyjaśnieniem przy pierwszym pojawieniu się.
+- **R-TUT-1:**
+  1. Zegar sam pokazuje moment: złoty znacznik celu na górze tarczy
+     i złoty okrąg, który zamyka się na tarczy dokładnie na 5.00.
+     Działa w samouczku i przez pierwsze 10 rund nowego gracza (przed
+     pierwszym paradoksem). Dymek: „Dotknij, gdy złoty okrąg dojdzie do
+     zegara — na 5.00!”.
+  2. Po pierwszych Tikach, jeśli nie starcza na Dziadka: dymek przy
+     liczniku „To twoje Tiki. Zbierz 15 na pierwszy zegar!”.
+  3. Gdy stać gracza na Dziadka: reszta ekranu przyciemniona, przycisk
+     zakupu Dziadka w złotej, pulsującej obwódce, dymek „Kup Dziadka —
+     będzie grał za ciebie!”. Sklep sam rozwija się na zakładce Zegary.
+  4. Po zakupie (bez przyciemnienia — gracz dalej gra): dymek przy liczniku „/s”: „Dziadek zarabia 0,1/s za
+     ciebie, nawet offline.” Zamyka się przyciskiem OK albo sam po 7 s gry.
+
+  Koniec samouczka. W jego trakcie nie ma znaczka wydarzenia, czerwonych
+  kropek ani Złotej Sekundy (jedna nowa rzecz naraz).
+- **R-TUT-2:** Wskazówki o nowych rzeczach, każda raz, przypięta do swojej
+  rzeczy: pierwsze ulepszenie, na które stać gracza (ikona nad sklepem),
+  pierwsza umiejętność,
+  na którą stać gracza (zakładka), pierwszy przełącznik trybu, Złota
+  Sekunda (gdy leci), seria (licznik combo), prestiż (wir).
+  - Najwyżej jedna naraz; pierwsza po 20 s gry od końca samouczka,
+    kolejne co najmniej 45 s gry po poprzedniej.
+  - Znika, gdy gracz zrobi to, o czym mówi (otworzy zakładkę, dotknie
+    ulepszenia, przełączy tryb, złapie zegarek, otworzy prestiż) — i wtedy
+    już nigdy się nie pojawi; kto odkrył rzecz sam, nie dostaje
+    wskazówki. Wskazówka o serii znika sama po 7 s. Każdą można zamknąć
+    krzyżykiem. Złota Sekunda, która odleciała, wraca ze wskazówką
+    następnym razem.
+  - Wskazówka zignorowana przez 15 s gry chowa się i wraca jeszcze raz
+    (po zwykłym odstępie); zignorowana drugi raz już nie wraca. Bez tego
+    jedna wisząca wskazówka blokowała wszystkie następne (symulacja
+    onboardingu: wskazówka o ulepszeniu wisiała 3–5 minut).
+- **R-TUT-3a (położenie dymków):** dymek nigdy nie zasłania tarczy w czasie
+  gry. Cel nad areną (licznik Tików, „/s”, wir) → dymek na dole areny,
+  pod tarczą, cel świeci obwódką. Cel tuż pod areną (combo, ulepszenia,
+  przełączniki) → dymek pod celem. Sprawdza to
+  `tools/playtest/onboarding.js` (persony grają od zera, raport: kiedy
+  który dymek, jak długo, jak zniknął, czy zasłania tarczę lub cel).
+- **R-TUT-4:** Czerwona kropka na zakładce Zegary / Umiejętności, gdy za
+  nią jest coś, na co gracza stać (po samouczku).
+- **R-TUT-5:** Przycisk „?” w nagłówku otwiera „Jak grać”: zwijana lista
+  (cel, Tiki, zegary, ulepszenia, umiejętności, seria, Złota Sekunda,
+  przełączniki, wydarzenia, paradoks, ikony nagłówka) — same tytuły,
+  dotknięcie rozwija opis — plus „Pokaż samouczek od nowa”.
+- **R-TUT-6:** Karta zegara, którego gracz jeszcze nie ma, mówi najpierw,
+  ile zarabia („+0,1/s za sztukę”), dopiero potem żart. Przycisk
+  umiejętności mówi, co kupuje („Kup poz. 3”), a nie „Poziom 2/10”.
+  Znaczek wydarzenia ma przy liczbach ikony (świąteczny zegarek, tarcza
+  strzelnicza).
 
 ### 11.1 Szczęście początkującego (08, playtest)
 

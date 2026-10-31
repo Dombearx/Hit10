@@ -9,6 +9,7 @@ import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 import '../widgets/buy_button.dart';
+import '../widgets/coach.dart';
 import '../widgets/emoji_card.dart';
 
 /// Horizontal strip of upgrades and synergies that can be bought now,
@@ -37,8 +38,13 @@ class UpgradeStrip extends StatelessWidget {
           final affordable = it.cost <= c.state.tiki;
           return GestureDetector(
             key: Key('upgrade-${it.key}'),
-            onTap: () => _showDetails(context, c, it),
+            onTap: () {
+              c.tipActed('upgrade');
+              _showDetails(context, c, it);
+            },
             child: AnimatedOpacity(
+              // The upgrade tip points at the cheapest one (R-TUT-2).
+              key: i == 0 ? CoachTargets.upgradeStrip : null,
               opacity: affordable ? 1 : 0.55,
               duration: const Duration(milliseconds: 200),
               child: _ItemIcon(item: it, size: 50),

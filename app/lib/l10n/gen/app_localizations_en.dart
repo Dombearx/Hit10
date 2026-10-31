@@ -820,32 +820,134 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adFull => 'Full';
 
   @override
-  String get tutorialAim => 'Tap when the clock shows exactly 5.00';
+  String get tip_golden => 'Catch the golden clock for a golden round!';
 
   @override
-  String get tutorialBuy => 'Buy a grandpa: he will try for you!';
+  String get tip_combo => 'A streak! Keep hitting to grow the multiplier.';
 
   @override
-  String get tutorialInfo =>
-      'Grandpa tries every 5 seconds. More clocks, more Ticks!';
+  String get tip_prestige => 'Rewind time: start over with a permanent bonus.';
 
   @override
-  String get tutorialGotIt => 'Got it!';
+  String get tutorialAim => 'Tap when the gold ring meets the clock — at 5.00!';
 
   @override
-  String get tip_skills => 'New skill! Check the Skills tab.';
+  String tutorialEarned(String cost) {
+    return 'These are your Ticks. Collect $cost for your first clock!';
+  }
 
   @override
-  String get tip_golden =>
-      'A golden second! Catch the flying clock: the next round turns golden.';
+  String get tutorialBuy => 'Buy Grandpa — he\'ll play for you!';
 
   @override
-  String get tip_combo =>
-      'A streak! GREAT and PERFECT hits keep raising the multiplier.';
+  String tutorialInfo(String rate) {
+    return 'Grandpa earns $rate/s for you, even offline.';
+  }
 
   @override
-  String get tip_prestige =>
-      'You can rewind time: a prestige gives Chronons, a permanent bonus.';
+  String get tutorialGotIt => 'OK';
+
+  @override
+  String get tip_skills => 'Skills boost your own hits.';
+
+  @override
+  String get tip_upgrade => 'Upgrade: a clock earns ×2!';
+
+  @override
+  String get tip_modes => 'A new mode! Tap to switch it on.';
+
+  @override
+  String skillBuyLevel(String level) {
+    return 'Buy Lv $level';
+  }
+
+  @override
+  String generatorEarnsEach(String value) {
+    return '+$value/s each';
+  }
+
+  @override
+  String get helpTitle => 'How to play';
+
+  @override
+  String get helpReplay => 'Show the tutorial again';
+
+  @override
+  String get help_goal_t => 'Goal';
+
+  @override
+  String get help_goal =>
+      'The stopwatch counts seconds. Tap the screen when it shows exactly 5.00. The closer, the better: PERFECT pays the most, then GREAT and GOOD. Too early or too late is a miss — it pays nothing and breaks your streak.';
+
+  @override
+  String get help_tiki_t => 'Ticks';
+
+  @override
+  String get help_tiki =>
+      'Ticks are the game\'s money. The big counter at the top shows how many you have, the smaller one below it how much you earn per second. You spend them in the shop at the bottom.';
+
+  @override
+  String get help_clocks_t => 'Clocks';
+
+  @override
+  String get help_clocks =>
+      'Clocks (the Clocks tab) play for you and add Ticks every second — even while the game is closed. Grandpa comes first; buying a clock reveals the next, stronger one. The number on the icon is how many you own. ×1, ×10, ×100 and MAX set how many you buy at once.';
+
+  @override
+  String get help_upgrades_t => 'Upgrades';
+
+  @override
+  String get help_upgrades =>
+      'Once you own enough of one clock, an upgrade icon shows up above the shop. Tap it to see what it does — usually it doubles that clock\'s income. Double icons are synergies: two clocks boosting each other.';
+
+  @override
+  String get help_skills_t => 'Skills';
+
+  @override
+  String get help_skills =>
+      'Skills (the Skills tab) boost your own hits: bigger rewards, wider windows, longer streaks. They have levels — \"Level 2/10\" means the second of ten. Tap a card to read the details.';
+
+  @override
+  String get help_combo_t => 'Streak (combo)';
+
+  @override
+  String get help_combo =>
+      'Hits in a row build a streak, and the streak multiplies every payout (the COMBO bar under the clock). A miss resets it, unless you have a Shield.';
+
+  @override
+  String get help_golden_t => 'Golden Second';
+
+  @override
+  String get help_golden =>
+      'Now and then a golden clock flies across the screen. Tap it and the next round turns golden with a bonus: frenzy, lucky or hot hand.';
+
+  @override
+  String get help_modes_t => 'Toggles';
+
+  @override
+  String get help_modes =>
+      'Later, toggles appear above the shop: \"Blind\" (the stopwatch hides before the end but pays ×3), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).';
+
+  @override
+  String get help_season_t => 'Events';
+
+  @override
+  String get help_season =>
+      'On holidays the golden clock changes its look. The badge at the top shows your progress: how many holiday clocks you caught (e.g. 0/5) and how many hits you made (e.g. 0/50). Finishing pays a reward.';
+
+  @override
+  String get help_prestige_t => 'Time paradox';
+
+  @override
+  String get help_prestige =>
+      'Once you\'ve collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster.';
+
+  @override
+  String get help_icons_t => 'Icons at the top';
+
+  @override
+  String get help_icons =>
+      'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help.';
 
   @override
   String notificationTitle(String amount) {

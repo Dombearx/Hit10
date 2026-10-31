@@ -8,7 +8,11 @@ import 'package:flutter/scheduler.dart';
 import '../ads/rewarded_ads.dart';
 import '../engine/ad_offers.dart';
 import '../engine/round_engine.dart';
+
+import 'package:flutter/widgets.dart';
+
 import 'game_controller.dart';
+import 'widgets/coach.dart';
 
 /// `hit10Qa.tapAt(t)` taps when the current round's stopwatch shows `t`
 /// (starting a round first if needed); `hit10Qa.state()` returns JSON.
@@ -219,6 +223,55 @@ void registerQaHook(GameController c) {
       if (m['tutorialDone'] == true) c.finishTutorial();
     }).toJS,
   );
+  // Coach marks (R-TUT-1/2): what is shown, where, pinned to what.
+  api.setProperty(
+    'coach'.toJS,
+    (() {
+      Map<String, double>? rect(GlobalKey k) {
+        final b = k.currentContext?.findRenderObject();
+        if (b is! RenderBox || !b.attached || !b.hasSize) return null;
+        final o = b.localToGlobal(Offset.zero);
+        return {'l': o.dx, 't': o.dy, 'w': b.size.width, 'h': b.size.height};
+      }
+
+      return jsonEncode({
+        'step': c.tutorialStep.name,
+        'tip': c.pendingTip,
+        'bubble': rect(CoachTargets.bubble),
+        'pinnedTo': CoachTargets.pinned?.toString(),
+        'target': CoachTargets.pinned == null
+            ? null
+            : rect(CoachTargets.pinned!),
+        'screen': {
+          'w': WidgetsBinding
+              .instance
+              .platformDispatcher
+              .views
+              .first
+              .physicalSize
+              .width,
+          'h': WidgetsBinding
+              .instance
+              .platformDispatcher
+              .views
+              .first
+              .physicalSize
+              .height,
+          'dpr': WidgetsBinding
+              .instance
+              .platformDispatcher
+              .views
+              .first
+              .devicePixelRatio,
+        },
+        'arena': rect(CoachTargets.arena),
+        'combo': rect(CoachTargets.combo),
+        'playSeconds': c.state.playSeconds,
+      }).toJS;
+    }).toJS,
+  );
+  api.setProperty('tutorialOk'.toJS, (() => c.nextTutorialStep()).toJS);
+  api.setProperty('openSkills'.toJS, (() => c.tipActed('skills')).toJS);
   api.setProperty('save'.toJS, (() => c.save().toJS).toJS);
   api.setProperty(
     'wipe'.toJS,
