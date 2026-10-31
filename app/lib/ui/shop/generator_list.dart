@@ -14,7 +14,7 @@ import '../theme.dart';
 import '../widgets/ad_offer_sheet.dart';
 import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
-import '../widgets/pulse.dart';
+import '../widgets/coach.dart';
 
 enum BuyAmount { one, ten, hundred, max }
 
@@ -249,11 +249,11 @@ class _GeneratorTile extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           if (!affordable && bag != null) ...[bag, const SizedBox(width: 6)],
-          Pulse(
+          KeyedSubtree(
             // The tutorial's "buy Grandpa" step points here (R-TUT-1).
-            active:
-                id == c.balance.generators.first.id &&
-                c.tutorialStep == TutorialStep.buyGrandpa,
+            key: id == c.balance.generators.first.id
+                ? CoachTargets.grandpaBuy
+                : null,
             child: BuyButton(
               key: Key('buy-$id'),
               label: amount == BuyAmount.one ? null : '×$count',

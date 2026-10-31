@@ -33,9 +33,9 @@ import 'widgets/ad_buttons.dart';
 import 'widgets/effect_chips.dart';
 import 'widgets/mode_row.dart';
 import 'widgets/toasts.dart';
-import 'widgets/tutorial.dart';
 import 'widgets/frenzy_background.dart';
-import 'widgets/pulse.dart';
+import 'widgets/alert_dot.dart';
+import 'widgets/coach.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({super.key});
@@ -178,8 +178,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   TutorialStep? _lastStep;
 
   bool get _alerts {
-    final step = controller.tutorialStep;
-    return step == TutorialStep.shopTour || step == TutorialStep.done;
+    return controller.tutorialStep == TutorialStep.done;
   }
 
   @override
@@ -253,7 +252,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         onAchievements: () =>
                             showAchievements(context, controller),
                         onStats: () => showStats(context, controller),
-                        onPrestige: () => showPrestige(context, controller),
+                        onPrestige: () {
+                          controller.tipActed('prestige');
+                          showPrestige(context, controller);
+                        },
                         onSettings: () => showSettings(context, controller),
                         onHelp: () => showHelp(context, controller),
                       ),
@@ -283,6 +285,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             controller.onPointerDown(e.timeStamp, clock: clock);
                           },
                           child: Stack(
+                            key: CoachTargets.arena,
                             children: [
                               Positioned.fill(
                                 child: RepaintBoundary(
@@ -324,17 +327,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         ),
                       ),
                       ListenableBuilder(
-                        listenable: controller,
-                        builder: (context, _) =>
-                            TutorialBubble(controller: controller),
-                      ),
-                      ListenableBuilder(
+                        key: CoachTargets.combo,
                         listenable: controller,
                         builder: (context, _) =>
                             ComboMeter(controller: controller),
                       ),
                       _pausing(
                         ListenableBuilder(
+                          key: CoachTargets.modeRow,
                           listenable: _slow,
                           builder: (context, _) =>
                               ModeRow(controller: controller),
@@ -367,10 +367,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                 _alerts &&
                                 (_tab != 1 || _shopCollapsed) &&
                                 controller.skillAffordable,
-                            onTab: (t) => setState(() {
-                              _tab = t;
-                              _shopCollapsed = false;
-                            }),
+                            onTab: (t) {
+                              if (t == 1) controller.tipActed('skills');
+                              setState(() {
+                                _tab = t;
+                                _shopCollapsed = false;
+                              });
+                            },
                             onAmount: (a) => setState(() => _amount = a),
                             onToggle: () => setState(
                               () => _shopCollapsed = !_shopCollapsed,
@@ -397,6 +400,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         ),
                     ],
                   ),
+                  // Coach marks over everything but the toasts (R-TUT-1/2).
+                  Positioned.fill(child: CoachOverlay(controller: controller)),
                   Positioned(
                     left: 0,
                     right: 0,
@@ -489,10 +494,15 @@ class _Header extends StatelessWidget {
                       child: controller.state.tutorialDone
                           ? FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: SeasonBadge(
-                                controller: controller,
-                                onTap: () =>
-                                    showSeasonDialog(context, controller),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
+                                child: SeasonBadge(
+                                  controller: controller,
+                                  onTap: () =>
+                                      showSeasonDialog(context, controller),
+                                ),
                               ),
                             )
                           : null,
@@ -502,17 +512,21 @@ class _Header extends StatelessWidget {
                   const SizedBox(width: 6),
                   _icon('gear', const Key('open-settings'), onSettings),
                   const SizedBox(width: 6),
-                  _icon(
-                    'cyclone',
-                    const Key('open-prestige'),
-                    onPrestige,
-                    glow: controller.engine.canPrestige(),
+                  KeyedSubtree(
+                    key: CoachTargets.prestige,
+                    child: _icon(
+                      'cyclone',
+                      const Key('open-prestige'),
+                      onPrestige,
+                      glow: controller.engine.canPrestige(),
+                    ),
                   ),
                   const SizedBox(width: 10),
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                key: CoachTargets.balance,
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
@@ -535,6 +549,7 @@ class _Header extends StatelessWidget {
               ),
               EffectChips(controller: controller),
               AnimatedOpacity(
+                key: CoachTargets.perSecond,
                 opacity: ps > 0 ? 1 : 0,
                 duration: const Duration(milliseconds: 300),
                 child: Text(
@@ -586,7 +601,8 @@ class _ShopHeader extends StatelessWidget {
       key: Key('tab-$i'),
       onTap: () => onTab(i),
       child: AlertDot(
-        key: Key('tab-$i-alert-${i == 0 ? clocksAlert : skillsAlert}'),
+        key: i == 0 ? CoachTargets.clocksTab : CoachTargets.skillsTab,
+        dotKey: Key('tab-$i-alert-${i == 0 ? clocksAlert : skillsAlert}'),
         show: i == 0 ? clocksAlert : skillsAlert,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),

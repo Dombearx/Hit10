@@ -40,39 +40,34 @@ class _Help extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
-        for (final (emoji, title, body) in sections)
+        // Titles only; a tap opens one (a scannable list, not a wall of
+        // text).
+        for (final (i, (emoji, title, body)) in sections.indexed)
           Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.all(12),
+            key: Key('help-$emoji'),
+            margin: const EdgeInsets.only(bottom: 8),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Palette.outline, width: 2),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            clipBehavior: Clip.antiAlias,
+            child: ExpansionTile(
+              initiallyExpanded: i == 0,
+              shape: const Border(),
+              collapsedShape: const Border(),
+              tilePadding: const EdgeInsets.symmetric(horizontal: 12),
+              childrenPadding: const EdgeInsets.fromLTRB(56, 0, 14, 12),
+              expandedAlignment: Alignment.centerLeft,
+              leading: Image.asset(EmojiArt.path(emoji), width: 30, height: 30),
+              title: Text(
+                title,
+                style: const TextStyle(fontFamily: Fonts.display, fontSize: 18),
+              ),
+              iconColor: Palette.outline,
+              collapsedIconColor: Palette.outline,
               children: [
-                Image.asset(EmojiArt.path(emoji), width: 32, height: 32),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontFamily: Fonts.display,
-                          fontSize: 18,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        body,
-                        style: const TextStyle(fontSize: 14, height: 1.35),
-                      ),
-                    ],
-                  ),
-                ),
+                Text(body, style: const TextStyle(fontSize: 14, height: 1.35)),
               ],
             ),
           ),

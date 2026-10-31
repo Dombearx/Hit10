@@ -1511,79 +1511,67 @@ abstract class AppLocalizations {
   /// No description provided for @tip_golden.
   ///
   /// In en, this message translates to:
-  /// **'A golden second! Catch the flying clock: the next round turns golden.'**
+  /// **'Catch the golden clock for a golden round!'**
   String get tip_golden;
 
   /// No description provided for @tip_combo.
   ///
   /// In en, this message translates to:
-  /// **'A streak! GREAT and PERFECT hits keep raising the multiplier.'**
+  /// **'A streak! Keep hitting to grow the multiplier.'**
   String get tip_combo;
 
   /// No description provided for @tip_prestige.
   ///
   /// In en, this message translates to:
-  /// **'You can rewind time: a prestige gives Chronons, a permanent bonus.'**
+  /// **'Rewind time: start over with a permanent bonus.'**
   String get tip_prestige;
 
   /// No description provided for @tutorialAim.
   ///
   /// In en, this message translates to:
-  /// **'Stop the clock at 5.00! Tap the screen exactly when it shows 5.00 — the closer, the more Ticks.'**
+  /// **'Tap when the gold ring meets the clock — at 5.00!'**
   String get tutorialAim;
 
   /// No description provided for @tutorialEarned.
   ///
   /// In en, this message translates to:
-  /// **'Nice! Hits earn you Ticks — see the counter at the top. Collect {cost} to buy your first clock in the shop below.'**
+  /// **'These are your Ticks. Collect {cost} for your first clock!'**
   String tutorialEarned(String cost);
 
   /// No description provided for @tutorialBuy.
   ///
   /// In en, this message translates to:
-  /// **'You can afford a Grandpa ({cost} Ticks)! Buy him: tap the glowing button in the shop below.'**
-  String tutorialBuy(String cost);
+  /// **'Buy Grandpa — he\'ll play for you!'**
+  String get tutorialBuy;
 
   /// No description provided for @tutorialInfo.
   ///
   /// In en, this message translates to:
-  /// **'Grandpa plays for you: he earns {rate} Ticks a second, even when you don\'t tap and when the game is closed. Every clock adds more.'**
+  /// **'Grandpa earns {rate}/s for you, even offline.'**
   String tutorialInfo(String rate);
-
-  /// No description provided for @tutorialShop.
-  ///
-  /// In en, this message translates to:
-  /// **'The shop has two tabs: Clocks earn on their own, Skills make your own hits pay more. A red dot marks something new, and the ? button at the top explains everything.'**
-  String get tutorialShop;
-
-  /// No description provided for @tutorialNext.
-  ///
-  /// In en, this message translates to:
-  /// **'Next'**
-  String get tutorialNext;
 
   /// No description provided for @tutorialGotIt.
   ///
   /// In en, this message translates to:
-  /// **'Got it!'**
+  /// **'OK'**
   String get tutorialGotIt;
 
   /// No description provided for @tip_skills.
   ///
   /// In en, this message translates to:
-  /// **'A skill unlocked! Check the Skills tab: it boosts your own hits.'**
+  /// **'Skills boost your own hits.'**
   String get tip_skills;
 
   /// No description provided for @tip_upgrade.
   ///
   /// In en, this message translates to:
-  /// **'An upgrade appeared above the shop! Tap its icon to see what it does — usually it doubles a clock\'s income.'**
+  /// **'Upgrade: a clock earns ×2!'**
   String get tip_upgrade;
 
   /// No description provided for @tip_modes.
   ///
   /// In en, this message translates to:
-  /// **'A new toggle above the shop! Tap it to switch it on or off — the ? button explains it.'**
+  /// **'A new mode! Tap to switch it on.'**
   String get tip_modes;
 
   /// No description provided for @skillBuyLevel.

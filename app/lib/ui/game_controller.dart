@@ -51,9 +51,8 @@ class ClockSlot {
   double lastHeartbeat = -10;
 }
 
-/// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does, what
-/// the shop holds.
-enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, shopTour, done }
+/// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does.
+enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, done }
 
 /// Glue between the pure engine and the screen: owns the monotonic clock
 /// (T-8), turns pointer-downs into grades (T-9), runs the economy tick
@@ -231,6 +230,7 @@ class GameController extends ChangeNotifier {
       state.secondClockOn = secondClock;
       _rebuildClocks();
     }
+    tipActed('modes');
     sfx.play('tick');
     notifyListeners();
     unawaited(save());
@@ -300,7 +300,13 @@ class GameController extends ChangeNotifier {
       final golden = engine.goldenVisibleLeft > 0;
       if (golden && !_goldenShown) sfx.play('chimes', gain: 0.7);
       _goldenShown = golden;
-      if (golden) _tip('golden');
+      if (golden) {
+        _tip('golden');
+      } else if (pendingTip == 'golden') {
+        // It flew away: say it again next time (not marked as seen).
+        pendingTip = null;
+      }
+      _autoAdvance();
       if (engine.autoBuy(_econAcc) != null) sfx.play('buy', gain: 0.4);
       _econAcc = 0;
       notifyListeners();
@@ -406,6 +412,7 @@ class GameController extends ChangeNotifier {
   /// The player tapped the flying golden clock (R-ZLOTA-1).
   void claimGolden() {
     if (!engine.claimGolden()) return;
+    tipActed('golden');
     sfx.play('coins');
     if (settings.haptics) unawaited(HapticFeedback.mediumImpact());
     _afterSeasonProgress();
@@ -518,9 +525,21 @@ class GameController extends ChangeNotifier {
     return r;
   }
 
-  BuyResult buyUpgrade(String id) => _afterBuy(engine.buyUpgrade(id));
-  BuyResult buySynergy(String id) => _afterBuy(engine.buySynergy(id));
-  BuyResult buySkill(String id) => _afterBuy(engine.buySkill(id));
+  BuyResult buyUpgrade(String id) {
+    tipActed('upgrade');
+    return _afterBuy(engine.buyUpgrade(id));
+  }
+
+  BuyResult buySynergy(String id) {
+    tipActed('upgrade');
+    return _afterBuy(engine.buySynergy(id));
+  }
+
+  BuyResult buySkill(String id) {
+    tipActed('skills');
+    return _afterBuy(engine.buySkill(id));
+  }
+
   BuyResult buyPerk(String id) => _afterBuy(engine.buyPerk(id));
 
   /// The rewind animation's sound and long buzz (docs/04 §3).
@@ -584,34 +603,32 @@ class GameController extends ChangeNotifier {
       }
       return state.tiki > 0 ? TutorialStep.earned : TutorialStep.aim;
     }
-    return state.tipsSeen.contains(_grandpaSeen)
-        ? TutorialStep.shopTour
-        : TutorialStep.grandpaInfo;
+    return TutorialStep.grandpaInfo;
   }
 
-  static const _grandpaSeen = 'tut:grandpa';
+  /// The stopwatch shows when to tap (closing gold ring, R-TUT-1): during
+  /// the tutorial and the first rounds of a new player.
+  bool get coachTiming =>
+      !state.tutorialDone ||
+      (state.prestiges == 0 && state.stats.rounds < coachRounds);
+  static const coachRounds = 10;
 
   void _advanceTutorial() {
     if (!state.tutorialDone) notifyListeners();
   }
 
-  /// "Next" on a tutorial step that only explains something.
+  /// "OK" on Grandpa's step (it also closes by itself, [_autoAdvance]).
   void nextTutorialStep() {
-    switch (tutorialStep) {
-      case TutorialStep.grandpaInfo:
-        state.tipsSeen.add(_grandpaSeen);
-        notifyListeners();
-      case TutorialStep.shopTour:
-        finishTutorial();
-      default:
-        return;
-    }
+    if (tutorialStep == TutorialStep.grandpaInfo) finishTutorial();
   }
 
   /// Finishes (or skips) the tutorial (R-TUT-1).
   void finishTutorial() {
     state.tutorialDone = true;
     engine.goldenEnabled = true;
+    // A breather before the first tip (R-TUT-2: tips are spaced out).
+    _tipQuietUntil = state.playSeconds + tipGapAfterTutorial;
+    _shownAt = null;
     notifyListeners();
     unawaited(save());
   }
@@ -620,17 +637,66 @@ class GameController extends ChangeNotifier {
   /// Tips already seen stay seen.
   void replayTutorial() {
     state.tutorialDone = false;
-    state.tipsSeen.remove(_grandpaSeen);
     pendingTip = null;
+    _shownAt = null;
     engine.goldenEnabled = false;
     notifyListeners();
     unawaited(save());
   }
 
+  // Tips (R-TUT-2): one at a time, spaced out, and gone as soon as the
+  // player does what they say.
+  static const tipGap = 45.0; // s of play between two tips
+  static const tipGapAfterTutorial = 20.0;
+  static const infoSeconds = 7.0; // tips that ask for nothing close alone
+  double _tipQuietUntil = 0;
+
+  /// Play time when the current info bubble appeared.
+  double? _shownAt;
+  Object? _shownFor;
+
   void _tip(String id) {
     if (!state.tutorialDone || pendingTip != null) return;
     if (state.tipsSeen.contains(id)) return;
+    if (state.playSeconds < _tipQuietUntil) return;
     pendingTip = id;
+  }
+
+  /// The player did what tip [id] asked: it closes and is never shown again.
+  void tipActed(String id) {
+    if (pendingTip == id) {
+      dismissTip();
+    } else {
+      state.tipsSeen.add(id);
+    }
+  }
+
+  /// Info-only bubbles (Grandpa's step, the combo and prestige tips) close
+  /// by themselves after [infoSeconds] of play.
+  void _autoAdvance() {
+    final key = tutorialStep == TutorialStep.grandpaInfo
+        ? TutorialStep.grandpaInfo
+        : pendingTip == 'combo'
+        ? 'combo'
+        : null;
+    if (key == null) {
+      _shownAt = null;
+      _shownFor = null;
+      return;
+    }
+    if (_shownFor != key) {
+      _shownFor = key;
+      _shownAt = state.playSeconds;
+      return;
+    }
+    if (state.playSeconds - _shownAt! < infoSeconds) return;
+    _shownAt = null;
+    _shownFor = null;
+    if (key == 'combo') {
+      dismissTip();
+    } else {
+      nextTutorialStep();
+    }
   }
 
   /// Tips for things that appear outside the screen the player looks at
@@ -642,7 +708,7 @@ class GameController extends ChangeNotifier {
         econ.availableSynergies().isNotEmpty) {
       _tip('upgrade');
     }
-    if (balance.skills.any((sk) => skillRevealed(sk.id))) _tip('skills');
+    if (skillAffordable) _tip('skills');
     if (engine.blindUnlocked() ||
         state.perks.contains('secondClock') ||
         state.perks.contains('autoBuyer')) {
@@ -656,6 +722,7 @@ class GameController extends ChangeNotifier {
     if (t == null) return;
     state.tipsSeen.add(t);
     pendingTip = null;
+    _tipQuietUntil = state.playSeconds + tipGap;
     notifyListeners();
   }
 

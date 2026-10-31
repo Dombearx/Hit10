@@ -16,7 +16,7 @@ void main() {
   GameController controller(GameState s) =>
       GameController(balance: balance, state: s, store: MemorySaveStore());
 
-  test('steps: aim, earned, buy, grandpa info, shop tour, done', () {
+  test('steps: aim, earned, buy, grandpa info, done', () {
     final s = GameState();
     final c = controller(s);
     expect(c.tutorialStep, TutorialStep.aim);
@@ -26,8 +26,6 @@ void main() {
     expect(c.tutorialStep, TutorialStep.buyGrandpa);
     c.buyGenerators('grandpa', 1);
     expect(c.tutorialStep, TutorialStep.grandpaInfo);
-    c.nextTutorialStep();
-    expect(c.tutorialStep, TutorialStep.shopTour);
     expect(s.tutorialDone, isFalse);
     c.nextTutorialStep();
     expect(c.tutorialStep, TutorialStep.done);
@@ -57,7 +55,52 @@ void main() {
     c.dismissTip();
     s.owned['grandpa'] = 10;
     c.checkTips();
+    // Tips are spaced out: nothing right after the last one…
+    expect(c.pendingTip, isNull);
+    s.playSeconds += GameController.tipGap + 1;
+    c.checkTips();
     expect(c.pendingTip, 'upgrade');
+  });
+
+  test('a tip closes for good once the player does what it says', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..owned['grandpa'] = 10
+      ..tiki = 1e6;
+    final c = controller(s);
+    c.checkTips();
+    expect(c.pendingTip, 'upgrade');
+    c.buyUpgrade('grandpa');
+    expect(c.pendingTip, isNull);
+    expect(s.tipsSeen, contains('upgrade'));
+    // Found on one's own: never explained afterwards.
+    c.tipActed('skills');
+    expect(s.tipsSeen, contains('skills'));
+  });
+
+  test('the first tip waits a moment after the tutorial', () {
+    final s = GameState()
+      ..tiki = 1000
+      ..peakTiki = 1000;
+    final c = controller(s);
+    c.finishTutorial();
+    c.checkTips();
+    expect(c.pendingTip, isNull);
+    s.playSeconds += GameController.tipGapAfterTutorial + 1;
+    c.checkTips();
+    expect(c.pendingTip, isNotNull);
+  });
+
+  test('the stopwatch shows the timing to new players only', () {
+    final s = GameState();
+    final c = controller(s);
+    expect(c.coachTiming, isTrue);
+    s
+      ..tutorialDone = true
+      ..stats.rounds = GameController.coachRounds - 1;
+    expect(c.coachTiming, isTrue);
+    s.stats.rounds = GameController.coachRounds;
+    expect(c.coachTiming, isFalse);
   });
 
   Future<GameController> pump(WidgetTester tester, GameState s) async {
@@ -87,10 +130,18 @@ void main() {
     expect(find.byKey(const Key('tutorial-grandpaInfo')), findsOneWidget);
     await tester.tap(find.byKey(const Key('tutorial-ok')));
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.byKey(const Key('tutorial-shopTour')), findsOneWidget);
-    await tester.tap(find.byKey(const Key('tutorial-ok')));
-    await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.tutorialDone, isTrue);
+  });
+
+  testWidgets('the coach points at its target', (tester) async {
+    final s = GameState()..tiki = 20;
+    await pump(tester, s);
+    await tester.pump(const Duration(milliseconds: 100));
+    final bubble = tester.getRect(find.byKey(const Key('tutorial-buyGrandpa')));
+    final button = tester.getRect(find.byKey(const Key('buy-grandpa')));
+    // Right above Grandpa's button, not somewhere in the middle.
+    expect(bubble.bottom, lessThanOrEqualTo(button.top));
+    expect(button.top - bubble.bottom, lessThan(40));
   });
 
   testWidgets('a red dot marks an affordable skill on the other tab', (
@@ -111,7 +162,6 @@ void main() {
     await tester.tap(find.byKey(const Key('open-help')));
     await tester.pump(const Duration(milliseconds: 500));
     expect(find.text('Jak grać'), findsOneWidget);
-    expect(find.byKey(const Key('help-replay')), findsNothing); // below
     await tester.scrollUntilVisible(
       find.byKey(const Key('help-replay')),
       200,

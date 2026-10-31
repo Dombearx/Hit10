@@ -821,57 +821,42 @@ class AppLocalizationsPl extends AppLocalizations {
   String get adFull => 'Pełne';
 
   @override
-  String get tip_golden =>
-      'Złota Sekunda! Złap latający zegarek: następna runda będzie złota.';
+  String get tip_golden => 'Złap złoty zegarek — będzie złota runda!';
 
   @override
-  String get tip_combo =>
-      'Seria! Kolejne ŚWIETNIE i PERFEKT podbijają mnożnik.';
+  String get tip_combo => 'Seria! Trafiaj dalej, mnożnik rośnie.';
 
   @override
-  String get tip_prestige =>
-      'Możesz cofnąć czas: prestiż daje Chronony, czyli stały bonus.';
+  String get tip_prestige => 'Cofnij czas: od nowa, ale ze stałym bonusem.';
 
   @override
   String get tutorialAim =>
-      'Zatrzymaj stoper na 5.00! Dotknij ekranu dokładnie wtedy, gdy pokaże 5.00 — im bliżej, tym więcej Tików.';
+      'Dotknij, gdy złoty okrąg dojdzie do zegara — na 5.00!';
 
   @override
   String tutorialEarned(String cost) {
-    return 'Brawo! Za trafienia dostajesz Tiki — licznik na górze. Uzbieraj $cost, a kupisz w sklepie na dole pierwszy zegar.';
+    return 'To twoje Tiki. Zbierz $cost na pierwszy zegar!';
   }
 
   @override
-  String tutorialBuy(String cost) {
-    return 'Stać cię już na Dziadka ($cost Tików)! Kup go: dotknij świecącego przycisku w sklepie poniżej.';
-  }
+  String get tutorialBuy => 'Kup Dziadka — będzie grał za ciebie!';
 
   @override
   String tutorialInfo(String rate) {
-    return 'Dziadek gra za ciebie: zarabia $rate Tików na sekundę, nawet gdy nie klikasz i gdy gra jest zamknięta. Każdy kolejny zegar dokłada więcej.';
+    return 'Dziadek zarabia $rate/s za ciebie, nawet offline.';
   }
 
   @override
-  String get tutorialShop =>
-      'Sklep ma dwie zakładki: Zegary zarabiają same, a Umiejętności sprawiają, że twoje trafienia płacą więcej. Nowe rzeczy oznaczy czerwona kropka, a przycisk ? u góry wszystko wyjaśnia.';
+  String get tutorialGotIt => 'OK';
 
   @override
-  String get tutorialNext => 'Dalej';
+  String get tip_skills => 'Umiejętności wzmacniają twoje trafienia.';
 
   @override
-  String get tutorialGotIt => 'Super!';
+  String get tip_upgrade => 'Ulepszenie: zegar zarabia ×2!';
 
   @override
-  String get tip_skills =>
-      'Odblokowano umiejętność! Zajrzyj do zakładki Umiejętności: wzmacnia twoje własne trafienia.';
-
-  @override
-  String get tip_upgrade =>
-      'Nad sklepem pojawiło się ulepszenie! Dotknij ikony, żeby zobaczyć, co daje — zwykle podwaja zarobek zegara.';
-
-  @override
-  String get tip_modes =>
-      'Nowy przełącznik nad sklepem! Dotknij go, by włączyć lub wyłączyć — opis znajdziesz pod ?.';
+  String get tip_modes => 'Nowy tryb! Dotknij, żeby włączyć.';
 
   @override
   String skillBuyLevel(String level) {

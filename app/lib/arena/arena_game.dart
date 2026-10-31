@@ -803,6 +803,8 @@ class Dial extends Component {
       );
     }
 
+    if (ctrl.coachTiming && !slot.blind) _drawCoach(canvas, c, r, t, running);
+
     // Digits; a perfect result snaps to 10.00 (R-RUNDA-9).
     final grade = round.lastGrade;
     final inResult = round.phase == RoundPhase.result && grade != null;
@@ -872,6 +874,47 @@ class Dial extends Component {
       }
       final p = _sub!;
       p.paint(canvas, c.translate(-p.width / 2, r * 0.3));
+    }
+  }
+}
+
+extension on Dial {
+  /// First rounds (R-TUT-1): a gold marker where the arc ends, and a ring
+  /// that closes onto the dial exactly at the target — the timing is shown,
+  /// not explained.
+  void _drawCoach(Canvas canvas, Offset c, double r, double t, bool running) {
+    final target = stage.game.controller.balance.round.target;
+    // The marker: a gold notch at twelve o'clock, where the arc completes.
+    final top = c.translate(0, -r);
+    final w = r * 0.09;
+    canvas.drawPath(
+      Path()
+        ..moveTo(top.dx - w, top.dy - w * 1.7)
+        ..lineTo(top.dx + w, top.dy - w * 1.7)
+        ..lineTo(top.dx, top.dy - w * 0.2)
+        ..close(),
+      Paint()..color = Palette.perfectDeep,
+    );
+    if (!running) return;
+    const lead = 0.9; // s before the target the ring appears
+    final left = target - t;
+    if (left > lead || left < -0.08) return;
+    final k = (left / lead).clamp(0.0, 1.0);
+    final ring = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = r * (0.03 + 0.03 * (1 - k))
+      ..color = Palette.perfect.withValues(alpha: 0.35 + 0.65 * (1 - k));
+    canvas.drawCircle(c, r * (1 + 0.6 * k) + r * 0.02, ring);
+    if (k < 0.12) {
+      // "Now!": the ring lands and the rim glows.
+      canvas.drawCircle(
+        c,
+        r * 1.06,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = r * 0.1
+          ..color = Palette.perfect.withValues(alpha: 0.6),
+      );
     }
   }
 }

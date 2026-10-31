@@ -820,57 +820,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adFull => 'Full';
 
   @override
-  String get tip_golden =>
-      'A golden second! Catch the flying clock: the next round turns golden.';
+  String get tip_golden => 'Catch the golden clock for a golden round!';
 
   @override
-  String get tip_combo =>
-      'A streak! GREAT and PERFECT hits keep raising the multiplier.';
+  String get tip_combo => 'A streak! Keep hitting to grow the multiplier.';
 
   @override
-  String get tip_prestige =>
-      'You can rewind time: a prestige gives Chronons, a permanent bonus.';
+  String get tip_prestige => 'Rewind time: start over with a permanent bonus.';
 
   @override
-  String get tutorialAim =>
-      'Stop the clock at 5.00! Tap the screen exactly when it shows 5.00 — the closer, the more Ticks.';
+  String get tutorialAim => 'Tap when the gold ring meets the clock — at 5.00!';
 
   @override
   String tutorialEarned(String cost) {
-    return 'Nice! Hits earn you Ticks — see the counter at the top. Collect $cost to buy your first clock in the shop below.';
+    return 'These are your Ticks. Collect $cost for your first clock!';
   }
 
   @override
-  String tutorialBuy(String cost) {
-    return 'You can afford a Grandpa ($cost Ticks)! Buy him: tap the glowing button in the shop below.';
-  }
+  String get tutorialBuy => 'Buy Grandpa — he\'ll play for you!';
 
   @override
   String tutorialInfo(String rate) {
-    return 'Grandpa plays for you: he earns $rate Ticks a second, even when you don\'t tap and when the game is closed. Every clock adds more.';
+    return 'Grandpa earns $rate/s for you, even offline.';
   }
 
   @override
-  String get tutorialShop =>
-      'The shop has two tabs: Clocks earn on their own, Skills make your own hits pay more. A red dot marks something new, and the ? button at the top explains everything.';
+  String get tutorialGotIt => 'OK';
 
   @override
-  String get tutorialNext => 'Next';
+  String get tip_skills => 'Skills boost your own hits.';
 
   @override
-  String get tutorialGotIt => 'Got it!';
+  String get tip_upgrade => 'Upgrade: a clock earns ×2!';
 
   @override
-  String get tip_skills =>
-      'A skill unlocked! Check the Skills tab: it boosts your own hits.';
-
-  @override
-  String get tip_upgrade =>
-      'An upgrade appeared above the shop! Tap its icon to see what it does — usually it doubles a clock\'s income.';
-
-  @override
-  String get tip_modes =>
-      'A new toggle above the shop! Tap it to switch it on or off — the ? button explains it.';
+  String get tip_modes => 'A new mode! Tap to switch it on.';
 
   @override
   String skillBuyLevel(String level) {
