@@ -533,7 +533,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_fastForward_desc.
   ///
   /// In en, this message translates to:
-  /// **'The stopwatch starts later, at the same pace. Shorter rounds, more of them per minute.'**
+  /// **'The stopwatch starts later — shorter rounds.'**
   String get skill_fastForward_desc;
 
   /// No description provided for @skill_fastForward_label.
@@ -569,7 +569,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_wideEye_desc.
   ///
   /// In en, this message translates to:
-  /// **'Wider GREAT and GOOD windows — you hit more often. Your clocks hit better too.'**
+  /// **'Wider GREAT and GOOD windows.'**
   String get skill_wideEye_desc;
 
   /// No description provided for @skill_wideEye_label.
@@ -587,7 +587,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_combo_desc.
   ///
   /// In en, this message translates to:
-  /// **'A higher streak cap; the streak multiplies the whole payout.'**
+  /// **'A higher streak cap; the streak boosts payouts.'**
   String get skill_combo_desc;
 
   /// No description provided for @skill_combo_label.
@@ -605,7 +605,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_magnet_desc.
   ///
   /// In en, this message translates to:
-  /// **'A wider PERFECT window: 4.99 or 5.01 can be a PERFECT. The 5.00 jackpot stays as is.'**
+  /// **'A wider PERFECT window.'**
   String get skill_magnet_desc;
 
   /// No description provided for @skill_magnet_label.
@@ -641,7 +641,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_bulletTime_desc.
   ///
   /// In en, this message translates to:
-  /// **'All your hit windows are wider. The clock runs the same.'**
+  /// **'All your hit windows are wider.'**
   String get skill_bulletTime_desc;
 
   /// No description provided for @skill_bulletTime_label.
@@ -677,7 +677,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_shield_desc.
   ///
   /// In en, this message translates to:
-  /// **'A miss uses a charge instead of breaking the streak.'**
+  /// **'A miss uses a charge, not your streak.'**
   String get skill_shield_desc;
 
   /// No description provided for @skill_shield_label.
@@ -3403,6 +3403,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fives'**
   String get season_fiveDay_items;
+
+  /// No description provided for @skill_power_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Each level raises the fixed reward for a hit by 150% of the base reward. You feel it most early on, before your clocks earn much.'**
+  String get skill_power_info;
+
+  /// No description provided for @skill_fastForward_info.
+  ///
+  /// In en, this message translates to:
+  /// **'The stopwatch starts from a higher value at the same pace, so rounds are shorter and you get more of them per minute. At least 4 seconds always remain to find the rhythm.'**
+  String get skill_fastForward_info;
+
+  /// No description provided for @skill_ticking_info.
+  ///
+  /// In en, this message translates to:
+  /// **'In the last second before the target you hear a tick every tenth of a second (with vibration if it\'s on). It helps you feel the moment.'**
+  String get skill_ticking_info;
+
+  /// No description provided for @skill_wideEye_info.
+  ///
+  /// In en, this message translates to:
+  /// **'GREAT and GOOD windows grow 8% per level, so you hit more often and lose your streak less. It works for your clocks\' hits too — their income grows with yours.'**
+  String get skill_wideEye_info;
+
+  /// No description provided for @skill_combo_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Raises the streak cap by 2 steps per level. Each streak step adds 5% to a hit\'s payout (the jackpot and Echo included).'**
+  String get skill_combo_info;
+
+  /// No description provided for @skill_magnet_info.
+  ///
+  /// In en, this message translates to:
+  /// **'The PERFECT window grows 1 ms per level, so 4.99 or 5.01 can be a PERFECT too. The 5.00 jackpot still needs exactly 5.00 on the dial. Your clocks hit PERFECT more often too.'**
+  String get skill_magnet_info;
+
+  /// No description provided for @skill_echo_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Each hit also pays 0.5 s of your clocks\' income per level (PERFECT in full, GREAT 1/3, GOOD 1/10). That keeps tapping worth it when your clocks earn a lot.'**
+  String get skill_echo_info;
+
+  /// No description provided for @skill_bulletTime_info.
+  ///
+  /// In en, this message translates to:
+  /// **'All your windows (PERFECT, GREAT, GOOD, CLOSE) are wider — up to ×2.5 at max level. The clock runs the same; you feel a heartbeat near the target. Not for your clocks.'**
+  String get skill_bulletTime_info;
+
+  /// No description provided for @skill_luck_info.
+  ///
+  /// In en, this message translates to:
+  /// **'A 2% chance per level that a GREAT becomes a PERFECT and a GOOD a GREAT. It never gives the 5.00 jackpot.'**
+  String get skill_luck_info;
+
+  /// No description provided for @skill_shield_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Each level is a Shield charge: a miss uses a charge instead of breaking your streak. Charges refill every 10 streak steps.'**
+  String get skill_shield_info;
+
+  /// No description provided for @skill_goldenTouch_info.
+  ///
+  /// In en, this message translates to:
+  /// **'The Golden Second comes 5% more often per level, and its effects (Frenzy, Lucky, Hot hand) are 5% stronger.'**
+  String get skill_goldenTouch_info;
 }
 
 class _AppLocalizationsDelegate

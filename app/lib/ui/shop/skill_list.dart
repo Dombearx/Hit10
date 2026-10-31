@@ -123,53 +123,69 @@ class _SkillTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          EmojiCard(
-            art: skillArt[id]!,
-            size: 54,
-            badge: level > 0 ? '$level' : null,
-          ),
-          const SizedBox(width: 12),
+          // Everything but the buy button opens the details (playtest: the
+          // descriptions were cut and the full text was nowhere).
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  skillName(l, id),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+            child: GestureDetector(
+              key: Key('skill-info-$id'),
+              behavior: HitTestBehavior.opaque,
+              onTap: () => showSkillInfo(context, c, id),
+              child: Row(
+                children: [
+                  EmojiCard(
+                    art: skillArt[id]!,
+                    size: 54,
+                    badge: level > 0 ? '$level' : null,
                   ),
-                ),
-                Text(
-                  maxed
-                      ? l.skillEffectMax(label, now)
-                      : l.skillEffect(label, now, next),
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Palette.perfectDeep,
-                  ),
-                ),
-                if (id == 'power' || id == 'echo')
-                  Text(
-                    _perfectNow(c, l, f),
-                    key: Key('perfect-now-$id'),
-                    style: const TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w700,
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                skillName(l, id),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.info_outline,
+                              size: 16,
+                              color: Palette.outline.withValues(alpha: 0.5),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          maxed
+                              ? l.skillEffectMax(label, now)
+                              : l.skillEffect(label, now, next),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Palette.perfectDeep,
+                          ),
+                        ),
+                        Text(
+                          skillDescription(l, id),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.2,
+                            color: Palette.outline.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                Text(
-                  skillDescription(l, id),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    height: 1.2,
-                    color: Palette.outline.withValues(alpha: 0.7),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -250,5 +266,107 @@ String _perfectNow(GameController c, AppLocalizations l, Fmt f) {
   return l.perfectNowSeconds(
     f.n(pay),
     secs.replaceAll('.', l.decimalSeparator),
+  );
+}
+
+/// A skill's details: everything the card has to cut short (docs/04).
+Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
+  return showModalBottomSheet<void>(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (context) => ListenableBuilder(
+      listenable: c,
+      builder: (context, _) {
+        final l = AppLocalizations.of(context);
+        final f = Fmt.of(context, c);
+        final cfg = c.balance.skill(id);
+        final level = c.econ.level(id);
+        final maxed = level >= cfg.maxLevel;
+        final cost = c.econ.skillCost(id);
+        final (now, next) = skillEffectValues(l, c.econ, id, level);
+        final label = skillLabel(l, id);
+        return Container(
+          margin: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: Palette.outline, width: 3),
+          ),
+          child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    EmojiCard(
+                      art: skillArt[id]!,
+                      size: 64,
+                      badge: level > 0 ? '$level' : null,
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            skillName(l, id),
+                            style: const TextStyle(
+                              fontFamily: Fonts.display,
+                              fontSize: 22,
+                            ),
+                          ),
+                          Text(l.skillLevel(level, cfg.maxLevel)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  maxed
+                      ? l.skillEffectMax(label, now)
+                      : l.skillEffect(label, now, next),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Palette.perfectDeep,
+                  ),
+                ),
+                if (id == 'power' || id == 'echo')
+                  Text(
+                    _perfectNow(c, l, f),
+                    key: Key('perfect-now-$id'),
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                const SizedBox(height: 8),
+                Text(
+                  skillInfo(l, id),
+                  key: const Key('skill-info-text'),
+                  style: const TextStyle(fontSize: 14.5, height: 1.35),
+                ),
+                const SizedBox(height: 16),
+                Center(
+                  child: BuyButton(
+                    key: const Key('skill-info-buy'),
+                    label: maxed ? null : l.skillLevel(level + 1, cfg.maxLevel),
+                    price: maxed ? l.skillMaxed : f.price(cost!),
+                    enabled: cost != null && cost <= c.state.tiki,
+                    minWidth: 160,
+                    onPressed: () => c.buySkill(id),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
   );
 }

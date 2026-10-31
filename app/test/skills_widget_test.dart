@@ -86,10 +86,28 @@ void main() {
       ..stats.rounds = 100; // past beginner's luck
     s.owned['grandma'] = 10; // 10/s
     await pump(tester, s);
+    await tester.tap(find.byKey(const Key('skill-info-power')));
+    await tester.pumpAndSettle();
     final power = tester.widget<Text>(
       find.byKey(const Key('perfect-now-power')),
     );
     // 10 Tiki for a PERFECT = 1 s of the clocks' 10/s.
     expect(power.data, contains('≈ 1,0 s dochodu zegarów'));
+  });
+
+  testWidgets('a skill card opens its full explanation; buy from there', (
+    tester,
+  ) async {
+    final s = GameState()
+      ..tiki = 1000
+      ..peakTiki = 1000;
+    final c = await pump(tester, s);
+    await tester.tap(find.byKey(const Key('skill-info-power')));
+    await tester.pumpAndSettle();
+    final info = tester.widget<Text>(find.byKey(const Key('skill-info-text')));
+    expect(info.data, startsWith('Każdy poziom podnosi stałą nagrodę'));
+    await tester.tap(find.byKey(const Key('skill-info-buy')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(c.state.skills['power'], 1);
   });
 }
