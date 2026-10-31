@@ -18,6 +18,12 @@ abstract final class CoachTargets {
   static final modeRow = GlobalKey(debugLabel: 'coach-modes');
   static final combo = GlobalKey(debugLabel: 'coach-combo');
   static final prestige = GlobalKey(debugLabel: 'coach-prestige');
+
+  /// The bubble itself (QA builds measure where it ended up).
+  static final bubble = GlobalKey(debugLabel: 'coach-bubble');
+
+  /// The target the shown mark is pinned to, for QA.
+  static GlobalKey? pinned;
 }
 
 /// One coach mark: a short line pinned to the thing it is about.
@@ -71,15 +77,29 @@ class _CoachOverlayState extends State<CoachOverlay>
   );
   String? _lastId;
   Rect? _rect;
+  Rect? _arena;
+  double _bubbleH = 62;
 
   void _measure(_Mark mark) {
     if (!mounted || mark.id != _lastId) return;
     Rect? r;
+    CoachTargets.pinned = null;
     for (final t in mark.targets) {
       r = _rectOf(t);
-      if (r != null) break;
+      if (r != null) {
+        CoachTargets.pinned = t;
+        break;
+      }
     }
-    if (r != _rect) setState(() => _rect = r);
+    final arena = _rectOf(CoachTargets.arena);
+    final h = _rectOf(CoachTargets.bubble)?.height;
+    if (h != null) _bubbleH = h; // used from the next layout on
+    if (r != _rect || arena != _arena) {
+      setState(() {
+        _rect = r;
+        _arena = arena;
+      });
+    }
   }
 
   @override
@@ -120,8 +140,9 @@ class _CoachOverlayState extends State<CoachOverlay>
           text: l.tutorialInfo(
             f.n(c.econ.unitRate(grandpa.id) * c.econ.permanentMultiplier()),
           ),
+          // No dim: it asks for nothing and the player is still timing
+          // taps (onboarding playtest).
           targets: [CoachTargets.perSecond, CoachTargets.balance],
-          dim: true,
           ok: l.tutorialGotIt,
           onOk: c.nextTutorialStep,
         );
@@ -188,26 +209,43 @@ class _CoachOverlayState extends State<CoachOverlay>
         }
         WidgetsBinding.instance.addPostFrameCallback((_) => _measure(mark));
         return LayoutBuilder(
-          builder: (context, box) => _layout(mark, rect, box.biggest),
+          builder: (context, box) => _layout(mark, rect, _arena, box.biggest),
         );
       },
     );
   }
 
-  Widget _layout(_Mark mark, Rect? rect, Size size) {
+  Widget _layout(_Mark mark, Rect? rect, Rect? arena, Size size) {
     const gap = 10.0;
     final width = (size.width - 24).clamp(0.0, 320.0);
     final hole = rect?.inflate(6);
-    // Below the target when it sits in the top half, above otherwise.
-    final below = rect == null || rect.center.dy < size.height / 2;
+    // Below the target when it sits in the top half, above otherwise —
+    // but never up over the dial: a target right under the arena (combo,
+    // upgrades, toggles) gets its bubble below it (onboarding playtest).
+    final bubbleH = _bubbleH.clamp(40.0, 120.0);
+    // The dial ends a little above the arena's foot.
+    final underArena =
+        rect != null &&
+        arena != null &&
+        rect.top >= arena.bottom - 4 &&
+        rect.top - gap - bubbleH < arena.bottom - arena.height * 0.08;
+    final below =
+        rect == null || underArena || rect.center.dy < size.height / 2;
     final anchorX = rect?.center.dx ?? size.width / 2;
     final left = (anchorX - width / 2).clamp(12.0, size.width - width - 12);
     // A target as tall as the arena: the bubble goes over its lower part.
-    final big = rect != null && rect.height > size.height * 0.3;
+    // So does one above the arena (the Tiki counter, "/s", the swirl): a
+    // bubble right under it would sit on the dial's top, over the target
+    // marker, while the player is timing a tap (onboarding playtest). The
+    // target keeps its glowing ring; the arrow goes.
+    final aboveArena =
+        rect != null && arena != null && rect.bottom <= arena.top + 4;
+    final big = rect != null && (rect.height > size.height * 0.3 || aboveArena);
+    final slot = aboveArena ? arena : rect;
     final top = rect == null
         ? size.height * 0.4
         : big
-        ? rect.bottom - 8
+        ? slot!.bottom - 8
         : rect.bottom + gap;
     final bubble = _Bubble(
       key: Key(mark.id),
@@ -230,7 +268,7 @@ class _CoachOverlayState extends State<CoachOverlay>
               ),
             ),
           ),
-        if (hole != null && !(rect!.height > size.height * 0.3))
+        if (hole != null && rect!.height <= size.height * 0.3)
           Positioned.fromRect(
             rect: hole,
             child: IgnorePointer(
@@ -259,13 +297,18 @@ class _CoachOverlayState extends State<CoachOverlay>
             ),
           ),
         if (below)
-          Positioned(left: left, width: width, top: top, child: bubble)
+          Positioned(
+            left: left,
+            width: width,
+            top: top,
+            child: KeyedSubtree(key: CoachTargets.bubble, child: bubble),
+          )
         else
           Positioned(
             left: left,
             width: width,
             bottom: size.height - rect.top + gap,
-            child: bubble,
+            child: KeyedSubtree(key: CoachTargets.bubble, child: bubble),
           ),
       ],
     );

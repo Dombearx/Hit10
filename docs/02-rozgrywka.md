@@ -357,13 +357,14 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   3. Gdy stać gracza na Dziadka: reszta ekranu przyciemniona, przycisk
      zakupu Dziadka w złotej, pulsującej obwódce, dymek „Kup Dziadka —
      będzie grał za ciebie!”. Sklep sam rozwija się na zakładce Zegary.
-  4. Po zakupie: dymek przy liczniku „/s”: „Dziadek zarabia 0,1/s za
+  4. Po zakupie (bez przyciemnienia — gracz dalej gra): dymek przy liczniku „/s”: „Dziadek zarabia 0,1/s za
      ciebie, nawet offline.” Zamyka się przyciskiem OK albo sam po 7 s gry.
 
   Koniec samouczka. W jego trakcie nie ma znaczka wydarzenia, czerwonych
   kropek ani Złotej Sekundy (jedna nowa rzecz naraz).
 - **R-TUT-2:** Wskazówki o nowych rzeczach, każda raz, przypięta do swojej
-  rzeczy: pierwsze ulepszenie (ikona nad sklepem), pierwsza umiejętność,
+  rzeczy: pierwsze ulepszenie, na które stać gracza (ikona nad sklepem),
+  pierwsza umiejętność,
   na którą stać gracza (zakładka), pierwszy przełącznik trybu, Złota
   Sekunda (gdy leci), seria (licznik combo), prestiż (wir).
   - Najwyżej jedna naraz; pierwsza po 20 s gry od końca samouczka,
@@ -374,6 +375,16 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
     wskazówki. Wskazówka o serii znika sama po 7 s. Każdą można zamknąć
     krzyżykiem. Złota Sekunda, która odleciała, wraca ze wskazówką
     następnym razem.
+  - Wskazówka zignorowana przez 15 s gry chowa się i wraca jeszcze raz
+    (po zwykłym odstępie); zignorowana drugi raz już nie wraca. Bez tego
+    jedna wisząca wskazówka blokowała wszystkie następne (symulacja
+    onboardingu: wskazówka o ulepszeniu wisiała 3–5 minut).
+- **R-TUT-3a (położenie dymków):** dymek nigdy nie zasłania tarczy w czasie
+  gry. Cel nad areną (licznik Tików, „/s”, wir) → dymek na dole areny,
+  pod tarczą, cel świeci obwódką. Cel tuż pod areną (combo, ulepszenia,
+  przełączniki) → dymek pod celem. Sprawdza to
+  `tools/playtest/onboarding.js` (persony grają od zera, raport: kiedy
+  który dymek, jak długo, jak zniknął, czy zasłania tarczę lub cel).
 - **R-TUT-4:** Czerwona kropka na zakładce Zegary / Umiejętności, gdy za
   nią jest coś, na co gracza stać (po samouczku).
 - **R-TUT-5:** Przycisk „?” w nagłówku otwiera „Jak grać”: zwijana lista

@@ -649,6 +649,7 @@ class GameController extends ChangeNotifier {
   static const tipGap = 45.0; // s of play between two tips
   static const tipGapAfterTutorial = 20.0;
   static const infoSeconds = 7.0; // tips that ask for nothing close alone
+  static const tipLife = 15.0; // s of play an ignored tip stays up
   double _tipQuietUntil = 0;
 
   /// Play time when the current info bubble appeared.
@@ -671,15 +672,16 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  /// Info-only bubbles (Grandpa's step, the combo and prestige tips) close
-  /// by themselves after [infoSeconds] of play.
+  /// Info-only bubbles (Grandpa's step, the combo tip) close by themselves
+  /// after [infoSeconds] of play; a tip asking for something the player
+  /// ignores goes after [tipLife] and comes back once, later (onboarding
+  /// playtest: an ignored upgrade tip stayed for minutes and held back
+  /// every tip after it).
   void _autoAdvance() {
-    final key = tutorialStep == TutorialStep.grandpaInfo
+    final Object? key = tutorialStep == TutorialStep.grandpaInfo
         ? TutorialStep.grandpaInfo
-        : pendingTip == 'combo'
-        ? 'combo'
-        : null;
-    if (key == null) {
+        : pendingTip;
+    if (key == null || key == 'golden') {
       _shownAt = null;
       _shownFor = null;
       return;
@@ -689,23 +691,36 @@ class GameController extends ChangeNotifier {
       _shownAt = state.playSeconds;
       return;
     }
-    if (state.playSeconds - _shownAt! < infoSeconds) return;
+    final age = state.playSeconds - _shownAt!;
+    final info = key == TutorialStep.grandpaInfo || key == 'combo';
+    if (age < (info ? infoSeconds : tipLife)) return;
     _shownAt = null;
     _shownFor = null;
-    if (key == 'combo') {
+    if (key == TutorialStep.grandpaInfo) {
+      nextTutorialStep();
+    } else if (info || state.tipsSeen.contains('$key#1')) {
       dismissTip();
     } else {
-      nextTutorialStep();
+      // Not now: once more after the usual gap.
+      state.tipsSeen.add('$key#1');
+      pendingTip = null;
+      _tipQuietUntil = state.playSeconds + tipGap;
+      notifyListeners();
     }
   }
+
+  @visibleForTesting
+  void debugAutoAdvance() => _autoAdvance();
 
   /// Tips for things that appear outside the screen the player looks at
   /// (playtest: the skills tab, the upgrade strip and the toggles went
   /// unnoticed for a long time).
   void checkTips() {
     if (!state.tutorialDone || pendingTip != null) return;
-    if (econ.availableUpgrades().isNotEmpty ||
-        econ.availableSynergies().isNotEmpty) {
+    // Only once one can be bought: a tip the player can't act on just
+    // hangs there (onboarding playtest).
+    if (econ.availableUpgrades().any((u) => u.cost <= state.tiki) ||
+        econ.availableSynergies().any((x) => x.cost <= state.tiki)) {
       _tip('upgrade');
     }
     if (skillAffordable) _tip('skills');

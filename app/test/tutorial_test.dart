@@ -91,6 +91,45 @@ void main() {
     expect(c.pendingTip, isNotNull);
   });
 
+  test('an upgrade tip waits until one is affordable', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..owned['grandpa'] = 10
+      ..tiki = 0;
+    final c = controller(s);
+    c.checkTips();
+    expect(c.pendingTip, isNull);
+    s.tiki = 1e6;
+    c.checkTips();
+    expect(c.pendingTip, 'upgrade');
+  });
+
+  test('an ignored tip goes away, comes back once, then never', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..owned['grandpa'] = 10
+      ..tiki = 1e6;
+    final c = controller(s);
+    void play(double secs) {
+      // The controller's own check, one tick a second.
+      for (var i = 0; i < secs; i++) {
+        s.playSeconds += 1;
+        c.debugAutoAdvance();
+        c.checkTips();
+      }
+    }
+
+    c.checkTips();
+    expect(c.pendingTip, 'upgrade');
+    play(GameController.tipLife + 1);
+    expect(c.pendingTip, isNull);
+    expect(s.tipsSeen, isNot(contains('upgrade')));
+    play(GameController.tipGap + 1);
+    expect(c.pendingTip, 'upgrade');
+    play(GameController.tipLife + 1);
+    expect(s.tipsSeen, contains('upgrade'));
+  });
+
   test('the stopwatch shows the timing to new players only', () {
     final s = GameState();
     final c = controller(s);
