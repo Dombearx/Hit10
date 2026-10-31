@@ -254,7 +254,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_fastForward_desc =>
-      'The stopwatch starts later, at the same pace. Shorter rounds, more of them per minute.';
+      'The stopwatch starts later — shorter rounds.';
 
   @override
   String get skill_fastForward_label => 'Starts at';
@@ -273,8 +273,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_wideEye => 'Hawk Eye';
 
   @override
-  String get skill_wideEye_desc =>
-      'Wider GREAT and GOOD windows — you hit more often. Your clocks hit better too.';
+  String get skill_wideEye_desc => 'Wider GREAT and GOOD windows.';
 
   @override
   String get skill_wideEye_label => 'Your GREAT or better';
@@ -284,7 +283,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_combo_desc =>
-      'A higher streak cap; the streak multiplies the whole payout.';
+      'A higher streak cap; the streak boosts payouts.';
 
   @override
   String get skill_combo_label => 'Streak cap';
@@ -293,8 +292,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_magnet => 'Magnet';
 
   @override
-  String get skill_magnet_desc =>
-      'A wider PERFECT window: 4.99 or 5.01 can be a PERFECT. The 5.00 jackpot stays as is.';
+  String get skill_magnet_desc => 'A wider PERFECT window.';
 
   @override
   String get skill_magnet_label => 'Your PERFECTs';
@@ -313,8 +311,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_bulletTime => 'Cold Blood';
 
   @override
-  String get skill_bulletTime_desc =>
-      'All your hit windows are wider. The clock runs the same.';
+  String get skill_bulletTime_desc => 'All your hit windows are wider.';
 
   @override
   String get skill_bulletTime_label => 'Your hits';
@@ -332,8 +329,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_shield => 'Shield';
 
   @override
-  String get skill_shield_desc =>
-      'A miss uses a charge instead of breaking the streak.';
+  String get skill_shield_desc => 'A miss uses a charge, not your streak.';
 
   @override
   String get skill_shield_label => 'Charges';
@@ -1824,4 +1820,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get season_fiveDay_items => 'Fives';
+
+  @override
+  String get skill_power_info =>
+      'Each level raises the fixed reward for a hit by 150% of the base reward. You feel it most early on, before your clocks earn much.';
+
+  @override
+  String get skill_fastForward_info =>
+      'The stopwatch starts from a higher value at the same pace, so rounds are shorter and you get more of them per minute. At least 4 seconds always remain to find the rhythm.';
+
+  @override
+  String get skill_ticking_info =>
+      'In the last second before the target you hear a tick every tenth of a second (with vibration if it\'s on). It helps you feel the moment.';
+
+  @override
+  String get skill_wideEye_info =>
+      'GREAT and GOOD windows grow 8% per level, so you hit more often and lose your streak less. It works for your clocks\' hits too — their income grows with yours.';
+
+  @override
+  String get skill_combo_info =>
+      'Raises the streak cap by 2 steps per level. Each streak step adds 5% to a hit\'s payout (the jackpot and Echo included).';
+
+  @override
+  String get skill_magnet_info =>
+      'The PERFECT window grows 1 ms per level, so 4.99 or 5.01 can be a PERFECT too. The 5.00 jackpot still needs exactly 5.00 on the dial. Your clocks hit PERFECT more often too.';
+
+  @override
+  String get skill_echo_info =>
+      'Each hit also pays 0.5 s of your clocks\' income per level (PERFECT in full, GREAT 1/3, GOOD 1/10). That keeps tapping worth it when your clocks earn a lot.';
+
+  @override
+  String get skill_bulletTime_info =>
+      'All your windows (PERFECT, GREAT, GOOD, CLOSE) are wider — up to ×2.5 at max level. The clock runs the same; you feel a heartbeat near the target. Not for your clocks.';
+
+  @override
+  String get skill_luck_info =>
+      'A 2% chance per level that a GREAT becomes a PERFECT and a GOOD a GREAT. It never gives the 5.00 jackpot.';
+
+  @override
+  String get skill_shield_info =>
+      'Each level is a Shield charge: a miss uses a charge instead of breaking your streak. Charges refill every 10 streak steps.';
+
+  @override
+  String get skill_goldenTouch_info =>
+      'The Golden Second comes 5% more often per level, and its effects (Frenzy, Lucky, Hot hand) are 5% stronger.';
 }

@@ -149,6 +149,22 @@ String skillDescription(AppLocalizations l, String id) => switch (id) {
   _ => '',
 };
 
+/// The full explanation shown in a skill's detail sheet.
+String skillInfo(AppLocalizations l, String id) => switch (id) {
+  'power' => l.skill_power_info,
+  'fastForward' => l.skill_fastForward_info,
+  'ticking' => l.skill_ticking_info,
+  'wideEye' => l.skill_wideEye_info,
+  'combo' => l.skill_combo_info,
+  'magnet' => l.skill_magnet_info,
+  'echo' => l.skill_echo_info,
+  'bulletTime' => l.skill_bulletTime_info,
+  'luck' => l.skill_luck_info,
+  'shield' => l.skill_shield_info,
+  'goldenTouch' => l.skill_goldenTouch_info,
+  _ => '',
+};
+
 String skillLabel(AppLocalizations l, String id) => switch (id) {
   'power' => l.skill_power_label,
   'fastForward' => l.skill_fastForward_label,

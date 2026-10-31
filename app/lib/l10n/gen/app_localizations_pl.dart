@@ -256,8 +256,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_fastForward => 'Start później';
 
   @override
-  String get skill_fastForward_desc =>
-      'Stoper rusza później, w tym samym tempie. Krótsze rundy, więcej rund na minutę.';
+  String get skill_fastForward_desc => 'Stoper rusza później — krótsze rundy.';
 
   @override
   String get skill_fastForward_label => 'Start od';
@@ -276,8 +275,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_wideEye => 'Sokole oko';
 
   @override
-  String get skill_wideEye_desc =>
-      'Szersze okna ŚWIETNIE i DOBRZE — częściej trafiasz. Zegary też trafiają lepiej.';
+  String get skill_wideEye_desc => 'Szersze okna ŚWIETNIE i DOBRZE.';
 
   @override
   String get skill_wideEye_label => 'Twoje ŚWIETNIE lub lepiej';
@@ -296,8 +294,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_magnet => 'Magnes';
 
   @override
-  String get skill_magnet_desc =>
-      'Szersze okno PERFEKT: także 4.99 czy 5.01 może być PERFEKTEM. Jackpot 5.00 bez zmian.';
+  String get skill_magnet_desc => 'Szersze okno PERFEKT.';
 
   @override
   String get skill_magnet_label => 'Twoje PERFEKTY';
@@ -316,7 +313,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_bulletTime_desc =>
-      'Wszystkie twoje okna trafień są szersze. Zegar płynie tak samo.';
+      'Wszystkie twoje okna trafień są szersze.';
 
   @override
   String get skill_bulletTime_label => 'Twoje trafienia';
@@ -1827,4 +1824,48 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get season_fiveDay_items => 'Piątki';
+
+  @override
+  String get skill_power_info =>
+      'Każdy poziom podnosi stałą nagrodę za trafienie o 150% nagrody bazowej. Najbardziej czuć to na początku gry, zanim dochód zegarów urośnie.';
+
+  @override
+  String get skill_fastForward_info =>
+      'Stoper rusza od wyższej wartości, w tym samym tempie, więc runda jest krótsza i rund na minutę jest więcej. Do celu zawsze zostają co najmniej 4 sekundy na złapanie rytmu.';
+
+  @override
+  String get skill_ticking_info =>
+      'W ostatniej sekundzie przed celem słychać tykanie co dziesiątą część sekundy (z wibracją, jeśli jest włączona). Ułatwia wyczucie momentu.';
+
+  @override
+  String get skill_wideEye_info =>
+      'Okna ŚWIETNIE i DOBRZE rosną o 8% na poziom, więc częściej trafiasz i rzadziej tracisz serię. Działa też na trafienia zegarów — ich dochód rośnie razem z twoim.';
+
+  @override
+  String get skill_combo_info =>
+      'Podnosi limit serii o 2 kroki na poziom. Każdy krok serii to +5% do wypłaty za trafienie (także jackpotu i Echa).';
+
+  @override
+  String get skill_magnet_info =>
+      'Okno PERFEKT rośnie o 1 ms na poziom, więc PERFEKTEM może być też 4.99 czy 5.01. Jackpot 5.00 dalej wymaga dokładnego 5.00 na tarczy. Zegary też częściej trafiają PERFEKT.';
+
+  @override
+  String get skill_echo_info =>
+      'Każde trafienie płaci dodatkowo 0,5 s dochodu twoich zegarów na poziom (PERFEKT w całości, ŚWIETNIE w 1/3, DOBRZE w 1/10). Dzięki temu klikanie opłaca się także, gdy zegary zarabiają dużo.';
+
+  @override
+  String get skill_bulletTime_info =>
+      'Wszystkie twoje okna (PERFEKT, ŚWIETNIE, DOBRZE, BLISKO) są szersze — do ×2,5 na maksymalnym poziomie. Zegar płynie tak samo; przy celu czujesz bicie serca. Nie działa na zegary.';
+
+  @override
+  String get skill_luck_info =>
+      '2% na poziom szansy, że ŚWIETNIE zamieni się w PERFEKT, a DOBRZE w ŚWIETNIE. Nie daje jackpotu 5.00.';
+
+  @override
+  String get skill_shield_info =>
+      'Każdy poziom to ładunek Tarczy: pudło zużywa ładunek zamiast zerować serię. Ładunki odnawiają się co 10 kroków serii.';
+
+  @override
+  String get skill_goldenTouch_info =>
+      'Złota Sekunda pojawia się 5% częściej na poziom, a jej efekty (Szał, Fart, Gorąca ręka) są o 5% mocniejsze.';
 }
