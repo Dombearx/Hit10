@@ -8,6 +8,21 @@ import '../theme.dart';
 import '../widgets/emoji_card.dart';
 import 'sheet.dart';
 
+/// Whether the player has seen clock [id]: owned now, owned before (an
+/// "own N" achievement), or next in line in the shop (docs/04 §3).
+bool generatorDiscovered(GameController c, String id) {
+  if (c.econ.owned(id) > 0) return true;
+  if (c.state.achievements.any((x) => x.startsWith('owned_${id}_'))) {
+    return true;
+  }
+  final gens = c.balance.generators;
+  final i = gens.indexWhere((g) => g.id == id);
+  return i == 0 ||
+      (i > 0 &&
+          c.econ.generatorUnlocked(id) &&
+          c.econ.owned(gens[i - 1].id) > 0);
+}
+
 Future<void> showAchievements(BuildContext context, GameController c) {
   return showGameSheet(
     context,
@@ -50,10 +65,20 @@ class _Achievements extends StatelessWidget {
             itemBuilder: (context, i) {
               final a = all[i];
               final unlocked = got.contains(a.id);
-              final secret = a.hidden && !unlocked;
+              // A clock not discovered yet stays a silhouette here too
+              // (playtest: the list spoiled every clock in the game).
+              final undiscovered =
+                  a.generator != null &&
+                  !unlocked &&
+                  !generatorDiscovered(c, a.generator!);
+              final secret = (a.hidden && !unlocked) || undiscovered;
               final (name, desc) = achievementText(l, f, a);
               return Tooltip(
-                message: secret ? l.hiddenAchievement : desc,
+                message: undiscovered
+                    ? l.undiscoveredAchievement
+                    : secret
+                    ? l.hiddenAchievement
+                    : desc,
                 triggerMode: TooltipTriggerMode.tap,
                 child: Column(
                   children: [

@@ -697,6 +697,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hiddenAchievement => 'Ukryte osiągnięcie';
 
   @override
+  String get undiscoveredAchievement =>
+      'Odkryj kolejne zegary, a zobaczysz to osiągnięcie';
+
+  @override
   String get statsTitle => 'Statystyki';
 
   @override
@@ -976,7 +980,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_golden =>
-      'Co jakiś czas po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota i da bonus: szał, fart albo gorącą rękę.';
+      'Co jakiś czas (średnio co 10 minut) po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota. Trafisz ją — dostaniesz jeden z bonusów; im lepsze trafienie, tym mocniejszy (PERFEKT w pełni, ŚWIETNIE 60%, DOBRZE 30%, pudło nic):\n• Szał (45% szans): cały dochód — zegary i trafienia — ×7 przez 77 s\n• Fart (45%): od razu Tiki — 10 minut pracy zegarów, najwyżej 10% tego, co masz\n• Gorąca ręka (10%): przez 30 s każde trafienie liczy się jak PERFEKT';
 
   @override
   String get help_modes_t => 'Przełączniki';

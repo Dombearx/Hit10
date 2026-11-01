@@ -304,6 +304,9 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć) | 8 |
 
 - **R-OSIAG-3:** Ukryte osiągnięcia wyglądają jak „???” do momentu zdobycia.
+  Tak samo osiągnięcia „Miej N × zegar” dla zegarów, których gracz jeszcze
+  nie odkrył (nie miał ich i nie są następne w kolejce w sklepie) —
+  playtest: lista zdradzała wszystkie zegary w grze.
 
 ## 9. Prestiż — „Paradoks czasowy”
 
