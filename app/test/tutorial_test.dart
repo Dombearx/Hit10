@@ -230,6 +230,18 @@ void main() {
     expect(c.paused, isFalse);
   });
 
+  testWidgets('achievements keep undiscovered clocks a secret', (tester) async {
+    final s = GameState()
+      ..tutorialDone = true
+      ..owned['grandpa'] = 1;
+    await pump(tester, s);
+    await tester.tap(find.byKey(const Key('open-achievements')));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.textContaining('Dziadek z zegarkiem'), findsWidgets);
+    expect(find.textContaining('Babcia'), findsWidgets); // next in line
+    expect(find.textContaining('Kukułka'), findsNothing); // not yet
+  });
+
   testWidgets('the ? button opens the help', (tester) async {
     final s = GameState()..tutorialDone = true;
     await pump(tester, s);
