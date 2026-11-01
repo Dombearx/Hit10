@@ -5,6 +5,7 @@
     "target": 5.0,
     "autoEndAfter": 0.3,
     "inputGraceAfterStart": 0.25,
+    "ignoreTapsBefore": 1.0,
     "resultPause": 0.7,
     "latestStart": 0.8,
     "bulletZone": 0.2,
@@ -13,14 +14,14 @@
   "tiers": [
     {
       "id": "perfect",
-      "window": 0.005,
-      "reward": 10,
-      "echoShare": 1.0,
+      "window": 0.015,
+      "reward": 6,
+      "echoShare": 0.6,
       "comboStep": 3
     },
     {
       "id": "great",
-      "window": 0.02,
+      "window": 0.03,
       "reward": 3,
       "echoShare": 0.333,
       "comboStep": 2
@@ -41,17 +42,17 @@
   "skills": [
     {
       "id": "power",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 50,
       "costGrowth": 7,
       "perLevel": 1.5
     },
     {
       "id": "fastForward",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 150,
-      "costGrowth": 7,
-      "perLevel": 0.08
+      "costGrowth": 3.659,
+      "perLevel": 0.05333
     },
     {
       "id": "ticking",
@@ -62,56 +63,56 @@
     },
     {
       "id": "wideEye",
-      "maxLevel": 10,
-      "baseCost": 300,
-      "costGrowth": 5,
-      "perLevel": 0.08
+      "maxLevel": 15,
+      "baseCost": 600,
+      "costGrowth": 2.6,
+      "perLevel": 0.05333
     },
     {
       "id": "combo",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 500,
       "costGrowth": 8,
       "perLevel": 2
     },
     {
       "id": "magnet",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 2000,
-      "costGrowth": 7,
-      "perLevel": 0.001
+      "costGrowth": 3.659,
+      "perLevel": 0.000667
     },
     {
       "id": "echo",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 5000,
       "costGrowth": 9,
       "perLevel": 0.5
     },
     {
       "id": "bulletTime",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 5000,
-      "costGrowth": 7,
-      "perLevel": 0.06
+      "costGrowth": 3.659,
+      "perLevel": 0.04
     },
     {
       "id": "luck",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 10000,
       "costGrowth": 8,
       "perLevel": 0.02
     },
     {
       "id": "shield",
-      "maxLevel": 3,
+      "maxLevel": 5,
       "baseCost": 2000,
       "costGrowth": 50,
       "perLevel": 1
     },
     {
       "id": "goldenTouch",
-      "maxLevel": 5,
+      "maxLevel": 8,
       "baseCost": 1000000.0,
       "costGrowth": 50,
       "perLevel": 0.05
@@ -206,26 +207,16 @@
     }
   ],
   "generatorCostGrowth": 1.15,
-  "generatorUpgrades": {
+  "milestones": {
     "thresholds": [
-      1,
-      5,
-      25,
-      50,
+      10,
+      20,
+      40,
+      75,
       100,
       150,
       200,
       250
-    ],
-    "costMultipliers": [
-      10,
-      50,
-      500,
-      50000,
-      5000000.0,
-      500000000.0,
-      50000000000.0,
-      5000000000000.0
     ],
     "multiplier": 2
   },
@@ -236,7 +227,7 @@
       "b": "grandma",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 50000.0
+      "requires": 25
     },
     {
       "id": "birdRhythm",
@@ -244,7 +235,7 @@
       "b": "metronome",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 5000000.0
+      "requires": 25
     },
     {
       "id": "craftsmanship",
@@ -252,7 +243,7 @@
       "b": "quartz",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 3000000000.0
+      "requires": 25
     },
     {
       "id": "photoFinish",
@@ -260,7 +251,7 @@
       "b": "gps",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 700000000000.0
+      "requires": 25
     },
     {
       "id": "delayedTrain",
@@ -268,7 +259,7 @@
       "b": "timeMachine",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 140000000000000.0
+      "requires": 25
     },
     {
       "id": "cosmicBeat",
@@ -276,7 +267,7 @@
       "b": "pulsar",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 10000000000000.0
+      "requires": 25
     }
   ],
   "golden": {
@@ -390,17 +381,26 @@
       },
       {
         "id": "muscleMemory1",
-        "cost": 10
+        "cost": 10,
+        "params": {
+          "keepLevels": 4
+        }
       },
       {
         "id": "muscleMemory2",
         "cost": 50,
-        "requires": "muscleMemory1"
+        "requires": "muscleMemory1",
+        "params": {
+          "keepLevels": 6
+        }
       },
       {
         "id": "muscleMemory3",
         "cost": 250,
-        "requires": "muscleMemory2"
+        "requires": "muscleMemory2",
+        "params": {
+          "keepLevels": 8
+        }
       },
       {
         "id": "longNap1",
@@ -574,8 +574,8 @@
     ]
   },
   "jackpot": {
-    "window": 0.005,
-    "productionSeconds": 8,
+    "window": 0.01,
+    "productionSeconds": 5,
     "perfectMultiple": 5
   }
 }

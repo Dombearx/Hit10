@@ -95,7 +95,7 @@ class _OfferDialog extends StatelessWidget {
       AdOffer.bag => (
         const EmojiArt('money_bag', Color(0xFFFFE6A7)),
         l.adOfferBagTitle,
-        '+${f.n(c.engine.passive() * cfg.bagProductionSeconds)}',
+        '+${f.n(c.ads.bagAmount())}',
         l.adOfferBagDetail((cfg.bagProductionSeconds / 60).round()),
       ),
       // Rescue and offline say everything on their own buttons.

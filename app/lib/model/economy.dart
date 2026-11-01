@@ -174,7 +174,6 @@ class Economy {
   // ------------------------------------------------------------ generators --
 
   int owned(String id) => s.owned[id] ?? 0;
-  int upgradesBought(String id) => s.upgrades[id] ?? 0;
 
   bool generatorUnlocked(String id) {
     final perk = b.generator(id).requiresPerk;
@@ -209,41 +208,39 @@ class Economy {
     return k;
   }
 
-  /// Next upgrade for generator [id]: index, unlock threshold, price; null
-  /// when all are bought.
-  GeneratorUpgrade? nextUpgrade(String id) {
-    final gu = b.generatorUpgrades;
-    final k = upgradesBought(id);
-    if (k >= gu.thresholds.length) return null;
-    return GeneratorUpgrade(
-      id,
-      k,
-      gu.thresholds[k],
-      b.generator(id).baseCost * gu.costMultipliers[k],
-    );
+  /// Milestones reached (R-ULEP-1): each threshold owned doubles the
+  /// generator, for free.
+  int milestonesReached(String id) {
+    final n = owned(id);
+    var k = 0;
+    for (final t in b.milestones.thresholds) {
+      if (n >= t) k++;
+    }
+    return k;
   }
 
-  /// Upgrades that can be bought right now (enough units owned), cheapest
-  /// first (R-ULEP-3).
-  List<GeneratorUpgrade> availableUpgrades() {
-    final list = <GeneratorUpgrade>[
-      for (final g in b.generators)
-        if (nextUpgrade(g.id) case final u? when owned(g.id) >= u.threshold) u,
-    ];
-    list.sort((a, b) => a.cost.compareTo(b.cost));
-    return list;
+  /// The next milestone's owned count, or null when all are reached.
+  int? nextMilestone(String id) {
+    final k = milestonesReached(id);
+    final t = b.milestones.thresholds;
+    return k < t.length ? t[k] : null;
   }
 
-  List<SynergyConfig> availableSynergies() => [
-    for (final syn in b.synergies)
-      if (!s.synergies.contains(syn.id) && owned(syn.a) > 0 && owned(syn.b) > 0)
-        syn,
-  ];
+  /// The previous milestone's count (0 before the first): where the
+  /// progress bar starts.
+  int lastMilestone(String id) {
+    final k = milestonesReached(id);
+    return k == 0 ? 0 : b.milestones.thresholds[k - 1];
+  }
+
+  /// R-SYN-1: on, for free, once both partners reach [SynergyConfig.requires].
+  bool synergyActive(SynergyConfig syn) =>
+      owned(syn.a) >= syn.requires && owned(syn.b) >= syn.requires;
 
   double _synergyFactor(String id) {
     var f = 1.0;
     for (final syn in b.synergies) {
-      if (!s.synergies.contains(syn.id)) continue;
+      if (!synergyActive(syn)) continue;
       if (syn.a == id) f *= 1 + syn.aPerB * owned(syn.b);
       if (syn.b == id) f *= 1 + syn.bPerA * owned(syn.a);
     }
@@ -253,7 +250,7 @@ class Economy {
   /// Tiki/s of one unit of [id] before the global multiplier.
   double unitRate(String id) =>
       b.generator(id).baseRate *
-      math.pow(b.generatorUpgrades.multiplier, upgradesBought(id)) *
+      math.pow(b.milestones.multiplier, milestonesReached(id)) *
       _synergyFactor(id) *
       windowGain(id);
 
@@ -302,16 +299,6 @@ class TierOdds {
   final double great;
   final double good;
   double get hit => perfect + great + good;
-}
-
-class GeneratorUpgrade {
-  const GeneratorUpgrade(this.generator, this.index, this.threshold, this.cost);
-  final String generator;
-
-  /// 0-based; shown as I…VIII.
-  final int index;
-  final int threshold;
-  final double cost;
 }
 
 /// P(|x| < w) for x ~ N(0, sigma); 1 when sigma is 0.

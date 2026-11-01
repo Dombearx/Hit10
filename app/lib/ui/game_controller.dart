@@ -40,6 +40,19 @@ class HitFeedback {
   double get reward => outcome.payout;
 }
 
+/// A free bonus that just switched on (R-ULEP-1, R-SYN-1): generator
+/// milestone [index] (0-based) of [generator], or synergy [synergy].
+class MilestoneEvent {
+  const MilestoneEvent.generator(String this.generator, this.index)
+    : synergy = null;
+  const MilestoneEvent.synergy(String this.synergy)
+    : generator = null,
+      index = 0;
+  final String? generator;
+  final int index;
+  final String? synergy;
+}
+
 /// One stopwatch and what was fixed when its round started (R-TRYB-1).
 class ClockSlot {
   ClockSlot(this.index, this.round);
@@ -122,6 +135,40 @@ class GameController extends ChangeNotifier {
 
   final _unlocked = StreamController<AchievementDef>.broadcast();
   Stream<AchievementDef> get achievementUnlocked => _unlocked.stream;
+
+  final _milestones = StreamController<MilestoneEvent>.broadcast();
+  Stream<MilestoneEvent> get milestoneReached => _milestones.stream;
+
+  /// Milestones per generator and the active synergies, before a purchase.
+  (Map<String, int>, Set<String>) _bonuses() => (
+    {for (final g in balance.generators) g.id: econ.milestonesReached(g.id)},
+    {
+      for (final syn in balance.synergies)
+        if (econ.synergyActive(syn)) syn.id,
+    },
+  );
+
+  /// Celebrates every bonus a purchase switched on.
+  void _announceBonuses((Map<String, int>, Set<String>) before) {
+    var any = false;
+    for (final g in balance.generators) {
+      for (var k = before.$1[g.id]!; k < econ.milestonesReached(g.id); k++) {
+        _milestones.add(MilestoneEvent.generator(g.id, k));
+        any = true;
+      }
+    }
+    for (final syn in balance.synergies) {
+      if (!before.$2.contains(syn.id) && econ.synergyActive(syn)) {
+        _milestones.add(MilestoneEvent.synergy(syn.id));
+        any = true;
+      }
+    }
+    if (any) {
+      tipActed('milestone');
+      sfx.play('fanfare', gain: 0.7);
+      unawaited(haptics.medium());
+    }
+  }
 
   /// Tiki paid for finishing the running season (docs/02 §14).
   final _seasonCompleted = StreamController<double>.broadcast();
@@ -307,7 +354,11 @@ class GameController extends ChangeNotifier {
         pendingTip = null;
       }
       _autoAdvance();
-      if (engine.autoBuy(_econAcc) != null) sfx.play('buy', gain: 0.4);
+      final bonuses = _bonuses();
+      if (engine.autoBuy(_econAcc) != null) {
+        sfx.play('buy', gain: 0.4);
+        _announceBonuses(bonuses);
+      }
       _econAcc = 0;
       notifyListeners();
     }
@@ -326,7 +377,12 @@ class GameController extends ChangeNotifier {
     switch (ev) {
       case null:
         return;
+      case TapIgnored():
+        // Far too early to be an attempt: the round goes on (R-RUNDA-5a).
+        state.stats.accidental++;
+        notifyListeners();
       case RoundStarted():
+        paused = false;
         if (slot.index == 0) syncSeason(); // a session can cross midnight
         engine.onRoundStart();
         slot
@@ -516,23 +572,15 @@ class GameController extends ChangeNotifier {
 
   BuyResult buyGenerators(String id, int count) {
     final first = econ.owned(id) == 0;
+    final bonuses = _bonuses();
     final r = _afterBuy(engine.buyGenerators(id, count));
+    if (r == BuyResult.ok) _announceBonuses(bonuses);
     // The first of a kind reveals the next generator (docs/04 §3).
     if (r == BuyResult.ok && first && id != balance.generators.last.id) {
       sfx.play('fanfare', gain: 0.6);
       unawaited(haptics.medium());
     }
     return r;
-  }
-
-  BuyResult buyUpgrade(String id) {
-    tipActed('upgrade');
-    return _afterBuy(engine.buyUpgrade(id));
-  }
-
-  BuyResult buySynergy(String id) {
-    tipActed('upgrade');
-    return _afterBuy(engine.buySynergy(id));
   }
 
   BuyResult buySkill(String id) {
@@ -650,6 +698,7 @@ class GameController extends ChangeNotifier {
   static const tipGapAfterTutorial = 20.0;
   static const infoSeconds = 7.0; // tips that ask for nothing close alone
   static const tipLife = 15.0; // s of play an ignored tip stays up
+  static const milestoneTipAt = 3; // Grandpas before the bonus bar tip
   double _tipQuietUntil = 0;
 
   /// Play time when the current info bubble appeared.
@@ -717,11 +766,11 @@ class GameController extends ChangeNotifier {
   /// unnoticed for a long time).
   void checkTips() {
     if (!state.tutorialDone || pendingTip != null) return;
-    // Only once one can be bought: a tip the player can't act on just
-    // hangs there (onboarding playtest).
-    if (econ.availableUpgrades().any((u) => u.cost <= state.tiki) ||
-        econ.availableSynergies().any((x) => x.cost <= state.tiki)) {
-      _tip('upgrade');
+    // The first clock's bonus bar, once it has a few (R-ULEP-1).
+    final first = balance.generators.first.id;
+    if (econ.owned(first) >= milestoneTipAt &&
+        econ.milestonesReached(first) == 0) {
+      _tip('milestone');
     }
     if (skillAffordable) _tip('skills');
     if (engine.blindUnlocked() ||
@@ -830,6 +879,23 @@ class GameController extends ChangeNotifier {
   }
 
   /// App hidden, a panel covers the clock or an ad plays (R-RUNDA-8).
+  /// The stopwatch was stopped (pause button, shop, a sheet, leaving the
+  /// app): the dial says so until the next round starts (docs/04 U-29).
+  bool paused = false;
+
+  /// The pause button: stops the running round, or starts one when
+  /// stopped.
+  void togglePause() {
+    final running = clocks.any((c) => c.round.phase != RoundPhase.waiting);
+    if (running) {
+      pause();
+      paused = true;
+      notifyListeners();
+    } else {
+      onPointerDown(Duration.zero);
+    }
+  }
+
   void pause() {
     var changed = false;
     for (final c in clocks) {
@@ -839,6 +905,7 @@ class GameController extends ChangeNotifier {
         changed = true;
       }
     }
+    if (changed) paused = true;
     _startSecondAt = null;
     sfx.underwater(false);
     if (changed) notifyListeners();
@@ -875,6 +942,7 @@ class GameController extends ChangeNotifier {
     _seasonCompleted.close();
     _roundStarts.close();
     _unlocked.close();
+    _milestones.close();
     super.dispose();
   }
 }

@@ -158,6 +158,24 @@ abstract class AppLocalizations {
   /// **'Tap to start'**
   String get tapToStart;
 
+  /// No description provided for @pausedTapToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused · tap to play'**
+  String get pausedTapToPlay;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @resume.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get resume;
+
   /// Decimal separator for numbers in this language (docs/04 U-16)
   ///
   /// In en, this message translates to:
@@ -422,29 +440,11 @@ abstract class AppLocalizations {
   /// **'Upgrades'**
   String get upgradesTitle;
 
-  /// No description provided for @upgradeName.
-  ///
-  /// In en, this message translates to:
-  /// **'{generator} {level}'**
-  String upgradeName(String generator, String level);
-
-  /// No description provided for @upgradeEffect.
-  ///
-  /// In en, this message translates to:
-  /// **'{generator} earn ×2'**
-  String upgradeEffect(String generator);
-
   /// No description provided for @upgradeRequires.
   ///
   /// In en, this message translates to:
   /// **'Needs {count} owned'**
   String upgradeRequires(int count);
-
-  /// No description provided for @synergyEffect.
-  ///
-  /// In en, this message translates to:
-  /// **'{a} +{aPct}% per {b} · {b} +{bPct}% per {a}'**
-  String synergyEffect(String a, String b, String aPct, String bPct);
 
   /// No description provided for @buy.
   ///
@@ -515,13 +515,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_power_desc.
   ///
   /// In en, this message translates to:
-  /// **'Every hit pays more.'**
+  /// **'For the start: more Ticks for every hit.'**
   String get skill_power_desc;
 
   /// No description provided for @skill_power_label.
   ///
   /// In en, this message translates to:
-  /// **'Hit reward'**
+  /// **'Ticks per PERFECT'**
   String get skill_power_label;
 
   /// No description provided for @skill_fastForward.
@@ -533,13 +533,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_fastForward_desc.
   ///
   /// In en, this message translates to:
-  /// **'The stopwatch starts later — shorter rounds.'**
+  /// **'Shorter rounds — more rounds a minute.'**
   String get skill_fastForward_desc;
 
   /// No description provided for @skill_fastForward_label.
   ///
   /// In en, this message translates to:
-  /// **'Starts at'**
+  /// **'A round takes'**
   String get skill_fastForward_label;
 
   /// No description provided for @skill_ticking.
@@ -551,7 +551,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_ticking_desc.
   ///
   /// In en, this message translates to:
-  /// **'A tick in the last second helps you find the beat.'**
+  /// **'A helper: ticking in the last second.'**
   String get skill_ticking_desc;
 
   /// No description provided for @skill_ticking_label.
@@ -569,13 +569,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_wideEye_desc.
   ///
   /// In en, this message translates to:
-  /// **'Wider GREAT and GOOD windows.'**
+  /// **'Wider GREAT and GOOD: fewer misses, longer streaks. Clocks too.'**
   String get skill_wideEye_desc;
 
   /// No description provided for @skill_wideEye_label.
   ///
   /// In en, this message translates to:
-  /// **'Your GREAT or better'**
+  /// **'GREAT / GOOD'**
   String get skill_wideEye_label;
 
   /// No description provided for @skill_combo.
@@ -587,13 +587,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_combo_desc.
   ///
   /// In en, this message translates to:
-  /// **'A higher streak cap; the streak boosts payouts.'**
+  /// **'A higher ceiling for the streak multiplier.'**
   String get skill_combo_desc;
 
   /// No description provided for @skill_combo_label.
   ///
   /// In en, this message translates to:
-  /// **'Streak cap'**
+  /// **'Streak multiplies up to'**
   String get skill_combo_label;
 
   /// No description provided for @skill_magnet.
@@ -605,13 +605,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_magnet_desc.
   ///
   /// In en, this message translates to:
-  /// **'A wider PERFECT window.'**
+  /// **'A wider PERFECT window. Clocks too.'**
   String get skill_magnet_desc;
 
   /// No description provided for @skill_magnet_label.
   ///
   /// In en, this message translates to:
-  /// **'Your PERFECTs'**
+  /// **'PERFECT window'**
   String get skill_magnet_label;
 
   /// No description provided for @skill_echo.
@@ -623,13 +623,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_echo_desc.
   ///
   /// In en, this message translates to:
-  /// **'Hits also pay seconds of your clocks\' income.'**
+  /// **'A hit pays seconds of your clocks\' work — grows with the game.'**
   String get skill_echo_desc;
 
   /// No description provided for @skill_echo_label.
   ///
   /// In en, this message translates to:
-  /// **'Echo'**
+  /// **'PERFECT adds clock time'**
   String get skill_echo_label;
 
   /// No description provided for @skill_bulletTime.
@@ -641,13 +641,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_bulletTime_desc.
   ///
   /// In en, this message translates to:
-  /// **'All your hit windows are wider.'**
+  /// **'All your windows wider.'**
   String get skill_bulletTime_desc;
 
   /// No description provided for @skill_bulletTime_label.
   ///
   /// In en, this message translates to:
-  /// **'Your hits'**
+  /// **'Your GOOD window'**
   String get skill_bulletTime_label;
 
   /// No description provided for @skill_luck.
@@ -659,13 +659,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_luck_desc.
   ///
   /// In en, this message translates to:
-  /// **'A chance that a hit jumps one tier up.'**
+  /// **'Some hits jump a tier up.'**
   String get skill_luck_desc;
 
   /// No description provided for @skill_luck_label.
   ///
   /// In en, this message translates to:
-  /// **'Chance'**
+  /// **'Hits bumped a tier up'**
   String get skill_luck_label;
 
   /// No description provided for @skill_shield.
@@ -677,7 +677,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_shield_desc.
   ///
   /// In en, this message translates to:
-  /// **'A miss uses a charge, not your streak.'**
+  /// **'A miss uses a charge instead of resetting the streak.'**
   String get skill_shield_desc;
 
   /// No description provided for @skill_shield_label.
@@ -695,13 +695,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_goldenTouch_desc.
   ///
   /// In en, this message translates to:
-  /// **'Golden seconds come more often and hit harder.'**
+  /// **'Golden Second more often and stronger.'**
   String get skill_goldenTouch_desc;
 
   /// No description provided for @skill_goldenTouch_label.
   ///
   /// In en, this message translates to:
-  /// **'Interval'**
+  /// **'Golden Second every'**
   String get skill_goldenTouch_label;
 
   /// No description provided for @skillLevel.
@@ -727,6 +727,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MAX'**
   String get skillMaxed;
+
+  /// No description provided for @skillKeptInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'After a paradox {kept} levels stay (Muscle memory: up to {cap}).'**
+  String skillKeptInfo(String kept, String cap);
+
+  /// No description provided for @skillKeptNone.
+  ///
+  /// In en, this message translates to:
+  /// **'After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.'**
+  String get skillKeptNone;
+
+  /// No description provided for @inHundred.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} in 100'**
+  String inHundred(String n);
+
+  /// No description provided for @oddsPerfect.
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECTs'**
+  String get oddsPerfect;
+
+  /// No description provided for @oddsGreatOrBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'GREAT or better'**
+  String get oddsGreatOrBetter;
+
+  /// No description provided for @oddsHits.
+  ///
+  /// In en, this message translates to:
+  /// **'hits'**
+  String get oddsHits;
+
+  /// No description provided for @skillOdds.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {tier}: about {now} → {next} in 100 rounds'**
+  String skillOdds(String tier, String now, String next);
+
+  /// No description provided for @skillOddsMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {tier}: about {now} in 100 rounds'**
+  String skillOddsMax(String tier, String now);
 
   /// No description provided for @skillLockedHint.
   ///
@@ -1049,7 +1097,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory1_desc.
   ///
   /// In en, this message translates to:
-  /// **'Late Start survives the paradox'**
+  /// **'After a paradox every skill keeps up to level 4'**
   String get perk_muscleMemory1_desc;
 
   /// No description provided for @perk_muscleMemory2.
@@ -1061,7 +1109,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory2_desc.
   ///
   /// In en, this message translates to:
-  /// **'Hawk Eye and Magnet survive too'**
+  /// **'…up to level 6'**
   String get perk_muscleMemory2_desc;
 
   /// No description provided for @perk_muscleMemory3.
@@ -1073,7 +1121,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory3_desc.
   ///
   /// In en, this message translates to:
-  /// **'Other skills keep half their level'**
+  /// **'…up to level 8'**
   String get perk_muscleMemory3_desc;
 
   /// No description provided for @perk_longNap1.
@@ -1274,6 +1322,24 @@ abstract class AppLocalizations {
   /// **'Rounds'**
   String get statRounds;
 
+  /// No description provided for @statTypical.
+  ///
+  /// In en, this message translates to:
+  /// **'Typical error'**
+  String get statTypical;
+
+  /// No description provided for @statTypicalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'half your taps land closer'**
+  String get statTypicalHint;
+
+  /// No description provided for @statAccidental.
+  ///
+  /// In en, this message translates to:
+  /// **'Stray taps (ignored)'**
+  String get statAccidental;
+
   /// No description provided for @statTiers.
   ///
   /// In en, this message translates to:
@@ -1285,12 +1351,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Average error'**
   String get statMeanError;
-
-  /// No description provided for @statSpread.
-  ///
-  /// In en, this message translates to:
-  /// **'Spread'**
-  String get statSpread;
 
   /// No description provided for @statMeanHint.
   ///
@@ -1526,6 +1586,42 @@ abstract class AppLocalizations {
   /// **'Rewind time: start over with a permanent bonus.'**
   String get tip_prestige;
 
+  /// No description provided for @tip_milestone.
+  ///
+  /// In en, this message translates to:
+  /// **'The bar under the name: at {need} owned, the clock earns ×2!'**
+  String tip_milestone(String need);
+
+  /// No description provided for @milestoneProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{owned}/{next} → ×{mult}'**
+  String milestoneProgress(String owned, String next, String mult);
+
+  /// No description provided for @milestoneMax.
+  ///
+  /// In en, this message translates to:
+  /// **'All bonuses reached'**
+  String get milestoneMax;
+
+  /// No description provided for @milestoneToast.
+  ///
+  /// In en, this message translates to:
+  /// **'New bonus · {name}'**
+  String milestoneToast(String name);
+
+  /// No description provided for @milestoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{generator} ×{mult}'**
+  String milestoneTitle(String generator, String mult);
+
+  /// No description provided for @synergyToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Synergy!'**
+  String get synergyToast;
+
   /// No description provided for @tutorialAim.
   ///
   /// In en, this message translates to:
@@ -1561,12 +1657,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skills boost your own hits.'**
   String get tip_skills;
-
-  /// No description provided for @tip_upgrade.
-  ///
-  /// In en, this message translates to:
-  /// **'Upgrade: a clock earns ×2!'**
-  String get tip_upgrade;
 
   /// No description provided for @tip_modes.
   ///
@@ -1607,7 +1697,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_goal.
   ///
   /// In en, this message translates to:
-  /// **'The stopwatch counts seconds. Tap the screen when it shows exactly 5.00. The closer, the better: PERFECT pays the most, then GREAT and GOOD. Too early or too late is a miss — it pays nothing and breaks your streak.'**
+  /// **'The stopwatch counts seconds. Tap the screen when it shows 5.00 — the closer, the better:\n• 5.00 (±0.010 s): a PERFECT plus a bonus — seconds of your clocks\' work\n• PERFECT (±0.015 s): 6 Ticks, streak +3\n• GREAT (±0.030 s): 3 Ticks, streak +2\n• GOOD (±0.050 s): 1 Tick, streak +1\n• CLOSE (±0.150 s): a small consolation, the streak breaks\nAnything further is a miss. A tap over a second before the target counts as a slip and is ignored. Skills widen the windows (except 5.00).'**
   String get help_goal;
 
   /// No description provided for @help_tiki_t.
@@ -1637,13 +1727,13 @@ abstract class AppLocalizations {
   /// No description provided for @help_upgrades_t.
   ///
   /// In en, this message translates to:
-  /// **'Upgrades'**
+  /// **'Clock bonuses'**
   String get help_upgrades_t;
 
   /// No description provided for @help_upgrades.
   ///
   /// In en, this message translates to:
-  /// **'Once you own enough of one clock, an upgrade icon shows up above the shop. Tap it to see what it does — usually it doubles that clock\'s income. Double icons are synergies: two clocks boosting each other.'**
+  /// **'Each clock has a bar. Once you own 10, 20, 40… of it, all clocks of that kind earn ×2 — free, on their own. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.'**
   String get help_upgrades;
 
   /// No description provided for @help_skills_t.
@@ -3581,13 +3671,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_power_info.
   ///
   /// In en, this message translates to:
-  /// **'Each level raises the fixed reward for a hit by 150% of the base reward. You feel it most early on, before your clocks earn much.'**
+  /// **'The fixed reward for a hit: PERFECT 6 Ticks, GREAT 3, GOOD 1. Each level adds one and a half times that (PERFECT 6 → 15 → 24…). Very strong in the first minutes; later Echo counts, as it grows with your clocks.'**
   String get skill_power_info;
 
   /// No description provided for @skill_fastForward_info.
   ///
   /// In en, this message translates to:
-  /// **'The stopwatch starts from a higher value at the same pace, so rounds are shorter and you get more of them per minute. At least 4 seconds always remain to find the rhythm.'**
+  /// **'The stopwatch starts from a higher value, so a round is shorter and you play more rounds in the same time. At least 4 seconds are always left to find the rhythm.'**
   String get skill_fastForward_info;
 
   /// No description provided for @skill_ticking_info.
@@ -3599,37 +3689,37 @@ abstract class AppLocalizations {
   /// No description provided for @skill_wideEye_info.
   ///
   /// In en, this message translates to:
-  /// **'GREAT and GOOD windows grow 8% per level, so you hit more often and lose your streak less. It works for your clocks\' hits too — their income grows with yours.'**
+  /// **'The GREAT window (±30 ms) grows by about 1.6 ms a level and GOOD (±50 ms) by about 2.7 ms, up to 1.8 times at the top level. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.'**
   String get skill_wideEye_info;
 
   /// No description provided for @skill_combo_info.
   ///
   /// In en, this message translates to:
-  /// **'Raises the streak cap by 2 steps per level. Each streak step adds 5% to a hit\'s payout (the jackpot and Echo included).'**
+  /// **'Every hit without a miss raises the streak multiplier by 0.05 a step (PERFECT 3 steps, GREAT 2, GOOD 1). The base ceiling is ×1.25; each level raises it by 0.10. It multiplies the whole payout, 5.00 and Echo included.'**
   String get skill_combo_info;
 
   /// No description provided for @skill_magnet_info.
   ///
   /// In en, this message translates to:
-  /// **'The PERFECT window grows 1 ms per level, so 4.99 or 5.01 can be a PERFECT too. The 5.00 jackpot still needs exactly 5.00 on the dial. Your clocks hit PERFECT more often too.'**
+  /// **'The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.'**
   String get skill_magnet_info;
 
   /// No description provided for @skill_echo_info.
   ///
   /// In en, this message translates to:
-  /// **'Each hit also pays 0.5 s of your clocks\' income per level (PERFECT in full, GREAT 1/3, GOOD 1/10). That keeps tapping worth it when your clocks earn a lot.'**
+  /// **'Every hit adds seconds of your clocks\' work, per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s. It grows with your clocks, so later on it is where most clicking Ticks come from.'**
   String get skill_echo_info;
 
   /// No description provided for @skill_bulletTime_info.
   ///
   /// In en, this message translates to:
-  /// **'All your windows (PERFECT, GREAT, GOOD, CLOSE) are wider — up to ×2.5 at max level. The clock runs the same; you feel a heartbeat near the target. Not for your clocks.'**
+  /// **'All your windows (PERFECT, GREAT, GOOD, CLOSE) get wider, up to 2.5 times at the top level — e.g. GOOD from ±50 to ±125 ms. The 5.00 window stays. Near the target you feel a heartbeat. Doesn\'t work on clocks.'**
   String get skill_bulletTime_info;
 
   /// No description provided for @skill_luck_info.
   ///
   /// In en, this message translates to:
-  /// **'A 2% chance per level that a GREAT becomes a PERFECT and a GOOD a GREAT. It never gives the 5.00 jackpot.'**
+  /// **'At each level 2 in 100 hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.'**
   String get skill_luck_info;
 
   /// No description provided for @skill_shield_info.
@@ -3641,7 +3731,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_goldenTouch_info.
   ///
   /// In en, this message translates to:
-  /// **'The Golden Second comes 5% more often per level, and its effects (Frenzy, Lucky, Hot hand) are 5% stronger.'**
+  /// **'A Golden Second flies in every 10 minutes on average. Each level cuts that by 30 seconds and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.'**
   String get skill_goldenTouch_info;
 }
 

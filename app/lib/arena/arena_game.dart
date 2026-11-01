@@ -33,6 +33,7 @@ class ArenaLabels {
     required this.late,
     required this.close,
     required this.tapToStart,
+    required this.paused,
     required this.decimalSeparator,
     required this.goldenRound,
     required this.goldenEscaped,
@@ -49,6 +50,9 @@ class ArenaLabels {
   final String late;
   final String close;
   final String tapToStart;
+
+  /// The dial's line while stopped by a pause (U-29).
+  final String paused;
   final String decimalSeparator;
   final String goldenRound;
   final String goldenEscaped;
@@ -255,14 +259,27 @@ class Stage extends Component {
   Vector2 get size => game.size;
   int get _count => game.controller.clocks.length;
 
-  /// One dial in the middle, or two side by side (docs/02 §9.2).
-  Vector2 centerOf(int i) => _count == 1
-      ? Vector2(size.x / 2, size.y * 0.5)
-      : Vector2(size.x * (i == 0 ? 0.26 : 0.74), size.y * 0.5);
+  /// Height kept free at the arena's top for the pause button and the
+  /// Turbo / Golden ad tiles (U-22, U-29): the dial never goes under them
+  /// (playtest: on short screens the tiles covered the dial's top).
+  static const adTilesInset = 48.0;
+  double get _top => game.controller.state.tutorialDone ? adTilesInset : 0;
 
-  double radiusOf(int i) => _count == 1
-      ? math.min(size.x * 0.40, size.y * 0.42)
-      : math.min(size.x * 0.23, size.y * 0.36);
+  /// One dial in the middle of what is left, or two side by side
+  /// (docs/02 §9.2).
+  Vector2 centerOf(int i) {
+    final y = _top + (size.y - _top) * 0.5;
+    return _count == 1
+        ? Vector2(size.x / 2, y)
+        : Vector2(size.x * (i == 0 ? 0.26 : 0.74), y);
+  }
+
+  double radiusOf(int i) {
+    final h = size.y - _top;
+    return _count == 1
+        ? math.min(size.x * 0.40, h * 0.42)
+        : math.min(size.x * 0.23, h * 0.36);
+  }
 
   Vector2 get center => centerOf(0);
   double get radius => radiusOf(0);
@@ -808,9 +825,11 @@ class Dial extends Component {
     // Digits; a perfect result snaps to 10.00 (R-RUNDA-9).
     final grade = round.lastGrade;
     final inResult = round.phase == RoundPhase.result && grade != null;
-    // The dial shows the real time: 10.00 only for a true 10.00 (the
-    // jackpot), a PERFECT widened by Magnet may read 9.99.
-    final shown = t;
+    // A hit in the 5.00 window reads 5.00 (R-RUNDA-9, the error is in
+    // small print below); any other result shows the real time.
+    final shown = inResult && ctrl.engine.isJackpot(grade)
+        ? ctrl.balance.round.target
+        : t;
     final digitColor = !inResult
         ? Palette.outline
         : switch (grade.tier) {
@@ -846,7 +865,9 @@ class Dial extends Component {
     String? line;
     var alpha = 1.0;
     if (round.phase == RoundPhase.waiting) {
-      line = stage.game.labels.tapToStart;
+      line = ctrl.paused
+          ? stage.game.labels.paused
+          : stage.game.labels.tapToStart;
       // Quantised so the cached painter is rebuilt a few times a second.
       alpha =
           ((0.55 + 0.45 * (0.5 + 0.5 * math.sin(_time * 4))) * 20).round() / 20;

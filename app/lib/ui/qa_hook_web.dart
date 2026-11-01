@@ -61,8 +61,10 @@ void registerQaHook(GameController c) {
         'byTier': s.stats.byTier.map((k, v) => MapEntry(k.name, v)),
         'lastError': c.round.lastGrade?.error,
         'owned': s.owned,
-        'upgrades': s.upgrades,
-        'synergies': s.synergies.toList(),
+        'milestones': {
+          for (final g in c.balance.generators)
+            if (c.econ.owned(g.id) > 0) g.id: c.econ.milestonesReached(g.id),
+        },
         'passive': c.engine.passive(),
         'pendingOffline': c.pendingOffline?.amount,
         'skills': s.skills,
@@ -107,12 +109,6 @@ void registerQaHook(GameController c) {
           'owned': e.owned(g.id),
         });
       }
-      for (final u in e.availableUpgrades()) {
-        items.add({'kind': 'upg', 'id': u.generator, 'cost': u.cost});
-      }
-      for (final syn in e.availableSynergies()) {
-        items.add({'kind': 'syn', 'id': syn.id, 'cost': syn.cost});
-      }
       for (final sk in c.balance.skills) {
         final cost = e.skillCost(sk.id);
         final shown =
@@ -135,8 +131,6 @@ void registerQaHook(GameController c) {
     ((JSString kind, JSString id) {
       final r = switch (kind.toDart) {
         'gen' => c.buyGenerators(id.toDart, 1),
-        'upg' => c.buyUpgrade(id.toDart),
-        'syn' => c.buySynergy(id.toDart),
         _ => c.buySkill(id.toDart),
       };
       return r.name.toJS;
@@ -182,10 +176,6 @@ void registerQaHook(GameController c) {
       JSString id,
       JSNumber count,
     ) => c.buyGenerators(id.toDart, count.toDartInt).name.toJS).toJS,
-  );
-  api.setProperty(
-    'buyUpgrade'.toJS,
-    ((JSString id) => c.buyUpgrade(id.toDart).name.toJS).toJS,
   );
   api.setProperty(
     'setSkill'.toJS,

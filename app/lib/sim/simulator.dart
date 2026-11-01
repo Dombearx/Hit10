@@ -48,7 +48,12 @@ class SimConfig {
     this.chronons = 0,
     this.seed = 10,
     this.ads,
+    this.skillFutureWeight = 0,
   });
+
+  /// How much more than its in-run payback the bot values a skill that
+  /// survives the paradox (0: only this run counts).
+  final double skillFutureWeight;
 
   final double hours;
 
@@ -197,17 +202,21 @@ class Simulator {
 
   // ------------------------------------------------------------- buying --
 
+  /// Analysis hooks (tool/skill_report.dart): what one more [kind] [key]
+  /// adds to the income, and the shop right now.
+  double gainOf(String kind, String key, {bool idle = false}) =>
+      _gainOf(kind, key, idle);
+  Iterable<(String, String, double)> candidates() => _candidates();
+
+  /// Called after each step's purchases with the play time in seconds.
+  void Function(double t)? onStep;
+
   Iterable<(String, String, double)> _candidates() sync* {
     for (final g in b.generators) {
       if (!econ.generatorUnlocked(g.id)) continue;
+      // Milestones and synergies come free with the units (R-ULEP-1):
+      // a unit that crosses one is worth that much more here.
       yield ('gen', g.id, econ.generatorCost(g.id));
-      final u = econ.nextUpgrade(g.id);
-      if (u != null && econ.owned(g.id) >= u.threshold) {
-        yield ('upg', g.id, u.cost);
-      }
-    }
-    for (final syn in econ.availableSynergies()) {
-      yield ('syn', syn.id, syn.cost);
     }
     for (final sk in b.skills) {
       if (sk.id == 'ticking') continue; // no income effect
@@ -222,10 +231,6 @@ class Simulator {
       switch (kind) {
         case 'gen':
           s.owned[key] = econ.owned(key) + d;
-        case 'upg':
-          s.upgrades[key] = econ.upgradesBought(key) + d;
-        case 'syn':
-          d > 0 ? s.synergies.add(key) : s.synergies.remove(key);
         case 'skill':
           s.skills[key] = econ.level(key) + d;
       }
@@ -246,10 +251,6 @@ class Simulator {
     switch (kind) {
       case 'gen':
         e.buyGenerators(key, 1);
-      case 'upg':
-        e.buyUpgrade(key);
-      case 'syn':
-        e.buySynergy(key);
       case 'skill':
         e.buySkill(key);
     }
@@ -328,8 +329,9 @@ class Simulator {
         (double, String, String, double)? best;
         final income = math.max(1e-9, totalIncome(idle));
         for (final (kind, key, cost) in _candidates()) {
-          final d = _gainOf(kind, key, idle);
+          var d = _gainOf(kind, key, idle);
           if (d <= 0) continue;
+          if (kind == 'skill') d *= 1 + cfg.skillFutureWeight;
           final score = cost / d + math.max(0.0, cost - s.tiki) / income;
           if (best == null || score < best.$1) best = (score, kind, key, cost);
         }
@@ -340,6 +342,7 @@ class Simulator {
         if (kind == 'gen') res.firstGenerator.putIfAbsent(key, () => t);
         if (kind == 'skill') res.skillLog.add((t, key, econ.level(key)));
       }
+      onStep?.call(t);
       e.frenzy = frenzyNow;
       res.earnedLog.add((t, s.earnedTotal));
       if (t >= nextHour) {

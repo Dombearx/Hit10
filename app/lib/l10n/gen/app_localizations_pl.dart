@@ -40,6 +40,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tapToStart => 'Dotknij, aby zacząć';
 
   @override
+  String get pausedTapToPlay => 'Pauza · dotknij, by grać';
+
+  @override
+  String get pause => 'Pauza';
+
+  @override
+  String get resume => 'Graj';
+
+  @override
   String get decimalSeparator => ',';
 
   @override
@@ -183,23 +192,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upgradesTitle => 'Ulepszenia';
 
   @override
-  String upgradeName(String generator, String level) {
-    return '$generator $level';
-  }
-
-  @override
-  String upgradeEffect(String generator) {
-    return '$generator zarabia ×2';
-  }
-
-  @override
   String upgradeRequires(int count) {
     return 'Wymaga $count sztuk';
-  }
-
-  @override
-  String synergyEffect(String a, String b, String aPct, String bPct) {
-    return '$a +$aPct% za każdego: $b · $b +$bPct% za każdego: $a';
   }
 
   @override
@@ -247,26 +241,25 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_power => 'Siła trafienia';
 
   @override
-  String get skill_power_desc => 'Każde trafienie płaci więcej.';
+  String get skill_power_desc => 'Na start: więcej Tików za każde trafienie.';
 
   @override
-  String get skill_power_label => 'Nagroda za trafienie';
+  String get skill_power_label => 'Tiki za PERFEKT';
 
   @override
   String get skill_fastForward => 'Start później';
 
   @override
-  String get skill_fastForward_desc => 'Stoper rusza później — krótsze rundy.';
+  String get skill_fastForward_desc => 'Krótsze rundy — więcej rund na minutę.';
 
   @override
-  String get skill_fastForward_label => 'Start od';
+  String get skill_fastForward_label => 'Runda trwa';
 
   @override
   String get skill_ticking => 'Tykanie';
 
   @override
-  String get skill_ticking_desc =>
-      'Tik w ostatniej sekundzie pomaga złapać rytm.';
+  String get skill_ticking_desc => 'Pomoc: tykanie w ostatniej sekundzie.';
 
   @override
   String get skill_ticking_label => 'Tykanie';
@@ -275,57 +268,57 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_wideEye => 'Sokole oko';
 
   @override
-  String get skill_wideEye_desc => 'Szersze okna ŚWIETNIE i DOBRZE.';
+  String get skill_wideEye_desc =>
+      'Szersze ŚWIETNIE i DOBRZE: mniej pudeł, dłuższe serie. Zegarom też.';
 
   @override
-  String get skill_wideEye_label => 'Twoje ŚWIETNIE lub lepiej';
+  String get skill_wideEye_label => 'ŚWIETNIE / DOBRZE';
 
   @override
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc =>
-      'Wyższy limit serii, a seria mnoży całą wypłatę.';
+  String get skill_combo_desc => 'Wyższy sufit mnożnika serii.';
 
   @override
-  String get skill_combo_label => 'Limit serii';
+  String get skill_combo_label => 'Seria mnoży do';
 
   @override
   String get skill_magnet => 'Magnes';
 
   @override
-  String get skill_magnet_desc => 'Szersze okno PERFEKT.';
+  String get skill_magnet_desc => 'Szersze okno PERFEKT. Zegarom też.';
 
   @override
-  String get skill_magnet_label => 'Twoje PERFEKTY';
+  String get skill_magnet_label => 'Okno PERFEKT';
 
   @override
   String get skill_echo => 'Echo';
 
   @override
-  String get skill_echo_desc => 'Trafienie płaci też sekundy dochodu zegarów.';
+  String get skill_echo_desc =>
+      'Trafienie płaci sekundy pracy zegarów — rośnie z grą.';
 
   @override
-  String get skill_echo_label => 'Echo';
+  String get skill_echo_label => 'PERFEKT dokłada pracy zegarów';
 
   @override
   String get skill_bulletTime => 'Zimna krew';
 
   @override
-  String get skill_bulletTime_desc =>
-      'Wszystkie twoje okna trafień są szersze.';
+  String get skill_bulletTime_desc => 'Wszystkie twoje okna szersze.';
 
   @override
-  String get skill_bulletTime_label => 'Twoje trafienia';
+  String get skill_bulletTime_label => 'Twoje okno DOBRZE';
 
   @override
   String get skill_luck => 'Szczęście';
 
   @override
-  String get skill_luck_desc => 'Szansa, że trafienie podskoczy o próg w górę.';
+  String get skill_luck_desc => 'Część trafień podskakuje o próg w górę.';
 
   @override
-  String get skill_luck_label => 'Szansa';
+  String get skill_luck_label => 'Trafienia o próg w górę';
 
   @override
   String get skill_shield => 'Tarcza';
@@ -343,7 +336,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_goldenTouch_desc => 'Złota Sekunda częściej i mocniej.';
 
   @override
-  String get skill_goldenTouch_label => 'Odstęp';
+  String get skill_goldenTouch_label => 'Złota Sekunda co';
 
   @override
   String skillLevel(int level, int max) {
@@ -362,6 +355,39 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skillMaxed => 'MAX';
+
+  @override
+  String skillKeptInfo(String kept, String cap) {
+    return 'Po paradoksie zostaje $kept poz. (Pamięć mięśniowa: do $cap).';
+  }
+
+  @override
+  String get skillKeptNone =>
+      'Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów — kupione dziś dadzą lepszy start następnym razem.';
+
+  @override
+  String inHundred(String n) {
+    return '$n na 100';
+  }
+
+  @override
+  String get oddsPerfect => 'PERFEKTY';
+
+  @override
+  String get oddsGreatOrBetter => 'ŚWIETNIE lub lepiej';
+
+  @override
+  String get oddsHits => 'trafienia';
+
+  @override
+  String skillOdds(String tier, String now, String next) {
+    return 'Twoje $tier: ok. $now → $next na 100 rund';
+  }
+
+  @override
+  String skillOddsMax(String tier, String now) {
+    return 'Twoje $tier: ok. $now na 100 rund';
+  }
 
   @override
   String skillLockedHint(String price) {
@@ -562,20 +588,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get perk_muscleMemory1 => 'Pamięć mięśniowa I';
 
   @override
-  String get perk_muscleMemory1_desc => 'Start później zostaje po paradoksie';
+  String get perk_muscleMemory1_desc =>
+      'Po paradoksie każda umiejętność zostaje do 4. poziomu';
 
   @override
   String get perk_muscleMemory2 => 'Pamięć mięśniowa II';
 
   @override
-  String get perk_muscleMemory2_desc => 'Sokole oko i Magnes też zostają';
+  String get perk_muscleMemory2_desc => '…do 6. poziomu';
 
   @override
   String get perk_muscleMemory3 => 'Pamięć mięśniowa III';
 
   @override
-  String get perk_muscleMemory3_desc =>
-      'Pozostałe umiejętności zostają na połowie';
+  String get perk_muscleMemory3_desc => '…do 8. poziomu';
 
   @override
   String get perk_longNap1 => 'Długa drzemka I';
@@ -683,13 +709,19 @@ class AppLocalizationsPl extends AppLocalizations {
   String get statRounds => 'Rundy';
 
   @override
+  String get statTypical => 'Typowy błąd';
+
+  @override
+  String get statTypicalHint => 'połowa twoich dotknięć jest bliżej celu';
+
+  @override
+  String get statAccidental => 'Przypadkowe dotknięcia (pominięte)';
+
+  @override
   String get statTiers => 'Trafienia';
 
   @override
   String get statMeanError => 'Średni błąd';
-
-  @override
-  String get statSpread => 'Rozrzut';
 
   @override
   String get statMeanHint => 'ujemny = klikasz za wcześnie';
@@ -830,6 +862,32 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tip_prestige => 'Cofnij czas: od nowa, ale ze stałym bonusem.';
 
   @override
+  String tip_milestone(String need) {
+    return 'Pasek pod nazwą: przy $need szt. zegar zarabia ×2!';
+  }
+
+  @override
+  String milestoneProgress(String owned, String next, String mult) {
+    return '$owned/$next → ×$mult';
+  }
+
+  @override
+  String get milestoneMax => 'Wszystkie bonusy zdobyte';
+
+  @override
+  String milestoneToast(String name) {
+    return 'Nowy bonus · $name';
+  }
+
+  @override
+  String milestoneTitle(String generator, String mult) {
+    return '$generator ×$mult';
+  }
+
+  @override
+  String get synergyToast => 'Synergia!';
+
+  @override
   String get tutorialAim =>
       'Dotknij, gdy złoty okrąg dojdzie do zegara — na 5.00!';
 
@@ -851,9 +909,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tip_skills => 'Umiejętności wzmacniają twoje trafienia.';
-
-  @override
-  String get tip_upgrade => 'Ulepszenie: zegar zarabia ×2!';
 
   @override
   String get tip_modes => 'Nowy tryb! Dotknij, żeby włączyć.';
@@ -879,7 +934,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_goal =>
-      'Stoper liczy sekundy. Dotknij ekranu, gdy pokaże dokładnie 5.00. Im bliżej, tym lepszy wynik: PERFEKT płaci najwięcej, potem ŚWIETNIE i DOBRZE. Za wcześnie albo za późno to pudło — nic nie płaci i przerywa serię.';
+      'Stoper liczy sekundy. Dotknij ekranu, gdy pokaże 5.00 — im bliżej, tym lepiej:\n• 5.00 (±0,010 s): PERFEKT i premia — kilka sekund pracy zegarów\n• PERFEKT (±0,015 s): 6 Tików, seria +3\n• ŚWIETNIE (±0,030 s): 3 Tiki, seria +2\n• DOBRZE (±0,050 s): 1 Tik, seria +1\n• BLISKO (±0,150 s): drobna pociecha, seria przepada\nDalej to pudło. Dotknięcie ponad sekundę przed celem uznajemy za przypadkowe i pomijamy. Umiejętności poszerzają okna (oprócz 5.00).';
 
   @override
   String get help_tiki_t => 'Tiki';
@@ -896,11 +951,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Zegary (zakładka Zegary) grają za ciebie i co sekundę dokładają Tiki — także gdy gra jest zamknięta. Pierwszy jest Dziadek; kupienie zegara odkrywa następny, mocniejszy. Liczba na ikonie to ile ich masz. Przyciski ×1, ×10, ×100 i MAX ustalają, ile kupujesz naraz.';
 
   @override
-  String get help_upgrades_t => 'Ulepszenia';
+  String get help_upgrades_t => 'Bonusy zegarów';
 
   @override
   String get help_upgrades =>
-      'Gdy masz dość zegarów jednego rodzaju, nad sklepem pojawia się ikona ulepszenia. Dotknij jej, by zobaczyć, co daje — zwykle podwaja zarobek tego zegara. Podwójne ikony to synergie: dwa zegary wzmacniają się nawzajem.';
+      'Pod każdym zegarem jest pasek. Gdy uzbierasz 10, 20, 40… sztuk, wszystkie zegary tego rodzaju zaczynają zarabiać ×2 — za darmo, same z siebie. Gdy masz po 25 sztuk dwóch zegarów, które do siebie pasują (np. Dziadka i Babci), włącza się synergia: wzmacniają się nawzajem.';
 
   @override
   String get help_skills_t => 'Umiejętności';
@@ -1929,11 +1984,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_power_info =>
-      'Każdy poziom podnosi stałą nagrodę za trafienie o 150% nagrody bazowej. Najbardziej czuć to na początku gry, zanim dochód zegarów urośnie.';
+      'Stała nagroda za trafienie: PERFEKT 6 Tików, ŚWIETNIE 3, DOBRZE 1. Każdy poziom dokłada półtora raza tyle (PERFEKT 6 → 15 → 24…). Bardzo mocne przez pierwsze minuty; później liczy się Echo, które rośnie razem z zegarami.';
 
   @override
   String get skill_fastForward_info =>
-      'Stoper rusza od wyższej wartości, w tym samym tempie, więc runda jest krótsza i rund na minutę jest więcej. Do celu zawsze zostają co najmniej 4 sekundy na złapanie rytmu.';
+      'Stoper rusza od wyższej wartości, więc runda jest krótsza i w tym samym czasie zagrasz więcej rund. Do celu zawsze zostają co najmniej 4 sekundy na złapanie rytmu.';
 
   @override
   String get skill_ticking_info =>
@@ -1941,27 +1996,27 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_wideEye_info =>
-      'Okna ŚWIETNIE i DOBRZE rosną o 8% na poziom, więc częściej trafiasz i rzadziej tracisz serię. Działa też na trafienia zegarów — ich dochód rośnie razem z twoim.';
+      'Okno ŚWIETNIE (±30 ms) rośnie o ok. 1,6 ms na poziom, a DOBRZE (±50 ms) o ok. 2,7 ms, do 1,8 raza na maksymalnym poziomie. Mniej pudeł to dłuższe serie. Działa też na twoje zegary: każdy poziom podnosi ich dochód.';
 
   @override
   String get skill_combo_info =>
-      'Podnosi limit serii o 2 kroki na poziom. Każdy krok serii to +5% do wypłaty za trafienie (także jackpotu i Echa).';
+      'Każde trafienie bez pudła podnosi mnożnik serii o 0,05 za krok (PERFEKT 3 kroki, ŚWIETNIE 2, DOBRZE 1). Bazowo seria mnoży najwyżej ×1,25; każdy poziom podnosi ten sufit o 0,10. Mnoży całą wypłatę, także 5.00 i Echo.';
 
   @override
   String get skill_magnet_info =>
-      'Okno PERFEKT rośnie o 1 ms na poziom, więc PERFEKTEM może być też 4.99 czy 5.01. Jackpot 5.00 dalej wymaga dokładnego 5.00 na tarczy. Zegary też częściej trafiają PERFEKT.';
+      'Okno PERFEKT (±15 ms) rośnie o ok. 0,7 ms na poziom, do ±25 ms. Okno 5.00 (±10 ms) się nie zmienia. Zegary też częściej trafiają PERFEKT.';
 
   @override
   String get skill_echo_info =>
-      'Każde trafienie płaci dodatkowo 0,5 s dochodu twoich zegarów na poziom (PERFEKT w całości, ŚWIETNIE w 1/3, DOBRZE w 1/10). Dzięki temu klikanie opłaca się także, gdy zegary zarabiają dużo.';
+      'Każde trafienie dokłada sekundy pracy twoich zegarów, na poziom: PERFEKT 0,3 s, ŚWIETNIE ok. 0,17 s, DOBRZE 0,05 s. Rośnie razem z zegarami, więc w dalszej grze to główne źródło Tików z klikania.';
 
   @override
   String get skill_bulletTime_info =>
-      'Wszystkie twoje okna (PERFEKT, ŚWIETNIE, DOBRZE, BLISKO) są szersze — do ×2,5 na maksymalnym poziomie. Zegar płynie tak samo; przy celu czujesz bicie serca. Nie działa na zegary.';
+      'Wszystkie twoje okna (PERFEKT, ŚWIETNIE, DOBRZE, BLISKO) stają się szersze, do 2,5 raza na maksymalnym poziomie — np. DOBRZE z ±50 do ±125 ms. Okno 5.00 się nie zmienia. Przy celu czujesz bicie serca. Nie działa na zegary.';
 
   @override
   String get skill_luck_info =>
-      '2% na poziom szansy, że ŚWIETNIE zamieni się w PERFEKT, a DOBRZE w ŚWIETNIE. Nie daje jackpotu 5.00.';
+      'Na każdym poziomie 2 na 100 trafień podskakuje o próg: ŚWIETNIE staje się PERFEKTEM, DOBRZE — ŚWIETNIE. 5.00 tak nie wpadnie.';
 
   @override
   String get skill_shield_info =>
@@ -1969,5 +2024,5 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_goldenTouch_info =>
-      'Złota Sekunda pojawia się 5% częściej na poziom, a jej efekty (Szał, Fart, Gorąca ręka) są o 5% mocniejsze.';
+      'Złota Sekunda przylatuje średnio co 10 minut. Każdy poziom skraca ten czas o 30 sekund i wzmacnia jej efekty (Szał, Fart, Gorąca ręka) o 5%.';
 }

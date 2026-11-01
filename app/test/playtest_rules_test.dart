@@ -139,9 +139,9 @@ void main() {
 
     test('pays minutes of passive income once the clocks earn', () {
       s.tutorialDone = true;
-      s.owned['grandma'] = 100; // 100/s
+      s.owned['grandma'] = 100;
       final d = e.dailyFor(day1)!;
-      expect(d.amount, closeTo(100 * 60 * b.daily.minutes[0], 1e-6));
+      expect(d.amount, closeTo(e.passive() * 60 * b.daily.minutes[0], 1e-6));
     });
   });
 
@@ -175,7 +175,7 @@ void main() {
   group('the 10.00 jackpot', () {
     setUp(() {
       s.stats.rounds = 100; // past beginner's luck
-      s.owned['grandma'] = 100; // 100/s
+      s.owned['grandma'] = 100;
     });
 
     test('a tap that reads 10.00 pays seconds of the clocks\' income', () {
@@ -183,14 +183,15 @@ void main() {
       final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
       expect(
         o.jackpot,
-        closeTo(b.jackpot.productionSeconds * 100 * combo, 1e-6),
+        closeTo(b.jackpot.productionSeconds * e.passive() * combo, 1e-6),
       );
       expect(o.payout, greaterThan(o.jackpot));
     });
 
     test('Magnet widens PERFECT, not the jackpot; Luck never wins it', () {
       s.skills['magnet'] = 10;
-      final wide = grade(0.008, e.econ.playerWindows());
+      // 12 ms: PERFECT (±15 ms) but outside the 5.00 window (±10 ms).
+      final wide = grade(0.012, e.econ.playerWindows());
       expect(wide.tier, Tier.perfect);
       expect(e.resolveRound(wide).jackpot, 0);
       // A GREAT bumped to PERFECT by Luck is not a 10.00.

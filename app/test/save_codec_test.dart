@@ -18,8 +18,6 @@ GameState sample() {
     ..playSeconds = 321.5
     ..tutorialDone = true;
   s.owned.addAll({'grandpa': 12, 'grandma': 3});
-  s.upgrades['grandpa'] = 2;
-  s.synergies.add('grandparents');
   s.skills.addAll({'magnet': 4});
   s.perks.add('headStart');
   s.achievements.addAll({'earned_1', 'owned_grandpa_1'});

@@ -14,7 +14,7 @@ abstract final class CoachTargets {
   static final grandpaBuy = GlobalKey(debugLabel: 'coach-grandpa-buy');
   static final clocksTab = GlobalKey(debugLabel: 'coach-clocks-tab');
   static final skillsTab = GlobalKey(debugLabel: 'coach-skills-tab');
-  static final upgradeStrip = GlobalKey(debugLabel: 'coach-upgrades');
+  static final milestoneBar = GlobalKey(debugLabel: 'coach-milestone-bar');
   static final modeRow = GlobalKey(debugLabel: 'coach-modes');
   static final combo = GlobalKey(debugLabel: 'coach-combo');
   static final prestige = GlobalKey(debugLabel: 'coach-prestige');
@@ -151,7 +151,10 @@ class _CoachOverlayState extends State<CoachOverlay>
         if (tip == null) return null;
         final (text, target) = switch (tip) {
           'skills' => (l.tip_skills, CoachTargets.skillsTab),
-          'upgrade' => (l.tip_upgrade, CoachTargets.upgradeStrip),
+          'milestone' => (
+            l.tip_milestone('${c.balance.milestones.thresholds.first}'),
+            CoachTargets.milestoneBar,
+          ),
           'modes' => (l.tip_modes, CoachTargets.modeRow),
           'combo' => (l.tip_combo, CoachTargets.combo),
           'prestige' => (l.tip_prestige, CoachTargets.prestige),

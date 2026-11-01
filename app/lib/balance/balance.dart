@@ -24,6 +24,7 @@ class RoundConfig {
     : target = _d(j['target']),
       autoEndAfter = _d(j['autoEndAfter']),
       inputGraceAfterStart = _d(j['inputGraceAfterStart']),
+      ignoreTapsBefore = _d(j['ignoreTapsBefore']),
       resultPause = _d(j['resultPause']),
       latestStart = _d(j['latestStart']),
       bulletZone = _d(j['bulletZone']),
@@ -31,6 +32,11 @@ class RoundConfig {
   final double target;
   final double autoEndAfter;
   final double inputGraceAfterStart;
+
+  /// A tap more than this many seconds of stopwatch time before the target
+  /// is taken as accidental and ignored: the round goes on, the streak
+  /// stays (R-RUNDA-5a, playtest: stray touches broke streaks).
+  final double ignoreTapsBefore;
   final double resultPause;
 
   /// Where Start później's last level starts the stopwatch.
@@ -192,13 +198,13 @@ class GeneratorConfig {
   final String? requiresPerk;
 }
 
-class GeneratorUpgradesConfig {
-  GeneratorUpgradesConfig(Map<String, Object?> j)
+/// Free ×[multiplier] for a generator at each owned count in [thresholds]
+/// (R-ULEP-1: automatic, shown as a progress bar on the clock's card).
+class MilestonesConfig {
+  MilestonesConfig(Map<String, Object?> j)
     : thresholds = (j['thresholds'] as List).map(_i).toList(growable: false),
-      costMultipliers = _dl(j['costMultipliers']),
       multiplier = _d(j['multiplier']);
   final List<int> thresholds;
-  final List<double> costMultipliers;
   final double multiplier;
 }
 
@@ -209,13 +215,15 @@ class SynergyConfig {
       b = j['b'] as String,
       aPerB = _d(j['aPerB']),
       bPerA = _d(j['bPerA']),
-      cost = _d(j['cost']);
+      requires = _i(j['requires']);
   final String id;
   final String a;
   final String b;
   final double aPerB;
   final double bPerA;
-  final double cost;
+
+  /// Active, for free, once the player owns this many of both (R-SYN-1).
+  final int requires;
 }
 
 class GoldenEffectConfig {
@@ -380,7 +388,7 @@ class Balance {
       skills = _ml(j['skills']).map(SkillConfig.new).toList(),
       generators = _ml(j['generators']).map(GeneratorConfig.new).toList(),
       generatorCostGrowth = _d(j['generatorCostGrowth']),
-      generatorUpgrades = GeneratorUpgradesConfig(_m(j['generatorUpgrades'])),
+      milestones = MilestonesConfig(_m(j['milestones'])),
       synergies = _ml(j['synergies']).map(SynergyConfig.new).toList(),
       golden = GoldenConfig(_m(j['golden'])),
       blind = ModeConfig(_m(_m(j['modes'])['blind'])),
@@ -423,7 +431,7 @@ class Balance {
   final List<SkillConfig> skills;
   final List<GeneratorConfig> generators;
   final double generatorCostGrowth;
-  final GeneratorUpgradesConfig generatorUpgrades;
+  final MilestonesConfig milestones;
   final List<SynergyConfig> synergies;
   final GoldenConfig golden;
   final ModeConfig blind;
@@ -524,17 +532,16 @@ class Balance {
       prevCost = g.baseCost;
     }
     if (generatorCostGrowth <= 1) e.add('generatorCostGrowth must be > 1');
-    final gu = generatorUpgrades;
-    if (gu.thresholds.length != gu.costMultipliers.length) {
-      e.add(
-        'generatorUpgrades thresholds and costMultipliers differ in length',
-      );
+    final ms = milestones;
+    if (ms.thresholds.isEmpty || ms.thresholds.first <= 0) {
+      e.add('milestones thresholds must start above 0');
     }
-    for (var i = 1; i < gu.thresholds.length; i++) {
-      if (gu.thresholds[i] <= gu.thresholds[i - 1]) {
-        e.add('generatorUpgrades thresholds must increase');
+    for (var i = 1; i < ms.thresholds.length; i++) {
+      if (ms.thresholds[i] <= ms.thresholds[i - 1]) {
+        e.add('milestones thresholds must increase');
       }
     }
+    if (ms.multiplier <= 1) e.add('milestones multiplier must be > 1');
     final genIds = generators.map((g) => g.id).toSet();
     final perkIds = prestige.perks.map((p) => p.id).toSet();
     unique('synergy', synergies.map((s) => s.id));
@@ -544,6 +551,7 @@ class Balance {
           e.add('synergy "${s.id}" unknown generator "$partner"');
         }
       }
+      if (s.requires <= 0) e.add('synergy "${s.id}" requires must be > 0');
     }
     unique('perk', prestige.perks.map((p) => p.id));
     for (final p in prestige.perks) {

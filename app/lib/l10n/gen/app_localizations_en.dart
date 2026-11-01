@@ -40,6 +40,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapToStart => 'Tap to start';
 
   @override
+  String get pausedTapToPlay => 'Paused · tap to play';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get resume => 'Play';
+
+  @override
   String get decimalSeparator => '.';
 
   @override
@@ -180,23 +189,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upgradesTitle => 'Upgrades';
 
   @override
-  String upgradeName(String generator, String level) {
-    return '$generator $level';
-  }
-
-  @override
-  String upgradeEffect(String generator) {
-    return '$generator earn ×2';
-  }
-
-  @override
   String upgradeRequires(int count) {
     return 'Needs $count owned';
-  }
-
-  @override
-  String synergyEffect(String a, String b, String aPct, String bPct) {
-    return '$a +$aPct% per $b · $b +$bPct% per $a';
   }
 
   @override
@@ -244,27 +238,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_power => 'Strike Power';
 
   @override
-  String get skill_power_desc => 'Every hit pays more.';
+  String get skill_power_desc => 'For the start: more Ticks for every hit.';
 
   @override
-  String get skill_power_label => 'Hit reward';
+  String get skill_power_label => 'Ticks per PERFECT';
 
   @override
   String get skill_fastForward => 'Late Start';
 
   @override
-  String get skill_fastForward_desc =>
-      'The stopwatch starts later — shorter rounds.';
+  String get skill_fastForward_desc => 'Shorter rounds — more rounds a minute.';
 
   @override
-  String get skill_fastForward_label => 'Starts at';
+  String get skill_fastForward_label => 'A round takes';
 
   @override
   String get skill_ticking => 'Ticking';
 
   @override
-  String get skill_ticking_desc =>
-      'A tick in the last second helps you find the beat.';
+  String get skill_ticking_desc => 'A helper: ticking in the last second.';
 
   @override
   String get skill_ticking_label => 'Ticking';
@@ -273,63 +265,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_wideEye => 'Hawk Eye';
 
   @override
-  String get skill_wideEye_desc => 'Wider GREAT and GOOD windows.';
+  String get skill_wideEye_desc =>
+      'Wider GREAT and GOOD: fewer misses, longer streaks. Clocks too.';
 
   @override
-  String get skill_wideEye_label => 'Your GREAT or better';
+  String get skill_wideEye_label => 'GREAT / GOOD';
 
   @override
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc =>
-      'A higher streak cap; the streak boosts payouts.';
+  String get skill_combo_desc => 'A higher ceiling for the streak multiplier.';
 
   @override
-  String get skill_combo_label => 'Streak cap';
+  String get skill_combo_label => 'Streak multiplies up to';
 
   @override
   String get skill_magnet => 'Magnet';
 
   @override
-  String get skill_magnet_desc => 'A wider PERFECT window.';
+  String get skill_magnet_desc => 'A wider PERFECT window. Clocks too.';
 
   @override
-  String get skill_magnet_label => 'Your PERFECTs';
+  String get skill_magnet_label => 'PERFECT window';
 
   @override
   String get skill_echo => 'Echo';
 
   @override
   String get skill_echo_desc =>
-      'Hits also pay seconds of your clocks\' income.';
+      'A hit pays seconds of your clocks\' work — grows with the game.';
 
   @override
-  String get skill_echo_label => 'Echo';
+  String get skill_echo_label => 'PERFECT adds clock time';
 
   @override
   String get skill_bulletTime => 'Cold Blood';
 
   @override
-  String get skill_bulletTime_desc => 'All your hit windows are wider.';
+  String get skill_bulletTime_desc => 'All your windows wider.';
 
   @override
-  String get skill_bulletTime_label => 'Your hits';
+  String get skill_bulletTime_label => 'Your GOOD window';
 
   @override
   String get skill_luck => 'Luck';
 
   @override
-  String get skill_luck_desc => 'A chance that a hit jumps one tier up.';
+  String get skill_luck_desc => 'Some hits jump a tier up.';
 
   @override
-  String get skill_luck_label => 'Chance';
+  String get skill_luck_label => 'Hits bumped a tier up';
 
   @override
   String get skill_shield => 'Shield';
 
   @override
-  String get skill_shield_desc => 'A miss uses a charge, not your streak.';
+  String get skill_shield_desc =>
+      'A miss uses a charge instead of resetting the streak.';
 
   @override
   String get skill_shield_label => 'Charges';
@@ -338,11 +331,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_goldenTouch => 'Golden Touch';
 
   @override
-  String get skill_goldenTouch_desc =>
-      'Golden seconds come more often and hit harder.';
+  String get skill_goldenTouch_desc => 'Golden Second more often and stronger.';
 
   @override
-  String get skill_goldenTouch_label => 'Interval';
+  String get skill_goldenTouch_label => 'Golden Second every';
 
   @override
   String skillLevel(int level, int max) {
@@ -361,6 +353,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skillMaxed => 'MAX';
+
+  @override
+  String skillKeptInfo(String kept, String cap) {
+    return 'After a paradox $kept levels stay (Muscle memory: up to $cap).';
+  }
+
+  @override
+  String get skillKeptNone =>
+      'After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.';
+
+  @override
+  String inHundred(String n) {
+    return '$n in 100';
+  }
+
+  @override
+  String get oddsPerfect => 'PERFECTs';
+
+  @override
+  String get oddsGreatOrBetter => 'GREAT or better';
+
+  @override
+  String get oddsHits => 'hits';
+
+  @override
+  String skillOdds(String tier, String now, String next) {
+    return 'Your $tier: about $now → $next in 100 rounds';
+  }
+
+  @override
+  String skillOddsMax(String tier, String now) {
+    return 'Your $tier: about $now in 100 rounds';
+  }
 
   @override
   String skillLockedHint(String price) {
@@ -562,19 +587,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get perk_muscleMemory1 => 'Muscle memory I';
 
   @override
-  String get perk_muscleMemory1_desc => 'Late Start survives the paradox';
+  String get perk_muscleMemory1_desc =>
+      'After a paradox every skill keeps up to level 4';
 
   @override
   String get perk_muscleMemory2 => 'Muscle memory II';
 
   @override
-  String get perk_muscleMemory2_desc => 'Hawk Eye and Magnet survive too';
+  String get perk_muscleMemory2_desc => '…up to level 6';
 
   @override
   String get perk_muscleMemory3 => 'Muscle memory III';
 
   @override
-  String get perk_muscleMemory3_desc => 'Other skills keep half their level';
+  String get perk_muscleMemory3_desc => '…up to level 8';
 
   @override
   String get perk_longNap1 => 'Long nap I';
@@ -682,13 +708,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statRounds => 'Rounds';
 
   @override
+  String get statTypical => 'Typical error';
+
+  @override
+  String get statTypicalHint => 'half your taps land closer';
+
+  @override
+  String get statAccidental => 'Stray taps (ignored)';
+
+  @override
   String get statTiers => 'Hits';
 
   @override
   String get statMeanError => 'Average error';
-
-  @override
-  String get statSpread => 'Spread';
 
   @override
   String get statMeanHint => 'negative = you tap early';
@@ -829,6 +861,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tip_prestige => 'Rewind time: start over with a permanent bonus.';
 
   @override
+  String tip_milestone(String need) {
+    return 'The bar under the name: at $need owned, the clock earns ×2!';
+  }
+
+  @override
+  String milestoneProgress(String owned, String next, String mult) {
+    return '$owned/$next → ×$mult';
+  }
+
+  @override
+  String get milestoneMax => 'All bonuses reached';
+
+  @override
+  String milestoneToast(String name) {
+    return 'New bonus · $name';
+  }
+
+  @override
+  String milestoneTitle(String generator, String mult) {
+    return '$generator ×$mult';
+  }
+
+  @override
+  String get synergyToast => 'Synergy!';
+
+  @override
   String get tutorialAim => 'Tap when the gold ring meets the clock — at 5.00!';
 
   @override
@@ -849,9 +907,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tip_skills => 'Skills boost your own hits.';
-
-  @override
-  String get tip_upgrade => 'Upgrade: a clock earns ×2!';
 
   @override
   String get tip_modes => 'A new mode! Tap to switch it on.';
@@ -877,7 +932,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_goal =>
-      'The stopwatch counts seconds. Tap the screen when it shows exactly 5.00. The closer, the better: PERFECT pays the most, then GREAT and GOOD. Too early or too late is a miss — it pays nothing and breaks your streak.';
+      'The stopwatch counts seconds. Tap the screen when it shows 5.00 — the closer, the better:\n• 5.00 (±0.010 s): a PERFECT plus a bonus — seconds of your clocks\' work\n• PERFECT (±0.015 s): 6 Ticks, streak +3\n• GREAT (±0.030 s): 3 Ticks, streak +2\n• GOOD (±0.050 s): 1 Tick, streak +1\n• CLOSE (±0.150 s): a small consolation, the streak breaks\nAnything further is a miss. A tap over a second before the target counts as a slip and is ignored. Skills widen the windows (except 5.00).';
 
   @override
   String get help_tiki_t => 'Ticks';
@@ -894,11 +949,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Clocks (the Clocks tab) play for you and add Ticks every second — even while the game is closed. Grandpa comes first; buying a clock reveals the next, stronger one. The number on the icon is how many you own. ×1, ×10, ×100 and MAX set how many you buy at once.';
 
   @override
-  String get help_upgrades_t => 'Upgrades';
+  String get help_upgrades_t => 'Clock bonuses';
 
   @override
   String get help_upgrades =>
-      'Once you own enough of one clock, an upgrade icon shows up above the shop. Tap it to see what it does — usually it doubles that clock\'s income. Double icons are synergies: two clocks boosting each other.';
+      'Each clock has a bar. Once you own 10, 20, 40… of it, all clocks of that kind earn ×2 — free, on their own. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.';
 
   @override
   String get help_skills_t => 'Skills';
@@ -1925,11 +1980,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_power_info =>
-      'Each level raises the fixed reward for a hit by 150% of the base reward. You feel it most early on, before your clocks earn much.';
+      'The fixed reward for a hit: PERFECT 6 Ticks, GREAT 3, GOOD 1. Each level adds one and a half times that (PERFECT 6 → 15 → 24…). Very strong in the first minutes; later Echo counts, as it grows with your clocks.';
 
   @override
   String get skill_fastForward_info =>
-      'The stopwatch starts from a higher value at the same pace, so rounds are shorter and you get more of them per minute. At least 4 seconds always remain to find the rhythm.';
+      'The stopwatch starts from a higher value, so a round is shorter and you play more rounds in the same time. At least 4 seconds are always left to find the rhythm.';
 
   @override
   String get skill_ticking_info =>
@@ -1937,27 +1992,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_wideEye_info =>
-      'GREAT and GOOD windows grow 8% per level, so you hit more often and lose your streak less. It works for your clocks\' hits too — their income grows with yours.';
+      'The GREAT window (±30 ms) grows by about 1.6 ms a level and GOOD (±50 ms) by about 2.7 ms, up to 1.8 times at the top level. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.';
 
   @override
   String get skill_combo_info =>
-      'Raises the streak cap by 2 steps per level. Each streak step adds 5% to a hit\'s payout (the jackpot and Echo included).';
+      'Every hit without a miss raises the streak multiplier by 0.05 a step (PERFECT 3 steps, GREAT 2, GOOD 1). The base ceiling is ×1.25; each level raises it by 0.10. It multiplies the whole payout, 5.00 and Echo included.';
 
   @override
   String get skill_magnet_info =>
-      'The PERFECT window grows 1 ms per level, so 4.99 or 5.01 can be a PERFECT too. The 5.00 jackpot still needs exactly 5.00 on the dial. Your clocks hit PERFECT more often too.';
+      'The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.';
 
   @override
   String get skill_echo_info =>
-      'Each hit also pays 0.5 s of your clocks\' income per level (PERFECT in full, GREAT 1/3, GOOD 1/10). That keeps tapping worth it when your clocks earn a lot.';
+      'Every hit adds seconds of your clocks\' work, per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s. It grows with your clocks, so later on it is where most clicking Ticks come from.';
 
   @override
   String get skill_bulletTime_info =>
-      'All your windows (PERFECT, GREAT, GOOD, CLOSE) are wider — up to ×2.5 at max level. The clock runs the same; you feel a heartbeat near the target. Not for your clocks.';
+      'All your windows (PERFECT, GREAT, GOOD, CLOSE) get wider, up to 2.5 times at the top level — e.g. GOOD from ±50 to ±125 ms. The 5.00 window stays. Near the target you feel a heartbeat. Doesn\'t work on clocks.';
 
   @override
   String get skill_luck_info =>
-      'A 2% chance per level that a GREAT becomes a PERFECT and a GOOD a GREAT. It never gives the 5.00 jackpot.';
+      'At each level 2 in 100 hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.';
 
   @override
   String get skill_shield_info =>
@@ -1965,5 +2020,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_goldenTouch_info =>
-      'The Golden Second comes 5% more often per level, and its effects (Frenzy, Lucky, Hot hand) are 5% stronger.';
+      'A Golden Second flies in every 10 minutes on average. Each level cuts that by 30 seconds and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.';
 }

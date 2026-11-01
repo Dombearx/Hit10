@@ -448,22 +448,6 @@ class GameEngine {
     return BuyResult.ok;
   }
 
-  BuyResult buyUpgrade(String id) {
-    final u = econ.nextUpgrade(id);
-    if (u == null || econ.owned(id) < u.threshold) return BuyResult.unavailable;
-    if (!s.spend(u.cost)) return BuyResult.tooExpensive;
-    s.upgrades[id] = u.index + 1;
-    return BuyResult.ok;
-  }
-
-  BuyResult buySynergy(String id) {
-    final syn = econ.availableSynergies().where((x) => x.id == id).firstOrNull;
-    if (syn == null) return BuyResult.unavailable;
-    if (!s.spend(syn.cost)) return BuyResult.tooExpensive;
-    s.synergies.add(id);
-    return BuyResult.ok;
-  }
-
   BuyResult buySkill(String id) {
     final cost = econ.skillCost(id);
     if (cost == null) return BuyResult.unavailable;
@@ -506,6 +490,17 @@ class GameEngine {
 
   bool canPrestige() => econ.prestigeGain() >= 1;
 
+  /// How many levels of each skill survive a paradox: the best Muscle
+  /// memory perk owned (0 without one).
+  int keptSkillLevels() {
+    var keep = 0;
+    for (final p in b.prestige.perks) {
+      final n = p.params['keepLevels'];
+      if (n != null && s.perks.contains(p.id)) keep = math.max(keep, n.round());
+    }
+    return keep;
+  }
+
   /// Time paradox (R-PRES-1…5): converts lifetime Tiki into Chronons and
   /// Shards, resets the run, keeps what the perks keep. Returns the gain.
   int prestige() {
@@ -514,20 +509,11 @@ class GameEngine {
     s.chronons += gain;
     s.shards += gain;
     s.prestiges++;
-    final kept = <String, int>{};
-    final skills = Map<String, int>.of(s.skills);
-    if (s.perks.contains('muscleMemory1')) {
-      kept['fastForward'] = skills['fastForward'] ?? 0;
-    }
-    if (s.perks.contains('muscleMemory2')) {
-      kept['wideEye'] = skills['wideEye'] ?? 0;
-      kept['magnet'] = skills['magnet'] ?? 0;
-    }
-    if (s.perks.contains('muscleMemory3')) {
-      for (final e in skills.entries) {
-        kept.putIfAbsent(e.key, () => e.value ~/ 2);
-      }
-    }
+    // Muscle memory (R-PRES-5a): every skill keeps up to N levels.
+    final keep = keptSkillLevels();
+    final kept = <String, int>{
+      for (final e in s.skills.entries) e.key: math.min(e.value, keep),
+    };
     s
       ..tiki = 0
       ..earnedThisRun = 0
@@ -535,8 +521,6 @@ class GameEngine {
       ..comboStreak = 0
       ..shieldProgress = 0;
     s.owned.clear();
-    s.upgrades.clear();
-    s.synergies.clear();
     s.skills
       ..clear()
       ..addAll(kept..removeWhere((_, v) => v <= 0));

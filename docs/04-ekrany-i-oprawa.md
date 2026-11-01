@@ -19,7 +19,6 @@ wyglądać, brzmieć i reagować.
 │  [Na ślepo]                   │  ← tryby (po odblokowaniu)
 │  ░ dziadek: 10.02! +3 ░       │  ← „trafienia” generatorów lecące z boku
 ├───────────────────────────────┤
-│ [ulepszenie][ulepszenie][...] │  ← pasek dostępnych ulepszeń (przewijany)
 │  Zegary │ Umiejętności        │  ← zakładki sklepu
 │ ┌───────────────────────────┐ │
 │ │ 👴 Dziadek     x42   1.2K │ │  ← lista (przewijana); przełącznik ×1/×10/×100/MAX
@@ -171,9 +170,9 @@ styl **3D** (PNG 256×256, licencja MIT). Do repo trafiają tylko używane pliki
 | | | | Ołtarz Chronosa | Classical building |
 
 - **U-12:** Pozostałe elementy:
-  - **ulepszenia generatora:** karta generatora pomniejszona do ikony plus
-    cyfra poziomu (1–8) w rogu, rysowana w kodzie;
-  - **synergie:** dwa emoji generatorów na jednej karcie, ukośnie;
+  - **bonusy generatora (R-ULEP-3):** złoty pasek postępu na karcie
+    generatora z napisem „7/10 → ×2”; osiągnięcie progu pokazuje
+    powiadomienie z ikoną generatora;
   - **osiągnięcia:** odznaka (okrągła karta) z emoji kategorii: Money bag
     (zarobione), emoji generatora (posiadane), Bullseye (PERFEKTY),
     Fire (serie i combo), Glowing star (Złote Sekundy), Cyclone (prestiż),
@@ -241,6 +240,14 @@ FLUX.1 [dev] odpada, bo ma licencję niekomercyjną.
   telewizorka obok zegara. Nigdy nie leżą w obszarze areny przyjmującym
   dotknięcia, żeby nie było przypadkowych kliknięć. Aktywne Turbo pokazuje
   pasek z pozostałym czasem („×2 · 1:23:40”).
+  Gdy kafelki są widoczne, arena rezerwuje na nie pas 48 px u góry:
+  tarcza mieści się pod nim i nic jej nie zasłania (playtest: na niskich
+  ekranach kafelki wchodziły na tarczę).
+- **U-29:** Przycisk pauzy: okrągły, 40 px, na środku pasa nad tarczą
+  (między kafelkami reklam). ⏸ gdy runda trwa, złoty ▶ gdy stoper stoi.
+  Umiejętności na karcie pokazują wartości w jednostkach gry (Tiki, ms, s,
+  ×, „N na 100”), a w szczegółach okienkowych także „Twoje PERFEKTY:
+  ok. 13 → 15 na 100 rund”, zamiast procentów od niewidocznej bazy.
 - **U-23:** Worek Tików pojawia się na karcie, na którą brakuje Tików, jako
   drugi przycisk („📺 +5 min”).
 - **U-24:** Ratunek combo to wyskakujący dymek nad licznikiem combo z

@@ -7,7 +7,7 @@ przedmiotów i ich liczby są w [02-rozgrywka.md](02-rozgrywka.md).
 
 | Waluta | PL / EN | Skąd | Na co |
 |---|---|---|---|
-| **Tiki** | Tiki / Ticks | trafienia, generatory, Fart, offline | umiejętności, generatory, ulepszenia, synergie |
+| **Tiki** | Tiki / Ticks | trafienia, generatory, Fart, offline | umiejętności, generatory (bonusy za liczbę sztuk i synergie są darmowe) |
 | **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +2% na zawsze każdy |
 | **Okruchy czasu** | Okruchy / Shards | prestiż (tyle, ile nowych Chrononów) | perki |
 
@@ -41,8 +41,9 @@ EV(σ) = 10·pP' + 3·pS' + 1·pD'       # wartość oczekiwana jednej próby
 
 ```
 zysk_okien_i = EV(σ_i, okna obecne) / EV(σ_i, okna bazowe, bez Szczęścia)   # 1 dla σ = 0
-synergia_i   = Π (1 + procent · liczba_partnera)  po kupionych synergiach z i
-dochód_i     = n_i · Tiki_bazowo_i · 2^(ulepszenia_i) · synergia_i · zysk_okien_i
+synergia_i   = Π (1 + procent · liczba_partnera)  po aktywnych synergiach z i (obie strony ≥ 25 szt.)
+dochód_i     = n_i · Tiki_bazowo_i · 2^(progi_i) · synergia_i · zysk_okien_i
+progi_i      = ile z progów 10, 20, 40, 75, 100, 150, 200, 250 osiągnięto (n_i ≥ próg)
 ```
 
 **Globalny mnożnik:**
@@ -253,5 +254,7 @@ Wnioski:
   Zmiana balansu nie wymaga zmian w kodzie.
 - **E-3:** Każda zmiana pliku balansu musi przejść testy B-1…B-10. Wynik
   symulatora (tabele jak w sekcji 4) jest wklejany do opisu commita albo PR.
-- **E-4:** Najpierw stroimy koszty i mnożniki ulepszeń. Bazowe wartości
+- **E-4:** Najpierw stroimy progi bonusów (R-ULEP-1). Progi 10, 20, 40, 75…
+  wybrane symulatorem spośród kilku wariantów: 5, 10, 25… był za szybki
+  (B-2, B-5), 10, 25, 50… za wolny (B-9, A-1). Bazowe wartości
   generatorów zmieniamy na końcu, bo pociągają za sobą wszystko inne.

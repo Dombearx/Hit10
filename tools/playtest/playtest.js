@@ -179,7 +179,7 @@ async function play(browser, key) {
   delete log._goldenSeen;
   log.summary = {
     playedMin: +(now() / 60).toFixed(1), rounds: s.rounds, byTier: s.byTier, tiki: s.tiki, passive: s.passive,
-    owned: s.owned, skills: s.skills, upgrades: s.upgrades, achievements: s.achievements,
+    owned: s.owned, skills: s.skills, milestones: s.milestones, achievements: s.achievements,
     goldenCaught: s.goldenCaught, bestCombo, comboBreaks, longestNothingToBuySec: Math.round(longestWait),
     purchases: log.purchases.length, skipped: log.skipped || 0,
   };
@@ -201,7 +201,7 @@ async function shopFor(q, P, shop, s) {
       return big.sort((a, b) => b.cost - a.cost)[0] || null;
     }
     if (P.strategy === 'value') {
-      const pref = (i) => ({ upg: 0, syn: 1, skill: 2, gen: 3 }[i.kind]);
+      const pref = (i) => ({ skill: 0, gen: 1 }[i.kind]);
       return can.sort((a, b) => pref(a) - pref(b) || b.cost - a.cost)[0];
     }
     return can.sort((a, b) => a.cost - b.cost)[0];

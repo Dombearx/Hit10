@@ -28,7 +28,8 @@ void main() {
     expect(b.skills, hasLength(11));
     expect(b.prestige.perks, hasLength(16));
     expect(b.synergies, hasLength(6));
-    expect(b.tier('perfect').window, 0.005);
+    expect(b.tier('perfect').window, 0.015);
+    expect(b.jackpot.window, 0.010);
   });
 
   test('numbers match the tuned design values (docs/02, 03)', () {

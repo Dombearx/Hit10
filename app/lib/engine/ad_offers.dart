@@ -75,6 +75,21 @@ class AdOffers {
     if (r != null && s.playSeconds >= r.expiresAtPlay) rescue = null;
   }
 
+  /// What the bag pays: [AdsConfig.bagProductionSeconds] of passive income
+  /// without the temporary boosts (Turbo, frenzy). The offer shows this
+  /// very number (playtest: it promised 850K with Turbo on and paid ~500K).
+  double bagAmount() {
+    final f = e.frenzy, t = e.turbo;
+    e
+      ..frenzy = 1
+      ..turbo = 1;
+    final amount = e.passive() * cfg.bagProductionSeconds;
+    e
+      ..frenzy = f
+      ..turbo = t;
+    return amount;
+  }
+
   /// Grants the reward after a fully watched ad (R-AD-3). [offlineAmount]
   /// is the pending offline income for [AdOffer.offline]. Returns Tiki
   /// granted (bag, offline) or 0.
@@ -94,14 +109,7 @@ class AdOffers {
         e.turbo = cfg.turboMultiplier;
         return 0;
       case AdOffer.bag:
-        final f = e.frenzy, t = e.turbo;
-        e
-          ..frenzy = 1
-          ..turbo = 1;
-        final amount = e.passive() * cfg.bagProductionSeconds;
-        e
-          ..frenzy = f
-          ..turbo = t;
+        final amount = bagAmount();
         s.earn(amount);
         return amount;
       case AdOffer.rescue:

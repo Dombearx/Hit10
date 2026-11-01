@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hit10/engine/round_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
@@ -43,7 +44,7 @@ void main() {
     expect(c.engine.goldenEnabled, isFalse);
   });
 
-  test('skills and upgrades get a tip wherever the player looks', () {
+  test('skills and the bonus bar get a tip wherever the player looks', () {
     final s = GameState()
       ..tutorialDone = true
       ..tiki = 1000
@@ -53,26 +54,27 @@ void main() {
     expect(c.pendingTip, 'skills');
     expect(c.skillAffordable, isTrue);
     c.dismissTip();
-    s.owned['grandpa'] = 10;
+    s.owned['grandpa'] = GameController.milestoneTipAt;
     c.checkTips();
     // Tips are spaced out: nothing right after the last one…
     expect(c.pendingTip, isNull);
     s.playSeconds += GameController.tipGap + 1;
     c.checkTips();
-    expect(c.pendingTip, 'upgrade');
+    expect(c.pendingTip, 'milestone');
   });
 
   test('a tip closes for good once the player does what it says', () {
     final s = GameState()
       ..tutorialDone = true
-      ..owned['grandpa'] = 10
+      ..owned['grandpa'] = 9
       ..tiki = 1e6;
     final c = controller(s);
     c.checkTips();
-    expect(c.pendingTip, 'upgrade');
-    c.buyUpgrade('grandpa');
+    expect(c.pendingTip, 'milestone');
+    // The 10th Grandpa reaches the bonus the tip was about.
+    c.buyGenerators('grandpa', 1);
     expect(c.pendingTip, isNull);
-    expect(s.tipsSeen, contains('upgrade'));
+    expect(s.tipsSeen, contains('milestone'));
     // Found on one's own: never explained afterwards.
     c.tipActed('skills');
     expect(s.tipsSeen, contains('skills'));
@@ -91,24 +93,39 @@ void main() {
     expect(c.pendingTip, isNotNull);
   });
 
-  test('an upgrade tip waits until one is affordable', () {
+  test('the bonus bar tip comes with a few Grandpas, not after the bonus', () {
     final s = GameState()
       ..tutorialDone = true
-      ..owned['grandpa'] = 10
-      ..tiki = 0;
+      ..owned['grandpa'] = 1;
     final c = controller(s);
     c.checkTips();
     expect(c.pendingTip, isNull);
-    s.tiki = 1e6;
+    s.owned['grandpa'] = 10; // already reached
     c.checkTips();
-    expect(c.pendingTip, 'upgrade');
+    expect(c.pendingTip, isNull);
+    s.owned['grandpa'] = GameController.milestoneTipAt;
+    c.checkTips();
+    expect(c.pendingTip, 'milestone');
+  });
+
+  test('a bonus reached is announced once', () async {
+    final s = GameState()
+      ..tutorialDone = true
+      ..owned['grandpa'] = 9
+      ..tiki = 1e6;
+    final c = controller(s);
+    final events = <MilestoneEvent>[];
+    c.milestoneReached.listen(events.add);
+    c.buyGenerators('grandpa', 1);
+    c.buyGenerators('grandpa', 1);
+    await Future<void>.delayed(Duration.zero);
+    expect(events.map((e) => '${e.generator}#${e.index}'), ['grandpa#0']);
   });
 
   test('an ignored tip goes away, comes back once, then never', () {
     final s = GameState()
       ..tutorialDone = true
-      ..owned['grandpa'] = 10
-      ..tiki = 1e6;
+      ..owned['grandpa'] = 5;
     final c = controller(s);
     void play(double secs) {
       // The controller's own check, one tick a second.
@@ -120,14 +137,14 @@ void main() {
     }
 
     c.checkTips();
-    expect(c.pendingTip, 'upgrade');
+    expect(c.pendingTip, 'milestone');
     play(GameController.tipLife + 1);
     expect(c.pendingTip, isNull);
-    expect(s.tipsSeen, isNot(contains('upgrade')));
+    expect(s.tipsSeen, isNot(contains('milestone')));
     play(GameController.tipGap + 1);
-    expect(c.pendingTip, 'upgrade');
+    expect(c.pendingTip, 'milestone');
     play(GameController.tipLife + 1);
-    expect(s.tipsSeen, contains('upgrade'));
+    expect(s.tipsSeen, contains('milestone'));
   });
 
   test('the stopwatch shows the timing to new players only', () {
@@ -195,17 +212,38 @@ void main() {
     expect(find.byKey(const Key('tab-1-alert-true')), findsOneWidget);
   });
 
+  testWidgets('the pause button stops the round and starts the next', (
+    tester,
+  ) async {
+    final s = GameState()..tutorialDone = true;
+    final c = await pump(tester, s);
+    c.onPointerDown(Duration.zero); // start a round
+    expect(c.round.phase, RoundPhase.running);
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.tap(find.byKey(const Key('pause-button')));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(c.round.phase, RoundPhase.waiting);
+    expect(c.paused, isTrue);
+    await tester.tap(find.byKey(const Key('pause-button')));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(c.round.phase, RoundPhase.running);
+    expect(c.paused, isFalse);
+  });
+
   testWidgets('the ? button opens the help', (tester) async {
     final s = GameState()..tutorialDone = true;
     await pump(tester, s);
     await tester.tap(find.byKey(const Key('open-help')));
     await tester.pump(const Duration(milliseconds: 500));
     expect(find.text('Jak grać'), findsOneWidget);
-    await tester.scrollUntilVisible(
+    // The list is longer than the sheet: drag the button well into view.
+    await tester.dragUntilVisible(
       find.byKey(const Key('help-replay')),
-      200,
-      scrollable: find.byType(Scrollable).last,
+      find.byType(Scrollable).last,
+      const Offset(0, -300),
     );
+    await tester.drag(find.byType(Scrollable).last, const Offset(0, -300));
+    await tester.pump(const Duration(milliseconds: 300));
     await tester.tap(find.byKey(const Key('help-replay')));
     await tester.pump(const Duration(milliseconds: 500));
     expect(s.tutorialDone, isFalse);

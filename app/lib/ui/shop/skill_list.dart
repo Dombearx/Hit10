@@ -1,8 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../../model/economy.dart';
 import '../../model/grading.dart';
+import '../../model/time_map.dart';
 import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -41,42 +44,52 @@ class SkillList extends StatelessWidget {
 ) {
   String n(double v, int digits) =>
       v.toStringAsFixed(digits).replaceAll('.', l.decimalSeparator);
-  TierOdds odds(int lv) => e.odds(
-    e.playerSpread(),
-    e.playerWindowsWith(id, lv),
-    luck: e.luckChance(),
-  );
-  String pct(TierOdds o, double Function(TierOdds) pick) {
-    final p = pick(o) * 100;
-    return '${n(p, p < 10 ? 1 : 0)}%';
-  }
-
+  // Values in the game's own units — Tiki, ms, s, ×, "in 100" — not
+  // percentages of something the player never sees (playtest).
+  String ms(double sec) => '±${(sec * 1000).round()} ms';
   String at(int lv) {
+    final w = e.playerWindowsWith(id, lv);
     switch (id) {
       case 'power':
-        return '×${n(1 + e.b.skill('power').perLevel * lv, 1)}';
+        return n(
+          e.b.tier('perfect').reward *
+              (1 + e.b.skill('power').perLevel * lv) *
+              e.permanentMultiplier(),
+          0,
+        );
       case 'fastForward':
-        return n(e.laterStart(lv), 2);
+        final r = e.b.round;
+        final map = TimeMap(
+          start: e.laterStart(lv),
+          zoneStart: r.target - r.bulletZone,
+          zoneEnd: r.target + r.bulletZone,
+        );
+        return '${n(map.realAt(r.target) + r.resultPause, 2)} s';
       case 'ticking':
         return lv > 0 ? l.on : l.off;
-      // Window skills: what they mean for this player's own taps, at
-      // their measured spread (playtest: "±0.022 → 0.023 s" said nothing).
       case 'wideEye':
-        return pct(odds(lv), (o) => o.perfect + o.great);
+        return '${ms(w.great)} / ${ms(w.good).substring(1)}';
       case 'combo':
-        return '${e.comboCap(lv)}';
+        return '×${n(1 + e.b.combo.multiplierPerStep * e.comboCap(lv), 2)}';
       case 'magnet':
-        return pct(odds(lv), (o) => o.perfect);
+        return ms(w.perfect);
       case 'echo':
-        return '${n(e.b.skill('echo').perLevel * lv, 1)} s';
+        final sec =
+            e.b.skill('echo').perLevel * lv * e.b.tier('perfect').echoShare;
+        return '${n(sec, sec < 1 ? 2 : 1)} s';
       case 'bulletTime':
-        return pct(odds(lv), (o) => o.hit);
+        return ms(w.good);
       case 'luck':
-        return '${(e.luckChance(lv) * 100).round()}%';
+        return l.inHundred('${(e.luckChance(lv) * 100).round()}');
       case 'shield':
         return '$lv';
       case 'goldenTouch':
-        return '×${n(1 - e.b.skill('goldenTouch').perLevel * lv, 2)}';
+        final g = e.b.golden;
+        final avg =
+            (g.intervalMin + g.intervalMax) /
+            2 *
+            (1 - e.b.skill('goldenTouch').perLevel * lv);
+        return '~${n(avg / 60, avg < 600 ? 1 : 0)} min';
     }
     return '$lv';
   }
@@ -126,10 +139,22 @@ class _SkillTile extends StatelessWidget {
               onTap: () => showSkillInfo(context, c, id),
               child: Row(
                 children: [
-                  EmojiCard(
-                    art: skillArt[id]!,
-                    size: 54,
-                    badge: level > 0 ? '$level' : null,
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      EmojiCard(
+                        art: skillArt[id]!,
+                        size: 54,
+                        badge: level > 0 ? '$level' : null,
+                      ),
+                      // 🔒 N: levels that survive the paradox (R-PRES-5a).
+                      if (keptLevels(c, id) > 0)
+                        Positioned(
+                          left: -4,
+                          bottom: -4,
+                          child: _KeptBadge(levels: keptLevels(c, id)),
+                        ),
+                    ],
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -265,6 +290,72 @@ String _perfectNow(GameController c, AppLocalizations l, Fmt f) {
   );
 }
 
+/// Levels of [id] that survive the next paradox.
+int keptLevels(GameController c, String id) =>
+    math.min(c.econ.level(id), c.engine.keptSkillLevels());
+
+/// A small padlock with the levels kept through the paradox.
+class _KeptBadge extends StatelessWidget {
+  const _KeptBadge({required this.levels});
+  final int levels;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: const Key('skill-kept'),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Palette.outline, width: 1.5),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.lock_rounded, size: 12, color: Palette.outline),
+          const SizedBox(width: 2),
+          Text(
+            '$levels',
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// For window skills: what the change means for this player's own taps, as
+/// "N in 100 rounds" at their measured spread (natural frequencies read
+/// easier than percentages).
+String? windowOdds(AppLocalizations l, Economy e, String id, int level) {
+  final pick = switch (id) {
+    'magnet' => (TierOdds o) => o.perfect,
+    'wideEye' => (TierOdds o) => o.perfect + o.great,
+    'bulletTime' => (TierOdds o) => o.hit,
+    _ => null,
+  };
+  if (pick == null) return null;
+  int at(int lv) =>
+      (pick(
+                e.odds(
+                  e.playerSpread(),
+                  e.playerWindowsWith(id, lv),
+                  luck: e.luckChance(),
+                ),
+              ) *
+              100)
+          .round();
+  final tier = switch (id) {
+    'magnet' => l.oddsPerfect,
+    'wideEye' => l.oddsGreatOrBetter,
+    _ => l.oddsHits,
+  };
+  final maxed = level >= e.b.skill(id).maxLevel;
+  return maxed
+      ? l.skillOddsMax(tier, '${at(level)}')
+      : l.skillOdds(tier, '${at(level)}', '${at(level + 1)}');
+}
+
 /// A skill's details: everything the card has to cut short (docs/04).
 Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
   return showModalBottomSheet<void>(
@@ -332,6 +423,15 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                     color: Palette.perfectDeep,
                   ),
                 ),
+                if (windowOdds(l, c.econ, id, level) case final line?)
+                  Text(
+                    line,
+                    key: Key('skill-odds-$id'),
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 if (id == 'power' || id == 'echo')
                   Text(
                     _perfectNow(c, l, f),
@@ -341,6 +441,33 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+                const SizedBox(height: 6),
+                // What survives the paradox (R-PRES-5a).
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      c.engine.keptSkillLevels() > 0
+                          ? Icons.lock_rounded
+                          : Icons.lock_open_rounded,
+                      size: 16,
+                      color: Palette.outline,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        c.engine.keptSkillLevels() > 0
+                            ? l.skillKeptInfo(
+                                '${keptLevels(c, id)}',
+                                '${c.engine.keptSkillLevels()}',
+                              )
+                            : l.skillKeptNone,
+                        key: const Key('skill-kept-info'),
+                        style: const TextStyle(fontSize: 13, height: 1.3),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 8),
                 Text(
                   skillInfo(l, id),

@@ -37,9 +37,12 @@ void main() {
         ..tiki = 5000
         ..comboStreak = 9;
       s.owned['grandpa'] = 40;
-      s.upgrades['grandpa'] = 3;
-      s.synergies.add('grandparents');
-      s.skills.addAll({'fastForward': 6, 'wideEye': 4, 'magnet': 5, 'echo': 7});
+      s.skills.addAll({
+        'fastForward': 6,
+        'wideEye': 4,
+        'magnet': 5,
+        'echo': 12,
+      });
       s.achievements.add('earned_1e+3');
     });
 
@@ -51,8 +54,6 @@ void main() {
       expect(s.prestiges, 1);
       expect(s.tiki, 0);
       expect(s.owned, isEmpty);
-      expect(s.upgrades, isEmpty);
-      expect(s.synergies, isEmpty);
       expect(s.skills, isEmpty);
       expect(s.comboStreak, 0);
       expect(s.achievements, contains('earned_1e+3'));
@@ -68,12 +69,24 @@ void main() {
         'headStart',
       });
       e.prestige();
+      // Muscle memory III: every skill keeps up to 8 levels (R-PRES-5a).
       expect(s.skills['fastForward'], 6);
       expect(s.skills['wideEye'], 4);
       expect(s.skills['magnet'], 5);
-      expect(s.skills['echo'], 3); // halved, rounded down
+      expect(s.skills['echo'], 8); // 12 → capped at 8
       expect(s.owned['grandpa'], 10);
       expect(s.tiki, 1000);
+    });
+
+    test('muscle memory I keeps every skill up to level 4', () {
+      s.perks.add('muscleMemory1');
+      e.prestige();
+      expect(s.skills, {
+        'fastForward': 4,
+        'wideEye': 4,
+        'magnet': 4,
+        'echo': 4,
+      });
     });
 
     test('perk tree: cost, prerequisites, no double buy', () {
@@ -136,6 +149,13 @@ void main() {
       expect(got, closeTo(300, 1e-9));
       expect(ads.available(AdOffer.bag, 1000 + 29 * 60 * 1000), isFalse);
       expect(ads.available(AdOffer.bag, 1000 + 30 * 60 * 1000), isTrue);
+    });
+
+    test('the bag pays exactly what it promised, Turbo or not', () {
+      ads.grant(AdOffer.turbo, 0); // ×2 on everything for a while
+      final promised = ads.bagAmount();
+      expect(promised, closeTo(300, 1e-9)); // Turbo not included
+      expect(ads.grant(AdOffer.bag, 1000), closeTo(promised, 1e-9));
     });
 
     test('rescue: offered after a big break, restores, expires', () {

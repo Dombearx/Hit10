@@ -24,6 +24,14 @@ sekunda. Start później zmienia tylko to, od czego zaczyna.
   zależy od `|e|` i aktualnych okien (sekcja 2).
 - **R-RUNDA-4:** Dotknięcia w pierwszych `0.25 s` czasu rzeczywistego rundy
   i w trakcie pauzy na wynik są ignorowane. Chroni to przed podwójnym tapnięciem.
+- **R-RUNDA-5a:** Dotknięcie wcześniej niż **1 s przed celem** (na stoperze
+  < 4.00) to dotknięcie przypadkowe: jest pomijane, runda trwa dalej,
+  seria zostaje. Statystyki liczą je osobno (playtest: przypadkowe
+  dotknięcia na starcie rundy zerowały serię).
+- **R-RUNDA-8a:** Przycisk ⏸ nad tarczą (po samouczku) świadomie zatrzymuje
+  stoper: runda jest anulowana bez kary, następna rusza dopiero po
+  dotknięciu tarczy albo ▶. Każda pauza (przycisk, sklep, panel, wyjście z
+  aplikacji) jest widoczna: tarcza pokazuje „Pauza · dotknij, by grać”.
 - **R-RUNDA-5:** Dotknięcie przed oknem DOBRZE to wynik **ZA WCZEŚNIE**
   (pudło). Jeśli gracz nie dotknie do `5.30`, runda kończy się wynikiem
   **ZA PÓŹNO** (pudło).
@@ -74,11 +82,21 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 
 | Próg | Okno bazowe `|e|` | Nagroda bazowa (Tiki) | Udział Echa | Krok combo |
 |---|---|---|---|---|
-| **PERFEKT** | < 0.005 s (na ekranie „5.00”) | 10 | 100% | +3 |
-| **ŚWIETNIE** | < 0.020 s | 3 | 33% | +2 |
+| **5.00** (jackpot) | < 0.010 s | PERFEKT + 5 s dochodu zegarów | – | jak PERFEKT |
+| **PERFEKT** | < 0.015 s | 6 | 60% | +3 |
+| **ŚWIETNIE** | < 0.030 s | 3 | 33% | +2 |
 | **DOBRZE** | < 0.050 s | 1 | 10% | +1 |
 | **BLISKO** | < 0.150 s (tylko dotknięcia gracza) | 0.3 | 0 | reset do 0 |
 | **PUDŁO** | reszta, ZA WCZEŚNIE, ZA PÓŹNO | 0 | 0 | reset do 0 |
+
+Okna zmienione po playteście (wcześniej PERFEKT i 5.00 ±0.005 s, ŚWIETNIE
+±0.020 s): ±5 ms to mniej niż jedna klatka ekranu (16.7 ms przy 60 Hz)
+i rząd wielkości próbkowania dotyku, a najtrudniejszy poziom osu! daje na
+najlepszą ocenę ±20 ms. PERFEKT przy rozrzucie 30 ms wypadał w 13% rund,
+więc „10 PERFEKTÓW z rzędu” było praktycznie losowe. Teraz dobry gracz
+(30 ms) ma ok. 38% PERFEKTÓW i 26% 5.00, przeciętny (60 ms) 20% i 13%;
+pudeł jest tyle samo co wcześniej (DOBRZE bez zmian). Nagrody przestrojone
+symulatorem (PERFEKT 10 → 6, Echo PERFEKTU 100% → 60%, jackpot 8 s → 5 s).
 
 - **R-PROG-0:** BLISKO (08, playtest) to pudło z pocieszeniem: płaci mało
   (1/33 PERFEKTU), ale zeruje combo jak pudło. W czasie szczęścia
@@ -87,11 +105,13 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
   się nie zmieniają — trafienie 5.00 ma zostać wyczynem. Generatory nie
   mają BLISKO.
 
-- **R-PROG-3 (5.00 — jackpot):** dotknięcie, które na tarczy daje 5.00
-  (|błąd| < 0.005 s; żadna umiejętność tego okna nie poszerza, Fart i
-  Gorąca ręka go nie dają), płaci oprócz PERFEKTU **8 s dochodu zegarów**
+- **R-PROG-3 (5.00 — jackpot):** dotknięcie w oknie 5.00
+  (|błąd| < 0.010 s; żadna umiejętność tego okna nie poszerza, Fart i
+  Gorąca ręka go nie dają) — tarcza pokazuje wtedy równe 5.00, a błąd
+  małym drukiem — płaci oprócz PERFEKTU **5 s dochodu zegarów**
   (co najmniej 5 bazowych PERFEKTÓW), razy combo i tryb. Oprawa: „5.00!”,
-  deszcz złota, fanfara. Nagłówek pokazuje „5.00 = +X”. Wielkość 8 s to
+  deszcz złota, fanfara. Nagłówek pokazuje „5.00 = +X”. (Historia: przy
+  oknie ±0.005 s) wielkość 8 s to
   granica z symulatora: przy 15 s gracz grający bez przerwy wyprzedza
   założone tempo, a gracz nieprecyzyjny zostaje za daleko w tyle (B-6c,
   B-7); 10 s mieściło się tylko na styk. Przy grze po kilka minut dziennie i tak przeważa dochód offline.
@@ -129,17 +149,25 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 
 | id | Nazwa PL / EN | Max | Koszt bazowy | Wzrost | Efekt na poziomie L |
 |---|---|---|---|---|---|
-| `power` | Siła trafienia / Strike Power | 10 | 50 | ×7 | nagroda progu ×(1+1.5L) |
-| `fastForward` | Start później / Late Start | 10 | 150 | ×7 | stoper rusza od 0.08·L, max 0.8 |
+| `power` | Siła trafienia / Strike Power | 15 | 50 | ×7 | nagroda progu ×(1+1.5L) |
+| `fastForward` | Start później / Late Start | 15 | 150 | ×3.66 | stoper rusza od 0.0533·L, max 0.8 |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
-| `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×5 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
-| `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +2 na poziom (5 → 25) |
-| `magnet` | Magnes / Magnet | 10 | 2 000 | ×7 | okno PERFEKT +0.001 s na poziom, max ±0.015 |
-| `echo` | Echo / Echo | 10 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 5 s) |
-| `bulletTime` | Zimna krew / Cold Blood | 10 | 5 000 | ×7 | okna gracza ×1/(1−0.06L), max ×2.5 |
-| `luck` | Szczęście / Luck | 10 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
-| `shield` | Tarcza / Shield | 3 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
-| `goldenTouch` | Złoty dotyk / Golden Touch | 5 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.05L), czyli pojawia się częściej; jej efekt jest ×(1+0.05L) silniejszy |
+| `wideEye` | Sokole oko / Hawk Eye | 15 | 600 | ×2.6 | okna ŚWIETNIE i DOBRZE ×(1+0.0533L), max ×1.8 |
+| `combo` | Combo / Combo | 15 | 500 | ×8 | limit combo +2 na poziom (5 → 35) |
+| `magnet` | Magnes / Magnet | 15 | 2 000 | ×3.66 | okno PERFEKT +0.00067 s na poziom, ±0.015 → ±0.025 |
+| `echo` | Echo / Echo | 15 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 7.5 s) |
+| `bulletTime` | Zimna krew / Cold Blood | 15 | 5 000 | ×3.66 | okna gracza ×1/(1−0.04L), max ×2.5 |
+| `luck` | Szczęście / Luck | 15 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
+| `shield` | Tarcza / Shield | 5 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
+| `goldenTouch` | Złoty dotyk / Golden Touch | 8 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.05L), czyli pojawia się częściej; jej efekt jest ×(1+0.05L) silniejszy |
+
+Więcej poziomów (zmiana po playteście, razem z R-PRES-5a): umiejętności
+okien i tempa (Start później, Sokole oko, Magnes, Zimna krew) mają to samo
+maksimum co wcześniej, rozłożone na 15 drobniejszych kroków — dawny 10.
+poziom kosztuje mniej więcej tyle co przedtem, okna nie rosną bez końca.
+Umiejętności dochodu (Siła, Combo, Echo, Szczęście, Tarcza, Złoty dotyk)
+dostały nowe, mocniejsze i drogie poziomy: cel na kilka przejść gry.
+Pierwsze 6 h kupuje ok. 63% wszystkich poziomów (85 ze 134).
 
 - **R-UMIEJ-1:** Sokole oko i Magnes działają **także na generatory** (sekcja 5).
   Dzięki temu są przydatne przez całą grę.
@@ -186,27 +214,33 @@ ekranie losowo wyskakują jego „trafienia” (sekcja 04).
   generatora według jego σ (wzór w 03). Niedokładni zyskują na Sokolim oku,
   a precyzyjni na Magnesie. Karta pokazuje ten bonus („okna: ×1.84”).
 
-### 5.1 Ulepszenia generatorów (jednorazowe)
+### 5.1 Bonusy za liczbę sztuk (automatyczne)
 
-- **R-ULEP-1:** Każdy generator ma 8 ulepszeń, każde to **×2** dla tego
-  generatora. Ulepszenie odblokowuje się przy posiadaniu
-  **1, 5, 25, 50, 100, 150, 200, 250** sztuk. Koszt to koszt bazowy
-  generatora × **10, 50, 500, 50K, 5M, 500M, 50B, 5T**.
-- **R-ULEP-2:** Każde ulepszenie ma śmieszną nazwę i opis w PL i EN, np.
-  - dziadek: „Okulary do czytania”, „Nowa bateria”, „Sanatorium”;
-  - babcia: „Jajka od szczęśliwych kur”;
-  - kukułka: „Kurs dykcji”.
+Zmienione po pytaniu „czy ulepszenia się w ogóle opłacają?”: kupowane
+ulepszenia (model Cookie Clickera) były tuż po odblokowaniu najgorszym
+zakupem w sklepie (Dziadek ×2 przy 1 Dziadku zwracał się 25 min, kolejny
+Dziadek 3 min), a wskazówka do nich kierowała. Teraz jak w AdVenture
+Capitalist: bonus przychodzi sam za zbieranie sztuk.
 
-  Wszystkie 112 nazw (14 × 8) pisze się przy implementacji contentu.
-- **R-ULEP-3:** Dostępne ulepszenia pokazują się w pasku „Ulepszenia” nad
-  sklepem jako kafelki z ikonami, posortowane od najtańszego.
+- **R-ULEP-1:** Każdy generator ma 8 progów: **10, 20, 40, 75, 100, 150,
+  200, 250** sztuk. Na każdym progu wszystkie sztuki tego generatora
+  zarabiają **×2** — za darmo, od razu, nic nie trzeba kupować. Prestiż
+  zeruje sztuki, więc i bonusy.
+- **R-ULEP-2:** Każdy próg ma śmieszną nazwę w PL i EN (dawne nazwy
+  ulepszeń), np. dziadek: „Okulary do czytania”, „Nowa bateria”,
+  „Sanatorium”; pokazuje ją powiadomienie przy osiągnięciu progu.
+- **R-ULEP-3:** Karta generatora ma pasek postępu do następnego progu
+  („7/10 → ×2”), po ostatnim „Wszystkie bonusy zdobyte”. Osiągnięcie
+  progu: fanfara, wibracja, powiadomienie „Nowy bonus · <nazwa>
+  — <generator> ×2”. Nie ma osobnego paska ulepszeń nad sklepem.
 
-### 5.2 Synergie (jednorazowe)
+### 5.2 Synergie (automatyczne)
 
 Generator A dostaje +1% za każdą sztukę B, a B dostaje +0.1% za każdą sztukę A.
-Synergia odblokowuje się, gdy gracz ma choć 1 A i 1 B.
+- **R-SYN-1:** Synergia włącza się sama, gdy gracz ma co najmniej **25 A
+  i 25 B** (`requires` w pliku balansu), z powiadomieniem „Synergia!”.
 
-| id | Nazwa | A | B | Koszt |
+| id | Nazwa | A | B | Dawny koszt (nieużywany) |
 |---|---|---|---|---|
 | `grandparents` | Dziadkowie na randce | dziadek | babcia | 50K |
 | `birdRhythm` | Ptasi rytm | kukułka | metronom | 5M |
@@ -284,9 +318,18 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   Chrononom. Okruchy wydaje się na perki. Wydawanie ich **nie** zmniejsza
   liczby Chrononów.
 - **R-PRES-5:** Reset zeruje: Tiki, generatory, ulepszenia generatorów,
-  synergie, umiejętności (chyba że perk mówi inaczej), combo i aktywne efekty.
+  umiejętności (powyżej limitu Pamięci mięśniowej, R-PRES-5a), combo i
+  aktywne efekty.
   **Zostają:** Chronony, Okruchy, perki, osiągnięcia, statystyki, odblokowane
   tryby i ustawienia.
+- **R-PRES-5a:** Pamięć mięśniowa I/II/III: po paradoksie każda umiejętność
+  zostaje do **4 / 6 / 8** poziomu; wyższe poziomy trzeba odkupić. Karta
+  umiejętności pokazuje kłódkę z liczbą zachowanych poziomów, szczegóły
+  mówią, ile zostanie (albo że bez perku wszystko wraca do zera).
+  Symulacja (tool/prestige_report.dart): zachowanie 3 poziomów prawie nic
+  nie daje (tanie poziomy i tak się odkupuje), 5–7 poziomów skraca kolejne
+  przejścia o 10–25%, zachowanie wszystkiego o ok. 35% — ale wtedy od
+  drugiego przejścia nie ma już w co inwestować.
 - **R-PRES-6:** Prestiż wymaga podwójnego potwierdzenia i ma spektakularną
   animację („przewinięcie czasu” wstecz).
 
@@ -295,9 +338,9 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | id | Nazwa | Koszt (Okruchy) | Działanie | Wymaga |
 |---|---|---|---|---|
 | `headStart` | Szybki start | 5 | start runu z 10 dziadkami i 1K Tików | – |
-| `muscleMemory1` | Pamięć mięśniowa I | 10 | Start później zostaje po resecie | – |
-| `muscleMemory2` | Pamięć mięśniowa II | 50 | Sokole oko i Magnes zostają | I |
-| `muscleMemory3` | Pamięć mięśniowa III | 250 | pozostałe umiejętności zostają na połowie poziomu (w dół) | II |
+| `muscleMemory1` | Pamięć mięśniowa I | 10 | każda umiejętność zostaje po resecie do 4. poziomu | – |
+| `muscleMemory2` | Pamięć mięśniowa II | 50 | …do 6. poziomu | I |
+| `muscleMemory3` | Pamięć mięśniowa III | 250 | …do 8. poziomu | II |
 | `longNap1` | Długa drzemka I | 10 | limit offline 12 h | – |
 | `longNap2` | Długa drzemka II | 40 | limit offline 24 h | I |
 | `deepSleep1` | Głęboki sen I | 20 | offline 75% wydajności | – |
@@ -363,14 +406,14 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   Koniec samouczka. W jego trakcie nie ma znaczka wydarzenia, czerwonych
   kropek ani Złotej Sekundy (jedna nowa rzecz naraz).
 - **R-TUT-2:** Wskazówki o nowych rzeczach, każda raz, przypięta do swojej
-  rzeczy: pierwsze ulepszenie, na które stać gracza (ikona nad sklepem),
-  pierwsza umiejętność,
+  rzeczy: pasek bonusu na karcie Dziadka (gdy gracz ma 3 Dziadki, przed
+  pierwszym ×2), pierwsza umiejętność,
   na którą stać gracza (zakładka), pierwszy przełącznik trybu, Złota
   Sekunda (gdy leci), seria (licznik combo), prestiż (wir).
   - Najwyżej jedna naraz; pierwsza po 20 s gry od końca samouczka,
     kolejne co najmniej 45 s gry po poprzedniej.
   - Znika, gdy gracz zrobi to, o czym mówi (otworzy zakładkę, dotknie
-    ulepszenia, przełączy tryb, złapie zegarek, otworzy prestiż) — i wtedy
+    próg bonusu, przełączy tryb, złapie zegarek, otworzy prestiż) — i wtedy
     już nigdy się nie pojawi; kto odkrył rzecz sam, nie dostaje
     wskazówki. Wskazówka o serii znika sama po 7 s. Każdą można zamknąć
     krzyżykiem. Złota Sekunda, która odleciała, wraca ze wskazówką
@@ -381,7 +424,7 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
     onboardingu: wskazówka o ulepszeniu wisiała 3–5 minut).
 - **R-TUT-3a (położenie dymków):** dymek nigdy nie zasłania tarczy w czasie
   gry. Cel nad areną (licznik Tików, „/s”, wir) → dymek na dole areny,
-  pod tarczą, cel świeci obwódką. Cel tuż pod areną (combo, ulepszenia,
+  pod tarczą, cel świeci obwódką. Cel tuż pod areną (combo,
   przełączniki) → dymek pod celem. Sprawdza to
   `tools/playtest/onboarding.js` (persony grają od zera, raport: kiedy
   który dymek, jak długo, jak zniknął, czy zasłania tarczę lub cel).
@@ -419,7 +462,11 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
 - **R-STAT-1:** Ekran statystyk pokazuje:
   - Tiki zarobione w tym runie i łącznie,
   - liczbę rund i rozkład progów (%),
-  - średni błąd i rozrzut (ms) z ostatnich 100 rund,
+  - typowy błąd (mediana odległości od celu) i średnie przesunięcie (ms)
+    z ostatnich 100 dotknięć bliskich celu (±0.3 s) — przypadkowe
+    dotknięcia nie psują tych liczb (playtest: 3 przypadkowe dotknięcia
+    zrobiły z ok. 40 ms „rozrzut” 440 ms),
+  - liczbę przypadkowych dotknięć (pominiętych, R-RUNDA-5a),
   - najlepszą serię i najwyższe combo,
   - liczbę złapanych Złotych Sekund,
   - czas gry,
@@ -437,7 +484,7 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 |---|---|---|---|---|
 | `adOffline` | Podwój / Double it | okno „Gdy cię nie było…” | ×2 dochodu offline | tylko przy nieobecności ≥ 30 min |
 | `adTurbo` | Turbo / Turbo | przycisk przy zegarze | **×2 całego dochodu** na 30 min | zapas najwyżej 4 h; czas Turbo płynie tylko podczas gry; kolejna reklama Turbo najwcześniej po 5 min (08) |
-| `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu | raz na 30 min |
+| `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu, bez Turbo i Szału; okno oferty pokazuje dokładnie tę kwotę | raz na 30 min |
 | `adRescue` | Ratunek combo / Combo Rescue | wyskakuje od razu po utracie serii ≥ 15 | przywraca serię sprzed pudła | raz na 15 min; okno znika po 5 s albo przy następnym dotknięciu |
 | `adGolden` | Złota Sekunda / Golden Second | przycisk przy zegarze | Złota Sekunda pojawia się od razu | raz na 30 min |
 
