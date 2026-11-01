@@ -244,6 +244,7 @@ class _GeneratorTile extends StatelessWidget {
                     color: Palette.outline.withValues(alpha: 0.7),
                   ),
                 ),
+                if (owned > 0) _MilestoneBar(controller: c, id: id),
               ],
             ),
           ),
@@ -260,6 +261,62 @@ class _GeneratorTile extends StatelessWidget {
               price: f.price(price),
               enabled: affordable,
               onPressed: () => c.buyGenerators(id, count),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Progress to the clock's next free ×2 (R-ULEP-1): "7/10 → ×2".
+class _MilestoneBar extends StatelessWidget {
+  const _MilestoneBar({required this.controller, required this.id});
+  final GameController controller;
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final owned = c.econ.owned(id);
+    final next = c.econ.nextMilestone(id);
+    final last = c.econ.lastMilestone(id);
+    final k = next == null ? 1.0 : (owned - last) / (next - last);
+    final mult = c.balance.milestones.multiplier;
+    return Padding(
+      // The tutorial's bonus tip points at the first clock's bar.
+      key: id == c.balance.generators.first.id
+          ? CoachTargets.milestoneBar
+          : null,
+      padding: const EdgeInsets.only(top: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                key: Key('milestone-$id'),
+                value: k.clamp(0.0, 1.0),
+                minHeight: 7,
+                color: Palette.perfect,
+                backgroundColor: Palette.outline.withValues(alpha: 0.12),
+              ),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            next == null
+                ? l.milestoneMax
+                : l.milestoneProgress(
+                    '$owned',
+                    '$next',
+                    mult == mult.roundToDouble() ? '${mult.round()}' : '$mult',
+                  ),
+            style: const TextStyle(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w800,
+              color: Palette.perfectDeep,
             ),
           ),
         ],

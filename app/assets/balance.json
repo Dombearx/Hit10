@@ -206,26 +206,16 @@
     }
   ],
   "generatorCostGrowth": 1.15,
-  "generatorUpgrades": {
+  "milestones": {
     "thresholds": [
-      1,
-      5,
-      25,
-      50,
+      10,
+      20,
+      40,
+      75,
       100,
       150,
       200,
       250
-    ],
-    "costMultipliers": [
-      10,
-      50,
-      500,
-      50000,
-      5000000.0,
-      500000000.0,
-      50000000000.0,
-      5000000000000.0
     ],
     "multiplier": 2
   },
@@ -236,7 +226,7 @@
       "b": "grandma",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 50000.0
+      "requires": 25
     },
     {
       "id": "birdRhythm",
@@ -244,7 +234,7 @@
       "b": "metronome",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 5000000.0
+      "requires": 25
     },
     {
       "id": "craftsmanship",
@@ -252,7 +242,7 @@
       "b": "quartz",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 3000000000.0
+      "requires": 25
     },
     {
       "id": "photoFinish",
@@ -260,7 +250,7 @@
       "b": "gps",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 700000000000.0
+      "requires": 25
     },
     {
       "id": "delayedTrain",
@@ -268,7 +258,7 @@
       "b": "timeMachine",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 140000000000000.0
+      "requires": 25
     },
     {
       "id": "cosmicBeat",
@@ -276,7 +266,7 @@
       "b": "pulsar",
       "aPerB": 0.01,
       "bPerA": 0.001,
-      "cost": 10000000000000.0
+      "requires": 25
     }
   ],
   "golden": {

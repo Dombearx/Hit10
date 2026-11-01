@@ -23,15 +23,16 @@ void main() {
     expect(g.buyGenerators('chronos', 1), BuyResult.unavailable); // perk-gated
   });
 
-  test('upgrade and synergy purchases', () {
+  test('the 10th unit doubles the whole kind, for free', () {
     s.tiki = 1e6;
-    expect(g.buyUpgrade('grandpa'), BuyResult.unavailable);
-    s.owned.addAll({'grandpa': 1, 'grandma': 1});
-    expect(g.buyUpgrade('grandpa'), BuyResult.ok);
-    expect(s.upgrades['grandpa'], 1);
-    expect(g.buyUpgrade('grandpa'), BuyResult.unavailable); // needs 5
-    expect(g.buySynergy('grandparents'), BuyResult.ok);
-    expect(g.buySynergy('grandparents'), BuyResult.unavailable);
+    s.owned['grandpa'] = 9;
+    final before = g.passive();
+    final tiki = s.tiki;
+    final price = g.econ.generatorCost('grandpa');
+    expect(g.buyGenerators('grandpa', 1), BuyResult.ok);
+    // Only the unit's price is spent; income ×2 × 10/9.
+    expect(s.tiki, closeTo(tiki - price, 1e-6));
+    expect(g.passive(), closeTo(before * 2 * 10 / 9, 1e-9));
   });
 
   test('skills level up to max', () {
@@ -52,16 +53,16 @@ void main() {
 
   test('hit payout (R-WYPLATA-1) with echo, combo and mode', () {
     s.stats.rounds = 30; // past beginner's luck
-    s.owned['grandma'] = 10; // P = 10/s
+    s.owned['grandma'] = 5; // P = 5/s (under the first ×2 at 10)
     s.skills.addAll({'power': 2, 'echo': 4}); // ×(1 + 1.5·2) = ×4, 2 s
     const perfect = Grade(Tier.perfect, 0);
-    // (10·4·1 + 2·1.0·10) · combo 1.5 · mode 3
+    // (10·4·1 + 2·1.0·5) · combo 1.5 · mode 3
     expect(
       g.hitPayout(perfect, combo: 1.5, mode: 3),
-      closeTo((40 + 20) * 4.5, 1e-9),
+      closeTo((40 + 10) * 4.5, 1e-9),
     );
     const good = Grade(Tier.good, 0.04);
-    expect(g.hitPayout(good), closeTo(1 * 4 + 2 * 0.1 * 10, 1e-9));
+    expect(g.hitPayout(good), closeTo(1 * 4 + 2 * 0.1 * 5, 1e-9));
     expect(g.hitPayout(const Grade(Tier.miss, 1, MissKind.late)), 0);
   });
 

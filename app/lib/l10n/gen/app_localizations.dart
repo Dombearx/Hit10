@@ -422,29 +422,11 @@ abstract class AppLocalizations {
   /// **'Upgrades'**
   String get upgradesTitle;
 
-  /// No description provided for @upgradeName.
-  ///
-  /// In en, this message translates to:
-  /// **'{generator} {level}'**
-  String upgradeName(String generator, String level);
-
-  /// No description provided for @upgradeEffect.
-  ///
-  /// In en, this message translates to:
-  /// **'{generator} earn ×2'**
-  String upgradeEffect(String generator);
-
   /// No description provided for @upgradeRequires.
   ///
   /// In en, this message translates to:
   /// **'Needs {count} owned'**
   String upgradeRequires(int count);
-
-  /// No description provided for @synergyEffect.
-  ///
-  /// In en, this message translates to:
-  /// **'{a} +{aPct}% per {b} · {b} +{bPct}% per {a}'**
-  String synergyEffect(String a, String b, String aPct, String bPct);
 
   /// No description provided for @buy.
   ///
@@ -1526,6 +1508,42 @@ abstract class AppLocalizations {
   /// **'Rewind time: start over with a permanent bonus.'**
   String get tip_prestige;
 
+  /// No description provided for @tip_milestone.
+  ///
+  /// In en, this message translates to:
+  /// **'The bar under the name: at {need} owned, the clock earns ×2!'**
+  String tip_milestone(String need);
+
+  /// No description provided for @milestoneProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{owned}/{next} → ×{mult}'**
+  String milestoneProgress(String owned, String next, String mult);
+
+  /// No description provided for @milestoneMax.
+  ///
+  /// In en, this message translates to:
+  /// **'All bonuses reached'**
+  String get milestoneMax;
+
+  /// No description provided for @milestoneToast.
+  ///
+  /// In en, this message translates to:
+  /// **'New bonus · {name}'**
+  String milestoneToast(String name);
+
+  /// No description provided for @milestoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{generator} ×{mult}'**
+  String milestoneTitle(String generator, String mult);
+
+  /// No description provided for @synergyToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Synergy!'**
+  String get synergyToast;
+
   /// No description provided for @tutorialAim.
   ///
   /// In en, this message translates to:
@@ -1561,12 +1579,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skills boost your own hits.'**
   String get tip_skills;
-
-  /// No description provided for @tip_upgrade.
-  ///
-  /// In en, this message translates to:
-  /// **'Upgrade: a clock earns ×2!'**
-  String get tip_upgrade;
 
   /// No description provided for @tip_modes.
   ///
@@ -1637,13 +1649,13 @@ abstract class AppLocalizations {
   /// No description provided for @help_upgrades_t.
   ///
   /// In en, this message translates to:
-  /// **'Upgrades'**
+  /// **'Clock bonuses'**
   String get help_upgrades_t;
 
   /// No description provided for @help_upgrades.
   ///
   /// In en, this message translates to:
-  /// **'Once you own enough of one clock, an upgrade icon shows up above the shop. Tap it to see what it does — usually it doubles that clock\'s income. Double icons are synergies: two clocks boosting each other.'**
+  /// **'Each clock has a bar. Once you own 10, 20, 40… of it, all clocks of that kind earn ×2 — free, on their own. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.'**
   String get help_upgrades;
 
   /// No description provided for @help_skills_t.

@@ -186,27 +186,33 @@ ekranie losowo wyskakują jego „trafienia” (sekcja 04).
   generatora według jego σ (wzór w 03). Niedokładni zyskują na Sokolim oku,
   a precyzyjni na Magnesie. Karta pokazuje ten bonus („okna: ×1.84”).
 
-### 5.1 Ulepszenia generatorów (jednorazowe)
+### 5.1 Bonusy za liczbę sztuk (automatyczne)
 
-- **R-ULEP-1:** Każdy generator ma 8 ulepszeń, każde to **×2** dla tego
-  generatora. Ulepszenie odblokowuje się przy posiadaniu
-  **1, 5, 25, 50, 100, 150, 200, 250** sztuk. Koszt to koszt bazowy
-  generatora × **10, 50, 500, 50K, 5M, 500M, 50B, 5T**.
-- **R-ULEP-2:** Każde ulepszenie ma śmieszną nazwę i opis w PL i EN, np.
-  - dziadek: „Okulary do czytania”, „Nowa bateria”, „Sanatorium”;
-  - babcia: „Jajka od szczęśliwych kur”;
-  - kukułka: „Kurs dykcji”.
+Zmienione po pytaniu „czy ulepszenia się w ogóle opłacają?”: kupowane
+ulepszenia (model Cookie Clickera) były tuż po odblokowaniu najgorszym
+zakupem w sklepie (Dziadek ×2 przy 1 Dziadku zwracał się 25 min, kolejny
+Dziadek 3 min), a wskazówka do nich kierowała. Teraz jak w AdVenture
+Capitalist: bonus przychodzi sam za zbieranie sztuk.
 
-  Wszystkie 112 nazw (14 × 8) pisze się przy implementacji contentu.
-- **R-ULEP-3:** Dostępne ulepszenia pokazują się w pasku „Ulepszenia” nad
-  sklepem jako kafelki z ikonami, posortowane od najtańszego.
+- **R-ULEP-1:** Każdy generator ma 8 progów: **10, 20, 40, 75, 100, 150,
+  200, 250** sztuk. Na każdym progu wszystkie sztuki tego generatora
+  zarabiają **×2** — za darmo, od razu, nic nie trzeba kupować. Prestiż
+  zeruje sztuki, więc i bonusy.
+- **R-ULEP-2:** Każdy próg ma śmieszną nazwę w PL i EN (dawne nazwy
+  ulepszeń), np. dziadek: „Okulary do czytania”, „Nowa bateria”,
+  „Sanatorium”; pokazuje ją powiadomienie przy osiągnięciu progu.
+- **R-ULEP-3:** Karta generatora ma pasek postępu do następnego progu
+  („7/10 → ×2”), po ostatnim „Wszystkie bonusy zdobyte”. Osiągnięcie
+  progu: fanfara, wibracja, powiadomienie „Nowy bonus · <nazwa>
+  — <generator> ×2”. Nie ma osobnego paska ulepszeń nad sklepem.
 
-### 5.2 Synergie (jednorazowe)
+### 5.2 Synergie (automatyczne)
 
 Generator A dostaje +1% za każdą sztukę B, a B dostaje +0.1% za każdą sztukę A.
-Synergia odblokowuje się, gdy gracz ma choć 1 A i 1 B.
+- **R-SYN-1:** Synergia włącza się sama, gdy gracz ma co najmniej **25 A
+  i 25 B** (`requires` w pliku balansu), z powiadomieniem „Synergia!”.
 
-| id | Nazwa | A | B | Koszt |
+| id | Nazwa | A | B | Dawny koszt (nieużywany) |
 |---|---|---|---|---|
 | `grandparents` | Dziadkowie na randce | dziadek | babcia | 50K |
 | `birdRhythm` | Ptasi rytm | kukułka | metronom | 5M |
@@ -363,14 +369,14 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   Koniec samouczka. W jego trakcie nie ma znaczka wydarzenia, czerwonych
   kropek ani Złotej Sekundy (jedna nowa rzecz naraz).
 - **R-TUT-2:** Wskazówki o nowych rzeczach, każda raz, przypięta do swojej
-  rzeczy: pierwsze ulepszenie, na które stać gracza (ikona nad sklepem),
-  pierwsza umiejętność,
+  rzeczy: pasek bonusu na karcie Dziadka (gdy gracz ma 3 Dziadki, przed
+  pierwszym ×2), pierwsza umiejętność,
   na którą stać gracza (zakładka), pierwszy przełącznik trybu, Złota
   Sekunda (gdy leci), seria (licznik combo), prestiż (wir).
   - Najwyżej jedna naraz; pierwsza po 20 s gry od końca samouczka,
     kolejne co najmniej 45 s gry po poprzedniej.
   - Znika, gdy gracz zrobi to, o czym mówi (otworzy zakładkę, dotknie
-    ulepszenia, przełączy tryb, złapie zegarek, otworzy prestiż) — i wtedy
+    próg bonusu, przełączy tryb, złapie zegarek, otworzy prestiż) — i wtedy
     już nigdy się nie pojawi; kto odkrył rzecz sam, nie dostaje
     wskazówki. Wskazówka o serii znika sama po 7 s. Każdą można zamknąć
     krzyżykiem. Złota Sekunda, która odleciała, wraca ze wskazówką
@@ -381,7 +387,7 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
     onboardingu: wskazówka o ulepszeniu wisiała 3–5 minut).
 - **R-TUT-3a (położenie dymków):** dymek nigdy nie zasłania tarczy w czasie
   gry. Cel nad areną (licznik Tików, „/s”, wir) → dymek na dole areny,
-  pod tarczą, cel świeci obwódką. Cel tuż pod areną (combo, ulepszenia,
+  pod tarczą, cel świeci obwódką. Cel tuż pod areną (combo,
   przełączniki) → dymek pod celem. Sprawdza to
   `tools/playtest/onboarding.js` (persony grają od zera, raport: kiedy
   który dymek, jak długo, jak zniknął, czy zasłania tarczę lub cel).

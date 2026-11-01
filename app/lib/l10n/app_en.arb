@@ -84,47 +84,11 @@
   "lockedName": "???",
   "lockedHint": "Buy the previous clock to reveal",
   "upgradesTitle": "Upgrades",
-  "upgradeName": "{generator} {level}",
-  "@upgradeName": {
-    "placeholders": {
-      "generator": {
-        "type": "String"
-      },
-      "level": {
-        "type": "String"
-      }
-    }
-  },
-  "upgradeEffect": "{generator} earn ×2",
-  "@upgradeEffect": {
-    "placeholders": {
-      "generator": {
-        "type": "String"
-      }
-    }
-  },
   "upgradeRequires": "Needs {count} owned",
   "@upgradeRequires": {
     "placeholders": {
       "count": {
         "type": "int"
-      }
-    }
-  },
-  "synergyEffect": "{a} +{aPct}% per {b} · {b} +{bPct}% per {a}",
-  "@synergyEffect": {
-    "placeholders": {
-      "a": {
-        "type": "String"
-      },
-      "b": {
-        "type": "String"
-      },
-      "aPct": {
-        "type": "String"
-      },
-      "bPct": {
-        "type": "String"
       }
     }
   },
@@ -611,6 +575,49 @@
   "tip_golden": "Catch the golden clock for a golden round!",
   "tip_combo": "A streak! Keep hitting to grow the multiplier.",
   "tip_prestige": "Rewind time: start over with a permanent bonus.",
+  "tip_milestone": "The bar under the name: at {need} owned, the clock earns ×2!",
+  "@tip_milestone": {
+    "placeholders": {
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "milestoneProgress": "{owned}/{next} → ×{mult}",
+  "@milestoneProgress": {
+    "placeholders": {
+      "owned": {
+        "type": "String"
+      },
+      "next": {
+        "type": "String"
+      },
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "milestoneMax": "All bonuses reached",
+  "milestoneToast": "New bonus · {name}",
+  "@milestoneToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "milestoneTitle": "{generator} ×{mult}",
+  "@milestoneTitle": {
+    "placeholders": {
+      "generator": {
+        "type": "String"
+      },
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "synergyToast": "Synergy!",
   "tutorialAim": "Tap when the gold ring meets the clock — at 5.00!",
   "tutorialEarned": "These are your Ticks. Collect {cost} for your first clock!",
   "@tutorialEarned": {
@@ -631,7 +638,6 @@
   },
   "tutorialGotIt": "OK",
   "tip_skills": "Skills boost your own hits.",
-  "tip_upgrade": "Upgrade: a clock earns ×2!",
   "tip_modes": "A new mode! Tap to switch it on.",
   "skillBuyLevel": "Buy Lv {level}",
   "@skillBuyLevel": {
@@ -657,8 +663,8 @@
   "help_tiki": "Ticks are the game's money. The big counter at the top shows how many you have, the smaller one below it how much you earn per second. You spend them in the shop at the bottom.",
   "help_clocks_t": "Clocks",
   "help_clocks": "Clocks (the Clocks tab) play for you and add Ticks every second — even while the game is closed. Grandpa comes first; buying a clock reveals the next, stronger one. The number on the icon is how many you own. ×1, ×10, ×100 and MAX set how many you buy at once.",
-  "help_upgrades_t": "Upgrades",
-  "help_upgrades": "Once you own enough of one clock, an upgrade icon shows up above the shop. Tap it to see what it does — usually it doubles that clock's income. Double icons are synergies: two clocks boosting each other.",
+  "help_upgrades_t": "Clock bonuses",
+  "help_upgrades": "Each clock has a bar. Once you own 10, 20, 40… of it, all clocks of that kind earn ×2 — free, on their own. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.",
   "help_skills_t": "Skills",
   "help_skills": "Skills (the Skills tab) boost your own hits: bigger rewards, wider windows, longer streaks. They have levels — \"Level 2/10\" means the second of ten. Tap a card to read the details.",
   "help_combo_t": "Streak (combo)",

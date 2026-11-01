@@ -84,15 +84,15 @@ void main() {
       ..tiki = 10
       ..peakTiki = 10000
       ..stats.rounds = 100; // past beginner's luck
-    s.owned['grandma'] = 10; // 10/s
+    s.owned['grandma'] = 5; // 5/s
     await pump(tester, s);
     await tester.tap(find.byKey(const Key('skill-info-power')));
     await tester.pumpAndSettle();
     final power = tester.widget<Text>(
       find.byKey(const Key('perfect-now-power')),
     );
-    // 10 Tiki for a PERFECT = 1 s of the clocks' 10/s.
-    expect(power.data, contains('≈ 1,0 s dochodu zegarów'));
+    // 10 Tiki for a PERFECT = 2 s of the clocks' 5/s.
+    expect(power.data, contains('≈ 2,0 s dochodu zegarów'));
   });
 
   testWidgets('a skill card opens its full explanation; buy from there', (

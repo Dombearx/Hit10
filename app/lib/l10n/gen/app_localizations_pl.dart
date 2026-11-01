@@ -183,23 +183,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upgradesTitle => 'Ulepszenia';
 
   @override
-  String upgradeName(String generator, String level) {
-    return '$generator $level';
-  }
-
-  @override
-  String upgradeEffect(String generator) {
-    return '$generator zarabia ×2';
-  }
-
-  @override
   String upgradeRequires(int count) {
     return 'Wymaga $count sztuk';
-  }
-
-  @override
-  String synergyEffect(String a, String b, String aPct, String bPct) {
-    return '$a +$aPct% za każdego: $b · $b +$bPct% za każdego: $a';
   }
 
   @override
@@ -830,6 +815,32 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tip_prestige => 'Cofnij czas: od nowa, ale ze stałym bonusem.';
 
   @override
+  String tip_milestone(String need) {
+    return 'Pasek pod nazwą: przy $need szt. zegar zarabia ×2!';
+  }
+
+  @override
+  String milestoneProgress(String owned, String next, String mult) {
+    return '$owned/$next → ×$mult';
+  }
+
+  @override
+  String get milestoneMax => 'Wszystkie bonusy zdobyte';
+
+  @override
+  String milestoneToast(String name) {
+    return 'Nowy bonus · $name';
+  }
+
+  @override
+  String milestoneTitle(String generator, String mult) {
+    return '$generator ×$mult';
+  }
+
+  @override
+  String get synergyToast => 'Synergia!';
+
+  @override
   String get tutorialAim =>
       'Dotknij, gdy złoty okrąg dojdzie do zegara — na 5.00!';
 
@@ -851,9 +862,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tip_skills => 'Umiejętności wzmacniają twoje trafienia.';
-
-  @override
-  String get tip_upgrade => 'Ulepszenie: zegar zarabia ×2!';
 
   @override
   String get tip_modes => 'Nowy tryb! Dotknij, żeby włączyć.';
@@ -896,11 +904,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Zegary (zakładka Zegary) grają za ciebie i co sekundę dokładają Tiki — także gdy gra jest zamknięta. Pierwszy jest Dziadek; kupienie zegara odkrywa następny, mocniejszy. Liczba na ikonie to ile ich masz. Przyciski ×1, ×10, ×100 i MAX ustalają, ile kupujesz naraz.';
 
   @override
-  String get help_upgrades_t => 'Ulepszenia';
+  String get help_upgrades_t => 'Bonusy zegarów';
 
   @override
   String get help_upgrades =>
-      'Gdy masz dość zegarów jednego rodzaju, nad sklepem pojawia się ikona ulepszenia. Dotknij jej, by zobaczyć, co daje — zwykle podwaja zarobek tego zegara. Podwójne ikony to synergie: dwa zegary wzmacniają się nawzajem.';
+      'Pod każdym zegarem jest pasek. Gdy uzbierasz 10, 20, 40… sztuk, wszystkie zegary tego rodzaju zaczynają zarabiać ×2 — za darmo, same z siebie. Gdy masz po 25 sztuk dwóch zegarów, które do siebie pasują (np. Dziadka i Babci), włącza się synergia: wzmacniają się nawzajem.';
 
   @override
   String get help_skills_t => 'Umiejętności';

@@ -18,7 +18,6 @@ import 'providers.dart';
 import 'qa_hook.dart';
 import 'shop/generator_list.dart';
 import 'shop/skill_list.dart';
-import 'shop/upgrade_strip.dart';
 import 'catalog.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/help_screen.dart';
@@ -338,15 +337,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           listenable: _slow,
                           builder: (context, _) =>
                               ModeRow(controller: controller),
-                        ),
-                      ),
-                      _pausing(
-                        RepaintBoundary(
-                          child: ListenableBuilder(
-                            listenable: _slow,
-                            builder: (context, _) =>
-                                UpgradeStrip(controller: controller),
-                          ),
                         ),
                       ),
                       _pausing(

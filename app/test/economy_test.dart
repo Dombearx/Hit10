@@ -49,14 +49,21 @@ void main() {
     expect(e.passive(), closeTo(3.0, 1e-9));
   });
 
-  test('upgrades double, synergies add per partner unit', () {
-    s.owned['grandpa'] = 10;
-    s.owned['grandma'] = 4;
-    s.upgrades['grandpa'] = 2;
+  test('milestones double for free, synergies add per partner unit', () {
+    s.owned['grandpa'] = 9;
+    expect(e.milestonesReached('grandpa'), 0);
+    expect(e.unitRate('grandpa'), closeTo(0.1, 1e-12));
+    s.owned['grandpa'] = 20; // 10 and 20 reached
+    expect(e.milestonesReached('grandpa'), 2);
     expect(e.unitRate('grandpa'), closeTo(0.1 * 4, 1e-12));
-    s.synergies.add('grandparents');
-    expect(e.unitRate('grandpa'), closeTo(0.4 * 1.04, 1e-12));
-    expect(e.unitRate('grandma'), closeTo(1 * 1.01, 1e-12));
+    // Synergy (R-SYN-1): on once both own 25.
+    s.owned['grandma'] = 24;
+    expect(e.unitRate('grandma'), closeTo(1 * 4, 1e-12)); // 10, 20
+    s
+      ..owned['grandpa'] = 25
+      ..owned['grandma'] = 25;
+    expect(e.unitRate('grandpa'), closeTo(0.4 * 1.25, 1e-12));
+    expect(e.unitRate('grandma'), closeTo(4 * 1.025, 1e-12));
   });
 
   test('wider windows help sloppy generators, not perfect ones (R-GEN-6)', () {
@@ -67,18 +74,15 @@ void main() {
     expect(e.windowGain('atomic'), greaterThan(1));
   });
 
-  test('upgrades unlock at thresholds and sort by price', () {
-    expect(e.availableUpgrades(), isEmpty);
-    s.owned['grandpa'] = 1;
-    s.owned['grandma'] = 5;
-    s.upgrades['grandma'] = 1;
-    final list = e.availableUpgrades();
-    expect(list.map((u) => '${u.generator}#${u.index}'), [
-      'grandpa#0',
-      'grandma#1',
-    ]);
-    expect(list.first.cost, 150);
-    expect(list.last.cost, 100 * 50);
+  test('milestone progress: last and next threshold', () {
+    expect(e.lastMilestone('grandpa'), 0);
+    expect(e.nextMilestone('grandpa'), 10);
+    s.owned['grandpa'] = 13;
+    expect(e.lastMilestone('grandpa'), 10);
+    expect(e.nextMilestone('grandpa'), 20);
+    s.owned['grandpa'] = 999;
+    expect(e.nextMilestone('grandpa'), isNull);
+    expect(e.milestonesReached('grandpa'), 8);
   });
 
   test('skills: windows, speeds, caps', () {

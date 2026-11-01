@@ -4,14 +4,20 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../../model/achievements.dart';
+import '../../l10n/upgrade_texts.dart';
 import '../achievement_text.dart';
+import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 import 'burst.dart';
 import 'emoji_card.dart';
 
-/// Achievement toasts sliding in from the top (R-OSIAG-1), one at a time.
+/// One toast: an achievement or a free bonus (R-ULEP-1, R-SYN-1).
+typedef _Toast = ({AchievementDef? achievement, MilestoneEvent? bonus});
+
+/// Achievement and bonus toasts sliding in from the top (R-OSIAG-1), one
+/// at a time.
 class AchievementToasts extends StatefulWidget {
   const AchievementToasts({super.key, required this.controller});
   final GameController controller;
@@ -21,25 +27,32 @@ class AchievementToasts extends StatefulWidget {
 }
 
 class _AchievementToastsState extends State<AchievementToasts> {
-  final _queue = <AchievementDef>[];
-  AchievementDef? _current;
+  final _queue = <_Toast>[];
+  _Toast? _current;
   int _extra = 0;
   late final StreamSubscription<AchievementDef> _sub;
+  late final StreamSubscription<MilestoneEvent> _bonusSub;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _sub = widget.controller.achievementUnlocked.listen((a) {
-      _queue.add(a);
+      _queue.add((achievement: a, bonus: null));
+      _next();
+    });
+    _bonusSub = widget.controller.milestoneReached.listen((m) {
+      _queue.add((achievement: null, bonus: m));
       _next();
     });
   }
 
   void _next() {
     if (_current != null || _queue.isEmpty) return;
-    // A burst (an import, a prestige, a big payout) shows as one toast.
-    final burst = _queue.length >= 3;
+    // A burst of achievements (an import, a prestige, a big payout) shows
+    // as one toast.
+    final burst =
+        _queue.length >= 3 && _queue.every((t) => t.achievement != null);
     setState(() {
       _extra = burst ? _queue.length - 1 : 0;
       _current = burst ? _queue.last : _queue.first;
@@ -70,14 +83,47 @@ class _AchievementToastsState extends State<AchievementToasts> {
   @override
   void dispose() {
     _sub.cancel();
+    _bonusSub.cancel();
     _timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final a = _current;
+    final t = _current;
     final l = AppLocalizations.of(context);
+    final c = widget.controller;
+    final mult = c.balance.milestones.multiplier.round();
+    // What the toast shows: art, small header, title, the bonus on the right.
+    final (EmojiArt?, String, String, String) look = switch (t) {
+      null => (null, '', '', ''),
+      (achievement: final AchievementDef a, bonus: _) => (
+        achievementArt(a),
+        _extra > 0 ? l.achievementsUnlocked(_extra + 1) : l.achievementUnlocked,
+        achievementText(l, Fmt.of(context, c), a).$1,
+        '+${((_extra + 1) * c.balance.achievements.bonusEach * 100).round()}%',
+      ),
+      (achievement: null, bonus: final MilestoneEvent m)
+          when m.generator != null =>
+        (
+          generatorArt[m.generator]!,
+          l.milestoneToast(
+            upgradeTexts(l, m.generator!, m.index + 1)?.$1 ?? roman(m.index),
+          ),
+          l.milestoneTitle(generatorName(l, m.generator!), '$mult'),
+          '×$mult',
+        ),
+      (achievement: null, bonus: final MilestoneEvent m) => (
+        generatorArt[c.balance.synergies
+            .firstWhere((x) => x.id == m.synergy)
+            .b]!,
+        l.synergyToast,
+        synergyName(l, m.synergy!),
+        '',
+      ),
+      _ => (null, '', '', ''),
+    };
+    final a = look.$1;
     return IgnorePointer(
       child: AnimatedSlide(
         offset: a == null ? const Offset(0, -1.6) : Offset.zero,
@@ -99,7 +145,7 @@ class _AchievementToastsState extends State<AchievementToasts> {
                 ),
                 child: Row(
                   children: [
-                    EmojiCard(art: achievementArt(a), size: 44, circle: true),
+                    EmojiCard(art: a, size: 44, circle: true),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(
@@ -107,9 +153,9 @@ class _AchievementToastsState extends State<AchievementToasts> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            _extra > 0
-                                ? l.achievementsUnlocked(_extra + 1)
-                                : l.achievementUnlocked,
+                            look.$2,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -117,11 +163,7 @@ class _AchievementToastsState extends State<AchievementToasts> {
                             ),
                           ),
                           Text(
-                            achievementText(
-                              l,
-                              Fmt.of(context, widget.controller),
-                              a,
-                            ).$1,
+                            look.$3,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -133,7 +175,7 @@ class _AchievementToastsState extends State<AchievementToasts> {
                       ),
                     ),
                     Text(
-                      '+${((_extra + 1) * widget.controller.balance.achievements.bonusEach * 100).round()}%',
+                      look.$4,
                       style: const TextStyle(
                         fontFamily: Fonts.display,
                         fontSize: 16,

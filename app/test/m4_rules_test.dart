@@ -37,8 +37,6 @@ void main() {
         ..tiki = 5000
         ..comboStreak = 9;
       s.owned['grandpa'] = 40;
-      s.upgrades['grandpa'] = 3;
-      s.synergies.add('grandparents');
       s.skills.addAll({'fastForward': 6, 'wideEye': 4, 'magnet': 5, 'echo': 7});
       s.achievements.add('earned_1e+3');
     });
@@ -51,8 +49,6 @@ void main() {
       expect(s.prestiges, 1);
       expect(s.tiki, 0);
       expect(s.owned, isEmpty);
-      expect(s.upgrades, isEmpty);
-      expect(s.synergies, isEmpty);
       expect(s.skills, isEmpty);
       expect(s.comboStreak, 0);
       expect(s.achievements, contains('earned_1e+3'));

@@ -65,11 +65,11 @@ void main() {
 
     test('combo multiplies the whole payout including echo (R-COMBO-3)', () {
       s.stats.rounds = 30; // past beginner's luck
-      s.owned['grandma'] = 10;
+      s.owned['grandma'] = 5; // 5/s
       s.skills.addAll({'echo': 2, 'combo': 10});
       s.comboStreak = 7; // → 10 after this perfect
       final o = e.resolveRound(perfect);
-      expect(o.payout - o.jackpot, closeTo((10 + 1 * 1.0 * 10) * 1.5, 1e-9));
+      expect(o.payout - o.jackpot, closeTo((10 + 1 * 1.0 * 5) * 1.5, 1e-9));
     });
 
     test('shield absorbs a miss and recharges every 10 steps', () {

@@ -200,14 +200,9 @@ class Simulator {
   Iterable<(String, String, double)> _candidates() sync* {
     for (final g in b.generators) {
       if (!econ.generatorUnlocked(g.id)) continue;
+      // Milestones and synergies come free with the units (R-ULEP-1):
+      // a unit that crosses one is worth that much more here.
       yield ('gen', g.id, econ.generatorCost(g.id));
-      final u = econ.nextUpgrade(g.id);
-      if (u != null && econ.owned(g.id) >= u.threshold) {
-        yield ('upg', g.id, u.cost);
-      }
-    }
-    for (final syn in econ.availableSynergies()) {
-      yield ('syn', syn.id, syn.cost);
     }
     for (final sk in b.skills) {
       if (sk.id == 'ticking') continue; // no income effect
@@ -222,10 +217,6 @@ class Simulator {
       switch (kind) {
         case 'gen':
           s.owned[key] = econ.owned(key) + d;
-        case 'upg':
-          s.upgrades[key] = econ.upgradesBought(key) + d;
-        case 'syn':
-          d > 0 ? s.synergies.add(key) : s.synergies.remove(key);
         case 'skill':
           s.skills[key] = econ.level(key) + d;
       }
@@ -246,10 +237,6 @@ class Simulator {
     switch (kind) {
       case 'gen':
         e.buyGenerators(key, 1);
-      case 'upg':
-        e.buyUpgrade(key);
-      case 'syn':
-        e.buySynergy(key);
       case 'skill':
         e.buySkill(key);
     }

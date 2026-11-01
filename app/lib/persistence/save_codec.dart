@@ -42,8 +42,6 @@ Map<String, Object?> encodeSave(SaveData d) {
     'earnedThisRun': s.earnedThisRun,
     'earnedTotal': s.earnedTotal,
     'owned': s.owned,
-    'upgrades': s.upgrades,
-    'synergies': s.synergies.toList(),
     'skills': s.skills,
     'peakTiki': s.peakTiki,
     'chronons': s.chronons,
@@ -166,9 +164,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   s.tipsSeen.addAll(_sl(j['tipsSeen']));
   _m(j['adCooldownUntil']).forEach((k, v) => s.adCooldownUntil[k] = _i(v));
   _m(j['owned']).forEach((k, v) => s.owned[k] = _i(v));
-  _m(j['upgrades']).forEach((k, v) => s.upgrades[k] = _i(v));
   _m(j['skills']).forEach((k, v) => s.skills[k] = _i(v));
-  s.synergies.addAll(_sl(j['synergies']));
   s.perks.addAll(_sl(j['perks']));
   s.achievements.addAll(_sl(j['achievements']));
   final stats = _m(j['stats']);

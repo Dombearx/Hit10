@@ -180,23 +180,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upgradesTitle => 'Upgrades';
 
   @override
-  String upgradeName(String generator, String level) {
-    return '$generator $level';
-  }
-
-  @override
-  String upgradeEffect(String generator) {
-    return '$generator earn ×2';
-  }
-
-  @override
   String upgradeRequires(int count) {
     return 'Needs $count owned';
-  }
-
-  @override
-  String synergyEffect(String a, String b, String aPct, String bPct) {
-    return '$a +$aPct% per $b · $b +$bPct% per $a';
   }
 
   @override
@@ -829,6 +814,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tip_prestige => 'Rewind time: start over with a permanent bonus.';
 
   @override
+  String tip_milestone(String need) {
+    return 'The bar under the name: at $need owned, the clock earns ×2!';
+  }
+
+  @override
+  String milestoneProgress(String owned, String next, String mult) {
+    return '$owned/$next → ×$mult';
+  }
+
+  @override
+  String get milestoneMax => 'All bonuses reached';
+
+  @override
+  String milestoneToast(String name) {
+    return 'New bonus · $name';
+  }
+
+  @override
+  String milestoneTitle(String generator, String mult) {
+    return '$generator ×$mult';
+  }
+
+  @override
+  String get synergyToast => 'Synergy!';
+
+  @override
   String get tutorialAim => 'Tap when the gold ring meets the clock — at 5.00!';
 
   @override
@@ -849,9 +860,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tip_skills => 'Skills boost your own hits.';
-
-  @override
-  String get tip_upgrade => 'Upgrade: a clock earns ×2!';
 
   @override
   String get tip_modes => 'A new mode! Tap to switch it on.';
@@ -894,11 +902,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Clocks (the Clocks tab) play for you and add Ticks every second — even while the game is closed. Grandpa comes first; buying a clock reveals the next, stronger one. The number on the icon is how many you own. ×1, ×10, ×100 and MAX set how many you buy at once.';
 
   @override
-  String get help_upgrades_t => 'Upgrades';
+  String get help_upgrades_t => 'Clock bonuses';
 
   @override
   String get help_upgrades =>
-      'Once you own enough of one clock, an upgrade icon shows up above the shop. Tap it to see what it does — usually it doubles that clock\'s income. Double icons are synergies: two clocks boosting each other.';
+      'Each clock has a bar. Once you own 10, 20, 40… of it, all clocks of that kind earn ×2 — free, on their own. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.';
 
   @override
   String get help_skills_t => 'Skills';

@@ -106,10 +106,10 @@ async function play(browser, key) {
       } else if (cur.id.startsWith('tip-')) {
         const tip = cur.id.slice(4);
         if (rnd() < P.follow && tip === 'skills') { await q(() => window.hit10Qa.openSkills()); acted = true; ev('opened skills (prompted)'); }
-        else if (rnd() < P.follow && tip === 'upgrade') {
-          const shop = JSON.parse(await q(() => window.hit10Qa.shop()));
-          const u = shop.filter((i) => i.kind === 'upg' || i.kind === 'syn').sort((a, b) => a.cost - b.cost)[0];
-          if (u && u.cost <= s.tiki) { await q(([k, i]) => window.hit10Qa.buyAny(k, i), [u.kind, u.id]); acted = true; ev('bought upgrade (prompted)'); }
+        else if (rnd() < P.follow && tip === 'milestone') {
+          // Works towards the bonus: buys the Grandpas it can.
+          for (let n = 0; n < 10; n++) if ((await q(([k, i]) => window.hit10Qa.buyAny(k, i), ['gen', 'grandpa'])) !== 'ok') break;
+          acted = true; ev('bought grandpas (prompted)');
         } else if (rnd() < P.close) { await q(() => window.hit10Qa.dismissTip()); cur.how = '×'; }
       }
     }

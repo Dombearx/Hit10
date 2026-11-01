@@ -448,22 +448,6 @@ class GameEngine {
     return BuyResult.ok;
   }
 
-  BuyResult buyUpgrade(String id) {
-    final u = econ.nextUpgrade(id);
-    if (u == null || econ.owned(id) < u.threshold) return BuyResult.unavailable;
-    if (!s.spend(u.cost)) return BuyResult.tooExpensive;
-    s.upgrades[id] = u.index + 1;
-    return BuyResult.ok;
-  }
-
-  BuyResult buySynergy(String id) {
-    final syn = econ.availableSynergies().where((x) => x.id == id).firstOrNull;
-    if (syn == null) return BuyResult.unavailable;
-    if (!s.spend(syn.cost)) return BuyResult.tooExpensive;
-    s.synergies.add(id);
-    return BuyResult.ok;
-  }
-
   BuyResult buySkill(String id) {
     final cost = econ.skillCost(id);
     if (cost == null) return BuyResult.unavailable;
@@ -535,8 +519,6 @@ class GameEngine {
       ..comboStreak = 0
       ..shieldProgress = 0;
     s.owned.clear();
-    s.upgrades.clear();
-    s.synergies.clear();
     s.skills
       ..clear()
       ..addAll(kept..removeWhere((_, v) => v <= 0));

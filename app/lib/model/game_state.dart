@@ -15,8 +15,6 @@ class GameState {
 
   // ------------------------------------------------------------ the run --
   final Map<String, int> owned = {};
-  final Map<String, int> upgrades = {};
-  final Set<String> synergies = {};
   final Map<String, int> skills = {};
 
   /// Tiki seen at least once ≥ this fraction of a skill's price unlocks its

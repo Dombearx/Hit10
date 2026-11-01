@@ -19,7 +19,6 @@ wyglądać, brzmieć i reagować.
 │  [Na ślepo]                   │  ← tryby (po odblokowaniu)
 │  ░ dziadek: 10.02! +3 ░       │  ← „trafienia” generatorów lecące z boku
 ├───────────────────────────────┤
-│ [ulepszenie][ulepszenie][...] │  ← pasek dostępnych ulepszeń (przewijany)
 │  Zegary │ Umiejętności        │  ← zakładki sklepu
 │ ┌───────────────────────────┐ │
 │ │ 👴 Dziadek     x42   1.2K │ │  ← lista (przewijana); przełącznik ×1/×10/×100/MAX
@@ -171,9 +170,9 @@ styl **3D** (PNG 256×256, licencja MIT). Do repo trafiają tylko używane pliki
 | | | | Ołtarz Chronosa | Classical building |
 
 - **U-12:** Pozostałe elementy:
-  - **ulepszenia generatora:** karta generatora pomniejszona do ikony plus
-    cyfra poziomu (1–8) w rogu, rysowana w kodzie;
-  - **synergie:** dwa emoji generatorów na jednej karcie, ukośnie;
+  - **bonusy generatora (R-ULEP-3):** złoty pasek postępu na karcie
+    generatora z napisem „7/10 → ×2”; osiągnięcie progu pokazuje
+    powiadomienie z ikoną generatora;
   - **osiągnięcia:** odznaka (okrągła karta) z emoji kategorii: Money bag
     (zarobione), emoji generatora (posiadane), Bullseye (PERFEKTY),
     Fire (serie i combo), Glowing star (Złote Sekundy), Cyclone (prestiż),
