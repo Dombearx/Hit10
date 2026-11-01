@@ -500,6 +500,7 @@ class GameEngine {
     s.prestiges++;
     final kept = <String, int>{};
     final skills = Map<String, int>.of(s.skills);
+    if (b.prestige.keepSkills) kept.addAll(skills);
     if (s.perks.contains('muscleMemory1')) {
       kept['fastForward'] = skills['fastForward'] ?? 0;
     }

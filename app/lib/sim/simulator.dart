@@ -48,7 +48,12 @@ class SimConfig {
     this.chronons = 0,
     this.seed = 10,
     this.ads,
+    this.skillFutureWeight = 0,
   });
+
+  /// How much more than its in-run payback the bot values a skill that
+  /// survives the paradox (0: only this run counts).
+  final double skillFutureWeight;
 
   final double hours;
 
@@ -324,8 +329,9 @@ class Simulator {
         (double, String, String, double)? best;
         final income = math.max(1e-9, totalIncome(idle));
         for (final (kind, key, cost) in _candidates()) {
-          final d = _gainOf(kind, key, idle);
+          var d = _gainOf(kind, key, idle);
           if (d <= 0) continue;
+          if (kind == 'skill') d *= 1 + cfg.skillFutureWeight;
           final score = cost / d + math.max(0.0, cost - s.tiki) / income;
           if (best == null || score < best.$1) best = (score, kind, key, cost);
         }
