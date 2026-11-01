@@ -28,6 +28,10 @@ class GameState {
   final Set<String> achievements = {};
   int prestiges = 0;
 
+  /// Paradox paid out, run not reset yet: the player is spending Shards
+  /// before the new run starts (R-PRES-6a).
+  bool rewindPending = false;
+
   // -------------------------------------------------------------- misc --
   final RoundStats stats = RoundStats();
   final LifetimeStats lifetime = LifetimeStats();

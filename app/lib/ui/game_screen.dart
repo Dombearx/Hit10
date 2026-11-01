@@ -75,10 +75,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   Widget _ownTaps(Widget child) =>
       Listener(onPointerDown: (e) => _uiPointers.add(e.pointer), child: child);
 
-  /// Touching the shop pauses the stopwatch (no penalty; the next tap on
-  /// the clock starts a round): shopping must not cost the combo.
-  Widget _pausing(Widget child) =>
-      Listener(onPointerDown: (_) => controller.pause(), child: child);
   bool _shopCollapsed = false;
   bool _offlineOpen = false;
   int _tab = 0;
@@ -349,60 +345,53 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         builder: (context, _) =>
                             ComboMeter(controller: controller),
                       ),
-                      _pausing(
-                        ListenableBuilder(
-                          key: CoachTargets.modeRow,
-                          listenable: _slow,
-                          builder: (context, _) =>
-                              ModeRow(controller: controller),
-                        ),
+                      ListenableBuilder(
+                        key: CoachTargets.modeRow,
+                        listenable: _slow,
+                        builder: (context, _) =>
+                            ModeRow(controller: controller),
                       ),
-                      _pausing(
-                        ListenableBuilder(
-                          listenable: _slow,
-                          builder: (context, _) => _ShopHeader(
-                            tab: _tab,
-                            amount: _amount,
-                            collapsed: _shopCollapsed,
-                            // Red dots: something to buy behind the other tab
-                            // (or anywhere, with the shop folded away).
-                            // Not before the tutorial gets to the shop.
-                            clocksAlert:
-                                _alerts &&
-                                (_tab != 0 || _shopCollapsed) &&
-                                controller.generatorAffordable,
-                            skillsAlert:
-                                _alerts &&
-                                (_tab != 1 || _shopCollapsed) &&
-                                controller.skillAffordable,
-                            onTab: (t) {
-                              if (t == 1) controller.tipActed('skills');
-                              setState(() {
-                                _tab = t;
-                                _shopCollapsed = false;
-                              });
-                            },
-                            onAmount: (a) => setState(() => _amount = a),
-                            onToggle: () => setState(
-                              () => _shopCollapsed = !_shopCollapsed,
-                            ),
-                          ),
+                      ListenableBuilder(
+                        listenable: _slow,
+                        builder: (context, _) => _ShopHeader(
+                          tab: _tab,
+                          amount: _amount,
+                          collapsed: _shopCollapsed,
+                          // Red dots: something to buy behind the other tab
+                          // (or anywhere, with the shop folded away).
+                          // Not before the tutorial gets to the shop.
+                          clocksAlert:
+                              _alerts &&
+                              (_tab != 0 || _shopCollapsed) &&
+                              controller.generatorAffordable,
+                          skillsAlert:
+                              _alerts &&
+                              (_tab != 1 || _shopCollapsed) &&
+                              controller.skillAffordable,
+                          onTab: (t) {
+                            if (t == 1) controller.tipActed('skills');
+                            setState(() {
+                              _tab = t;
+                              _shopCollapsed = false;
+                            });
+                          },
+                          onAmount: (a) => setState(() => _amount = a),
+                          onToggle: () =>
+                              setState(() => _shopCollapsed = !_shopCollapsed),
                         ),
                       ),
                       if (!_shopCollapsed)
                         Expanded(
                           flex: 5,
-                          child: _pausing(
-                            RepaintBoundary(
-                              child: ListenableBuilder(
-                                listenable: _slow,
-                                builder: (context, _) => _tab == 0
-                                    ? GeneratorList(
-                                        controller: controller,
-                                        amount: _amount,
-                                      )
-                                    : SkillList(controller: controller),
-                              ),
+                          child: RepaintBoundary(
+                            child: ListenableBuilder(
+                              listenable: _slow,
+                              builder: (context, _) => _tab == 0
+                                  ? GeneratorList(
+                                      controller: controller,
+                                      amount: _amount,
+                                    )
+                                  : SkillList(controller: controller),
                             ),
                           ),
                         ),

@@ -743,7 +743,7 @@ abstract class AppLocalizations {
   /// No description provided for @inHundred.
   ///
   /// In en, this message translates to:
-  /// **'{n} in 100'**
+  /// **'{n}%'**
   String inHundred(String n);
 
   /// No description provided for @oddsPerfect.
@@ -767,13 +767,13 @@ abstract class AppLocalizations {
   /// No description provided for @skillOdds.
   ///
   /// In en, this message translates to:
-  /// **'Your {tier}: about {now} → {next} in 100 rounds'**
+  /// **'Your {tier}: about {now}% → {next}% of rounds'**
   String skillOdds(String tier, String now, String next);
 
   /// No description provided for @skillOddsMax.
   ///
   /// In en, this message translates to:
-  /// **'Your {tier}: about {now} in 100 rounds'**
+  /// **'Your {tier}: about {now}% of rounds'**
   String skillOddsMax(String tier, String now);
 
   /// No description provided for @skillLockedHint.
@@ -941,7 +941,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_prestige_desc.
   ///
   /// In en, this message translates to:
-  /// **'Prestige {count} times'**
+  /// **'Rewind time {count} times'**
   String ach_prestige_desc(String count);
 
   /// No description provided for @ach_mode_blind.
@@ -1085,7 +1085,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_headStart_desc.
   ///
   /// In en, this message translates to:
-  /// **'Start each run with 10 grandpas and 1K Ticks'**
+  /// **'After each paradox start with 10 Grandpas and 1K Ticks'**
   String get perk_headStart_desc;
 
   /// No description provided for @perk_muscleMemory1.
@@ -1193,7 +1193,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_startShield_desc.
   ///
   /// In en, this message translates to:
-  /// **'One shield charge, even without the skill'**
+  /// **'One Shield charge at the start of each run, even without the skill'**
   String get perk_startShield_desc;
 
   /// No description provided for @perk_comboFloor.
@@ -1313,7 +1313,7 @@ abstract class AppLocalizations {
   /// No description provided for @statEarnedRun.
   ///
   /// In en, this message translates to:
-  /// **'Earned this run'**
+  /// **'Earned since the last paradox'**
   String get statEarnedRun;
 
   /// No description provided for @statEarnedTotal.
@@ -1391,7 +1391,7 @@ abstract class AppLocalizations {
   /// No description provided for @statPrestiges.
   ///
   /// In en, this message translates to:
-  /// **'Prestiges'**
+  /// **'Paradoxes'**
   String get statPrestiges;
 
   /// No description provided for @statChronons.
@@ -1421,7 +1421,7 @@ abstract class AppLocalizations {
   /// No description provided for @prestigeShards.
   ///
   /// In en, this message translates to:
-  /// **'Time shards: {count}'**
+  /// **'Time shards: {count} ✦'**
   String prestigeShards(int count);
 
   /// No description provided for @prestigeGain.
@@ -1442,10 +1442,28 @@ abstract class AppLocalizations {
   /// **'Rewind time'**
   String get prestigeButton;
 
+  /// No description provided for @prestigePendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time rewound: +{count} ✦'**
+  String prestigePendingTitle(int count);
+
+  /// No description provided for @prestigePendingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend your Shards on perks now: Muscle memory, Head start and Shield already work in the new run.'**
+  String get prestigePendingBody;
+
+  /// No description provided for @prestigeStartRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the new run'**
+  String get prestigeStartRun;
+
   /// No description provided for @prestigeConfirm1.
   ///
   /// In en, this message translates to:
-  /// **'You lose your clocks, skills and Ticks. Chronons, perks and achievements stay. Continue?'**
+  /// **'You lose your clocks, skills and Ticks. Chronons, Shards ✦, perks and achievements stay. Before the new run starts you can spend Shards on perks. Continue?'**
   String get prestigeConfirm1;
 
   /// No description provided for @prestigeConfirm2.
@@ -1811,7 +1829,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_prestige.
   ///
   /// In en, this message translates to:
-  /// **'Once you\'ve collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster.'**
+  /// **'Once you\'ve collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster — and as many Time shards ✦. Spend the Shards on perks right after rewinding, before the new run starts, or later on the paradox screen.'**
   String get help_prestige;
 
   /// No description provided for @help_icons_t.
@@ -1961,7 +1979,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsResetConfirm1.
   ///
   /// In en, this message translates to:
-  /// **'Sure? You lose everything: Tiki, clocks, Chronons and achievements. Settings stay.'**
+  /// **'Sure? You lose everything: Ticks, clocks, Chronons, Shards, perks and achievements. Settings stay.'**
   String get settingsResetConfirm1;
 
   /// No description provided for @settingsResetConfirm2.
@@ -2411,7 +2429,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_watchmaker_3_desc.
   ///
   /// In en, this message translates to:
-  /// **'Learns on your Tiki.'**
+  /// **'Learns on your Ticks.'**
   String get upg_watchmaker_3_desc;
 
   /// No description provided for @upg_watchmaker_4.
@@ -2747,7 +2765,7 @@ abstract class AppLocalizations {
   /// No description provided for @upg_quartz_7_desc.
   ///
   /// In en, this message translates to:
-  /// **'Counts Tiki on the fly.'**
+  /// **'Counts Ticks on the fly.'**
   String get upg_quartz_7_desc;
 
   /// No description provided for @upg_quartz_8.
@@ -3725,7 +3743,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_luck_info.
   ///
   /// In en, this message translates to:
-  /// **'At each level 2 in 100 hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.'**
+  /// **'At each level 2% of hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.'**
   String get skill_luck_info;
 
   /// No description provided for @skill_shield_info.

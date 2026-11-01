@@ -365,7 +365,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String inHundred(String n) {
-    return '$n in 100';
+    return '$n%';
   }
 
   @override
@@ -379,12 +379,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String skillOdds(String tier, String now, String next) {
-    return 'Your $tier: about $now → $next in 100 rounds';
+    return 'Your $tier: about $now% → $next% of rounds';
   }
 
   @override
   String skillOddsMax(String tier, String now) {
-    return 'Your $tier: about $now in 100 rounds';
+    return 'Your $tier: about $now% of rounds';
   }
 
   @override
@@ -506,7 +506,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String ach_prestige_desc(String count) {
-    return 'Prestige $count times';
+    return 'Rewind time $count times';
   }
 
   @override
@@ -581,7 +581,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get perk_headStart_desc =>
-      'Start each run with 10 grandpas and 1K Ticks';
+      'After each paradox start with 10 Grandpas and 1K Ticks';
 
   @override
   String get perk_muscleMemory1 => 'Muscle memory I';
@@ -637,7 +637,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get perk_startShield_desc =>
-      'One shield charge, even without the skill';
+      'One Shield charge at the start of each run, even without the skill';
 
   @override
   String get perk_comboFloor => 'Soft landing';
@@ -703,7 +703,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsTitle => 'Statistics';
 
   @override
-  String get statEarnedRun => 'Earned this run';
+  String get statEarnedRun => 'Earned since the last paradox';
 
   @override
   String get statEarnedTotal => 'Earned in total';
@@ -742,7 +742,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statPlayTime => 'Time played';
 
   @override
-  String get statPrestiges => 'Prestiges';
+  String get statPrestiges => 'Paradoxes';
 
   @override
   String get statChronons => 'Chronons';
@@ -762,7 +762,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String prestigeShards(int count) {
-    return 'Time shards: $count';
+    return 'Time shards: $count ✦';
   }
 
   @override
@@ -779,8 +779,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prestigeButton => 'Rewind time';
 
   @override
+  String prestigePendingTitle(int count) {
+    return 'Time rewound: +$count ✦';
+  }
+
+  @override
+  String get prestigePendingBody =>
+      'Spend your Shards on perks now: Muscle memory, Head start and Shield already work in the new run.';
+
+  @override
+  String get prestigeStartRun => 'Start the new run';
+
+  @override
   String get prestigeConfirm1 =>
-      'You lose your clocks, skills and Ticks. Chronons, perks and achievements stay. Continue?';
+      'You lose your clocks, skills and Ticks. Chronons, Shards ✦, perks and achievements stay. Before the new run starts you can spend Shards on perks. Continue?';
 
   @override
   String get prestigeConfirm2 => 'Really? Time will rewind.';
@@ -999,7 +1011,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_prestige =>
-      'Once you\'ve collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster.';
+      'Once you\'ve collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster — and as many Time shards ✦. Spend the Shards on perks right after rewinding, before the new run starts, or later on the paradox screen.';
 
   @override
   String get help_icons_t => 'Icons at the top';
@@ -1081,7 +1093,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsResetConfirm1 =>
-      'Sure? You lose everything: Tiki, clocks, Chronons and achievements. Settings stay.';
+      'Sure? You lose everything: Ticks, clocks, Chronons, Shards, perks and achievements. Settings stay.';
 
   @override
   String settingsResetConfirm2(String word) {
@@ -1310,7 +1322,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upg_watchmaker_3 => 'Apprentice';
 
   @override
-  String get upg_watchmaker_3_desc => 'Learns on your Tiki.';
+  String get upg_watchmaker_3_desc => 'Learns on your Ticks.';
 
   @override
   String get upg_watchmaker_4 => 'Window Workbench';
@@ -1479,7 +1491,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upg_quartz_7 => 'Built-in Calculator';
 
   @override
-  String get upg_quartz_7_desc => 'Counts Tiki on the fly.';
+  String get upg_quartz_7_desc => 'Counts Ticks on the fly.';
 
   @override
   String get upg_quartz_8 => 'Rock Crystal';
@@ -2016,7 +2028,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_luck_info =>
-      'At each level 2 in 100 hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.';
+      'At each level 2% of hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.';
 
   @override
   String get skill_shield_info =>

@@ -14,6 +14,7 @@ GameState sample() {
     ..chronons = 7
     ..shards = 3
     ..prestiges = 1
+    ..rewindPending = true
     ..lastSeenMs = 1700000000000
     ..playSeconds = 321.5
     ..tutorialDone = true;
@@ -40,6 +41,7 @@ void main() {
     final back = saveFromJsonString(text);
     expect(saveToJsonString(back), text);
     expect(back.state.owned['grandpa'], 12);
+    expect(back.state.rewindPending, isTrue);
     expect(back.state.stats.byTier[Tier.perfect], 1);
     expect(back.settings.notation, Notation.scientific);
     expect(back.settings.haptics, isFalse);
