@@ -30,8 +30,11 @@ sekunda. Start później zmienia tylko to, od czego zaczyna.
   dotknięcia na starcie rundy zerowały serię).
 - **R-RUNDA-8a:** Przycisk ⏸ nad tarczą (po samouczku) świadomie zatrzymuje
   stoper: runda jest anulowana bez kary, następna rusza dopiero po
-  dotknięciu tarczy albo ▶. Każda pauza (przycisk, sklep, panel, wyjście z
-  aplikacji) jest widoczna: tarcza pokazuje „Pauza · dotknij, by grać”.
+  dotknięciu tarczy albo ▶. Każda pauza (przycisk, panel zasłaniający
+  zegar, wyjście z aplikacji) jest widoczna: tarcza pokazuje „Pauza ·
+  dotknij, by grać”. Kupowanie w sklepie **nie** zatrzymuje stopera
+  (playtest 22: w Szale gracz dokupuje zegary i nie chce czekać na nową
+  rundę; runda bez dotknięcia i tak nic nie kosztuje, R-RUNDA-6a).
 - **R-RUNDA-5:** Dotknięcie przed oknem DOBRZE to wynik **ZA WCZEŚNIE**
   (pudło). Jeśli gracz nie dotknie do `5.30`, runda kończy się wynikiem
   **ZA PÓŹNO** (pudło).
@@ -335,6 +338,12 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   drugiego przejścia nie ma już w co inwestować.
 - **R-PRES-6:** Prestiż wymaga podwójnego potwierdzenia i ma spektakularną
   animację („przewinięcie czasu” wstecz).
+- **R-PRES-6a:** Po animacji gracz dostaje Chronony i Okruchy, ale run
+  resetuje się dopiero po „Zacznij nową grę” (albo zamknięciu ekranu).
+  W międzyczasie Okruchy z tego paradoksu kupują perki, które od razu
+  działają w nowej grze (Pamięć mięśniowa, Szybki start, Tarcza na start).
+  Zamknięcie aplikacji w tym momencie kończy reset przy następnym starcie
+  (playtest 22).
 
 ### 9.1 Perki (drzewko „Paradoks”)
 

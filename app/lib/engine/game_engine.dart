@@ -504,11 +504,30 @@ class GameEngine {
   /// Time paradox (R-PRES-1…5): converts lifetime Tiki into Chronons and
   /// Shards, resets the run, keeps what the perks keep. Returns the gain.
   int prestige() {
+    final gain = beginPrestige();
+    finishPrestige();
+    return gain;
+  }
+
+  /// First half of the paradox (R-PRES-6a): Chronons and Shards are paid
+  /// out, but the run is reset only by [finishPrestige], so perks bought in
+  /// between (Muscle memory, Head start, Shield) already shape the new run.
+  int beginPrestige() {
+    if (s.rewindPending) return 0;
     final gain = econ.prestigeGain();
     if (gain < 1) return 0;
     s.chronons += gain;
     s.shards += gain;
     s.prestiges++;
+    s.rewindPending = true;
+    return gain;
+  }
+
+  /// Second half of the paradox: resets the run. No-op unless
+  /// [beginPrestige] ran.
+  void finishPrestige() {
+    if (!s.rewindPending) return;
+    s.rewindPending = false;
     // Muscle memory (R-PRES-5a): every skill keeps up to N levels.
     final keep = keptSkillLevels();
     final kept = <String, int>{
@@ -538,7 +557,6 @@ class GameEngine {
     hotHandLeft = 0;
     frenzy = 1;
     _scheduleGolden();
-    return gain;
   }
 
   /// Perk can be bought now: not owned, prerequisite owned, enough Shards.

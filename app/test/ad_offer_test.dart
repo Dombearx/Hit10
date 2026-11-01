@@ -118,7 +118,9 @@ void main() {
     expect(c.state.stats.rounds, 0);
   });
 
-  testWidgets('touching the shop pauses the stopwatch', (tester) async {
+  testWidgets('shopping does not stop the stopwatch (only ⏸ does)', (
+    tester,
+  ) async {
     final ads = FakeRewardedAds(delay: Duration.zero);
     final c = await pumpGame(tester, played()..comboStreak = 5, ads);
     await tester.tap(find.byKey(const Key('arena')));
@@ -126,7 +128,8 @@ void main() {
     expect(c.round.phase, RoundPhase.running);
     await tester.tap(find.byKey(const Key('buy-grandpa')));
     await tester.pump(const Duration(milliseconds: 200));
-    expect(c.round.phase, RoundPhase.waiting);
+    expect(c.round.phase, RoundPhase.running);
+    expect(c.paused, isFalse);
     expect(c.state.comboStreak, 5);
   });
 }

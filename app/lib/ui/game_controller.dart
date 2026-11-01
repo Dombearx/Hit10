@@ -89,6 +89,9 @@ class GameController extends ChangeNotifier {
        _wallMs = wallClockMs ?? (() => DateTime.now().millisecondsSinceEpoch),
        _localNow = localNow ?? DateTime.now {
     engine = GameEngine(balance, this.state);
+    // The app closed between paying out a paradox and starting the new
+    // run: start it now (R-PRES-6a).
+    engine.finishPrestige();
     ads = AdOffers(engine);
     achievements = buildAchievements(balance);
     _rebuildClocks();
@@ -596,19 +599,44 @@ class GameController extends ChangeNotifier {
     unawaited(haptics.long());
   }
 
-  /// Time paradox (R-PRES-6 confirms in the UI first).
+  /// Time paradox in one go (R-PRES-6 confirms in the UI first).
   int prestige() {
-    _rebuildClocks();
-    final gain = engine.prestige();
-    // The run's upgrades are gone, and the second clock may be too.
-    _rebuildClocks();
+    final gain = beginPrestige();
+    finishPrestige();
+    return gain;
+  }
+
+  /// Pays out Chronons and Shards; the run stays until [finishPrestige],
+  /// so the Shards can buy perks for the new run first (R-PRES-6a).
+  int beginPrestige() {
+    pause();
+    final gain = engine.beginPrestige();
     if (gain > 0) {
+      lastPrestigeGain = gain;
       ads.rescue = null;
       _checkAchievements(const AchievementContext());
       unawaited(save());
       notifyListeners();
     }
     return gain;
+  }
+
+  /// Chronons (and Shards) the last [beginPrestige] paid out.
+  int lastPrestigeGain = 0;
+
+  /// Waiting between [beginPrestige] and [finishPrestige].
+  bool get rewindPending => state.rewindPending;
+
+  /// Resets the run with the perks owned now.
+  void finishPrestige() {
+    if (!state.rewindPending) return;
+    _rebuildClocks();
+    engine.finishPrestige();
+    // The run's upgrades are gone, and the second clock may be too.
+    _rebuildClocks();
+    _checkAchievements(const AchievementContext());
+    unawaited(save());
+    notifyListeners();
   }
 
   // ----------------------------------------------------------- ad offers --

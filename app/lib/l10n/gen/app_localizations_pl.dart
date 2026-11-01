@@ -367,7 +367,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String inHundred(String n) {
-    return '$n na 100';
+    return '$n%';
   }
 
   @override
@@ -381,12 +381,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String skillOdds(String tier, String now, String next) {
-    return 'Twoje $tier: ok. $now → $next na 100 rund';
+    return 'Twoje $tier: ok. $now% → $next% rund';
   }
 
   @override
   String skillOddsMax(String tier, String now) {
-    return 'Twoje $tier: ok. $now na 100 rund';
+    return 'Twoje $tier: ok. $now% rund';
   }
 
   @override
@@ -508,7 +508,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String ach_prestige_desc(String count) {
-    return 'Zrób prestiż $count razy';
+    return 'Cofnij czas $count razy';
   }
 
   @override
@@ -582,7 +582,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get perk_headStart_desc =>
-      'Każdy run zaczynasz z 10 dziadkami i 1K Tików';
+      'Po każdym paradoksie zaczynasz z 10 Dziadkami i 1K Tików';
 
   @override
   String get perk_muscleMemory1 => 'Pamięć mięśniowa I';
@@ -638,7 +638,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get perk_startShield_desc =>
-      'Jeden ładunek tarczy, nawet bez umiejętności';
+      'Na start każdej gry jeden ładunek Tarczy, nawet bez umiejętności';
 
   @override
   String get perk_comboFloor => 'Twarde lądowanie';
@@ -704,7 +704,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get statsTitle => 'Statystyki';
 
   @override
-  String get statEarnedRun => 'Zarobione w tym runie';
+  String get statEarnedRun => 'Zarobione od ostatniego paradoksu';
 
   @override
   String get statEarnedTotal => 'Zarobione łącznie';
@@ -743,7 +743,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get statPlayTime => 'Czas gry';
 
   @override
-  String get statPrestiges => 'Prestiże';
+  String get statPrestiges => 'Paradoksy';
 
   @override
   String get statChronons => 'Chronony';
@@ -763,7 +763,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String prestigeShards(int count) {
-    return 'Okruchy czasu: $count';
+    return 'Okruchy czasu: $count ✦';
   }
 
   @override
@@ -780,8 +780,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prestigeButton => 'Cofnij czas';
 
   @override
+  String prestigePendingTitle(int count) {
+    return 'Czas cofnięty: +$count ✦';
+  }
+
+  @override
+  String get prestigePendingBody =>
+      'Wydaj teraz Okruchy na perki: Pamięć mięśniowa, Szybki start i Tarcza zadziałają już w nowej grze.';
+
+  @override
+  String get prestigeStartRun => 'Zacznij nową grę';
+
+  @override
   String get prestigeConfirm1 =>
-      'Stracisz zegary, umiejętności i Tiki. Chronony, perki i osiągnięcia zostają. Dalej?';
+      'Stracisz zegary, umiejętności i Tiki. Chronony, Okruchy ✦, perki i osiągnięcia zostają. Zanim ruszy nowa gra, wydasz Okruchy na perki. Dalej?';
 
   @override
   String get prestigeConfirm2 => 'Na pewno? Czas zostanie cofnięty.';
@@ -1001,7 +1013,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_prestige =>
-      'Gdy uzbierasz naprawdę dużo, wir u góry zaświeci się. Możesz wtedy cofnąć czas: zaczynasz od nowa, ale dostajesz Chronony — stały bonus do wszystkiego, więc kolejna gra idzie dużo szybciej.';
+      'Gdy uzbierasz naprawdę dużo, wir u góry zaświeci się. Możesz wtedy cofnąć czas: zaczynasz od nowa, ale dostajesz Chronony — stały bonus do wszystkiego, więc kolejna gra idzie dużo szybciej — i tyle samo Okruchów czasu ✦. Okruchy wydajesz na perki zaraz po cofnięciu czasu, zanim ruszy nowa gra, albo później na ekranie paradoksu.';
 
   @override
   String get help_icons_t => 'Ikony u góry';
@@ -1082,7 +1094,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get settingsResetConfirm1 =>
-      'Na pewno? Stracisz wszystko: Tiki, zegary, Chronony i osiągnięcia. Ustawienia zostaną.';
+      'Na pewno? Stracisz wszystko: Tiki, zegary, Chronony, Okruchy, perki i osiągnięcia. Ustawienia zostaną.';
 
   @override
   String settingsResetConfirm2(String word) {
@@ -1312,7 +1324,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get upg_watchmaker_3 => 'Czeladnik';
 
   @override
-  String get upg_watchmaker_3_desc => 'Uczy się na Twoich Tikach.';
+  String get upg_watchmaker_3_desc => 'Uczy się na twoich Tikach.';
 
   @override
   String get upg_watchmaker_4 => 'Warsztat przy oknie';
@@ -2020,7 +2032,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_luck_info =>
-      'Na każdym poziomie 2 na 100 trafień podskakuje o próg: ŚWIETNIE staje się PERFEKTEM, DOBRZE — ŚWIETNIE. 5.00 tak nie wpadnie.';
+      'Na każdym poziomie 2% trafień podskakuje o próg: ŚWIETNIE staje się PERFEKTEM, DOBRZE — ŚWIETNIE. 5.00 tak nie wpadnie.';
 
   @override
   String get skill_shield_info =>

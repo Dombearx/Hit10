@@ -89,6 +89,24 @@ void main() {
       });
     });
 
+    test('shards from this paradox buy perks for the new run (R-PRES-6a)', () {
+      s.earnedTotal = 1e8 * 3375; // 15 Chronons: Muscle memory I + Head start
+      expect(e.beginPrestige(), 15);
+      expect(s.rewindPending, isTrue);
+      expect(s.shards, 15);
+      expect(s.skills['echo'], 12); // the run is still there
+      expect(e.beginPrestige(), 0); // paid out once
+      expect(e.buyPerk('muscleMemory1'), BuyResult.ok);
+      expect(e.buyPerk('headStart'), BuyResult.ok);
+      e.finishPrestige();
+      expect(s.rewindPending, isFalse);
+      expect(s.skills['echo'], 4);
+      expect(s.owned['grandpa'], 10);
+      expect(s.tiki, 1000);
+      e.finishPrestige(); // no second reset
+      expect(s.owned['grandpa'], 10);
+    });
+
     test('perk tree: cost, prerequisites, no double buy', () {
       s.shards = 60;
       expect(e.buyPerk('muscleMemory2'), BuyResult.unavailable); // needs I

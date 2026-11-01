@@ -19,7 +19,8 @@ Future<void> showPrestige(BuildContext context, GameController c) {
     c,
     title: (l) => l.prestigeTitle,
     builder: (context) => _Prestige(controller: c),
-  );
+    // Closing the sheet while choosing perks starts the new run too.
+  ).whenComplete(c.finishPrestige);
 }
 
 class _Prestige extends StatelessWidget {
@@ -56,7 +57,42 @@ class _Prestige extends StatelessWidget {
       context,
       reduceMotion: controller.settings.reduceMotion,
     );
-    controller.prestige();
+    // Chronons and Shards now; the run resets when the player has spent
+    // the Shards (R-PRES-6a).
+    controller.beginPrestige();
+  }
+
+  void _startRun(BuildContext context) {
+    controller.finishPrestige();
+    Navigator.of(context).pop();
+  }
+
+  /// Between paying out and resetting: perks first, then the new run.
+  Widget _pending(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return Column(
+      children: [
+        Text(
+          l.prestigePendingTitle(controller.lastPrestigeGain),
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontFamily: Fonts.display, fontSize: 20),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          l.prestigePendingBody,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 10),
+        BuyButton(
+          key: const Key('prestige-start'),
+          price: l.prestigeStartRun,
+          enabled: true,
+          minWidth: 180,
+          onPressed: () => _startRun(context),
+        ),
+      ],
+    );
   }
 
   @override
@@ -92,36 +128,40 @@ class _Prestige extends StatelessWidget {
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: Palette.outline, width: 2.5),
           ),
-          child: Column(
-            children: [
-              Text(
-                gain > 0 ? l.prestigeGain(gain) : l.prestigeNext(f.n(needed)),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
+          child: c.rewindPending
+              ? _pending(context)
+              : Column(
+                  children: [
+                    Text(
+                      gain > 0
+                          ? l.prestigeGain(gain)
+                          : l.prestigeNext(f.n(needed)),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    if (gain > 0) ...[
+                      Text(
+                        l.prestigeNext(f.n(needed)),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Palette.outline.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 10),
+                    BuyButton(
+                      key: const Key('prestige-go'),
+                      price: l.prestigeButton,
+                      enabled: gain > 0,
+                      minWidth: 180,
+                      onPressed: () => _rewind(context),
+                    ),
+                  ],
                 ),
-              ),
-              if (gain > 0) ...[
-                Text(
-                  l.prestigeNext(f.n(needed)),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Palette.outline.withValues(alpha: 0.7),
-                  ),
-                ),
-              ],
-              const SizedBox(height: 10),
-              BuyButton(
-                key: const Key('prestige-go'),
-                price: l.prestigeButton,
-                enabled: gain > 0,
-                minWidth: 180,
-                onPressed: () => _rewind(context),
-              ),
-            ],
-          ),
         ),
         const SizedBox(height: 18),
         Text(

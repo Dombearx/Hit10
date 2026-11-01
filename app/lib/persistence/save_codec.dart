@@ -49,6 +49,7 @@ Map<String, Object?> encodeSave(SaveData d) {
     'perks': s.perks.toList(),
     'achievements': s.achievements.toList(),
     'prestiges': s.prestiges,
+    'rewindPending': s.rewindPending,
     'lastSeenMs': s.lastSeenMs,
     'playSeconds': s.playSeconds,
     'tutorialDone': s.tutorialDone,
@@ -141,6 +142,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..chronons = _i(j['chronons'])
     ..shards = _i(j['shards'])
     ..prestiges = _i(j['prestiges'])
+    ..rewindPending = j['rewindPending'] == true
     ..lastSeenMs = _i(j['lastSeenMs'])
     ..playSeconds = _d(j['playSeconds'])
     ..tutorialDone = j['tutorialDone'] == true

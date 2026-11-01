@@ -225,7 +225,7 @@
     }
   },
   "skillKeptNone": "After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.",
-  "inHundred": "{n} in 100",
+  "inHundred": "{n}%",
   "@inHundred": {
     "placeholders": {
       "n": {
@@ -236,7 +236,7 @@
   "oddsPerfect": "PERFECTs",
   "oddsGreatOrBetter": "GREAT or better",
   "oddsHits": "hits",
-  "skillOdds": "Your {tier}: about {now} → {next} in 100 rounds",
+  "skillOdds": "Your {tier}: about {now}% → {next}% of rounds",
   "@skillOdds": {
     "placeholders": {
       "tier": {
@@ -250,7 +250,7 @@
       }
     }
   },
-  "skillOddsMax": "Your {tier}: about {now} in 100 rounds",
+  "skillOddsMax": "Your {tier}: about {now}% of rounds",
   "@skillOddsMax": {
     "placeholders": {
       "tier": {
@@ -420,7 +420,7 @@
       }
     }
   },
-  "ach_prestige_desc": "Prestige {count} times",
+  "ach_prestige_desc": "Rewind time {count} times",
   "@ach_prestige_desc": {
     "placeholders": {
       "count": {
@@ -451,7 +451,7 @@
   "ach_hidden_boiledEgg": "Soft-boiled",
   "ach_hidden_boiledEgg_desc": "100 grandmas",
   "perk_headStart": "Head start",
-  "perk_headStart_desc": "Start each run with 10 grandpas and 1K Ticks",
+  "perk_headStart_desc": "After each paradox start with 10 Grandpas and 1K Ticks",
   "perk_muscleMemory1": "Muscle memory I",
   "perk_muscleMemory1_desc": "After a paradox every skill keeps up to level 4",
   "perk_muscleMemory2": "Muscle memory II",
@@ -469,7 +469,7 @@
   "perk_goldRush": "Gold rush",
   "perk_goldRush_desc": "Golden seconds 15 % more often",
   "perk_startShield": "Shield at start",
-  "perk_startShield_desc": "One shield charge, even without the skill",
+  "perk_startShield_desc": "One Shield charge at the start of each run, even without the skill",
   "perk_comboFloor": "Soft landing",
   "perk_comboFloor_desc": "A miss drops the streak to 5, not 0",
   "perk_autoBuyer": "Auto buyer",
@@ -509,7 +509,7 @@
   "hiddenAchievement": "Hidden achievement",
   "undiscoveredAchievement": "Discover more clocks to see this achievement",
   "statsTitle": "Statistics",
-  "statEarnedRun": "Earned this run",
+  "statEarnedRun": "Earned since the last paradox",
   "statEarnedTotal": "Earned in total",
   "statRounds": "Rounds",
   "statTypical": "Typical error",
@@ -522,7 +522,7 @@
   "statBestCombo": "Highest combo",
   "statGolden": "Golden seconds caught",
   "statPlayTime": "Time played",
-  "statPrestiges": "Prestiges",
+  "statPrestiges": "Paradoxes",
   "statChronons": "Chronons",
   "ms": "{value} ms",
   "@ms": {
@@ -544,7 +544,7 @@
       }
     }
   },
-  "prestigeShards": "Time shards: {count}",
+  "prestigeShards": "Time shards: {count} ✦",
   "@prestigeShards": {
     "placeholders": {
       "count": {
@@ -569,7 +569,17 @@
     }
   },
   "prestigeButton": "Rewind time",
-  "prestigeConfirm1": "You lose your clocks, skills and Ticks. Chronons, perks and achievements stay. Continue?",
+  "prestigePendingTitle": "Time rewound: +{count} ✦",
+  "@prestigePendingTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prestigePendingBody": "Spend your Shards on perks now: Muscle memory, Head start and Shield already work in the new run.",
+  "prestigeStartRun": "Start the new run",
+  "prestigeConfirm1": "You lose your clocks, skills and Ticks. Chronons, Shards ✦, perks and achievements stay. Before the new run starts you can spend Shards on perks. Continue?",
   "prestigeConfirm2": "Really? Time will rewind.",
   "perksTitle": "Perks",
   "perkRequires": "Needs: {name}",
@@ -730,7 +740,7 @@
   "help_season_t": "Events",
   "help_season": "On holidays the golden clock changes its look. The badge at the top shows your progress: how many holiday clocks you caught (e.g. 0/5) and how many hits you made (e.g. 0/50). Finishing pays a reward.",
   "help_prestige_t": "Time paradox",
-  "help_prestige": "Once you've collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster.",
+  "help_prestige": "Once you've collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster — and as many Time shards ✦. Spend the Shards on perks right after rewinding, before the new run starts, or later on the paradox screen.",
   "help_icons_t": "Icons at the top",
   "help_icons": "Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help.",
   "notificationTitle": "Your clocks collected {amount} Ticks! Come back for more.",
@@ -762,7 +772,7 @@
   "settingsImportConfirm": "Replace the current game with this save?",
   "settingsImportBad": "That doesn't look like a Hit5 save.",
   "settingsReset": "Start over",
-  "settingsResetConfirm1": "Sure? You lose everything: Tiki, clocks, Chronons and achievements. Settings stay.",
+  "settingsResetConfirm1": "Sure? You lose everything: Ticks, clocks, Chronons, Shards, perks and achievements. Settings stay.",
   "settingsResetConfirm2": "Type {word} to confirm.",
   "@settingsResetConfirm2": {
     "placeholders": {
@@ -844,7 +854,7 @@
   "upg_watchmaker_2": "Screwdriver Set",
   "upg_watchmaker_2_desc": "48 sizes, all of them tiny.",
   "upg_watchmaker_3": "Apprentice",
-  "upg_watchmaker_3_desc": "Learns on your Tiki.",
+  "upg_watchmaker_3_desc": "Learns on your Ticks.",
   "upg_watchmaker_4": "Window Workbench",
   "upg_watchmaker_4_desc": "Daylight, daylight precision.",
   "upg_watchmaker_5": "Swiss Movement",
@@ -900,7 +910,7 @@
   "upg_quartz_6": "Swiss Factory",
   "upg_quartz_6_desc": "The irony.",
   "upg_quartz_7": "Built-in Calculator",
-  "upg_quartz_7_desc": "Counts Tiki on the fly.",
+  "upg_quartz_7_desc": "Counts Ticks on the fly.",
   "upg_quartz_8": "Rock Crystal",
   "upg_quartz_8_desc": "The one from the legends.",
   "upg_atomic_1": "Laser Cooling",
@@ -1200,7 +1210,7 @@
   "skill_magnet_info": "The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.",
   "skill_echo_info": "Every hit adds seconds of your clocks' work, per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s. It grows with your clocks, so later on it is where most clicking Ticks come from.",
   "skill_bulletTime_info": "All your windows (PERFECT, GREAT, GOOD, CLOSE) get wider, up to 2.5 times at the top level — e.g. GOOD from ±50 to ±125 ms. The 5.00 window stays. Near the target you feel a heartbeat. Doesn't work on clocks.",
-  "skill_luck_info": "At each level 2 in 100 hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.",
+  "skill_luck_info": "At each level 2% of hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.",
   "skill_shield_info": "Each level is a Shield charge: a miss uses a charge instead of breaking your streak. Charges refill every 10 streak steps.",
   "skill_goldenTouch_info": "A Golden Second flies in every 10 minutes on average. Each level cuts that by 30 seconds and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger."
 }
