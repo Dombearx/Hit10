@@ -53,12 +53,12 @@ void main() {
       ..tiki = 1000
       ..peakTiki = 1000;
     final c = await pump(tester, s);
-    expect(find.textContaining('×1,0 → ×2,5'), findsOneWidget);
+    expect(find.textContaining('Tiki za PERFEKT: 6 → 15'), findsOneWidget);
     await tester.tap(find.byKey(const Key('skill-power')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.skills['power'], 1);
     expect(c.state.tiki, 950);
-    expect(find.textContaining('×2,5 → ×4,0'), findsOneWidget);
+    expect(find.textContaining('Tiki za PERFEKT: 15 → 24'), findsOneWidget);
   });
 
   testWidgets('ticking maxes out after one level', (tester) async {
@@ -91,8 +91,8 @@ void main() {
     final power = tester.widget<Text>(
       find.byKey(const Key('perfect-now-power')),
     );
-    // 10 Tiki for a PERFECT = 2 s of the clocks' 5/s.
-    expect(power.data, contains('≈ 2,0 s dochodu zegarów'));
+    // 6 Tiki for a PERFECT = 1.2 s of the clocks' 5/s.
+    expect(power.data, contains('≈ 1,2 s dochodu zegarów'));
   });
 
   testWidgets('a skill card opens its full explanation; buy from there', (
@@ -105,7 +105,7 @@ void main() {
     await tester.tap(find.byKey(const Key('skill-info-power')));
     await tester.pumpAndSettle();
     final info = tester.widget<Text>(find.byKey(const Key('skill-info-text')));
-    expect(info.data, startsWith('Każdy poziom podnosi stałą nagrodę'));
+    expect(info.data, startsWith('Stała nagroda za trafienie'));
     await tester.tap(find.byKey(const Key('skill-info-buy')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.skills['power'], 1);

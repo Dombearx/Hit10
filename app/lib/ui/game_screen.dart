@@ -31,6 +31,7 @@ import 'widgets/combo_meter.dart';
 import 'widgets/ad_buttons.dart';
 import 'widgets/effect_chips.dart';
 import 'widgets/mode_row.dart';
+import 'widgets/pause_button.dart';
 import 'widgets/toasts.dart';
 import 'widgets/frenzy_background.dart';
 import 'widgets/alert_dot.dart';
@@ -95,6 +96,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       late: l.missLate,
       close: l.missClose,
       tapToStart: l.tapToStart,
+      paused: l.pausedTapToPlay,
       decimalSeparator: l.decimalSeparator,
       goldenRound: l.goldenRound,
       goldenEscaped: l.goldenEscaped,
@@ -302,6 +304,22 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                     listenable: _slow,
                                     builder: (context, _) =>
                                         AdCornerButtons(controller: controller),
+                                  ),
+                                ),
+                              ),
+                              // The pause button (U-29): top middle, between the
+                              // ad tiles, in the band the dial keeps free.
+                              Positioned(
+                                top: 4,
+                                left: 0,
+                                right: 0,
+                                child: Center(
+                                  child: _ownTaps(
+                                    ListenableBuilder(
+                                      listenable: controller,
+                                      builder: (context, _) =>
+                                          PauseButton(controller: controller),
+                                    ),
                                   ),
                                 ),
                               ),

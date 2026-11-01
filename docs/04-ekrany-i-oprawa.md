@@ -243,6 +243,11 @@ FLUX.1 [dev] odpada, bo ma licencję niekomercyjną.
   Gdy kafelki są widoczne, arena rezerwuje na nie pas 48 px u góry:
   tarcza mieści się pod nim i nic jej nie zasłania (playtest: na niskich
   ekranach kafelki wchodziły na tarczę).
+- **U-29:** Przycisk pauzy: okrągły, 40 px, na środku pasa nad tarczą
+  (między kafelkami reklam). ⏸ gdy runda trwa, złoty ▶ gdy stoper stoi.
+  Umiejętności na karcie pokazują wartości w jednostkach gry (Tiki, ms, s,
+  ×, „N na 100”), a w szczegółach okienkowych także „Twoje PERFEKTY:
+  ok. 13 → 15 na 100 rund”, zamiast procentów od niewidocznej bazy.
 - **U-23:** Worek Tików pojawia się na karcie, na którą brakuje Tików, jako
   drugi przycisk („📺 +5 min”).
 - **U-24:** Ratunek combo to wyskakujący dymek nad licznikiem combo z

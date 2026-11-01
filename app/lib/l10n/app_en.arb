@@ -16,6 +16,9 @@
   "missLate": "TOO LATE",
   "missClose": "CLOSE!",
   "tapToStart": "Tap to start",
+  "pausedTapToPlay": "Paused · tap to play",
+  "pause": "Pause",
+  "resume": "Play",
   "decimalSeparator": ".",
   "@decimalSeparator": {
     "description": "Decimal separator for numbers in this language (docs/04 U-16)"
@@ -141,38 +144,38 @@
   "saveCorrupt": "Your save could not be read, so the game started fresh.",
   "comingSoon": "Coming soon",
   "skill_power": "Strike Power",
-  "skill_power_desc": "Every hit pays more.",
-  "skill_power_label": "Hit reward",
+  "skill_power_desc": "For the start: more Ticks for every hit.",
+  "skill_power_label": "Ticks per PERFECT",
   "skill_fastForward": "Late Start",
-  "skill_fastForward_desc": "The stopwatch starts later — shorter rounds.",
-  "skill_fastForward_label": "Starts at",
+  "skill_fastForward_desc": "Shorter rounds — more rounds a minute.",
+  "skill_fastForward_label": "A round takes",
   "skill_ticking": "Ticking",
-  "skill_ticking_desc": "A tick in the last second helps you find the beat.",
+  "skill_ticking_desc": "A helper: ticking in the last second.",
   "skill_ticking_label": "Ticking",
   "skill_wideEye": "Hawk Eye",
-  "skill_wideEye_desc": "Wider GREAT and GOOD windows.",
-  "skill_wideEye_label": "Your GREAT or better",
+  "skill_wideEye_desc": "Wider GREAT and GOOD: fewer misses, longer streaks. Clocks too.",
+  "skill_wideEye_label": "GREAT / GOOD",
   "skill_combo": "Combo",
-  "skill_combo_desc": "A higher streak cap; the streak boosts payouts.",
-  "skill_combo_label": "Streak cap",
+  "skill_combo_desc": "A higher ceiling for the streak multiplier.",
+  "skill_combo_label": "Streak multiplies up to",
   "skill_magnet": "Magnet",
-  "skill_magnet_desc": "A wider PERFECT window.",
-  "skill_magnet_label": "Your PERFECTs",
+  "skill_magnet_desc": "A wider PERFECT window. Clocks too.",
+  "skill_magnet_label": "PERFECT window",
   "skill_echo": "Echo",
-  "skill_echo_desc": "Hits also pay seconds of your clocks' income.",
-  "skill_echo_label": "Echo",
+  "skill_echo_desc": "A hit pays seconds of your clocks' work — grows with the game.",
+  "skill_echo_label": "PERFECT adds clock time",
   "skill_bulletTime": "Cold Blood",
-  "skill_bulletTime_desc": "All your hit windows are wider.",
-  "skill_bulletTime_label": "Your hits",
+  "skill_bulletTime_desc": "All your windows wider.",
+  "skill_bulletTime_label": "Your GOOD window",
   "skill_luck": "Luck",
-  "skill_luck_desc": "A chance that a hit jumps one tier up.",
-  "skill_luck_label": "Chance",
+  "skill_luck_desc": "Some hits jump a tier up.",
+  "skill_luck_label": "Hits bumped a tier up",
   "skill_shield": "Shield",
-  "skill_shield_desc": "A miss uses a charge, not your streak.",
+  "skill_shield_desc": "A miss uses a charge instead of resetting the streak.",
   "skill_shield_label": "Charges",
   "skill_goldenTouch": "Golden Touch",
-  "skill_goldenTouch_desc": "Golden seconds come more often and hit harder.",
-  "skill_goldenTouch_label": "Interval",
+  "skill_goldenTouch_desc": "Golden Second more often and stronger.",
+  "skill_goldenTouch_label": "Golden Second every",
   "skillLevel": "Level {level}/{max}",
   "@skillLevel": {
     "placeholders": {
@@ -210,6 +213,42 @@
     }
   },
   "skillMaxed": "MAX",
+  "inHundred": "{n} in 100",
+  "@inHundred": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "oddsPerfect": "PERFECTs",
+  "oddsGreatOrBetter": "GREAT or better",
+  "oddsHits": "hits",
+  "skillOdds": "Your {tier}: about {now} → {next} in 100 rounds",
+  "@skillOdds": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "now": {
+        "type": "String"
+      },
+      "next": {
+        "type": "String"
+      }
+    }
+  },
+  "skillOddsMax": "Your {tier}: about {now} in 100 rounds",
+  "@skillOddsMax": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "now": {
+        "type": "String"
+      }
+    }
+  },
   "skillLockedHint": "Revealed at {price} Ticks",
   "@skillLockedHint": {
     "placeholders": {
@@ -460,9 +499,11 @@
   "statEarnedRun": "Earned this run",
   "statEarnedTotal": "Earned in total",
   "statRounds": "Rounds",
+  "statTypical": "Typical error",
+  "statTypicalHint": "half your taps land closer",
+  "statAccidental": "Stray taps (ignored)",
   "statTiers": "Hits",
   "statMeanError": "Average error",
-  "statSpread": "Spread",
   "statMeanHint": "negative = you tap early",
   "statBestStreak": "Best PERFECT streak",
   "statBestCombo": "Highest combo",
@@ -658,7 +699,7 @@
   "helpTitle": "How to play",
   "helpReplay": "Show the tutorial again",
   "help_goal_t": "Goal",
-  "help_goal": "The stopwatch counts seconds. Tap the screen when it shows exactly 5.00. The closer, the better: PERFECT pays the most, then GREAT and GOOD. Too early or too late is a miss — it pays nothing and breaks your streak.",
+  "help_goal": "The stopwatch counts seconds. Tap the screen when it shows 5.00 — the closer, the better:\n• 5.00 (±0.010 s): a PERFECT plus a bonus — seconds of your clocks' work\n• PERFECT (±0.015 s): 6 Ticks, streak +3\n• GREAT (±0.030 s): 3 Ticks, streak +2\n• GOOD (±0.050 s): 1 Tick, streak +1\n• CLOSE (±0.150 s): a small consolation, the streak breaks\nAnything further is a miss. A tap over a second before the target counts as a slip and is ignored. Skills widen the windows (except 5.00).",
   "help_tiki_t": "Ticks",
   "help_tiki": "Ticks are the game's money. The big counter at the top shows how many you have, the smaller one below it how much you earn per second. You spend them in the shop at the bottom.",
   "help_clocks_t": "Clocks",
@@ -1138,15 +1179,15 @@
   },
   "season_fiveDay": "Five Day",
   "season_fiveDay_items": "Fives",
-  "skill_power_info": "Each level raises the fixed reward for a hit by 150% of the base reward. You feel it most early on, before your clocks earn much.",
-  "skill_fastForward_info": "The stopwatch starts from a higher value at the same pace, so rounds are shorter and you get more of them per minute. At least 4 seconds always remain to find the rhythm.",
+  "skill_power_info": "The fixed reward for a hit: PERFECT 6 Ticks, GREAT 3, GOOD 1. Each level adds one and a half times that (PERFECT 6 → 15 → 24…). Very strong in the first minutes; later Echo counts, as it grows with your clocks.",
+  "skill_fastForward_info": "The stopwatch starts from a higher value, so a round is shorter and you play more rounds in the same time. At least 4 seconds are always left to find the rhythm.",
   "skill_ticking_info": "In the last second before the target you hear a tick every tenth of a second (with vibration if it's on). It helps you feel the moment.",
-  "skill_wideEye_info": "GREAT and GOOD windows grow 8% per level, so you hit more often and lose your streak less. It works for your clocks' hits too — their income grows with yours.",
-  "skill_combo_info": "Raises the streak cap by 2 steps per level. Each streak step adds 5% to a hit's payout (the jackpot and Echo included).",
-  "skill_magnet_info": "The PERFECT window grows 1 ms per level, so 4.99 or 5.01 can be a PERFECT too. The 5.00 jackpot still needs exactly 5.00 on the dial. Your clocks hit PERFECT more often too.",
-  "skill_echo_info": "Each hit also pays 0.5 s of your clocks' income per level (PERFECT in full, GREAT 1/3, GOOD 1/10). That keeps tapping worth it when your clocks earn a lot.",
-  "skill_bulletTime_info": "All your windows (PERFECT, GREAT, GOOD, CLOSE) are wider — up to ×2.5 at max level. The clock runs the same; you feel a heartbeat near the target. Not for your clocks.",
-  "skill_luck_info": "A 2% chance per level that a GREAT becomes a PERFECT and a GOOD a GREAT. It never gives the 5.00 jackpot.",
+  "skill_wideEye_info": "The GREAT window (±30 ms) grows by 2.4 ms a level and GOOD (±50 ms) by 4 ms. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.",
+  "skill_combo_info": "Every hit without a miss raises the streak multiplier by 0.05 a step (PERFECT 3 steps, GREAT 2, GOOD 1). The base ceiling is ×1.25; each level raises it by 0.10. It multiplies the whole payout, 5.00 and Echo included.",
+  "skill_magnet_info": "The PERFECT window (±15 ms) grows by 1 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.",
+  "skill_echo_info": "Every hit adds seconds of your clocks' work, per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s. It grows with your clocks, so later on it is where most clicking Ticks come from.",
+  "skill_bulletTime_info": "All your windows (PERFECT, GREAT, GOOD, CLOSE) get wider, up to 2.5 times at the top level — e.g. GOOD from ±50 to ±125 ms. The 5.00 window stays. Near the target you feel a heartbeat. Doesn't work on clocks.",
+  "skill_luck_info": "At each level 2 in 100 hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.",
   "skill_shield_info": "Each level is a Shield charge: a miss uses a charge instead of breaking your streak. Charges refill every 10 streak steps.",
-  "skill_goldenTouch_info": "The Golden Second comes 5% more often per level, and its effects (Frenzy, Lucky, Hot hand) are 5% stronger."
+  "skill_goldenTouch_info": "A Golden Second flies in every 10 minutes on average. Each level cuts that by 30 seconds and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger."
 }

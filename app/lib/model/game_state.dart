@@ -127,16 +127,38 @@ class RoundStats {
     }
   }
 
-  double get meanError => recentErrors.isEmpty
-      ? 0
-      : recentErrors.reduce((a, b) => a + b) / recentErrors.length;
+  /// Taps ignored as accidental (R-RUNDA-5a), all time.
+  int accidental = 0;
 
+  /// Recent taps near the target: a tap seconds off is a slip, not aim
+  /// (playtest: three stray taps turned a ~40 ms player's spread into
+  /// 440 ms). The figures below use these only.
+  static const near = 0.3;
+  List<double> get nearErrors =>
+      recentErrors.where((e) => e.abs() < near).toList();
+
+  /// Average signed error of near taps (negative: early).
+  double get meanError {
+    final e = nearErrors;
+    return e.isEmpty ? 0 : e.reduce((a, b) => a + b) / e.length;
+  }
+
+  /// Median distance from the target: half the near taps are closer.
+  double get typicalError {
+    final e = nearErrors.map((x) => x.abs()).toList()..sort();
+    if (e.isEmpty) return 0;
+    final m = e.length ~/ 2;
+    return e.length.isOdd ? e[m] : (e[m - 1] + e[m]) / 2;
+  }
+
+  /// Standard deviation of near taps (diagnostics).
   double get spread {
-    if (recentErrors.length < 2) return 0;
+    final e = nearErrors;
+    if (e.length < 2) return 0;
     final m = meanError;
     final v =
-        recentErrors.map((e) => (e - m) * (e - m)).reduce((a, b) => a + b) /
-        (recentErrors.length - 1);
+        e.map((x) => (x - m) * (x - m)).reduce((a, b) => a + b) /
+        (e.length - 1);
     return v <= 0 ? 0 : math.sqrt(v);
   }
 }

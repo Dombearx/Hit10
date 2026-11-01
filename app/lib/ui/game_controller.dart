@@ -377,7 +377,12 @@ class GameController extends ChangeNotifier {
     switch (ev) {
       case null:
         return;
+      case TapIgnored():
+        // Far too early to be an attempt: the round goes on (R-RUNDA-5a).
+        state.stats.accidental++;
+        notifyListeners();
       case RoundStarted():
+        paused = false;
         if (slot.index == 0) syncSeason(); // a session can cross midnight
         engine.onRoundStart();
         slot
@@ -874,6 +879,23 @@ class GameController extends ChangeNotifier {
   }
 
   /// App hidden, a panel covers the clock or an ad plays (R-RUNDA-8).
+  /// The stopwatch was stopped (pause button, shop, a sheet, leaving the
+  /// app): the dial says so until the next round starts (docs/04 U-29).
+  bool paused = false;
+
+  /// The pause button: stops the running round, or starts one when
+  /// stopped.
+  void togglePause() {
+    final running = clocks.any((c) => c.round.phase != RoundPhase.waiting);
+    if (running) {
+      pause();
+      paused = true;
+      notifyListeners();
+    } else {
+      onPointerDown(Duration.zero);
+    }
+  }
+
   void pause() {
     var changed = false;
     for (final c in clocks) {
@@ -883,6 +905,7 @@ class GameController extends ChangeNotifier {
         changed = true;
       }
     }
+    if (changed) paused = true;
     _startSecondAt = null;
     sfx.underwater(false);
     if (changed) notifyListeners();

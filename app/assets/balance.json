@@ -5,6 +5,7 @@
     "target": 5.0,
     "autoEndAfter": 0.3,
     "inputGraceAfterStart": 0.25,
+    "ignoreTapsBefore": 1.0,
     "resultPause": 0.7,
     "latestStart": 0.8,
     "bulletZone": 0.2,
@@ -13,14 +14,14 @@
   "tiers": [
     {
       "id": "perfect",
-      "window": 0.005,
-      "reward": 10,
-      "echoShare": 1.0,
+      "window": 0.015,
+      "reward": 6,
+      "echoShare": 0.6,
       "comboStep": 3
     },
     {
       "id": "great",
-      "window": 0.02,
+      "window": 0.03,
       "reward": 3,
       "echoShare": 0.333,
       "comboStep": 2
@@ -564,8 +565,8 @@
     ]
   },
   "jackpot": {
-    "window": 0.005,
-    "productionSeconds": 8,
+    "window": 0.01,
+    "productionSeconds": 5,
     "perfectMultiple": 5
   }
 }

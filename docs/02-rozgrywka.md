@@ -24,6 +24,14 @@ sekunda. Start później zmienia tylko to, od czego zaczyna.
   zależy od `|e|` i aktualnych okien (sekcja 2).
 - **R-RUNDA-4:** Dotknięcia w pierwszych `0.25 s` czasu rzeczywistego rundy
   i w trakcie pauzy na wynik są ignorowane. Chroni to przed podwójnym tapnięciem.
+- **R-RUNDA-5a:** Dotknięcie wcześniej niż **1 s przed celem** (na stoperze
+  < 4.00) to dotknięcie przypadkowe: jest pomijane, runda trwa dalej,
+  seria zostaje. Statystyki liczą je osobno (playtest: przypadkowe
+  dotknięcia na starcie rundy zerowały serię).
+- **R-RUNDA-8a:** Przycisk ⏸ nad tarczą (po samouczku) świadomie zatrzymuje
+  stoper: runda jest anulowana bez kary, następna rusza dopiero po
+  dotknięciu tarczy albo ▶. Każda pauza (przycisk, sklep, panel, wyjście z
+  aplikacji) jest widoczna: tarcza pokazuje „Pauza · dotknij, by grać”.
 - **R-RUNDA-5:** Dotknięcie przed oknem DOBRZE to wynik **ZA WCZEŚNIE**
   (pudło). Jeśli gracz nie dotknie do `5.30`, runda kończy się wynikiem
   **ZA PÓŹNO** (pudło).
@@ -74,11 +82,21 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 
 | Próg | Okno bazowe `|e|` | Nagroda bazowa (Tiki) | Udział Echa | Krok combo |
 |---|---|---|---|---|
-| **PERFEKT** | < 0.005 s (na ekranie „5.00”) | 10 | 100% | +3 |
-| **ŚWIETNIE** | < 0.020 s | 3 | 33% | +2 |
+| **5.00** (jackpot) | < 0.010 s | PERFEKT + 5 s dochodu zegarów | – | jak PERFEKT |
+| **PERFEKT** | < 0.015 s | 6 | 60% | +3 |
+| **ŚWIETNIE** | < 0.030 s | 3 | 33% | +2 |
 | **DOBRZE** | < 0.050 s | 1 | 10% | +1 |
 | **BLISKO** | < 0.150 s (tylko dotknięcia gracza) | 0.3 | 0 | reset do 0 |
 | **PUDŁO** | reszta, ZA WCZEŚNIE, ZA PÓŹNO | 0 | 0 | reset do 0 |
+
+Okna zmienione po playteście (wcześniej PERFEKT i 5.00 ±0.005 s, ŚWIETNIE
+±0.020 s): ±5 ms to mniej niż jedna klatka ekranu (16.7 ms przy 60 Hz)
+i rząd wielkości próbkowania dotyku, a najtrudniejszy poziom osu! daje na
+najlepszą ocenę ±20 ms. PERFEKT przy rozrzucie 30 ms wypadał w 13% rund,
+więc „10 PERFEKTÓW z rzędu” było praktycznie losowe. Teraz dobry gracz
+(30 ms) ma ok. 38% PERFEKTÓW i 26% 5.00, przeciętny (60 ms) 20% i 13%;
+pudeł jest tyle samo co wcześniej (DOBRZE bez zmian). Nagrody przestrojone
+symulatorem (PERFEKT 10 → 6, Echo PERFEKTU 100% → 60%, jackpot 8 s → 5 s).
 
 - **R-PROG-0:** BLISKO (08, playtest) to pudło z pocieszeniem: płaci mało
   (1/33 PERFEKTU), ale zeruje combo jak pudło. W czasie szczęścia
@@ -87,11 +105,13 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
   się nie zmieniają — trafienie 5.00 ma zostać wyczynem. Generatory nie
   mają BLISKO.
 
-- **R-PROG-3 (5.00 — jackpot):** dotknięcie, które na tarczy daje 5.00
-  (|błąd| < 0.005 s; żadna umiejętność tego okna nie poszerza, Fart i
-  Gorąca ręka go nie dają), płaci oprócz PERFEKTU **8 s dochodu zegarów**
+- **R-PROG-3 (5.00 — jackpot):** dotknięcie w oknie 5.00
+  (|błąd| < 0.010 s; żadna umiejętność tego okna nie poszerza, Fart i
+  Gorąca ręka go nie dają) — tarcza pokazuje wtedy równe 5.00, a błąd
+  małym drukiem — płaci oprócz PERFEKTU **5 s dochodu zegarów**
   (co najmniej 5 bazowych PERFEKTÓW), razy combo i tryb. Oprawa: „5.00!”,
-  deszcz złota, fanfara. Nagłówek pokazuje „5.00 = +X”. Wielkość 8 s to
+  deszcz złota, fanfara. Nagłówek pokazuje „5.00 = +X”. (Historia: przy
+  oknie ±0.005 s) wielkość 8 s to
   granica z symulatora: przy 15 s gracz grający bez przerwy wyprzedza
   założone tempo, a gracz nieprecyzyjny zostaje za daleko w tyle (B-6c,
   B-7); 10 s mieściło się tylko na styk. Przy grze po kilka minut dziennie i tak przeważa dochód offline.
@@ -425,7 +445,11 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
 - **R-STAT-1:** Ekran statystyk pokazuje:
   - Tiki zarobione w tym runie i łącznie,
   - liczbę rund i rozkład progów (%),
-  - średni błąd i rozrzut (ms) z ostatnich 100 rund,
+  - typowy błąd (mediana odległości od celu) i średnie przesunięcie (ms)
+    z ostatnich 100 dotknięć bliskich celu (±0.3 s) — przypadkowe
+    dotknięcia nie psują tych liczb (playtest: 3 przypadkowe dotknięcia
+    zrobiły z ok. 40 ms „rozrzut” 440 ms),
+  - liczbę przypadkowych dotknięć (pominiętych, R-RUNDA-5a),
   - najlepszą serię i najwyższe combo,
   - liczbę złapanych Złotych Sekund,
   - czas gry,

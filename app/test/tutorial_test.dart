@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hit10/engine/round_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
@@ -211,17 +212,38 @@ void main() {
     expect(find.byKey(const Key('tab-1-alert-true')), findsOneWidget);
   });
 
+  testWidgets('the pause button stops the round and starts the next', (
+    tester,
+  ) async {
+    final s = GameState()..tutorialDone = true;
+    final c = await pump(tester, s);
+    c.onPointerDown(Duration.zero); // start a round
+    expect(c.round.phase, RoundPhase.running);
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.tap(find.byKey(const Key('pause-button')));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(c.round.phase, RoundPhase.waiting);
+    expect(c.paused, isTrue);
+    await tester.tap(find.byKey(const Key('pause-button')));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(c.round.phase, RoundPhase.running);
+    expect(c.paused, isFalse);
+  });
+
   testWidgets('the ? button opens the help', (tester) async {
     final s = GameState()..tutorialDone = true;
     await pump(tester, s);
     await tester.tap(find.byKey(const Key('open-help')));
     await tester.pump(const Duration(milliseconds: 500));
     expect(find.text('Jak grać'), findsOneWidget);
-    await tester.scrollUntilVisible(
+    // The list is longer than the sheet: drag the button well into view.
+    await tester.dragUntilVisible(
       find.byKey(const Key('help-replay')),
-      200,
-      scrollable: find.byType(Scrollable).last,
+      find.byType(Scrollable).last,
+      const Offset(0, -300),
     );
+    await tester.drag(find.byType(Scrollable).last, const Offset(0, -300));
+    await tester.pump(const Duration(milliseconds: 300));
     await tester.tap(find.byKey(const Key('help-replay')));
     await tester.pump(const Duration(milliseconds: 500));
     expect(s.tutorialDone, isFalse);

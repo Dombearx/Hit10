@@ -190,7 +190,8 @@ void main() {
 
     test('Magnet widens PERFECT, not the jackpot; Luck never wins it', () {
       s.skills['magnet'] = 10;
-      final wide = grade(0.008, e.econ.playerWindows());
+      // 12 ms: PERFECT (±15 ms) but outside the 5.00 window (±10 ms).
+      final wide = grade(0.012, e.econ.playerWindows());
       expect(wide.tier, Tier.perfect);
       expect(e.resolveRound(wide).jackpot, 0);
       // A GREAT bumped to PERFECT by Luck is not a 10.00.

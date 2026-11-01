@@ -24,6 +24,7 @@ class RoundConfig {
     : target = _d(j['target']),
       autoEndAfter = _d(j['autoEndAfter']),
       inputGraceAfterStart = _d(j['inputGraceAfterStart']),
+      ignoreTapsBefore = _d(j['ignoreTapsBefore']),
       resultPause = _d(j['resultPause']),
       latestStart = _d(j['latestStart']),
       bulletZone = _d(j['bulletZone']),
@@ -31,6 +32,11 @@ class RoundConfig {
   final double target;
   final double autoEndAfter;
   final double inputGraceAfterStart;
+
+  /// A tap more than this many seconds of stopwatch time before the target
+  /// is taken as accidental and ignored: the round goes on, the streak
+  /// stays (R-RUNDA-5a, playtest: stray touches broke streaks).
+  final double ignoreTapsBefore;
   final double resultPause;
 
   /// Where Start później's last level starts the stopwatch.

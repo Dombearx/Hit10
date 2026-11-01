@@ -94,15 +94,15 @@ void main() {
       'combo': 2,
     });
     final w = e.windows();
-    expect(w.perfect, closeTo(0.008, 1e-12));
-    expect(w.great, closeTo(0.028, 1e-12));
+    expect(w.perfect, closeTo(0.018, 1e-12));
+    expect(w.great, closeTo(0.042, 1e-12));
     expect(e.laterStart(), closeTo(4 * 0.08, 1e-12)); // the same step each
     expect(e.laterStart(10), closeTo(b.round.latestStart, 1e-12));
     expect(e.laterStart(0), 0);
     expect(e.coldBlood(), closeTo(2.5, 1e-12));
     // Zimna krew widens the player's windows, never the generators'.
-    expect(e.playerWindows().perfect, closeTo(0.008 * 2.5, 1e-12));
-    expect(e.windows().perfect, closeTo(0.008, 1e-12));
+    expect(e.playerWindows().perfect, closeTo(0.018 * 2.5, 1e-12));
+    expect(e.windows().perfect, closeTo(0.018, 1e-12));
     expect(e.comboCap(), 9);
     expect(e.skillCost('magnet'), 2000 * math.pow(7, 3));
     s.skills['ticking'] = 1;

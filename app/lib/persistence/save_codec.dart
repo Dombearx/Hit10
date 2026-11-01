@@ -74,6 +74,7 @@ Map<String, Object?> encodeSave(SaveData d) {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
       'recentErrors': s.stats.recentErrors,
+      'accidental': s.stats.accidental,
     },
     'lifetime': {
       'earnedEver': l.earnedEver,
@@ -176,6 +177,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   });
   final errors = stats['recentErrors'];
   if (errors is List) s.stats.recentErrors.addAll(errors.map((e) => _d(e)));
+  s.stats.accidental = _i(stats['accidental']);
   final l = _m(j['lifetime']);
   s.lifetime
     ..earnedEver = _d(l['earnedEver'])

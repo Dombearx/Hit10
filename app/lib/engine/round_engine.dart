@@ -19,6 +19,11 @@ class RoundStarted extends RoundEvent {
   const RoundStarted();
 }
 
+/// A tap far too early to be an attempt (R-RUNDA-5a): ignored.
+class TapIgnored extends RoundEvent {
+  const TapIgnored();
+}
+
 class RoundGraded extends RoundEvent {
   const RoundGraded(this.grade, this.gameTime);
   final Grade grade;
@@ -94,6 +99,9 @@ class RoundEngine {
       case RoundPhase.running:
         if (now - _start < config.inputGraceAfterStart) return null;
         final t = _map.gameAt(now - _start);
+        if (t < config.target - config.ignoreTapsBefore) {
+          return const TapIgnored();
+        }
         return _finish(now, t, grade(t - config.target, _windows));
     }
   }

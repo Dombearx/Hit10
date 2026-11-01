@@ -56,10 +56,10 @@ void main() {
     s.owned['grandma'] = 5; // P = 5/s (under the first ×2 at 10)
     s.skills.addAll({'power': 2, 'echo': 4}); // ×(1 + 1.5·2) = ×4, 2 s
     const perfect = Grade(Tier.perfect, 0);
-    // (10·4·1 + 2·1.0·5) · combo 1.5 · mode 3
+    // (6·4·1 + 2·0.6·5) · combo 1.5 · mode 3
     expect(
       g.hitPayout(perfect, combo: 1.5, mode: 3),
-      closeTo((40 + 10) * 4.5, 1e-9),
+      closeTo((24 + 6) * 4.5, 1e-9),
     );
     const good = Grade(Tier.good, 0.04);
     expect(g.hitPayout(good), closeTo(1 * 4 + 2 * 0.1 * 5, 1e-9));
@@ -72,7 +72,7 @@ void main() {
     g.frenzy = 7;
     g.turbo = 2;
     expect(g.passive(), closeTo(14, 1e-9));
-    expect(g.hitPayout(const Grade(Tier.perfect, 0)), closeTo(140, 1e-9));
+    expect(g.hitPayout(const Grade(Tier.perfect, 0)), closeTo(6 * 14, 1e-9));
   });
 
   group('offline (R-OFF-1…3)', () {

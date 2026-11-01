@@ -36,6 +36,19 @@ void main() {
     expect(e.phase, RoundPhase.running);
   });
 
+  test(
+    'a tap over 1 s before the target is a stray, not a miss (R-RUNDA-5a)',
+    () {
+      e.tap(100);
+      expect(e.tap(101.5), isA<TapIgnored>()); // 1.50 on the stopwatch
+      expect(e.phase, RoundPhase.running);
+      expect(e.tap(103.95), isA<TapIgnored>()); // 3.95: still too early
+      final g = e.tap(104.2); // 4.20: an attempt, graded (too early)
+      expect(g, isA<RoundGraded>());
+      expect((g! as RoundGraded).grade.tier, Tier.miss);
+    },
+  );
+
   test('a tap at 5.00 is perfect and freezes the stopwatch', () {
     e.tap(100);
     final ev = e.tap(105.002) as RoundGraded;
@@ -45,9 +58,9 @@ void main() {
     expect(e.gameTime(105.5), closeTo(5.002, 1e-9));
   });
 
-  test('early tap is a miss', () {
+  test('an early tap within the last second is a miss', () {
     e.tap(100);
-    final ev = e.tap(103) as RoundGraded;
+    final ev = e.tap(104.5) as RoundGraded;
     expect(ev.grade.missKind, MissKind.early);
   });
 
