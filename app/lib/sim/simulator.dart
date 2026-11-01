@@ -197,6 +197,15 @@ class Simulator {
 
   // ------------------------------------------------------------- buying --
 
+  /// Analysis hooks (tool/skill_report.dart): what one more [kind] [key]
+  /// adds to the income, and the shop right now.
+  double gainOf(String kind, String key, {bool idle = false}) =>
+      _gainOf(kind, key, idle);
+  Iterable<(String, String, double)> candidates() => _candidates();
+
+  /// Called after each step's purchases with the play time in seconds.
+  void Function(double t)? onStep;
+
   Iterable<(String, String, double)> _candidates() sync* {
     for (final g in b.generators) {
       if (!econ.generatorUnlocked(g.id)) continue;
@@ -327,6 +336,7 @@ class Simulator {
         if (kind == 'gen') res.firstGenerator.putIfAbsent(key, () => t);
         if (kind == 'skill') res.skillLog.add((t, key, econ.level(key)));
       }
+      onStep?.call(t);
       e.frenzy = frenzyNow;
       res.earnedLog.add((t, s.earnedTotal));
       if (t >= nextHour) {
