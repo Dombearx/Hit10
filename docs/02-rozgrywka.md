@@ -443,7 +443,7 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 |---|---|---|---|---|
 | `adOffline` | Podwój / Double it | okno „Gdy cię nie było…” | ×2 dochodu offline | tylko przy nieobecności ≥ 30 min |
 | `adTurbo` | Turbo / Turbo | przycisk przy zegarze | **×2 całego dochodu** na 30 min | zapas najwyżej 4 h; czas Turbo płynie tylko podczas gry; kolejna reklama Turbo najwcześniej po 5 min (08) |
-| `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu | raz na 30 min |
+| `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu, bez Turbo i Szału; okno oferty pokazuje dokładnie tę kwotę | raz na 30 min |
 | `adRescue` | Ratunek combo / Combo Rescue | wyskakuje od razu po utracie serii ≥ 15 | przywraca serię sprzed pudła | raz na 15 min; okno znika po 5 s albo przy następnym dotknięciu |
 | `adGolden` | Złota Sekunda / Golden Second | przycisk przy zegarze | Złota Sekunda pojawia się od razu | raz na 30 min |
 

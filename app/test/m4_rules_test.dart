@@ -134,6 +134,13 @@ void main() {
       expect(ads.available(AdOffer.bag, 1000 + 30 * 60 * 1000), isTrue);
     });
 
+    test('the bag pays exactly what it promised, Turbo or not', () {
+      ads.grant(AdOffer.turbo, 0); // ×2 on everything for a while
+      final promised = ads.bagAmount();
+      expect(promised, closeTo(300, 1e-9)); // Turbo not included
+      expect(ads.grant(AdOffer.bag, 1000), closeTo(promised, 1e-9));
+    });
+
     test('rescue: offered after a big break, restores, expires', () {
       const lost = RoundOutcome(
         raw: Grade(Tier.miss, -1, MissKind.early),

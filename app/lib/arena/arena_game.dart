@@ -255,14 +255,27 @@ class Stage extends Component {
   Vector2 get size => game.size;
   int get _count => game.controller.clocks.length;
 
-  /// One dial in the middle, or two side by side (docs/02 §9.2).
-  Vector2 centerOf(int i) => _count == 1
-      ? Vector2(size.x / 2, size.y * 0.5)
-      : Vector2(size.x * (i == 0 ? 0.26 : 0.74), size.y * 0.5);
+  /// Height kept free at the arena's top for the Turbo / Golden ad tiles
+  /// (U-22): the dial never goes under them (playtest: on short screens
+  /// the tiles covered the dial's top corners).
+  static const adTilesInset = 48.0;
+  double get _top => game.controller.ads.unlocked ? adTilesInset : 0;
 
-  double radiusOf(int i) => _count == 1
-      ? math.min(size.x * 0.40, size.y * 0.42)
-      : math.min(size.x * 0.23, size.y * 0.36);
+  /// One dial in the middle of what is left, or two side by side
+  /// (docs/02 §9.2).
+  Vector2 centerOf(int i) {
+    final y = _top + (size.y - _top) * 0.5;
+    return _count == 1
+        ? Vector2(size.x / 2, y)
+        : Vector2(size.x * (i == 0 ? 0.26 : 0.74), y);
+  }
+
+  double radiusOf(int i) {
+    final h = size.y - _top;
+    return _count == 1
+        ? math.min(size.x * 0.40, h * 0.42)
+        : math.min(size.x * 0.23, h * 0.36);
+  }
 
   Vector2 get center => centerOf(0);
   double get radius => radiusOf(0);

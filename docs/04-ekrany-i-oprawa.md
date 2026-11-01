@@ -240,6 +240,9 @@ FLUX.1 [dev] odpada, bo ma licencję niekomercyjną.
   telewizorka obok zegara. Nigdy nie leżą w obszarze areny przyjmującym
   dotknięcia, żeby nie było przypadkowych kliknięć. Aktywne Turbo pokazuje
   pasek z pozostałym czasem („×2 · 1:23:40”).
+  Gdy kafelki są widoczne, arena rezerwuje na nie pas 48 px u góry:
+  tarcza mieści się pod nim i nic jej nie zasłania (playtest: na niskich
+  ekranach kafelki wchodziły na tarczę).
 - **U-23:** Worek Tików pojawia się na karcie, na którą brakuje Tików, jako
   drugi przycisk („📺 +5 min”).
 - **U-24:** Ratunek combo to wyskakujący dymek nad licznikiem combo z
