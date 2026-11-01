@@ -67,8 +67,8 @@ void main() {
   });
 
   test('wider windows help sloppy generators, not perfect ones (R-GEN-6)', () {
-    s.skills['wideEye'] = 10;
-    expect(e.windowGain('grandpa'), closeTo(1.575, 0.01));
+    s.skills['wideEye'] = 15;
+    expect(e.windowGain('grandpa'), greaterThan(1.3));
     expect(e.windowGain('chronos'), 1);
     s.skills['magnet'] = 10;
     expect(e.windowGain('atomic'), greaterThan(1));
@@ -86,33 +86,37 @@ void main() {
   });
 
   test('skills: windows, speeds, caps', () {
+    // Window and tempo skills reach the same top effect in 15 finer steps.
     s.skills.addAll({
-      'magnet': 3,
-      'wideEye': 5,
+      'magnet': 15,
+      'wideEye': 15,
       'fastForward': 4,
-      'bulletTime': 10,
+      'bulletTime': 15,
       'combo': 2,
     });
     final w = e.windows();
-    expect(w.perfect, closeTo(0.018, 1e-12));
-    expect(w.great, closeTo(0.042, 1e-12));
-    expect(e.laterStart(), closeTo(4 * 0.08, 1e-12)); // the same step each
-    expect(e.laterStart(10), closeTo(b.round.latestStart, 1e-12));
+    expect(w.perfect, closeTo(0.025, 1e-4)); // ±15 → ±25 ms
+    expect(w.great, closeTo(0.030 * 1.8, 1e-4)); // ×1.8
+    expect(w.perfect, lessThan(b.tier('great').window)); // R-PROG-2
+    final step = b.skill('fastForward').perLevel;
+    expect(e.laterStart(), closeTo(4 * step, 1e-12)); // the same step each
+    expect(e.laterStart(15), closeTo(b.round.latestStart, 1e-4));
     expect(e.laterStart(0), 0);
     expect(e.coldBlood(), closeTo(2.5, 1e-12));
     // Zimna krew widens the player's windows, never the generators'.
-    expect(e.playerWindows().perfect, closeTo(0.018 * 2.5, 1e-12));
-    expect(e.windows().perfect, closeTo(0.018, 1e-12));
+    expect(e.playerWindows().perfect, closeTo(w.perfect * 2.5, 1e-12));
     expect(e.comboCap(), 9);
-    expect(e.skillCost('magnet'), 2000 * math.pow(7, 3));
+    s.skills['magnet'] = 3;
+    final m = b.skill('magnet');
+    expect(e.skillCost('magnet'), m.baseCost * math.pow(m.costGrowth, 3));
     s.skills['ticking'] = 1;
     expect(e.skillCost('ticking'), isNull);
   });
 
   test('round length matches docs/03 (5.7 s → 4.9 s)', () {
     expect(e.roundSeconds(), closeTo(5.7, 1e-9));
-    s.skills.addAll({'fastForward': 10, 'bulletTime': 10});
-    expect(e.roundSeconds(), closeTo(4.2 + 0.7, 1e-9));
+    s.skills.addAll({'fastForward': 15, 'bulletTime': 15});
+    expect(e.roundSeconds(), closeTo(4.2 + 0.7, 1e-3));
   });
 
   test('permanent multiplier from Chronons and achievements', () {

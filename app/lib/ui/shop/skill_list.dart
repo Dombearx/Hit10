@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
@@ -62,7 +64,7 @@ class SkillList extends StatelessWidget {
           zoneStart: r.target - r.bulletZone,
           zoneEnd: r.target + r.bulletZone,
         );
-        return '${n(map.realAt(r.target) + r.resultPause, 1)} s';
+        return '${n(map.realAt(r.target) + r.resultPause, 2)} s';
       case 'ticking':
         return lv > 0 ? l.on : l.off;
       case 'wideEye':
@@ -137,10 +139,22 @@ class _SkillTile extends StatelessWidget {
               onTap: () => showSkillInfo(context, c, id),
               child: Row(
                 children: [
-                  EmojiCard(
-                    art: skillArt[id]!,
-                    size: 54,
-                    badge: level > 0 ? '$level' : null,
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      EmojiCard(
+                        art: skillArt[id]!,
+                        size: 54,
+                        badge: level > 0 ? '$level' : null,
+                      ),
+                      // 🔒 N: levels that survive the paradox (R-PRES-5a).
+                      if (keptLevels(c, id) > 0)
+                        Positioned(
+                          left: -4,
+                          bottom: -4,
+                          child: _KeptBadge(levels: keptLevels(c, id)),
+                        ),
+                    ],
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -276,6 +290,40 @@ String _perfectNow(GameController c, AppLocalizations l, Fmt f) {
   );
 }
 
+/// Levels of [id] that survive the next paradox.
+int keptLevels(GameController c, String id) =>
+    math.min(c.econ.level(id), c.engine.keptSkillLevels());
+
+/// A small padlock with the levels kept through the paradox.
+class _KeptBadge extends StatelessWidget {
+  const _KeptBadge({required this.levels});
+  final int levels;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: const Key('skill-kept'),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Palette.outline, width: 1.5),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.lock_rounded, size: 12, color: Palette.outline),
+          const SizedBox(width: 2),
+          Text(
+            '$levels',
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// For window skills: what the change means for this player's own taps, as
 /// "N in 100 rounds" at their measured spread (natural frequencies read
 /// easier than percentages).
@@ -393,6 +441,33 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+                const SizedBox(height: 6),
+                // What survives the paradox (R-PRES-5a).
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      c.engine.keptSkillLevels() > 0
+                          ? Icons.lock_rounded
+                          : Icons.lock_open_rounded,
+                      size: 16,
+                      color: Palette.outline,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        c.engine.keptSkillLevels() > 0
+                            ? l.skillKeptInfo(
+                                '${keptLevels(c, id)}',
+                                '${c.engine.keptSkillLevels()}',
+                              )
+                            : l.skillKeptNone,
+                        key: const Key('skill-kept-info'),
+                        style: const TextStyle(fontSize: 13, height: 1.3),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 8),
                 Text(
                   skillInfo(l, id),

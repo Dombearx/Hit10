@@ -149,17 +149,25 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 
 | id | Nazwa PL / EN | Max | Koszt bazowy | Wzrost | Efekt na poziomie L |
 |---|---|---|---|---|---|
-| `power` | Siła trafienia / Strike Power | 10 | 50 | ×7 | nagroda progu ×(1+1.5L) |
-| `fastForward` | Start później / Late Start | 10 | 150 | ×7 | stoper rusza od 0.08·L, max 0.8 |
+| `power` | Siła trafienia / Strike Power | 15 | 50 | ×7 | nagroda progu ×(1+1.5L) |
+| `fastForward` | Start później / Late Start | 15 | 150 | ×3.66 | stoper rusza od 0.0533·L, max 0.8 |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
-| `wideEye` | Sokole oko / Hawk Eye | 10 | 300 | ×5 | okna ŚWIETNIE i DOBRZE ×(1+0.08L), max ×1.8 |
-| `combo` | Combo / Combo | 10 | 500 | ×8 | limit combo +2 na poziom (5 → 25) |
-| `magnet` | Magnes / Magnet | 10 | 2 000 | ×7 | okno PERFEKT +0.001 s na poziom, max ±0.015 |
-| `echo` | Echo / Echo | 10 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 5 s) |
-| `bulletTime` | Zimna krew / Cold Blood | 10 | 5 000 | ×7 | okna gracza ×1/(1−0.06L), max ×2.5 |
-| `luck` | Szczęście / Luck | 10 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
-| `shield` | Tarcza / Shield | 3 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
-| `goldenTouch` | Złoty dotyk / Golden Touch | 5 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.05L), czyli pojawia się częściej; jej efekt jest ×(1+0.05L) silniejszy |
+| `wideEye` | Sokole oko / Hawk Eye | 15 | 600 | ×2.6 | okna ŚWIETNIE i DOBRZE ×(1+0.0533L), max ×1.8 |
+| `combo` | Combo / Combo | 15 | 500 | ×8 | limit combo +2 na poziom (5 → 35) |
+| `magnet` | Magnes / Magnet | 15 | 2 000 | ×3.66 | okno PERFEKT +0.00067 s na poziom, ±0.015 → ±0.025 |
+| `echo` | Echo / Echo | 15 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 7.5 s) |
+| `bulletTime` | Zimna krew / Cold Blood | 15 | 5 000 | ×3.66 | okna gracza ×1/(1−0.04L), max ×2.5 |
+| `luck` | Szczęście / Luck | 15 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
+| `shield` | Tarcza / Shield | 5 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
+| `goldenTouch` | Złoty dotyk / Golden Touch | 8 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.05L), czyli pojawia się częściej; jej efekt jest ×(1+0.05L) silniejszy |
+
+Więcej poziomów (zmiana po playteście, razem z R-PRES-5a): umiejętności
+okien i tempa (Start później, Sokole oko, Magnes, Zimna krew) mają to samo
+maksimum co wcześniej, rozłożone na 15 drobniejszych kroków — dawny 10.
+poziom kosztuje mniej więcej tyle co przedtem, okna nie rosną bez końca.
+Umiejętności dochodu (Siła, Combo, Echo, Szczęście, Tarcza, Złoty dotyk)
+dostały nowe, mocniejsze i drogie poziomy: cel na kilka przejść gry.
+Pierwsze 6 h kupuje ok. 63% wszystkich poziomów (85 ze 134).
 
 - **R-UMIEJ-1:** Sokole oko i Magnes działają **także na generatory** (sekcja 5).
   Dzięki temu są przydatne przez całą grę.
@@ -310,9 +318,18 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   Chrononom. Okruchy wydaje się na perki. Wydawanie ich **nie** zmniejsza
   liczby Chrononów.
 - **R-PRES-5:** Reset zeruje: Tiki, generatory, ulepszenia generatorów,
-  synergie, umiejętności (chyba że perk mówi inaczej), combo i aktywne efekty.
+  umiejętności (powyżej limitu Pamięci mięśniowej, R-PRES-5a), combo i
+  aktywne efekty.
   **Zostają:** Chronony, Okruchy, perki, osiągnięcia, statystyki, odblokowane
   tryby i ustawienia.
+- **R-PRES-5a:** Pamięć mięśniowa I/II/III: po paradoksie każda umiejętność
+  zostaje do **4 / 6 / 8** poziomu; wyższe poziomy trzeba odkupić. Karta
+  umiejętności pokazuje kłódkę z liczbą zachowanych poziomów, szczegóły
+  mówią, ile zostanie (albo że bez perku wszystko wraca do zera).
+  Symulacja (tool/prestige_report.dart): zachowanie 3 poziomów prawie nic
+  nie daje (tanie poziomy i tak się odkupuje), 5–7 poziomów skraca kolejne
+  przejścia o 10–25%, zachowanie wszystkiego o ok. 35% — ale wtedy od
+  drugiego przejścia nie ma już w co inwestować.
 - **R-PRES-6:** Prestiż wymaga podwójnego potwierdzenia i ma spektakularną
   animację („przewinięcie czasu” wstecz).
 
@@ -321,9 +338,9 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | id | Nazwa | Koszt (Okruchy) | Działanie | Wymaga |
 |---|---|---|---|---|
 | `headStart` | Szybki start | 5 | start runu z 10 dziadkami i 1K Tików | – |
-| `muscleMemory1` | Pamięć mięśniowa I | 10 | Start później zostaje po resecie | – |
-| `muscleMemory2` | Pamięć mięśniowa II | 50 | Sokole oko i Magnes zostają | I |
-| `muscleMemory3` | Pamięć mięśniowa III | 250 | pozostałe umiejętności zostają na połowie poziomu (w dół) | II |
+| `muscleMemory1` | Pamięć mięśniowa I | 10 | każda umiejętność zostaje po resecie do 4. poziomu | – |
+| `muscleMemory2` | Pamięć mięśniowa II | 50 | …do 6. poziomu | I |
+| `muscleMemory3` | Pamięć mięśniowa III | 250 | …do 8. poziomu | II |
 | `longNap1` | Długa drzemka I | 10 | limit offline 12 h | – |
 | `longNap2` | Długa drzemka II | 40 | limit offline 24 h | I |
 | `deepSleep1` | Głęboki sen I | 20 | offline 75% wydajności | – |

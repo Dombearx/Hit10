@@ -42,17 +42,17 @@
   "skills": [
     {
       "id": "power",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 50,
       "costGrowth": 7,
       "perLevel": 1.5
     },
     {
       "id": "fastForward",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 150,
-      "costGrowth": 7,
-      "perLevel": 0.08
+      "costGrowth": 3.659,
+      "perLevel": 0.05333
     },
     {
       "id": "ticking",
@@ -63,56 +63,56 @@
     },
     {
       "id": "wideEye",
-      "maxLevel": 10,
-      "baseCost": 300,
-      "costGrowth": 5,
-      "perLevel": 0.08
+      "maxLevel": 15,
+      "baseCost": 600,
+      "costGrowth": 2.6,
+      "perLevel": 0.05333
     },
     {
       "id": "combo",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 500,
       "costGrowth": 8,
       "perLevel": 2
     },
     {
       "id": "magnet",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 2000,
-      "costGrowth": 7,
-      "perLevel": 0.001
+      "costGrowth": 3.659,
+      "perLevel": 0.000667
     },
     {
       "id": "echo",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 5000,
       "costGrowth": 9,
       "perLevel": 0.5
     },
     {
       "id": "bulletTime",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 5000,
-      "costGrowth": 7,
-      "perLevel": 0.06
+      "costGrowth": 3.659,
+      "perLevel": 0.04
     },
     {
       "id": "luck",
-      "maxLevel": 10,
+      "maxLevel": 15,
       "baseCost": 10000,
       "costGrowth": 8,
       "perLevel": 0.02
     },
     {
       "id": "shield",
-      "maxLevel": 3,
+      "maxLevel": 5,
       "baseCost": 2000,
       "costGrowth": 50,
       "perLevel": 1
     },
     {
       "id": "goldenTouch",
-      "maxLevel": 5,
+      "maxLevel": 8,
       "baseCost": 1000000.0,
       "costGrowth": 50,
       "perLevel": 0.05
@@ -381,17 +381,26 @@
       },
       {
         "id": "muscleMemory1",
-        "cost": 10
+        "cost": 10,
+        "params": {
+          "keepLevels": 4
+        }
       },
       {
         "id": "muscleMemory2",
         "cost": 50,
-        "requires": "muscleMemory1"
+        "requires": "muscleMemory1",
+        "params": {
+          "keepLevels": 6
+        }
       },
       {
         "id": "muscleMemory3",
         "cost": 250,
-        "requires": "muscleMemory2"
+        "requires": "muscleMemory2",
+        "params": {
+          "keepLevels": 8
+        }
       },
       {
         "id": "longNap1",

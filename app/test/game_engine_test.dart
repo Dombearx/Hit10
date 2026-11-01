@@ -37,7 +37,7 @@ void main() {
 
   test('skills level up to max', () {
     s.tiki = 1e30;
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < b.skill('magnet').maxLevel; i++) {
       expect(g.buySkill('magnet'), BuyResult.ok);
     }
     expect(g.buySkill('magnet'), BuyResult.unavailable);

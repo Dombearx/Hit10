@@ -21,7 +21,6 @@ const runs = 3;
 
 Future<List<String>> play(String json, Variant v, int seed) async {
   final m = jsonDecode(json) as Map<String, dynamic>;
-  (m['prestige'] as Map<String, dynamic>)['keepSkills'] = false;
   for (final sk in m['skills'] as List<dynamic>) {
     final s = sk as Map<String, dynamic>;
     s['baseCost'] = (s['baseCost'] as num) * v.costScale;

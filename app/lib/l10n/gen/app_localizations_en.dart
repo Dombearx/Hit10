@@ -355,6 +355,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skillMaxed => 'MAX';
 
   @override
+  String skillKeptInfo(String kept, String cap) {
+    return 'After a paradox $kept levels stay (Muscle memory: up to $cap).';
+  }
+
+  @override
+  String get skillKeptNone =>
+      'After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.';
+
+  @override
   String inHundred(String n) {
     return '$n in 100';
   }
@@ -578,19 +587,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get perk_muscleMemory1 => 'Muscle memory I';
 
   @override
-  String get perk_muscleMemory1_desc => 'Late Start survives the paradox';
+  String get perk_muscleMemory1_desc =>
+      'After a paradox every skill keeps up to level 4';
 
   @override
   String get perk_muscleMemory2 => 'Muscle memory II';
 
   @override
-  String get perk_muscleMemory2_desc => 'Hawk Eye and Magnet survive too';
+  String get perk_muscleMemory2_desc => '…up to level 6';
 
   @override
   String get perk_muscleMemory3 => 'Muscle memory III';
 
   @override
-  String get perk_muscleMemory3_desc => 'Other skills keep half their level';
+  String get perk_muscleMemory3_desc => '…up to level 8';
 
   @override
   String get perk_longNap1 => 'Long nap I';
@@ -1982,7 +1992,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_wideEye_info =>
-      'The GREAT window (±30 ms) grows by 2.4 ms a level and GOOD (±50 ms) by 4 ms. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.';
+      'The GREAT window (±30 ms) grows by about 1.6 ms a level and GOOD (±50 ms) by about 2.7 ms, up to 1.8 times at the top level. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.';
 
   @override
   String get skill_combo_info =>
@@ -1990,7 +2000,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_magnet_info =>
-      'The PERFECT window (±15 ms) grows by 1 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.';
+      'The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.';
 
   @override
   String get skill_echo_info =>

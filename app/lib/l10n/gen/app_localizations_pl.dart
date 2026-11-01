@@ -357,6 +357,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skillMaxed => 'MAX';
 
   @override
+  String skillKeptInfo(String kept, String cap) {
+    return 'Po paradoksie zostaje $kept poz. (Pamięć mięśniowa: do $cap).';
+  }
+
+  @override
+  String get skillKeptNone =>
+      'Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów — kupione dziś dadzą lepszy start następnym razem.';
+
+  @override
   String inHundred(String n) {
     return '$n na 100';
   }
@@ -579,20 +588,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get perk_muscleMemory1 => 'Pamięć mięśniowa I';
 
   @override
-  String get perk_muscleMemory1_desc => 'Start później zostaje po paradoksie';
+  String get perk_muscleMemory1_desc =>
+      'Po paradoksie każda umiejętność zostaje do 4. poziomu';
 
   @override
   String get perk_muscleMemory2 => 'Pamięć mięśniowa II';
 
   @override
-  String get perk_muscleMemory2_desc => 'Sokole oko i Magnes też zostają';
+  String get perk_muscleMemory2_desc => '…do 6. poziomu';
 
   @override
   String get perk_muscleMemory3 => 'Pamięć mięśniowa III';
 
   @override
-  String get perk_muscleMemory3_desc =>
-      'Pozostałe umiejętności zostają na połowie';
+  String get perk_muscleMemory3_desc => '…do 8. poziomu';
 
   @override
   String get perk_longNap1 => 'Długa drzemka I';
@@ -1987,7 +1996,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_wideEye_info =>
-      'Okno ŚWIETNIE (±30 ms) rośnie o 2,4 ms na poziom, a DOBRZE (±50 ms) o 4 ms. Mniej pudeł to dłuższe serie. Działa też na twoje zegary: każdy poziom podnosi ich dochód.';
+      'Okno ŚWIETNIE (±30 ms) rośnie o ok. 1,6 ms na poziom, a DOBRZE (±50 ms) o ok. 2,7 ms, do 1,8 raza na maksymalnym poziomie. Mniej pudeł to dłuższe serie. Działa też na twoje zegary: każdy poziom podnosi ich dochód.';
 
   @override
   String get skill_combo_info =>
@@ -1995,7 +2004,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_magnet_info =>
-      'Okno PERFEKT (±15 ms) rośnie o 1 ms na poziom, do ±25 ms. Okno 5.00 (±10 ms) się nie zmienia. Zegary też częściej trafiają PERFEKT.';
+      'Okno PERFEKT (±15 ms) rośnie o ok. 0,7 ms na poziom, do ±25 ms. Okno 5.00 (±10 ms) się nie zmienia. Zegary też częściej trafiają PERFEKT.';
 
   @override
   String get skill_echo_info =>

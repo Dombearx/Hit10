@@ -213,6 +213,18 @@
     }
   },
   "skillMaxed": "MAX",
+  "skillKeptInfo": "After a paradox {kept} levels stay (Muscle memory: up to {cap}).",
+  "@skillKeptInfo": {
+    "placeholders": {
+      "kept": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      }
+    }
+  },
+  "skillKeptNone": "After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.",
   "inHundred": "{n} in 100",
   "@inHundred": {
     "placeholders": {
@@ -441,11 +453,11 @@
   "perk_headStart": "Head start",
   "perk_headStart_desc": "Start each run with 10 grandpas and 1K Ticks",
   "perk_muscleMemory1": "Muscle memory I",
-  "perk_muscleMemory1_desc": "Late Start survives the paradox",
+  "perk_muscleMemory1_desc": "After a paradox every skill keeps up to level 4",
   "perk_muscleMemory2": "Muscle memory II",
-  "perk_muscleMemory2_desc": "Hawk Eye and Magnet survive too",
+  "perk_muscleMemory2_desc": "…up to level 6",
   "perk_muscleMemory3": "Muscle memory III",
-  "perk_muscleMemory3_desc": "Other skills keep half their level",
+  "perk_muscleMemory3_desc": "…up to level 8",
   "perk_longNap1": "Long nap I",
   "perk_longNap1_desc": "Offline limit 12 h",
   "perk_longNap2": "Long nap II",
@@ -1182,9 +1194,9 @@
   "skill_power_info": "The fixed reward for a hit: PERFECT 6 Ticks, GREAT 3, GOOD 1. Each level adds one and a half times that (PERFECT 6 → 15 → 24…). Very strong in the first minutes; later Echo counts, as it grows with your clocks.",
   "skill_fastForward_info": "The stopwatch starts from a higher value, so a round is shorter and you play more rounds in the same time. At least 4 seconds are always left to find the rhythm.",
   "skill_ticking_info": "In the last second before the target you hear a tick every tenth of a second (with vibration if it's on). It helps you feel the moment.",
-  "skill_wideEye_info": "The GREAT window (±30 ms) grows by 2.4 ms a level and GOOD (±50 ms) by 4 ms. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.",
+  "skill_wideEye_info": "The GREAT window (±30 ms) grows by about 1.6 ms a level and GOOD (±50 ms) by about 2.7 ms, up to 1.8 times at the top level. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.",
   "skill_combo_info": "Every hit without a miss raises the streak multiplier by 0.05 a step (PERFECT 3 steps, GREAT 2, GOOD 1). The base ceiling is ×1.25; each level raises it by 0.10. It multiplies the whole payout, 5.00 and Echo included.",
-  "skill_magnet_info": "The PERFECT window (±15 ms) grows by 1 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.",
+  "skill_magnet_info": "The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.",
   "skill_echo_info": "Every hit adds seconds of your clocks' work, per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s. It grows with your clocks, so later on it is where most clicking Ticks come from.",
   "skill_bulletTime_info": "All your windows (PERFECT, GREAT, GOOD, CLOSE) get wider, up to 2.5 times at the top level — e.g. GOOD from ±50 to ±125 ms. The 5.00 window stays. Near the target you feel a heartbeat. Doesn't work on clocks.",
   "skill_luck_info": "At each level 2 in 100 hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.",

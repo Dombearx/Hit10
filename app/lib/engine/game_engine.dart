@@ -490,6 +490,17 @@ class GameEngine {
 
   bool canPrestige() => econ.prestigeGain() >= 1;
 
+  /// How many levels of each skill survive a paradox: the best Muscle
+  /// memory perk owned (0 without one).
+  int keptSkillLevels() {
+    var keep = 0;
+    for (final p in b.prestige.perks) {
+      final n = p.params['keepLevels'];
+      if (n != null && s.perks.contains(p.id)) keep = math.max(keep, n.round());
+    }
+    return keep;
+  }
+
   /// Time paradox (R-PRES-1…5): converts lifetime Tiki into Chronons and
   /// Shards, resets the run, keeps what the perks keep. Returns the gain.
   int prestige() {
@@ -498,21 +509,11 @@ class GameEngine {
     s.chronons += gain;
     s.shards += gain;
     s.prestiges++;
-    final kept = <String, int>{};
-    final skills = Map<String, int>.of(s.skills);
-    if (b.prestige.keepSkills) kept.addAll(skills);
-    if (s.perks.contains('muscleMemory1')) {
-      kept['fastForward'] = skills['fastForward'] ?? 0;
-    }
-    if (s.perks.contains('muscleMemory2')) {
-      kept['wideEye'] = skills['wideEye'] ?? 0;
-      kept['magnet'] = skills['magnet'] ?? 0;
-    }
-    if (s.perks.contains('muscleMemory3')) {
-      for (final e in skills.entries) {
-        kept.putIfAbsent(e.key, () => e.value ~/ 2);
-      }
-    }
+    // Muscle memory (R-PRES-5a): every skill keeps up to N levels.
+    final keep = keptSkillLevels();
+    final kept = <String, int>{
+      for (final e in s.skills.entries) e.key: math.min(e.value, keep),
+    };
     s
       ..tiki = 0
       ..earnedThisRun = 0

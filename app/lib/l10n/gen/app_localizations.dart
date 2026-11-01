@@ -728,6 +728,18 @@ abstract class AppLocalizations {
   /// **'MAX'**
   String get skillMaxed;
 
+  /// No description provided for @skillKeptInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'After a paradox {kept} levels stay (Muscle memory: up to {cap}).'**
+  String skillKeptInfo(String kept, String cap);
+
+  /// No description provided for @skillKeptNone.
+  ///
+  /// In en, this message translates to:
+  /// **'After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.'**
+  String get skillKeptNone;
+
   /// No description provided for @inHundred.
   ///
   /// In en, this message translates to:
@@ -1085,7 +1097,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory1_desc.
   ///
   /// In en, this message translates to:
-  /// **'Late Start survives the paradox'**
+  /// **'After a paradox every skill keeps up to level 4'**
   String get perk_muscleMemory1_desc;
 
   /// No description provided for @perk_muscleMemory2.
@@ -1097,7 +1109,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory2_desc.
   ///
   /// In en, this message translates to:
-  /// **'Hawk Eye and Magnet survive too'**
+  /// **'…up to level 6'**
   String get perk_muscleMemory2_desc;
 
   /// No description provided for @perk_muscleMemory3.
@@ -1109,7 +1121,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory3_desc.
   ///
   /// In en, this message translates to:
-  /// **'Other skills keep half their level'**
+  /// **'…up to level 8'**
   String get perk_muscleMemory3_desc;
 
   /// No description provided for @perk_longNap1.
@@ -3677,7 +3689,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_wideEye_info.
   ///
   /// In en, this message translates to:
-  /// **'The GREAT window (±30 ms) grows by 2.4 ms a level and GOOD (±50 ms) by 4 ms. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.'**
+  /// **'The GREAT window (±30 ms) grows by about 1.6 ms a level and GOOD (±50 ms) by about 2.7 ms, up to 1.8 times at the top level. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.'**
   String get skill_wideEye_info;
 
   /// No description provided for @skill_combo_info.
@@ -3689,7 +3701,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_magnet_info.
   ///
   /// In en, this message translates to:
-  /// **'The PERFECT window (±15 ms) grows by 1 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.'**
+  /// **'The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.'**
   String get skill_magnet_info;
 
   /// No description provided for @skill_echo_info.

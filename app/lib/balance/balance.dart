@@ -329,13 +329,8 @@ class PrestigeConfig {
     : divisor = _d(j['divisor']),
       root = _d(j['root']),
       bonusPerChronon = _d(j['bonusPerChronon']),
-      keepSkills = j['keepSkills'] == true,
       perks = _ml(j['perks']).map(PerkConfig.new).toList();
   final double divisor;
-
-  /// Skills survive a paradox (R-PRES-5a): bought for this run and the
-  /// next ones.
-  final bool keepSkills;
 
   /// Chronons grow with the [root]-th root of lifetime Tiki (R-PRES-2).
   final double root;
