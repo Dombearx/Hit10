@@ -10,7 +10,7 @@ import 'package:hit10/sim/simulator.dart';
 
 typedef Variant = ({
   String name,
-  bool keep,
+  int keep, // skill levels kept through the paradox (0: none)
   double costScale,
   double growthAdd,
   double future,
@@ -21,7 +21,7 @@ const runs = 3;
 
 Future<List<String>> play(String json, Variant v, int seed) async {
   final m = jsonDecode(json) as Map<String, dynamic>;
-  (m['prestige'] as Map<String, dynamic>)['keepSkills'] = v.keep;
+  (m['prestige'] as Map<String, dynamic>)['keepSkills'] = false;
   for (final sk in m['skills'] as List<dynamic>) {
     final s = sk as Map<String, dynamic>;
     s['baseCost'] = (s['baseCost'] as num) * v.costScale;
@@ -55,7 +55,15 @@ Future<List<String>> play(String json, Variant v, int seed) async {
         .where((s) => s.id != 'ticking')
         .map((s) => sim.econ.level(s.id))
         .fold<int>(0, (a, c) => a + c);
+    final before2 = Map<String, int>.of(sim.s.skills);
     final gain = sim.e.prestige();
+    sim.s.skills
+      ..clear()
+      ..addAll({
+        for (final e in before2.entries)
+          if (e.value > 0 && v.keep > 0)
+            e.key: e.value < v.keep ? e.value : v.keep,
+      });
     out.add(
       'run $r: ${(earned / 1e9).toStringAsFixed(0)}B, '
       'run-1 level after ${(catchUp / 3600).toStringAsFixed(2)} h, '
@@ -71,46 +79,33 @@ Future<void> main() async {
   const variants = <Variant>[
     (
       name: 'today: skills reset',
-      keep: false,
+      keep: 0,
       costScale: 1,
       growthAdd: 0,
       future: 0,
     ),
     (
-      name: 'kept, same prices',
-      keep: true,
+      name: 'keep up to 3 levels',
+      keep: 3,
       costScale: 1,
       growthAdd: 0,
       future: 0,
     ),
     (
-      name: 'kept, ×10 prices',
-      keep: true,
-      costScale: 10,
+      name: 'keep up to 5 levels',
+      keep: 5,
+      costScale: 1,
       growthAdd: 0,
       future: 0,
     ),
     (
-      name: 'kept, ×10, player values future ×2',
-      keep: true,
-      costScale: 10,
-      growthAdd: 0,
-      future: 1,
-    ),
-    (
-      name: 'kept, growth +2',
-      keep: true,
+      name: 'keep up to 7 levels',
+      keep: 7,
       costScale: 1,
-      growthAdd: 2,
+      growthAdd: 0,
       future: 0,
     ),
-    (
-      name: 'kept, growth +2, future ×2',
-      keep: true,
-      costScale: 1,
-      growthAdd: 2,
-      future: 1,
-    ),
+    (name: 'keep everything', keep: 99, costScale: 1, growthAdd: 0, future: 0),
   ];
   for (final v in variants) {
     final rs = await Future.wait([
