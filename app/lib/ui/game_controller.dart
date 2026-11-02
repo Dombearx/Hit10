@@ -275,6 +275,16 @@ class GameController extends ChangeNotifier {
   /// Toggles from the mode row (R-TRYB-1, docs/02 §9.2).
   void setMode({bool? blind, bool? secondClock, bool? autoBuyer}) {
     if (blind != null) state.modeBlind = blind;
+    if (blind == false) {
+      // Off mid-round: the clock shows again at once, and this round pays
+      // without the blind bonus (playtest 24). Switching on waits for the
+      // next round.
+      for (final c in clocks) {
+        c
+          ..blind = false
+          ..mode = engine.modeMultiplier();
+      }
+    }
     if (autoBuyer != null) state.autoBuyerOn = autoBuyer;
     if (secondClock != null && secondClock != state.secondClockOn) {
       state.secondClockOn = secondClock;
