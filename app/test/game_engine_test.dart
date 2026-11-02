@@ -92,6 +92,23 @@ void main() {
       expect(g.offlineSince(100000 + 30000), isNull);
       expect(g.offlineSince(50000), isNull);
     });
+    test('an uncollected summary is carried over, within one cap', () {
+      s.owned['grandma'] = 1;
+      s.lastSeenMs = 1000;
+      final first = g.offlineSince(1000 + 3600 * 1000)!; // 1 h away
+      g.holdOffline(first); // shown, then the app was closed
+      s.lastSeenMs = 1000 + 3600 * 1000;
+      // Reopened 10 s later: the same summary comes back.
+      final again = g.offlineSince(s.lastSeenMs + 10000)!;
+      expect(again.amount, closeTo(first.amount, 1e-6));
+      // Another 10 h away: adds up, but only up to the 8 h cap.
+      final later = g.offlineSince(s.lastSeenMs + 10 * 3600 * 1000)!;
+      expect(later.countedSeconds, 8 * 3600);
+      expect(later.amount, closeTo(8 * 3600 * 0.5, 1e-6));
+      g.claimOffline(later);
+      expect(s.offlineAmount, 0);
+      expect(g.offlineSince(s.lastSeenMs + 10000), isNull);
+    });
     test('perks raise cap and efficiency', () {
       s.owned['grandma'] = 1;
       s.perks.addAll({'longNap2', 'deepSleep1'});

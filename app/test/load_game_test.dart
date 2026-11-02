@@ -56,4 +56,29 @@ void main() {
     expect(again.state.owned['grandpa'], 3);
     expect(again.state.lastSeenMs, greaterThan(0));
   });
+
+  test('closing the app over the offline summary keeps it (bug)', () async {
+    final store = MemorySaveStore();
+    var now = 1800000000000;
+    GameController open(GameState s) => GameController(
+      balance: b,
+      state: s,
+      store: store,
+      wallClockMs: () => now,
+    )..checkOffline();
+    final first = open(
+      GameState()
+        ..tutorialDone = true
+        ..owned['grandma'] = 1
+        ..lastSeenMs = now - 3600 * 1000,
+    );
+    final shown = first.pendingOffline!.amount;
+    first.background(title: (a) => a); // closed without collecting
+    await first.save();
+    now += 5000; // reopened a few seconds later
+    final again = open(saveFromJsonString(store.main!).state);
+    expect(again.pendingOffline!.amount, closeTo(shown, 1e-6));
+    again.collectOffline();
+    expect(again.state.tiki, closeTo(shown, 1e-6));
+  });
 }
