@@ -674,7 +674,15 @@ class GameController extends ChangeNotifier {
     _adPlaying = true;
     pause();
     try {
-      final ok = await provider.show();
+      // The ad has its own sound: the game's music and effects stay quiet
+      // until it closes (playtest 24: the music played over the ad).
+      sfx.mute(true);
+      final bool ok;
+      try {
+        ok = await provider.show();
+      } finally {
+        sfx.mute(false);
+      }
       if (!ok) return false;
       final amount = ads.grant(
         offer,
