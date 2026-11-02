@@ -302,7 +302,7 @@
   "modes": {
     "blind": {
       "unlockPerfects": 100,
-      "hideDigitsAt": 2.0,
+      "hideDigitsAt": 4.0,
       "rewardMultiplier": 3
     }
   },
