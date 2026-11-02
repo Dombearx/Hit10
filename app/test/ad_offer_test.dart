@@ -9,6 +9,7 @@ import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
 import 'package:hit10/ui/game_controller.dart';
 import 'package:hit10/ui/providers.dart';
+import 'package:hit10/ui/widgets/buy_button.dart';
 
 import 'helpers.dart';
 
@@ -101,6 +102,21 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
     expect(c.state.tiki, closeTo(2 * amount, amount * 1e-6));
     expect(c.pendingOffline, isNull);
+  });
+
+  testWidgets('the offline ×2 lights up once the ad has loaded', (
+    tester,
+  ) async {
+    final s = played()..lastSeenMs = now - 3 * 3600 * 1000;
+    final ads = FakeRewardedAds(delay: Duration.zero, ready: false);
+    await pumpGame(tester, s, ads);
+    await tester.pumpAndSettle();
+    BuyButton button() =>
+        tester.widget<BuyButton>(find.byKey(const Key('offline-double')));
+    expect(button().enabled, isFalse); // cold start: still loading
+    ads.ready = true;
+    await tester.pump();
+    expect(button().enabled, isTrue);
   });
 
   testWidgets('touching an offer tile is not a round tap; the combo stays', (
