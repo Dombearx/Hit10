@@ -30,16 +30,35 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
   RewardedAd? _adValue;
   RewardedAd? get _ad => _adValue;
   set _ad(RewardedAd? v) {
-    final was = _adValue != null;
     _adValue = v;
-    if (was != (v != null)) _changes.add(v != null);
+    _notify();
   }
 
   final _changes = StreamController<bool>.broadcast();
 
+  /// Consent and SDK start, before the first load.
+  bool _starting = true;
+
+  @override
+  bool get isLoading => _ad == null && (_starting || _loading);
+
+  (bool, bool) _last = (false, true);
+  void _notify() {
+    final now = (isReady, isLoading);
+    if (now == _last) return;
+    _last = now;
+    _changes.add(isReady);
+  }
+
   @override
   Stream<bool> get readiness => _changes.stream;
-  bool _loading = false;
+  bool _loadingValue = false;
+  bool get _loading => _loadingValue;
+  set _loading(bool v) {
+    _loadingValue = v;
+    _notify();
+  }
+
   bool _canRequest = false;
   int _failures = 0;
 
@@ -61,6 +80,9 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
       _load();
     } on Object catch (e) {
       debugPrint('ads unavailable: $e');
+    } finally {
+      _starting = false;
+      _notify();
     }
   }
 

@@ -12,6 +12,7 @@ import '../providers.dart';
 import '../theme.dart';
 import 'ad_offer_sheet.dart';
 import 'burst.dart';
+import 'buy_button.dart';
 
 String clockText(double seconds) {
   final t = seconds.ceil();
@@ -59,7 +60,24 @@ class AdCornerButtons extends ConsumerWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(EmojiArt.path('television'), width: 22, height: 22),
+                if (cd == 0 && !adsProvider.isReady && adsProvider.isLoading)
+                  const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: Padding(
+                      padding: EdgeInsets.all(3),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: Palette.outline,
+                      ),
+                    ),
+                  )
+                else
+                  Image.asset(
+                    EmojiArt.path('television'),
+                    width: 22,
+                    height: 22,
+                  ),
                 const SizedBox(width: 4),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,4 +200,43 @@ Future<bool> watchAdWithReward(
     );
   }
   return ok;
+}
+
+/// A "watch an ad" button that follows the ad's loading: a spinner while
+/// one is on its way, "Ad unavailable" when none is coming (playtest 24:
+/// a grey button read as broken).
+class AdWatchButton extends StatelessWidget {
+  const AdWatchButton({
+    super.key,
+    required this.ads,
+    required this.price,
+    required this.onPressed,
+    this.minWidth = 120,
+  });
+
+  final RewardedAds ads;
+  final String price;
+  final VoidCallback onPressed;
+  final double minWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return StreamBuilder<bool>(
+      stream: ads.readiness,
+      builder: (context, _) {
+        final ready = ads.isReady;
+        final loading = !ready && ads.isLoading;
+        return BuyButton(
+          label: ready || loading ? '📺' : l.adUnavailable,
+          price: price,
+          enabled: ready,
+          loading: loading,
+          minWidth: minWidth,
+          celebrate: false,
+          onPressed: onPressed,
+        );
+      },
+    );
+  }
 }

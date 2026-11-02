@@ -104,19 +104,36 @@ void main() {
     expect(c.pendingOffline, isNull);
   });
 
-  testWidgets('the offline ×2 lights up once the ad has loaded', (
+  testWidgets('the offline ×2 spins while the ad loads, then lights up', (
+    tester,
+  ) async {
+    final s = played()..lastSeenMs = now - 3 * 3600 * 1000;
+    final ads = FakeRewardedAds(delay: Duration.zero, ready: false)
+      ..loading = true;
+    await pumpGame(tester, s, ads);
+    await tester.pump(const Duration(seconds: 1));
+    BuyButton button() => tester.widget<BuyButton>(
+      find.descendant(
+        of: find.byKey(const Key('offline-double')),
+        matching: find.byType(BuyButton),
+      ),
+    );
+    expect(button().loading, isTrue); // cold start: still loading
+    ads.ready = true;
+    await tester.pump();
+    expect(button().loading, isFalse);
+    expect(button().enabled, isTrue);
+  });
+
+  testWidgets('no ad coming: the offline ×2 says so instead of spinning', (
     tester,
   ) async {
     final s = played()..lastSeenMs = now - 3 * 3600 * 1000;
     final ads = FakeRewardedAds(delay: Duration.zero, ready: false);
     await pumpGame(tester, s, ads);
-    await tester.pumpAndSettle();
-    BuyButton button() =>
-        tester.widget<BuyButton>(find.byKey(const Key('offline-double')));
-    expect(button().enabled, isFalse); // cold start: still loading
-    ads.ready = true;
-    await tester.pump();
-    expect(button().enabled, isTrue);
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.byKey(const Key('buy-loading')), findsNothing);
+    expect(find.text('Reklama niedostępna'), findsOneWidget);
   });
 
   testWidgets('touching an offer tile is not a round tap; the combo stays', (

@@ -8,7 +8,6 @@ import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 import 'ad_buttons.dart';
-import 'buy_button.dart';
 import 'emoji_card.dart';
 
 /// The offer before a rewarded ad (docs/02 §13, AdMob policy): what the
@@ -23,7 +22,7 @@ Future<void> offerAd(
   c.pause(); // a running round must not end while the player reads
   final watch = await showDialog<bool>(
     context: context,
-    builder: (context) => _OfferDialog(controller: c, offer: offer),
+    builder: (context) => _OfferDialog(controller: c, offer: offer, ads: ads),
   );
   if (watch != true || !context.mounted) return;
   final ok = await watchAdWithReward(context, c, offer, ads);
@@ -60,9 +59,14 @@ void confirmAdResult(
 }
 
 class _OfferDialog extends StatelessWidget {
-  const _OfferDialog({required this.controller, required this.offer});
+  const _OfferDialog({
+    required this.controller,
+    required this.offer,
+    required this.ads,
+  });
   final GameController controller;
   final AdOffer offer;
+  final RewardedAds ads;
 
   @override
   Widget build(BuildContext context) {
@@ -151,11 +155,10 @@ class _OfferDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 14),
-            BuyButton(
+            AdWatchButton(
               key: const Key('ad-watch'),
+              ads: ads,
               price: l.adWatch,
-              enabled: true,
-              celebrate: false,
               minWidth: 160,
               onPressed: () => Navigator.of(context).pop(true),
             ),

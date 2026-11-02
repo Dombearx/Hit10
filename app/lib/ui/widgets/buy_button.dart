@@ -15,7 +15,12 @@ class BuyButton extends ConsumerStatefulWidget {
     this.label,
     this.minWidth = 84,
     this.celebrate = true,
+    this.loading = false,
   });
+
+  /// Not pressable yet, but about to be: a spinner beside the price (an ad
+  /// still loading).
+  final bool loading;
 
   /// Coins and a bounce on press; off where the reward comes later (ads).
   final bool celebrate;
@@ -65,7 +70,7 @@ class _BuyButtonState extends ConsumerState<BuyButton>
 
   @override
   Widget build(BuildContext context) {
-    final on = widget.enabled;
+    final on = widget.enabled && !widget.loading;
     return GestureDetector(
       onTapDown: on ? (_) => setState(() => _down = true) : null,
       onTapCancel: () => setState(() => _down = false),
@@ -106,16 +111,36 @@ class _BuyButtonState extends ConsumerState<BuyButton>
                       height: 1.1,
                     ),
                   ),
-                Text(
-                  widget.price,
-                  style: TextStyle(
-                    fontFamily: Fonts.display,
-                    fontSize: 17,
-                    color: on
-                        ? Colors.white
-                        : Palette.outline.withValues(alpha: 0.6),
-                    height: 1.15,
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.loading) ...[
+                      SizedBox(
+                        key: const Key('buy-loading'),
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: Palette.outline.withValues(alpha: 0.6),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                    ],
+                    Flexible(
+                      child: Text(
+                        widget.price,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: Fonts.display,
+                          fontSize: 17,
+                          color: on
+                              ? Colors.white
+                              : Palette.outline.withValues(alpha: 0.6),
+                          height: 1.15,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

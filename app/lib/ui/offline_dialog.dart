@@ -141,28 +141,22 @@ Future<void> _show(
                       c.ads.unlocked)
                     // After a cold start the ad is often still loading when
                     // this opens: the button lights up once it is ready.
-                    StreamBuilder<bool>(
-                      stream: ads.readiness,
-                      builder: (context, _) => BuyButton(
-                        key: const Key('offline-double'),
-                        label: '📺',
-                        price: l.adDouble,
-                        enabled: ads.isReady,
-                        minWidth: 120,
-                        celebrate: false,
-                        onPressed: () async {
-                          final ok = await watchAdWithReward(
-                            context,
-                            c,
-                            AdOffer.offline,
-                            ads,
-                          );
-                          if (!context.mounted) return;
-                          confirmAdResult(context, c, AdOffer.offline, ok);
-                          // No reward: the plain "Collect" stays available.
-                          if (ok) Navigator.of(context).pop();
-                        },
-                      ),
+                    AdWatchButton(
+                      key: const Key('offline-double'),
+                      ads: ads,
+                      price: l.adDouble,
+                      onPressed: () async {
+                        final ok = await watchAdWithReward(
+                          context,
+                          c,
+                          AdOffer.offline,
+                          ads,
+                        );
+                        if (!context.mounted) return;
+                        confirmAdResult(context, c, AdOffer.offline, ok);
+                        // No reward: the plain "Collect" stays available.
+                        if (ok) Navigator.of(context).pop();
+                      },
                     ),
                 ],
               ),
