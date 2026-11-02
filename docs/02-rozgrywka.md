@@ -280,7 +280,7 @@ na wypłatę z dotknięć gracza.
 
 | Tryb | Odblokowanie | Działanie | Mnożnik wypłaty |
 |---|---|---|---|
-| **Na ślepo** / Blind | 100 PERFEKTÓW łącznie | cyfry znikają od 2.00 czasu gry (zostaje pulsujące „?”) | ×3 |
+| **Na ślepo** / Blind | 100 PERFEKTÓW łącznie | od 4.00 czasu gry znikają cyfry i pasek postępu wokół tarczy (zostaje pulsujące „?”); milknie bicie serca i nie pojawia się winieta Zimnej krwi; Tykanie (kupiona pomoc) działa dalej (playtest 22: pasek zdradzał czas) | ×3 |
 
 Szybki zegar (stoper ×1.5) został usunięty po teście na telefonie: sekunda
 na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).

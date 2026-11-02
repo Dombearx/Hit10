@@ -27,7 +27,18 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
   AdMobRewardedAds({required this.unitId});
 
   final String unitId;
-  RewardedAd? _ad;
+  RewardedAd? _adValue;
+  RewardedAd? get _ad => _adValue;
+  set _ad(RewardedAd? v) {
+    final was = _adValue != null;
+    _adValue = v;
+    if (was != (v != null)) _changes.add(v != null);
+  }
+
+  final _changes = StreamController<bool>.broadcast();
+
+  @override
+  Stream<bool> get readiness => _changes.stream;
   bool _loading = false;
   bool _canRequest = false;
   int _failures = 0;

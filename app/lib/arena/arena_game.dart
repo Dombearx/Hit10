@@ -726,8 +726,10 @@ class Dial extends Component {
     final engine = ctrl.engine;
     final running = round.phase == RoundPhase.running;
     final map = round.phase == RoundPhase.waiting ? null : round.timeMap;
+    final hidden = ctrl.blindHidden(slot, t);
     final inZone =
         running &&
+        !hidden &&
         map != null &&
         engine.econ.level('bulletTime') > 0 &&
         map.inFocusZone(t);
@@ -781,7 +783,8 @@ class Dial extends Component {
     _track.strokeWidth = ring;
     canvas.drawCircle(c, innerR, _track);
     final frac = (t / target).clamp(0.0, 1.03);
-    if (frac > 0) {
+    // Blind mode: the ring goes with the digits (playtest 22).
+    if (frac > 0 && !hidden) {
       final gold = ((t - (target - 1)) / 1).clamp(0.0, 1.0);
       _arc
         ..strokeWidth = ring
@@ -843,12 +846,10 @@ class Dial extends Component {
     final throb = _zone > 0 ? 1 + 0.05 * _zone * math.sin(_time * 14) : 1.0;
     // Drawn later by the digits layer, above every particle (U-7).
     digits = (canvas) {
-      final hideAt = ctrl.balance.blind.hideDigitsAt;
-      final hidden = slot.blind && running && hideAt != null && t >= hideAt;
       _drawDigits(
         canvas,
-        // Blind mode (docs/02 §7): from 7.00 a pulsing "?" replaces the time.
-        hidden ? '??.??' : formatStopwatch(shown),
+        // Blind mode (docs/02 §7): from 4.00 a pulsing "?" replaces the time.
+        hidden ? '?.??' : formatStopwatch(shown),
         c,
         digitSize,
         hidden ? Palette.miss : digitColor,

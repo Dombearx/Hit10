@@ -445,6 +445,17 @@ class GameController extends ChangeNotifier {
 
   /// Ticking in the last second and Zimna krew's heartbeat (docs/04 §3).
   /// Returns whether the clock is inside the bullet-time zone (U-19).
+  /// Blind mode (docs/02 §7) hides the clock from [ModeConfig.hideDigitsAt]
+  /// of game time: digits, progress ring, the bullet-time heartbeat and
+  /// vignette. Ticking is a bought help and keeps going (playtest 22).
+  bool blindHidden(ClockSlot slot, double gameTime) {
+    final at = balance.blind.hideDigitsAt;
+    return slot.blind &&
+        slot.round.phase == RoundPhase.running &&
+        at != null &&
+        gameTime >= at;
+  }
+
   bool _roundSounds(ClockSlot slot, double now) {
     final round = slot.round;
     if (round.phase != RoundPhase.running) return false;
@@ -460,7 +471,10 @@ class GameController extends ChangeNotifier {
     }
     // Zimna krew: a heartbeat and a vignette around the target, at full
     // speed; the windows are wider, the clock never slows.
-    final inZone = econ.level('bulletTime') > 0 && round.timeMap.inFocusZone(g);
+    final inZone =
+        econ.level('bulletTime') > 0 &&
+        round.timeMap.inFocusZone(g) &&
+        !blindHidden(slot, g);
     if (inZone && now - slot.lastHeartbeat > 0.8) {
       slot.lastHeartbeat = now;
       sfx.play('heartbeat', gain: 0.8);
