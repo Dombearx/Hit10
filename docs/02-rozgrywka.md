@@ -381,6 +381,10 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   8 h i wydajność 50% (perki zmieniają oba).
 - **R-OFF-2:** Okno „Gdy cię nie było…” pokazuje kwotę i animację wsypywania
   Tików. W M6 dochodzi przycisk „×2 za reklamę”.
+- **R-OFF-2a:** Kwota z okna jest w zapisie, dopóki gracz jej nie odbierze.
+  Zamknięcie aplikacji nad oknem niczego nie kasuje: przy następnym
+  otwarciu okno wraca, a nowa nieobecność dolicza się do niego (razem
+  najwyżej do limitu offline). Playtest 23: kwota przepadała.
 - **R-OFF-3:** Ochrona przed cofnięciem zegara telefonu: ujemny czas
   nieobecności daje 0. Czas offline jest zawsze przycinany do limitu.
 - **R-OFF-4:** Przy wyjściu z gry planowane jest **jedno lokalne

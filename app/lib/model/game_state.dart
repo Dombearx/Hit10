@@ -39,6 +39,12 @@ class GameState {
   /// Wall-clock time of the last save/exit, for offline income (R-OFF-1).
   int lastSeenMs = 0;
 
+  /// Offline summary shown but not collected yet (the app was closed over
+  /// it): away and counted seconds, and the amount. 0 = none.
+  double offlineAway = 0;
+  double offlineCounted = 0;
+  double offlineAmount = 0;
+
   /// Seconds actually played this install (rewarded offers unlock after a
   /// few minutes, R-AD-5).
   double playSeconds = 0;

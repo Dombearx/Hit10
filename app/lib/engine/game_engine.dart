@@ -630,14 +630,36 @@ class GameEngine {
 
   /// Income for the time since [GameState.lastSeenMs] (R-OFF-1, R-OFF-3).
   /// Null when there is nothing to report. Does not credit it.
+  /// A summary shown but not collected (the app was closed over it) is
+  /// carried over and adds up with the new absence, within one cap.
   OfflineReport? offlineSince(int nowMs) {
-    if (s.lastSeenMs <= 0) return null;
+    final carried = s.offlineAmount > 0
+        ? OfflineReport(s.offlineAway, s.offlineCounted, s.offlineAmount)
+        : null;
+    if (s.lastSeenMs <= 0) return carried;
     final away = (nowMs - s.lastSeenMs) / 1000;
-    if (away < b.offline.minAwaySeconds) return null; // also clock set back
-    final counted = math.min(away, offlineCapSeconds());
-    final amount = econ.passive() * counted * offlineEfficiency();
-    if (amount <= 0) return null;
-    return OfflineReport(away, counted, amount);
+    // Also a clock set back.
+    if (away < b.offline.minAwaySeconds) return carried;
+    final rate = econ.passive() * offlineEfficiency();
+    final before = carried?.countedSeconds ?? 0;
+    final counted = math.min(before + away, offlineCapSeconds());
+    final extra = rate * math.max(0, counted - before);
+    if (carried == null) {
+      return extra > 0 ? OfflineReport(away, counted, extra) : null;
+    }
+    return OfflineReport(
+      carried.awaySeconds + away,
+      math.max(before, counted),
+      carried.amount + extra,
+    );
+  }
+
+  /// Keeps the summary on screen in the save until it is collected.
+  void holdOffline(OfflineReport? r) {
+    s
+      ..offlineAway = r?.awaySeconds ?? 0
+      ..offlineCounted = r?.countedSeconds ?? 0
+      ..offlineAmount = r?.amount ?? 0;
   }
 
   /// Today's daily bonus, or null when already claimed today or the
@@ -664,8 +686,10 @@ class GameEngine {
     s.dailyStreak = d.day;
   }
 
-  void claimOffline(OfflineReport r, {double multiplier = 1}) =>
-      s.earn(r.amount * multiplier);
+  void claimOffline(OfflineReport r, {double multiplier = 1}) {
+    s.earn(r.amount * multiplier);
+    holdOffline(null);
+  }
 }
 
 /// yyyymmdd of a local date.

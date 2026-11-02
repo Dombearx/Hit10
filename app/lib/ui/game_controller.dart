@@ -872,6 +872,9 @@ class GameController extends ChangeNotifier {
         state.tutorialDone &&
         !state.tipsSeen.contains('season:${s.key}');
     pendingOffline = engine.offlineSince(_wallMs());
+    // Saved until collected: closing the app over the summary loses nothing.
+    engine.holdOffline(pendingOffline);
+    if (pendingOffline != null) unawaited(save());
     pendingDaily = engine.dailyFor(_localNow());
     state.lastSeenMs = _wallMs();
     if (pendingOffline != null || pendingDaily != null || seasonIntroPending) {

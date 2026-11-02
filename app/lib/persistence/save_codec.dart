@@ -51,6 +51,9 @@ Map<String, Object?> encodeSave(SaveData d) {
     'prestiges': s.prestiges,
     'rewindPending': s.rewindPending,
     'lastSeenMs': s.lastSeenMs,
+    'offlineAway': s.offlineAway,
+    'offlineCounted': s.offlineCounted,
+    'offlineAmount': s.offlineAmount,
     'playSeconds': s.playSeconds,
     'tutorialDone': s.tutorialDone,
     'comboStreak': s.comboStreak,
@@ -144,6 +147,9 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..prestiges = _i(j['prestiges'])
     ..rewindPending = j['rewindPending'] == true
     ..lastSeenMs = _i(j['lastSeenMs'])
+    ..offlineAway = _d(j['offlineAway'])
+    ..offlineCounted = _d(j['offlineCounted'])
+    ..offlineAmount = _d(j['offlineAmount'])
     ..playSeconds = _d(j['playSeconds'])
     ..tutorialDone = j['tutorialDone'] == true
     ..comboStreak = _i(j['comboStreak'])
