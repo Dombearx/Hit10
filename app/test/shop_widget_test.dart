@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
 import 'package:hit10/ui/game_controller.dart';
 import 'package:hit10/ui/providers.dart';
+import 'package:hit10/ui/shop/generator_list.dart';
 
 import 'helpers.dart';
 
@@ -119,5 +121,42 @@ void main() {
     await tester.tap(find.byKey(const Key('shop-toggle')));
     await tester.pump(const Duration(milliseconds: 200));
     expect(find.byKey(const Key('buy-grandpa')), findsOneWidget);
+  });
+
+  testWidgets('a long clock description is shown whole; tap for the card', (
+    tester,
+  ) async {
+    // Everything before the atomic clock owned: it is the next to buy.
+    final s = GameState()
+      ..tutorialDone = true
+      // Today's bonus already collected: no daily dialog in the way.
+      ..dailyKey = dateKey(DateTime.now());
+    for (final g in balance.generators) {
+      if (g.id == 'atomic') break;
+      s.owned[g.id] = 1;
+    }
+    await pumpGame(tester, state: s);
+    final list = find
+        .descendant(
+          of: find.byType(GeneratorList),
+          matching: find.byType(Scrollable),
+        )
+        .first;
+    final desc = find.byKey(const Key('gen-desc-atomic'));
+    await tester.scrollUntilVisible(desc, 200, scrollable: list);
+    final text = tester.widget<Text>(desc);
+    expect(text.maxLines, isNull); // never cut
+    expect(text.data, 'Myli się o sekundę na sto milionów lat.');
+
+    await tester.tap(find.byKey(const Key('gen-info-atomic')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('gen-info-sheet')), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('gen-info-sheet')),
+        matching: find.text('Myli się o sekundę na sto milionów lat.'),
+      ),
+      findsOneWidget,
+    );
   });
 }
