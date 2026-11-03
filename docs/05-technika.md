@@ -20,8 +20,8 @@
 - **T-1:** Szablon `MobileAppTemplate` nie jest używany. Projekt startuje
   z `flutter create`. Ze szablonu można później podejrzeć kroki podpisywania
   i wydania (M6).
-- **T-2:** Żadnego backendu ani Firebase. Bez uprawnienia `INTERNET` aż do M6
-  (reklamy).
+- **T-2:** Żadnego własnego backendu. Z Firebase używamy wyłącznie
+  Analytics (T-30, §8a). Bez uprawnienia `INTERNET` aż do M6 (reklamy).
 
 ## 2. Struktura repo
 
@@ -158,11 +158,69 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
 - **T-29:** Logika ofert (czasy odnowienia, zapas Turbo, warunki pojawienia
   się) jest w `lib/engine`, a nie w warstwie reklam, więc testy i symulator
   działają z atrapą `RewardedAds`.
-- **T-30:** Brak analityki i Crashlytics. Raporty awarii dostarcza za darmo
-  Google Play Console (Android vitals), bez żadnego SDK. Przychód
+- **T-30:** Statystyki gry zbieramy w **Firebase Analytics** (§8a). Nie
+  używamy Crashlytics. Awarie natywne pokazuje za darmo Google Play Console
+  (Android vitals). Wyjątki Darta, które Flutter przechwytuje i których
+  vitals nie widzi, wysyłamy jako zdarzenie `app_error`. Przychód
   i oglądalność reklam widać w panelu AdMob.
 - **T-27:** Brak reklamy (offline, błąd ładowania) oznacza, że przycisk jest
   wyszarzony z opisem. Gra nigdy nie czeka na reklamę.
+
+## 8a. Statystyki gry (Firebase Analytics)
+
+Cel: stroić ekonomię i samouczek na danych prawdziwych graczy, a nie tylko
+symulatora (03). Firebase Analytics jest darmowy bez limitu liczby zdarzeń.
+Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
+
+- **T-31:** Kod gry loguje przez interfejs `Analytics`
+  (`lib/analytics`, czysty Dart, T-3). Firebase jest za nim tylko
+  w `lib/ui/analytics_device.dart`. Web i testy używają `NoAnalytics`
+  / `RecordingAnalytics`.
+- **T-32:** Projekt Firebase trafia do gry tylko przez `--dart-define`
+  (`FIREBASE_APP_ID`, `FIREBASE_API_KEY`, `FIREBASE_PROJECT_ID`,
+  `FIREBASE_SENDER_ID`). Bez `google-services.json` i bez wtyczki Gradle.
+  Dostaje go tylko wydanie do Play (CI, sekrety). APK testowe nic nie
+  wysyłają, tak jak nie klikamy własnych reklam (T-28).
+- **T-33:** Prywatność:
+  - zbieranie jest wyłączone w manifeście
+    (`firebase_analytics_collection_enabled=false`) i włącza je dopiero
+    ustawienie gracza „Wysyłaj statystyki gry” (domyślnie włączone,
+    zapisywane w save);
+  - bez identyfikatora reklamowego
+    (`google_analytics_adid_collection_enabled=false`);
+  - bez sygnałów personalizacji reklam;
+  - Consent Mode: `ad_*` zawsze odmowa, `analytics_storage` według
+    ustawienia;
+  - bez `setUserId`, bez imion i bez tekstów wpisanych przez gracza.
+- **T-34:** Zdarzenia. Każde ma też `run` (liczba prestiży) i `play_min`
+  (minuty gry od instalacji):
+
+  | Zdarzenie | Parametry | Po co |
+  |---|---|---|
+  | `tutorial_step` | `step` | lejek samouczka: gdzie odpadają nowi |
+  | `tutorial_complete` | `at_step`, `rounds` | ukończony (`grandpaInfo`) czy pominięty |
+  | `tutorial_replay` | – | czy samouczek jest niejasny |
+  | `accuracy` | `rounds`, `typical_ms`, `mean_ms`, `perfect_pct`, `miss_pct` | jak szybko gracze uczą się trafiać (po 10, 50, 200, 1000, 5000 rundach) |
+  | `generator_first` | `id` | tempo progresji: minuta pierwszego zegara każdego rodzaju (cele B-x z 03) |
+  | `skill_buy` | `id`, `level` | które umiejętności kupują i kiedy |
+  | `perk_buy` | `id`, `shards` | wybory po prestiżu |
+  | `prestige` | `chronons`, `top_clock` | kiedy i z jakim zegarem robią paradoks |
+  | `ad_offer` | `offer`, `watch` | ile osób przyjmuje każdą ofertę |
+  | `ad_reward` / `ad_closed_early` | `offer` | czy reklamy są oglądane do końca |
+  | `ad_unavailable` | `offer` | brak reklamy (fill rate) |
+  | `offline_collect` | `away_min`, `capped` | jak długie są przerwy i czy limit offline ich nie ucina |
+  | `daily_collect` | `day` | seria dziennej premii |
+  | `golden_catch` | – | czy złota sekunda jest łapana |
+  | `unlock_achievement` | `achievement_id` | które osiągnięcia są za łatwe lub za trudne |
+  | `season_complete` | `season` | wydarzenia sezonowe |
+  | `mode_toggle` | `mode`, `on` | czy tryby są używane |
+  | `app_error` | `where`, `type`, `message`, `frame` | wyjątki Darta, maksymalnie 5 na uruchomienie |
+
+  Właściwości gracza: `prestiges`, `top_clock`, `tutorial_done`.
+  Firebase sam zbiera `first_open`, `session_start`, czas zaangażowania,
+  retencję, kraj, urządzenie i wersję gry. Gdy AdMob jest połączony
+  z projektem Firebase, w statystykach pojawia się też `ad_impression`.
+  Nowe zdarzenia dopisujemy najpierw do tej tabeli.
 
 ## 9. Wydanie (M6)
 

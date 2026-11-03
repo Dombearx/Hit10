@@ -1886,6 +1886,18 @@ abstract class AppLocalizations {
   /// **'Tell me when the clocks are full'**
   String get settingsNotifications;
 
+  /// No description provided for @settingsAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Send game statistics'**
+  String get settingsAnalytics;
+
+  /// No description provided for @settingsAnalyticsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Helps us balance the game. No account, no name, no ad ID.'**
+  String get settingsAnalyticsHint;
+
   /// No description provided for @settingsLanguage.
   ///
   /// In en, this message translates to:

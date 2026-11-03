@@ -1046,6 +1046,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsNotifications => 'Tell me when the clocks are full';
 
   @override
+  String get settingsAnalytics => 'Send game statistics';
+
+  @override
+  String get settingsAnalyticsHint =>
+      'Helps us balance the game. No account, no name, no ad ID.';
+
+  @override
   String get settingsLanguage => 'Language';
 
   @override

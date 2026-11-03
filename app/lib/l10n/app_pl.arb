@@ -305,6 +305,8 @@
   "settingsMusic": "Muzyka",
   "settingsHaptics": "Wibracje",
   "settingsNotifications": "Powiadom, gdy zegary uzbierają limit",
+  "settingsAnalytics": "Wysyłaj statystyki gry",
+  "settingsAnalyticsHint": "Pomagają nam dopracować grę. Bez konta, imienia i identyfikatora reklamowego.",
   "settingsLanguage": "Język",
   "languageSystem": "Systemowy",
   "settingsNotation": "Zapis liczb",

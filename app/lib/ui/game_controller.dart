@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../ads/rewarded_ads.dart';
+import '../analytics/analytics.dart';
 import '../balance/balance.dart';
 import '../engine/ad_offers.dart';
 import '../engine/game_engine.dart';
@@ -80,6 +81,7 @@ class GameController extends ChangeNotifier {
     Sfx? sfx,
     Haptics? haptics,
     this.notifications = const NoNotifications(),
+    this.analytics = const NoAnalytics(),
     int Function()? wallClockMs,
     DateTime Function()? localNow,
   }) : state = state ?? GameState(),
@@ -98,6 +100,8 @@ class GameController extends ChangeNotifier {
     _applySettings();
     engine.goldenEnabled = this.state.tutorialDone;
     syncSeason();
+    _syncUserProperties();
+    _trackTutorial();
   }
 
   final Balance balance;
@@ -107,6 +111,7 @@ class GameController extends ChangeNotifier {
   final Sfx sfx;
   final Haptics haptics;
   final OfflineNotifications notifications;
+  final Analytics analytics;
   final int Function() _wallMs;
   final DateTime Function() _localNow;
   late final GameEngine engine;
@@ -206,7 +211,48 @@ class GameController extends ChangeNotifier {
     sfx.musicVolume = settings.musicVolume;
     sfx.updateMusicVolume();
     haptics.enabled = settings.haptics;
+    analytics.setEnabled(settings.analytics);
   }
+
+  // ---------------------------------------------------------- statistics --
+
+  /// Logs a game event (docs/05 §8a) with where the player is: which run
+  /// and how many minutes into the game.
+  void _log(String name, [Map<String, Object> params = const {}]) =>
+      analytics.log(name, {
+        ...params,
+        'run': state.prestiges,
+        'play_min': (state.playSeconds / 60).floor(),
+      });
+
+  /// The best clock owned this run ('none' before Grandpa).
+  String get _topClock {
+    for (final g in balance.generators.reversed) {
+      if (econ.owned(g.id) > 0) return g.id;
+    }
+    return 'none';
+  }
+
+  void _syncUserProperties() {
+    analytics.setUserProperty('prestiges', '${state.prestiges}');
+    analytics.setUserProperty('top_clock', _topClock);
+    analytics.setUserProperty('tutorial_done', '${state.tutorialDone}');
+  }
+
+  /// The tutorial funnel (R-TUT-1): one event per step reached.
+  TutorialStep? _loggedStep;
+  void _trackTutorial() {
+    if (state.tutorialDone) return;
+    final step = tutorialStep;
+    if (step == _loggedStep) return;
+    _loggedStep = step;
+    _log('tutorial_step', {'step': step.name});
+  }
+
+  /// The player answered a rewarded offer (docs/02 §13): the take rate of
+  /// each offer.
+  void adOfferAnswered(AdOffer offer, {required bool watch}) =>
+      _log('ad_offer', {'offer': offer.name, 'watch': watch ? 1 : 0});
 
   /// Bumped on every settings change; the app rebuilds its locale from it.
   final settingsVersion = ValueNotifier<int>(0);
@@ -274,6 +320,13 @@ class GameController extends ChangeNotifier {
 
   /// Toggles from the mode row (R-TRYB-1, docs/02 §9.2).
   void setMode({bool? blind, bool? secondClock, bool? autoBuyer}) {
+    for (final (mode, on) in [
+      ('blind', blind),
+      ('second_clock', secondClock),
+      ('auto_buyer', autoBuyer),
+    ]) {
+      if (on != null) _log('mode_toggle', {'mode': mode, 'on': on ? 1 : 0});
+    }
     if (blind != null) state.modeBlind = blind;
     if (blind == false) {
       // Off mid-round: the clock shows again at once, and this round pays
@@ -408,6 +461,8 @@ class GameController extends ChangeNotifier {
       case RoundGraded(:final grade, :final gameTime):
         final o = engine.resolveRound(grade, mode: slot.mode);
         ads.onRound(o, _wallMs());
+        _trackAccuracy();
+        _trackTutorial();
         final local = _localNow();
         if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
         if (state.comboStreak >= 3) _tip('combo');
@@ -424,6 +479,20 @@ class GameController extends ChangeNotifier {
         );
         notifyListeners();
     }
+  }
+
+  /// How well the player times the stopwatch, at a few round counts:
+  /// how fast players learn it (docs/03 tuning).
+  void _trackAccuracy() {
+    final st = state.stats;
+    if (!accuracyCheckpoints.contains(st.rounds)) return;
+    _log('accuracy', {
+      'rounds': st.rounds,
+      'typical_ms': (st.typicalError * 1000).round(),
+      'mean_ms': (st.meanError * 1000).round(),
+      'perfect_pct': (100 * st.byTier[Tier.perfect]! / st.rounds).round(),
+      'miss_pct': (100 * st.byTier[Tier.miss]! / st.rounds).round(),
+    });
   }
 
   void _playFeedback(RoundOutcome o) {
@@ -495,6 +564,7 @@ class GameController extends ChangeNotifier {
   /// The player tapped the flying golden clock (R-ZLOTA-1).
   void claimGolden() {
     if (!engine.claimGolden()) return;
+    _log('golden_catch');
     tipActed('golden');
     sfx.play('coins');
     if (settings.haptics) unawaited(HapticFeedback.mediumImpact());
@@ -562,6 +632,7 @@ class GameController extends ChangeNotifier {
     final paid = engine.seasonRewardPaid;
     if (paid == null) return;
     engine.seasonRewardPaid = null;
+    _log('season_complete', {'season': season?.key ?? ''});
     sfx.play('fanfare', gain: 0.8);
     unawaited(haptics.medium());
     _seasonCompleted.add(paid);
@@ -575,6 +646,7 @@ class GameController extends ChangeNotifier {
     var any = false;
     for (final a in unlockAchievements(achievements, state, ctx)) {
       _unlocked.add(a);
+      _log('unlock_achievement', {'achievement_id': a.id});
       any = true;
     }
     if (any) {
@@ -587,6 +659,7 @@ class GameController extends ChangeNotifier {
 
   BuyResult _afterBuy(BuyResult r) {
     if (r == BuyResult.ok) {
+      _trackTutorial();
       sfx.play('buy');
       unawaited(haptics.light());
       _checkAchievements(const AchievementContext());
@@ -602,6 +675,10 @@ class GameController extends ChangeNotifier {
     final bonuses = _bonuses();
     final r = _afterBuy(engine.buyGenerators(id, count));
     if (r == BuyResult.ok) _announceBonuses(bonuses);
+    if (r == BuyResult.ok && first) {
+      _log('generator_first', {'id': id});
+      analytics.setUserProperty('top_clock', _topClock);
+    }
     // The first of a kind reveals the next generator (docs/04 §3).
     if (r == BuyResult.ok && first && id != balance.generators.last.id) {
       sfx.play('fanfare', gain: 0.6);
@@ -612,10 +689,18 @@ class GameController extends ChangeNotifier {
 
   BuyResult buySkill(String id) {
     tipActed('skills');
-    return _afterBuy(engine.buySkill(id));
+    final r = _afterBuy(engine.buySkill(id));
+    if (r == BuyResult.ok) {
+      _log('skill_buy', {'id': id, 'level': state.skills[id] ?? 0});
+    }
+    return r;
   }
 
-  BuyResult buyPerk(String id) => _afterBuy(engine.buyPerk(id));
+  BuyResult buyPerk(String id) {
+    final r = _afterBuy(engine.buyPerk(id));
+    if (r == BuyResult.ok) _log('perk_buy', {'id': id, 'shards': state.shards});
+    return r;
+  }
 
   /// The rewind animation's sound and long buzz (docs/04 §3).
   void rewindEffects() {
@@ -634,8 +719,11 @@ class GameController extends ChangeNotifier {
   /// so the Shards can buy perks for the new run first (R-PRES-6a).
   int beginPrestige() {
     pause();
+    final top = _topClock;
     final gain = engine.beginPrestige();
     if (gain > 0) {
+      _log('prestige', {'chronons': gain, 'top_clock': top});
+      analytics.setUserProperty('prestiges', '${state.prestiges}');
       lastPrestigeGain = gain;
       ads.rescue = null;
       _checkAchievements(const AchievementContext());
@@ -668,7 +756,9 @@ class GameController extends ChangeNotifier {
   /// Pauses the rounds, plays an ad and grants the offer only if it was
   /// watched to the end (R-AD-3). Returns whether the reward was granted.
   Future<bool> watchAd(AdOffer offer, RewardedAds provider) async {
-    if (_adPlaying || !ads.available(offer, _wallMs()) || !provider.isReady) {
+    if (_adPlaying || !ads.available(offer, _wallMs())) return false;
+    if (!provider.isReady) {
+      _log('ad_unavailable', {'offer': offer.name});
       return false;
     }
     _adPlaying = true;
@@ -683,6 +773,7 @@ class GameController extends ChangeNotifier {
       } finally {
         sfx.mute(false);
       }
+      _log(ok ? 'ad_reward' : 'ad_closed_early', {'offer': offer.name});
       if (!ok) return false;
       final amount = ads.grant(
         offer,
@@ -732,6 +823,14 @@ class GameController extends ChangeNotifier {
 
   /// Finishes (or skips) the tutorial (R-TUT-1).
   void finishTutorial() {
+    if (!state.tutorialDone) {
+      // 'grandpaInfo' = finished; any earlier step = skipped.
+      _log('tutorial_complete', {
+        'at_step': tutorialStep.name,
+        'rounds': state.stats.rounds,
+      });
+      analytics.setUserProperty('tutorial_done', 'true');
+    }
     state.tutorialDone = true;
     engine.goldenEnabled = true;
     // A breather before the first tip (R-TUT-2: tips are spaced out).
@@ -744,6 +843,8 @@ class GameController extends ChangeNotifier {
   /// Shows the tutorial again from where the player is (help screen).
   /// Tips already seen stay seen.
   void replayTutorial() {
+    _log('tutorial_replay');
+    _loggedStep = null;
     state.tutorialDone = false;
     pendingTip = null;
     _shownAt = null;
@@ -907,6 +1008,7 @@ class GameController extends ChangeNotifier {
     final d = pendingDaily;
     if (d == null) return;
     engine.claimDaily(d);
+    _log('daily_collect', {'day': d.day});
     pendingDaily = null;
     sfx.play('fanfare', gain: 0.7);
     unawaited(haptics.medium());
@@ -918,6 +1020,10 @@ class GameController extends ChangeNotifier {
     final r = pendingOffline;
     if (r == null) return;
     engine.claimOffline(r, multiplier: multiplier);
+    _log('offline_collect', {
+      'away_min': (r.awaySeconds / 60).round(),
+      'capped': r.countedSeconds < r.awaySeconds ? 1 : 0,
+    });
     pendingOffline = null;
     sfx.play('coins');
     unawaited(save());
@@ -1039,6 +1145,7 @@ Future<GameController> loadGame(
   Balance balance,
   SaveStore store, {
   OfflineNotifications notifications = const NoNotifications(),
+  Analytics analytics = const NoAnalytics(),
   Sfx? sfx,
   Haptics? haptics,
 }) async {
@@ -1061,6 +1168,7 @@ Future<GameController> loadGame(
     settings: data?.settings,
     store: store,
     notifications: notifications,
+    analytics: analytics,
     sfx: sfx,
     haptics: haptics,
   );

@@ -101,6 +101,7 @@ Map<String, Object?> encodeSave(SaveData d) {
       'notation': st.notation.name,
       'reduceMotion': st.reduceMotion,
       'notifications': st.notifications,
+      'analytics': st.analytics,
     },
   };
 }
@@ -210,7 +211,8 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
         ? Notation.scientific
         : Notation.short
     ..reduceMotion = st['reduceMotion'] == true
-    ..notifications = st['notifications'] != false;
+    ..notifications = st['notifications'] != false
+    ..analytics = st['analytics'] != false;
   if (s.tiki < 0 || s.earnedTotal < 0) {
     throw SaveFormatException('negative money');
   }

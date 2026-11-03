@@ -24,6 +24,7 @@ Future<void> offerAd(
     context: context,
     builder: (context) => _OfferDialog(controller: c, offer: offer, ads: ads),
   );
+  c.adOfferAnswered(offer, watch: watch == true);
   if (watch != true || !context.mounted) return;
   final ok = await watchAdWithReward(context, c, offer, ads);
   if (context.mounted) confirmAdResult(context, c, offer, ok);

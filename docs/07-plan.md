@@ -133,6 +133,7 @@ i balansu. Zmiany liczb wpisujemy do 02/03.
 - [x] Klucz podpisu (poza repo), podpisany AAB, wersjonowanie (05 §9)
 - [x] Wpis w sklepie PL/EN: nazwa, opis, ikona, grafika 1024×500, zrzuty
       (U-28)
+- [x] Statystyki gry w Firebase Analytics (05 §8a)
 - [ ] Data Safety, kategoria wiekowa 13+, ankieta treści
 - [ ] **Test zamknięty: 12 testerów przez 14 dni** (wymóg dla nowych kont
       osobistych). Uwagi testerów poprawiamy w trakcie.
@@ -167,6 +168,7 @@ test zamknięty) opisuje `store/PLAY_CONSOLE.md`.
 | Konto AdMob | przed M6 |
 | Repo `Dombearx/Dombearx.github.io` na stronę WWW | przed M6 |
 | 12 testerów do testu zamkniętego (adresy Google) | przed M6 |
+| Projekt Firebase i sekrety `FIREBASE_*` w CI (`store/PLAY_CONSOLE.md`) | przed wydaniem |
 
 ## Otwarte decyzje
 

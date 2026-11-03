@@ -13,6 +13,17 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${admobAppId}"/>
+        <!-- Game statistics (docs/05 T-30): off until the player's setting
+             turns them on, and never tied to the advertising id. -->
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false"/>
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false"/>
+        <meta-data
+            android:name="google_analytics_default_allow_ad_personalization_signals"
+            android:value="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

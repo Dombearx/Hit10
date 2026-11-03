@@ -1048,6 +1048,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settingsNotifications => 'Powiadom, gdy zegary uzbierają limit';
 
   @override
+  String get settingsAnalytics => 'Wysyłaj statystyki gry';
+
+  @override
+  String get settingsAnalyticsHint =>
+      'Pomagają nam dopracować grę. Bez konta, imienia i identyfikatora reklamowego.';
+
+  @override
   String get settingsLanguage => 'Język';
 
   @override

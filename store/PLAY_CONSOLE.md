@@ -43,6 +43,27 @@ Never tap your own real ads (account ban risk, docs/05 T-28). The APKs CI
 builds for testing always use Google's test ids; only the signed AAB gets
 the real ones.
 
+## 2a. Firebase (game statistics, docs/05 §8a)
+
+Free (Spark plan, no card needed).
+
+1. <https://console.firebase.google.com> → Add project "Hit5" → enable
+   Google Analytics (create a new Analytics account, location Poland).
+2. Project settings → General → Add app → **Android**, package
+   `io.github.dombearx.hit10`, nickname Hit5. Skip downloading
+   `google-services.json` and skip the SDK steps (the code is done).
+3. From the same page copy: **App ID** (`1:…:android:…`), **Web API
+   key** (`AIza…`), **Project ID**, **Project number** (= sender ID).
+4. Analytics → Admin (Google Analytics) → Data settings → **Data
+   retention: 2 months** (the privacy policy says so). Leave **Google
+   signals off**.
+5. AdMob → Apps → Hit5 → App settings → **Link to Firebase** (shows ad
+   revenue next to player behaviour; optional).
+6. Privacy & messaging → GDPR message (step 2.4): make sure Google
+   Analytics for Firebase is not blocked by the chosen vendor list.
+   Firebase reads the consent the UMP form stores (TCF), and the game's
+   own setting can switch statistics off.
+
 ## 3. GitHub secrets (Hit5 repo → Settings → Secrets and variables → Actions)
 
 | Secret | Value |
@@ -53,6 +74,10 @@ the real ones.
 | `HIT10_KEY_PASSWORD` | key password |
 | `ADMOB_APP_ID` | App ID from step 2 |
 | `ADMOB_REWARDED_ID` | rewarded ad unit ID from step 2 |
+| `FIREBASE_APP_ID` | App ID from step 2a |
+| `FIREBASE_API_KEY` | Web API key from step 2a |
+| `FIREBASE_PROJECT_ID` | Project ID from step 2a |
+| `FIREBASE_SENDER_ID` | Project number from step 2a |
 
 After the next push, the CI run's **hit5-aab** artifact contains
 `…-signed.aab`. (Without the secrets it is `…-unsigned.aab`, test ids,
@@ -89,18 +114,21 @@ not uploadable.)
      loot boxes bought with money), no user interaction or sharing, no
      location. Expect PEGI 3 / ESRB Everyone.
    - **Data safety** (from the code, docs/05 T-26, T-30):
-     - Does the app collect or share user data? **Yes** — only via the
-       AdMob SDK.
-     - Data types: **Device or other IDs** (advertising ID) — collected
-       and shared, purpose *Advertising or marketing*, *Analytics*
-       (AdMob's ad measurement), not optional. Also **App activity → App
-       interactions** and **App info and performance → Diagnostics** as
-       AdMob declares them (Google's guide: "Prepare your app for the Data
-       safety form" for the Mobile Ads SDK).
-     - Data is encrypted in transit: **Yes** (AdMob uses HTTPS).
-     - Users can request deletion: the game stores nothing off-device;
-       answer that no account exists and data can be deleted by
-       uninstalling.
+     - Does the app collect or share user data? **Yes** — via the
+       AdMob SDK and Firebase Analytics (docs/05 §8a).
+     - Data types: **Device or other IDs** (advertising ID via AdMob;
+       Firebase app instance ID) — collected and shared, purpose
+       *Advertising or marketing*, *Analytics*, not optional for ads.
+       **App activity → App interactions** (Firebase game events, AdMob)
+       — collected, purpose *Analytics*, **optional** (setting "Send game
+       statistics"). **App info and performance → Crash logs** (`app_error`)
+       and **Diagnostics** — collected, purpose *Analytics*. Follow
+       Google's guides "Prepare your app for the Data safety form" for the
+       Mobile Ads SDK and for Firebase.
+     - Data is encrypted in transit: **Yes** (HTTPS).
+     - Users can request deletion: no account exists; statistics are tied
+       to a random install ID only and expire after 2 months; game data is
+       deleted by uninstalling.
      - Game progress itself stays on the device (Android backup is the
        user's own Google account) — not "collected" in Play's sense.
    - Government app / financial features / health: No.

@@ -764,6 +764,8 @@
   "settingsMusic": "Music",
   "settingsHaptics": "Vibration",
   "settingsNotifications": "Tell me when the clocks are full",
+  "settingsAnalytics": "Send game statistics",
+  "settingsAnalyticsHint": "Helps us balance the game. No account, no name, no ad ID.",
   "settingsLanguage": "Language",
   "languageSystem": "System",
   "settingsNotation": "Numbers",
