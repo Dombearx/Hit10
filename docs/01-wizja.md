@@ -43,8 +43,10 @@ samouczek, ustawienia. Do tego oprawa z [04-ekrany-i-oprawa.md](04-ekrany-i-opra
 - Żadnego backendu, kont, logowania ani synchronizacji w chmurze. Gra działa
   w 100% offline na telefonie.
 - Rankingi, wydarzenia, zakupy w aplikacji.
-- Analityka i zbieranie danych. Jedyny wyjątek to reklamy w M6, ze zgodą
-  użytkownika.
+- Zbieranie danych o graczach. Wyjątki: reklamy w M6 (ze zgodą
+  użytkownika) i statystyki rozgrywki w Firebase Analytics, bez
+  identyfikatora reklamowego i z możliwością wyłączenia w ustawieniach
+  ([05 §8a](05-technika.md)).
 
 **Monetyzacja (etap M6, przed wydaniem):** wyłącznie **reklamy nagradzane**,
 oglądane z wyboru gracza. Pięć ofert (×2 offline, Turbo, Worek Tików, Ratunek
