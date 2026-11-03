@@ -307,8 +307,9 @@ class GameEngine {
       final step = b.tier(tier.name).comboStep;
       s.comboStreak = math.min(econ.comboCap(), before + step);
       s.shieldProgress += step;
-      while (s.shieldProgress >= b.combo.shieldRechargeSteps) {
-        s.shieldProgress -= b.combo.shieldRechargeSteps;
+      final perCharge = shieldRechargeSteps();
+      while (s.shieldProgress >= perCharge) {
+        s.shieldProgress -= perCharge;
         s.shieldCharges = math.min(maxShieldCharges(), s.shieldCharges + 1);
       }
     }
@@ -366,13 +367,13 @@ class GameEngine {
   }
 
   /// Shield level plus the "shield at start" perk (docs/02 §9.1).
-  int maxShieldCharges() {
-    var n = econ.shieldCharges();
-    if (s.perks.contains('startShield')) {
-      n = math.max(n, b.perk('startShield').params['charges']!.round());
-    }
-    return n;
-  }
+  int maxShieldCharges() => econ.shieldCharges();
+
+  /// Combo steps that refill one Shield charge: fewer with the Shield
+  /// recharge perk.
+  int shieldRechargeSteps() => s.perks.contains('shieldRecharge')
+      ? b.perk('shieldRecharge').params['steps']!.round()
+      : b.combo.shieldRechargeSteps;
 
   void _recordStats(Grade raw, Tier tier) {
     s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: true);
@@ -466,14 +467,17 @@ class GameEngine {
 
   // ----------------------------------------------------------- risk modes --
 
-  bool blindUnlocked() =>
-      s.perks.contains('earlyModes') ||
-      s.lifetime.perfects >= b.blind.unlockPerfects;
+  bool blindUnlocked() => s.lifetime.perfects >= b.blind.unlockPerfects;
 
   bool get blindActive => s.modeBlind && blindUnlocked();
 
   /// Reward multiplier of the mode switched on (R-TRYB-1).
-  double modeMultiplier() => blindActive ? b.blind.rewardMultiplier : 1;
+  double modeMultiplier() => blindActive ? blindMultiplier() : 1;
+
+  /// What Blind pays when on: ×3, ×4 with Daredevil.
+  double blindMultiplier() => s.perks.contains('daredevil')
+      ? b.perk('daredevil').params['blindMultiplier']!
+      : b.blind.rewardMultiplier;
 
   /// "Dziesiątka": counts perfects made on a 10th of the month.
   void recordPerfectDate(DateTime local) {
@@ -573,7 +577,6 @@ class GameEngine {
     if (s.shards < cost) return BuyResult.tooExpensive;
     s.shards -= cost;
     s.perks.add(id);
-    if (id == 'startShield') s.shieldCharges = maxShieldCharges();
     return BuyResult.ok;
   }
 

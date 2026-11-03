@@ -341,7 +341,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 - **R-PRES-6a:** Po animacji gracz dostaje Chronony i Okruchy, ale run
   resetuje się dopiero po „Zacznij nową grę” (albo zamknięciu ekranu).
   W międzyczasie Okruchy z tego paradoksu kupują perki, które od razu
-  działają w nowej grze (Pamięć mięśniowa, Szybki start, Tarcza na start).
+  działają w nowej grze (Pamięć mięśniowa, Szybki start).
   Zamknięcie aplikacji w tym momencie kończy reset przy następnym starcie
   (playtest 22).
 
@@ -358,10 +358,10 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | `deepSleep1` | Głęboki sen I | 20 | offline 75% wydajności | – |
 | `deepSleep2` | Głęboki sen II | 80 | offline 100% wydajności | I |
 | `goldRush` | Gorączka złota | 15 | Złota Sekunda pojawia się częściej (interwał ×0.85) | – |
-| `startShield` | Tarcza na start | 20 | +1 ładunek Tarczy na start runu, nawet bez umiejętności | – |
+| `shieldRecharge` | Szybka Tarcza | 20 | ładunek Tarczy co 7 kroków serii zamiast co 10 (playtest 25; zastąpił „Tarczę na start”, która nic nie dawała przy Pamięci mięśniowej) | – |
 | `comboFloor` | Twarde lądowanie | 40 | pudło zrzuca serię do 5, nie do 0 | – |
 | `autoBuyer` | Automatyczny kupiec | 30 | przełącznik: automatycznie kupuje najtańszy generator co 5 s | – |
-| `earlyModes` | Śmiałek | 10 | tryb Na ślepo odblokowany od razu | – |
+| `daredevil` | Śmiałek | 10 | Na ślepo płaci ×4 zamiast ×3 (playtest 25; wcześniej odblokowywał tryb, który i tak był odblokowany przed pierwszym paradoksem) | – |
 | `unlockSchrodinger` | Pudełko z kotem | 25 | odblokowuje generator 13 | – |
 | `secondClock` | Drugi zegar | 100 | patrz 9.2 | – |
 | `unlockChronos` | Ołtarz Chronosa | 500 | odblokowuje generator 14 | `unlockSchrodinger` |

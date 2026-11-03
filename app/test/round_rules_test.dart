@@ -86,6 +86,17 @@ void main() {
       expect(s.shieldCharges, 1);
     });
 
+    test('Quick shield perk: a charge every 7 steps', () {
+      s.perks.add('shieldRecharge');
+      s.skills['shield'] = 1;
+      for (var i = 0; i < 6; i++) {
+        e.resolveRound(good); // 1 step each
+      }
+      expect(s.shieldCharges, 0);
+      e.resolveRound(good);
+      expect(s.shieldCharges, 1);
+    });
+
     test('combo floor perk keeps 5 after a miss', () {
       s.perks.add('comboFloor');
       s.skills['combo'] = 5;

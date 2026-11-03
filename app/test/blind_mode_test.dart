@@ -28,7 +28,7 @@ void main() {
       state: GameState()
         ..tutorialDone = true
         ..modeBlind = true
-        ..perks.add('earlyModes'),
+        ..lifetime.perfects = 100,
     );
     final slot = c.clocks.first;
     slot.round.tap(0);

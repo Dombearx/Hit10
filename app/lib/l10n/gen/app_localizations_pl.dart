@@ -634,11 +634,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get perk_goldRush_desc => 'Złota Sekunda o 15% częściej';
 
   @override
-  String get perk_startShield => 'Tarcza na start';
+  String get perk_shieldRecharge => 'Szybka Tarcza';
 
   @override
-  String get perk_startShield_desc =>
-      'Na start każdej gry jeden ładunek Tarczy, nawet bez umiejętności';
+  String get perk_shieldRecharge_desc =>
+      'Ładunek Tarczy co 7 kroków serii zamiast co 10';
 
   @override
   String get perk_comboFloor => 'Twarde lądowanie';
@@ -654,10 +654,10 @@ class AppLocalizationsPl extends AppLocalizations {
       'Przełącznik: kupuje najtańszy zegar co 5 s';
 
   @override
-  String get perk_earlyModes => 'Śmiałek';
+  String get perk_daredevil => 'Śmiałek';
 
   @override
-  String get perk_earlyModes_desc => 'Tryb Na ślepo odblokowany od razu';
+  String get perk_daredevil_desc => 'Tryb Na ślepo płaci ×4 zamiast ×3';
 
   @override
   String get perk_unlockSchrodinger => 'Pudełko z kotem';
@@ -786,7 +786,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get prestigePendingBody =>
-      'Wydaj teraz Okruchy na perki: Pamięć mięśniowa, Szybki start i Tarcza zadziałają już w nowej grze.';
+      'Wydaj teraz Okruchy na perki: Pamięć mięśniowa i Szybki start zadziałają już w nowej grze.';
 
   @override
   String get prestigeStartRun => 'Zacznij nową grę';
@@ -825,7 +825,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skip => 'Pomiń';
 
   @override
-  String get modeBlind => 'Na ślepo ×3';
+  String modeBlind(int mult) {
+    return 'Na ślepo ×$mult';
+  }
 
   @override
   String get modeSecond => 'Drugi zegar';
@@ -999,7 +1001,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_modes =>
-      'Później nad sklepem pojawią się przełączniki: „Na ślepo” (stoper znika przed końcem, ale płaci ×3), „Drugi zegar” (dwa stopery naraz, każda połowa ekranu to jeden) i „Auto-kupiec” (sam kupuje zegary).';
+      'Później nad sklepem pojawią się przełączniki: „Na ślepo” (od 4.00 stoper i pasek znikają, ale trafienia płacą ×3, z perkiem Śmiałek ×4), „Drugi zegar” (dwa stopery naraz, każda połowa ekranu to jeden) i „Auto-kupiec” (sam kupuje zegary).';
 
   @override
   String get help_season_t => 'Wydarzenia';

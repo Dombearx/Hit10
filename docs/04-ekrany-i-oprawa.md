@@ -161,7 +161,7 @@ styl **3D** (PNG 256×256, licencja MIT). Do repo trafiają tylko używane pliki
 | Tykanie | Bell | | Długa drzemka I–II | Sleeping face |
 | Sokole oko | Eagle | | Głęboki sen I–II | Bed |
 | Combo | Fire | | Gorączka złota | Pick |
-| Magnes | Magnet | | Tarcza na start | Shield |
+| Magnes | Magnet | | Szybka Tarcza | Shield |
 | Echo | Speaker high volume | | Twarde lądowanie | Parachute |
 | Zimna krew | Bullseye | | Automatyczny kupiec | Shopping cart |
 | Szczęście | Four leaf clover | | Śmiałek | Smiling face with sunglasses |

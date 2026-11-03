@@ -440,10 +440,10 @@
         }
       },
       {
-        "id": "startShield",
+        "id": "shieldRecharge",
         "cost": 20,
         "params": {
-          "charges": 1
+          "steps": 7
         }
       },
       {
@@ -461,8 +461,11 @@
         }
       },
       {
-        "id": "earlyModes",
-        "cost": 10
+        "id": "daredevil",
+        "cost": 10,
+        "params": {
+          "blindMultiplier": 4
+        }
       },
       {
         "id": "unlockSchrodinger",

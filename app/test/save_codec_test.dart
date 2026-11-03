@@ -72,6 +72,13 @@ void main() {
     );
   });
 
+  test('replaced perks load as their successors (playtest 25)', () {
+    final s = GameState()
+      ..perks.addAll({'startShield', 'earlyModes', 'goldRush'});
+    final back = saveFromJsonString(saveToJsonString(SaveData(s, Settings())));
+    expect(back.state.perks, {'shieldRecharge', 'daredevil', 'goldRush'});
+  });
+
   test('tolerates missing optional fields', () {
     final d = saveFromJsonString('{"saveVersion":1,"tiki":5}');
     expect(d.state.tiki, 5);
