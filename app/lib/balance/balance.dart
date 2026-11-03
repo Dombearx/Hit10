@@ -234,14 +234,12 @@ class GoldenEffectConfig {
       duration = j['duration'] == null ? 0 : _d(j['duration']),
       productionSeconds = j['productionSeconds'] == null
           ? 0
-          : _d(j['productionSeconds']),
-      bankFraction = j['bankFraction'] == null ? 0 : _d(j['bankFraction']);
+          : _d(j['productionSeconds']);
   final String id;
   final double weight;
   final double multiplier;
   final double duration;
   final double productionSeconds;
-  final double bankFraction;
 }
 
 class GoldenConfig {

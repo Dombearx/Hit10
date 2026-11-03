@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/ads/rewarded_ads.dart';
+import 'package:hit10/engine/ad_offers.dart';
 import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/engine/round_engine.dart';
 import 'package:hit10/model/game_state.dart';
@@ -104,19 +105,36 @@ void main() {
     expect(c.pendingOffline, isNull);
   });
 
-  testWidgets('the offline ×2 lights up once the ad has loaded', (
+  testWidgets('the offline ×2 spins while the ad loads, then lights up', (
+    tester,
+  ) async {
+    final s = played()..lastSeenMs = now - 3 * 3600 * 1000;
+    final ads = FakeRewardedAds(delay: Duration.zero, ready: false)
+      ..loading = true;
+    await pumpGame(tester, s, ads);
+    await tester.pump(const Duration(seconds: 1));
+    BuyButton button() => tester.widget<BuyButton>(
+      find.descendant(
+        of: find.byKey(const Key('offline-double')),
+        matching: find.byType(BuyButton),
+      ),
+    );
+    expect(button().loading, isTrue); // cold start: still loading
+    ads.ready = true;
+    await tester.pump();
+    expect(button().loading, isFalse);
+    expect(button().enabled, isTrue);
+  });
+
+  testWidgets('no ad coming: the offline ×2 says so instead of spinning', (
     tester,
   ) async {
     final s = played()..lastSeenMs = now - 3 * 3600 * 1000;
     final ads = FakeRewardedAds(delay: Duration.zero, ready: false);
     await pumpGame(tester, s, ads);
-    await tester.pumpAndSettle();
-    BuyButton button() =>
-        tester.widget<BuyButton>(find.byKey(const Key('offline-double')));
-    expect(button().enabled, isFalse); // cold start: still loading
-    ads.ready = true;
-    await tester.pump();
-    expect(button().enabled, isTrue);
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.byKey(const Key('buy-loading')), findsNothing);
+    expect(find.text('Reklama niedostępna'), findsOneWidget);
   });
 
   testWidgets('touching an offer tile is not a round tap; the combo stays', (
@@ -148,4 +166,21 @@ void main() {
     expect(c.paused, isFalse);
     expect(c.state.comboStreak, 5);
   });
+
+  testWidgets(
+    'rescue: tapping the popup plays the ad and restores the streak',
+    (tester) async {
+      final ads = FakeRewardedAds(delay: const Duration(milliseconds: 50));
+      final c = await pumpGame(tester, played()..skills['combo'] = 15, ads);
+      c.ads.rescue = RescueOffer(20, c.state.playSeconds + 5);
+      c.state.comboStreak = 0;
+      c.notifyListeners();
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.tap(find.byKey(const Key('ad-rescue')));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle();
+      expect(ads.shown, 1);
+      expect(c.state.comboStreak, 20);
+    },
+  );
 }

@@ -203,6 +203,11 @@ void registerQaHook(GameController c) {
         c.state.perks.addAll(p.cast<String>());
       }
       if (m['shards'] case final num v) c.state.shards = v.toInt();
+      if (m['owned'] case final Map<String, dynamic> o) {
+        for (final e in o.entries) {
+          c.state.owned[e.key] = (e.value as num).toInt();
+        }
+      }
       if (m['perfects'] case final num v) c.state.lifetime.perfects = v.toInt();
       if (m['earnedTotal'] case final num v) c.state.earnedTotal = v.toDouble();
       if (m['playSeconds'] case final num v) c.state.playSeconds = v.toDouble();

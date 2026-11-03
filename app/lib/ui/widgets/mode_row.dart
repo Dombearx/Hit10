@@ -20,7 +20,7 @@ class ModeRow extends StatelessWidget {
       if (e.blindUnlocked())
         _Toggle(
           key: const Key('mode-blind'),
-          label: l.modeBlind,
+          label: l.modeBlind(e.blindMultiplier().round()),
           on: s.modeBlind,
           onTap: () => c.setMode(blind: !s.modeBlind),
         ),

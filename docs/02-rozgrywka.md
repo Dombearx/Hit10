@@ -266,8 +266,8 @@ Generator A dostaje +1% za każdą sztukę B, a B dostaje +0.1% za każdą sztuk
 | Efekt | Waga | Działanie (przy 100% siły) |
 |---|---|---|
 | **Szał** / Frenzy | 45% | cały dochód ×7 przez 77 s (czas × siła) |
-| **Fart** / Lucky | 45% | natychmiast `min(600 s dochodu pasywnego, 10% stanu konta)` × siła |
-| **Gorąca ręka** / Hot Hand | 10% | przez 30 s (× siła) każde trafienie, które nie jest pudłem, liczy się jako PERFEKT |
+| **Fart** / Lucky | 45% | natychmiast `600 s dochodu pasywnego` × siła (playtest 25: bez limitu 10% stanu konta — gracz wydaje na bieżąco, więc limit zjadał prawie cały Fart) |
+| **Gorąca ręka** / Hot Hand | 10% | przez 60 s (× siła) każde trafienie, które nie jest pudłem, liczy się jako PERFEKT i płaci ×10 (playtest 25: samo „jak PERFEKT” dawało ~1 s dochodu) |
 
 - **R-ZLOTA-4:** Aktywny efekt ma licznik z czasem do końca, widoczny przy
   zegarze. Efekty różnego typu mogą działać naraz. Ten sam typ przedłuża czas.
@@ -341,7 +341,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 - **R-PRES-6a:** Po animacji gracz dostaje Chronony i Okruchy, ale run
   resetuje się dopiero po „Zacznij nową grę” (albo zamknięciu ekranu).
   W międzyczasie Okruchy z tego paradoksu kupują perki, które od razu
-  działają w nowej grze (Pamięć mięśniowa, Szybki start, Tarcza na start).
+  działają w nowej grze (Pamięć mięśniowa, Szybki start).
   Zamknięcie aplikacji w tym momencie kończy reset przy następnym starcie
   (playtest 22).
 
@@ -358,10 +358,10 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | `deepSleep1` | Głęboki sen I | 20 | offline 75% wydajności | – |
 | `deepSleep2` | Głęboki sen II | 80 | offline 100% wydajności | I |
 | `goldRush` | Gorączka złota | 15 | Złota Sekunda pojawia się częściej (interwał ×0.85) | – |
-| `startShield` | Tarcza na start | 20 | +1 ładunek Tarczy na start runu, nawet bez umiejętności | – |
+| `shieldRecharge` | Szybka Tarcza | 20 | ładunek Tarczy co 7 kroków serii zamiast co 10 (playtest 25; zastąpił „Tarczę na start”, która nic nie dawała przy Pamięci mięśniowej) | – |
 | `comboFloor` | Twarde lądowanie | 40 | pudło zrzuca serię do 5, nie do 0 | – |
 | `autoBuyer` | Automatyczny kupiec | 30 | przełącznik: automatycznie kupuje najtańszy generator co 5 s | – |
-| `earlyModes` | Śmiałek | 10 | tryb Na ślepo odblokowany od razu | – |
+| `daredevil` | Śmiałek | 10 | Na ślepo płaci ×4 zamiast ×3 (playtest 25; wcześniej odblokowywał tryb, który i tak był odblokowany przed pierwszym paradoksem) | – |
 | `unlockSchrodinger` | Pudełko z kotem | 25 | odblokowuje generator 13 | – |
 | `secondClock` | Drugi zegar | 100 | patrz 9.2 | – |
 | `unlockChronos` | Ołtarz Chronosa | 500 | odblokowuje generator 14 | `unlockSchrodinger` |

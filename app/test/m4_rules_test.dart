@@ -17,14 +17,17 @@ void main() {
   });
 
   group('risk modes (R-TRYB-1)', () {
-    test('locked until enough perfects or the perk', () {
+    test('locked until enough perfects; Daredevil pays ×4', () {
       s.modeBlind = true;
       expect(e.modeMultiplier(), 1);
+      s.perks.add('daredevil');
+      expect(e.modeMultiplier(), 1); // the perk does not unlock it
       s.lifetime.perfects = 100;
+      expect(e.modeMultiplier(), 4);
+      s.perks.remove('daredevil');
       expect(e.modeMultiplier(), 3);
-      s.lifetime.perfects = 0;
-      s.perks.add('earlyModes');
-      expect(e.modeMultiplier(), 3);
+      s.modeBlind = false;
+      expect(e.modeMultiplier(), 1);
     });
   });
 

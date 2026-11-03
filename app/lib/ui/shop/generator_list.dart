@@ -199,7 +199,7 @@ class _GeneratorTile extends StatelessWidget {
     // Unowned: what it earns first, the joke second (playtest: "what does
     // buying Grandpa do?").
     final sub = owned == 0
-        ? '${l.generatorEarnsEach(f.n(unit))} · ${generatorDescription(l, id)}'
+        ? l.generatorEarnsEach(f.n(unit))
         : [
             l.unitRate(f.n(unit)),
             // All of this clock together (playtest: "% of income" and
@@ -207,45 +207,58 @@ class _GeneratorTile extends StatelessWidget {
             // already in the rate).
             l.generatorTotal(f.perSecond(rate)),
           ].join(' · ');
+    final small = TextStyle(
+      fontSize: 12.5,
+      height: 1.2,
+      color: Palette.outline.withValues(alpha: 0.7),
+    );
     return _TileFrame(
       child: Row(
         children: [
-          EmojiCard(
-            art: generatorArt[id]!,
-            size: 54,
-            badge: owned > 0 ? f.n(owned.toDouble()) : null,
+          // Tap the clock for its full card (playtest 25: long
+          // descriptions were cut off).
+          GestureDetector(
+            key: Key('gen-info-$id'),
+            onTap: () => showGeneratorInfo(context, c, id),
+            child: EmojiCard(
+              art: generatorArt[id]!,
+              size: 54,
+              badge: owned > 0 ? f.n(owned.toDouble()) : null,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Long names (EN, small screens) shrink rather than cut.
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    generatorName(l, id),
-                    maxLines: 1,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => showGeneratorInfo(context, c, id),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Long names (EN, small screens) shrink rather than cut.
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      generatorName(l, id),
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  sub,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12.5,
-                    height: 1.2,
-                    color: Palette.outline.withValues(alpha: 0.7),
-                  ),
-                ),
-                if (owned > 0) _MilestoneBar(controller: c, id: id),
-              ],
+                  const SizedBox(height: 2),
+                  Text(sub, style: small),
+                  // The joke on its own lines, never cut.
+                  if (owned == 0)
+                    Text(
+                      generatorDescription(l, id),
+                      key: Key('gen-desc-$id'),
+                      style: small.copyWith(fontStyle: FontStyle.italic),
+                    ),
+                  if (owned > 0) _MilestoneBar(controller: c, id: id),
+                ],
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -416,5 +429,87 @@ Widget? _bagButton(BuildContext context, GameController c) {
         ],
       ),
     ),
+  );
+}
+
+/// A clock's full card: name, the whole description, what it earns.
+Future<void> showGeneratorInfo(
+  BuildContext context,
+  GameController c,
+  String id,
+) {
+  return showModalBottomSheet<void>(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (context) {
+      final l = AppLocalizations.of(context);
+      final f = Fmt.of(context, c);
+      final owned = c.econ.owned(id);
+      final unit = c.econ.unitRate(id) * c.econ.permanentMultiplier();
+      return Container(
+        key: const Key('gen-info-sheet'),
+        margin: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: Palette.outline, width: 3),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  EmojiCard(
+                    art: generatorArt[id]!,
+                    size: 64,
+                    badge: owned > 0 ? f.n(owned.toDouble()) : null,
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Text(
+                      generatorName(l, id),
+                      style: const TextStyle(
+                        fontFamily: Fonts.display,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                generatorDescription(l, id),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                l.generatorEarnsEach(f.n(unit)),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Palette.perfectDeep,
+                ),
+              ),
+              if (owned > 0)
+                Text(
+                  l.generatorTotal(f.perSecond(unit * owned)),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      );
+    },
   );
 }

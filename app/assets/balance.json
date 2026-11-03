@@ -289,13 +289,13 @@
       {
         "id": "lucky",
         "weight": 0.45,
-        "productionSeconds": 600,
-        "bankFraction": 0.1
+        "productionSeconds": 600
       },
       {
         "id": "hotHand",
         "weight": 0.1,
-        "duration": 30
+        "duration": 60,
+        "multiplier": 10
       }
     ]
   },
@@ -440,10 +440,10 @@
         }
       },
       {
-        "id": "startShield",
+        "id": "shieldRecharge",
         "cost": 20,
         "params": {
-          "charges": 1
+          "steps": 7
         }
       },
       {
@@ -461,8 +461,11 @@
         }
       },
       {
-        "id": "earlyModes",
-        "cost": 10
+        "id": "daredevil",
+        "cost": 10,
+        "params": {
+          "blindMultiplier": 4
+        }
       },
       {
         "id": "unlockSchrodinger",

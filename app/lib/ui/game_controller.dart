@@ -275,6 +275,16 @@ class GameController extends ChangeNotifier {
   /// Toggles from the mode row (R-TRYB-1, docs/02 §9.2).
   void setMode({bool? blind, bool? secondClock, bool? autoBuyer}) {
     if (blind != null) state.modeBlind = blind;
+    if (blind == false) {
+      // Off mid-round: the clock shows again at once, and this round pays
+      // without the blind bonus (playtest 24). Switching on waits for the
+      // next round.
+      for (final c in clocks) {
+        c
+          ..blind = false
+          ..mode = engine.modeMultiplier();
+      }
+    }
     if (autoBuyer != null) state.autoBuyerOn = autoBuyer;
     if (secondClock != null && secondClock != state.secondClockOn) {
       state.secondClockOn = secondClock;
@@ -664,7 +674,15 @@ class GameController extends ChangeNotifier {
     _adPlaying = true;
     pause();
     try {
-      final ok = await provider.show();
+      // The ad has its own sound: the game's music and effects stay quiet
+      // until it closes (playtest 24: the music played over the ad).
+      sfx.mute(true);
+      final bool ok;
+      try {
+        ok = await provider.show();
+      } finally {
+        sfx.mute(false);
+      }
       if (!ok) return false;
       final amount = ads.grant(
         offer,

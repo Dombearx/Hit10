@@ -468,14 +468,14 @@
   "perk_deepSleep2_desc": "Offline at 100 %",
   "perk_goldRush": "Gold rush",
   "perk_goldRush_desc": "Golden seconds 15 % more often",
-  "perk_startShield": "Shield at start",
-  "perk_startShield_desc": "One Shield charge at the start of each run, even without the skill",
+  "perk_shieldRecharge": "Quick shield",
+  "perk_shieldRecharge_desc": "A Shield charge every 7 streak steps instead of 10",
   "perk_comboFloor": "Soft landing",
   "perk_comboFloor_desc": "A miss drops the streak to 5, not 0",
   "perk_autoBuyer": "Auto buyer",
   "perk_autoBuyer_desc": "A switch that buys the cheapest clock every 5 s",
-  "perk_earlyModes": "Daredevil",
-  "perk_earlyModes_desc": "Blind mode unlocked from the start",
+  "perk_daredevil": "Daredevil",
+  "perk_daredevil_desc": "Blind mode pays ×4 instead of ×3",
   "perk_unlockSchrodinger": "The box",
   "perk_unlockSchrodinger_desc": "Unlocks Schrödinger's Cat",
   "perk_secondClock": "Second clock",
@@ -577,7 +577,7 @@
       }
     }
   },
-  "prestigePendingBody": "Spend your Shards on perks now: Muscle memory, Head start and Shield already work in the new run.",
+  "prestigePendingBody": "Spend your Shards on perks now: Muscle memory and Head start already work in the new run.",
   "prestigeStartRun": "Start the new run",
   "prestigeConfirm1": "You lose your clocks, skills and Ticks. Chronons, Shards ✦, perks and achievements stay. Before the new run starts you can spend Shards on perks. Continue?",
   "prestigeConfirm2": "Really? Time will rewind.",
@@ -596,7 +596,14 @@
   "cancel": "Cancel",
   "ok": "OK",
   "skip": "Skip",
-  "modeBlind": "Blind ×3",
+  "modeBlind": "Blind ×{mult}",
+  "@modeBlind": {
+    "placeholders": {
+      "mult": {
+        "type": "int"
+      }
+    }
+  },
   "modeSecond": "Second clock",
   "modeAuto": "Auto buyer",
   "adTurbo": "Turbo ×2",
@@ -734,9 +741,9 @@
   "help_combo_t": "Streak (combo)",
   "help_combo": "Hits in a row build a streak, and the streak multiplies every payout (the COMBO bar under the clock). A miss resets it, unless you have a Shield.",
   "help_golden_t": "Golden Second",
-  "help_golden": "Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks' work, at most 10% of what you have\n• Hot hand (10%): for 30 s every hit counts as a PERFECT",
+  "help_golden": "Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks' work\n• Hot hand (10%): for 60 s every hit counts as a PERFECT and pays ×10",
   "help_modes_t": "Toggles",
-  "help_modes": "Later, toggles appear above the shop: \"Blind\" (the stopwatch hides before the end but pays ×3), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).",
+  "help_modes": "Later, toggles appear above the shop: \"Blind\" (from 4.00 the stopwatch and its ring disappear, but hits pay ×3, ×4 with the Daredevil perk), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).",
   "help_season_t": "Events",
   "help_season": "On holidays the golden clock changes its look. The badge at the top shows your progress: how many holiday clocks you caught (e.g. 0/5) and how many hits you made (e.g. 0/50). Finishing pays a reward.",
   "help_prestige_t": "Time paradox",

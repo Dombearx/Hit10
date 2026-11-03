@@ -633,11 +633,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get perk_goldRush_desc => 'Golden seconds 15 % more often';
 
   @override
-  String get perk_startShield => 'Shield at start';
+  String get perk_shieldRecharge => 'Quick shield';
 
   @override
-  String get perk_startShield_desc =>
-      'One Shield charge at the start of each run, even without the skill';
+  String get perk_shieldRecharge_desc =>
+      'A Shield charge every 7 streak steps instead of 10';
 
   @override
   String get perk_comboFloor => 'Soft landing';
@@ -653,10 +653,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'A switch that buys the cheapest clock every 5 s';
 
   @override
-  String get perk_earlyModes => 'Daredevil';
+  String get perk_daredevil => 'Daredevil';
 
   @override
-  String get perk_earlyModes_desc => 'Blind mode unlocked from the start';
+  String get perk_daredevil_desc => 'Blind mode pays ×4 instead of ×3';
 
   @override
   String get perk_unlockSchrodinger => 'The box';
@@ -785,7 +785,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get prestigePendingBody =>
-      'Spend your Shards on perks now: Muscle memory, Head start and Shield already work in the new run.';
+      'Spend your Shards on perks now: Muscle memory and Head start already work in the new run.';
 
   @override
   String get prestigeStartRun => 'Start the new run';
@@ -824,7 +824,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skip => 'Skip';
 
   @override
-  String get modeBlind => 'Blind ×3';
+  String modeBlind(int mult) {
+    return 'Blind ×$mult';
+  }
 
   @override
   String get modeSecond => 'Second clock';
@@ -990,14 +992,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_golden =>
-      'Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks\' work, at most 10% of what you have\n• Hot hand (10%): for 30 s every hit counts as a PERFECT';
+      'Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks\' work\n• Hot hand (10%): for 60 s every hit counts as a PERFECT and pays ×10';
 
   @override
   String get help_modes_t => 'Toggles';
 
   @override
   String get help_modes =>
-      'Later, toggles appear above the shop: \"Blind\" (the stopwatch hides before the end but pays ×3), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).';
+      'Later, toggles appear above the shop: \"Blind\" (from 4.00 the stopwatch and its ring disappear, but hits pay ×3, ×4 with the Daredevil perk), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).';
 
   @override
   String get help_season_t => 'Events';

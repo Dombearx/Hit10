@@ -231,12 +231,9 @@ class GameEngine {
         frenzy = pick.multiplier;
         return GoldenOutcome(GoldenEffect.frenzy, strength, secs);
       case 'lucky':
-        final amount =
-            strength *
-            math.min(
-              passive() * pick.productionSeconds,
-              s.tiki * pick.bankFraction,
-            );
+        // No cap on the bank (playtest 25): the player spends as they go,
+        // so "10 % of what you have" made it worth almost nothing.
+        final amount = strength * passive() * pick.productionSeconds;
         s.earn(amount);
         return GoldenOutcome(GoldenEffect.lucky, strength, amount);
       default:
@@ -307,20 +304,25 @@ class GameEngine {
       final step = b.tier(tier.name).comboStep;
       s.comboStreak = math.min(econ.comboCap(), before + step);
       s.shieldProgress += step;
-      while (s.shieldProgress >= b.combo.shieldRechargeSteps) {
-        s.shieldProgress -= b.combo.shieldRechargeSteps;
+      final perCharge = shieldRechargeSteps();
+      while (s.shieldProgress >= perCharge) {
+        s.shieldProgress -= perCharge;
         s.shieldCharges = math.min(maxShieldCharges(), s.shieldCharges + 1);
       }
     }
     final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
     // The 10.00 jackpot goes by the raw tap: Luck and Hot hand don't win it.
     final jackpot = isJackpot(g) ? jackpotAmount() * combo * mode : 0.0;
+    // Hot hand also multiplies what the hit pays (playtest 25: turning
+    // hits into PERFECTs alone was worth a second of income).
+    final hotPay = hot ? b.golden.effect('hotHand').multiplier : 1.0;
     final payout =
         hitPayout(
-          Grade(tier, g.error, g.missKind, g.close),
-          combo: combo,
-          mode: mode,
-        ) +
+              Grade(tier, g.error, g.missKind, g.close),
+              combo: combo,
+              mode: mode,
+            ) *
+            hotPay +
         jackpot;
     s.earn(payout);
     _recordStats(g, tier);
@@ -366,13 +368,13 @@ class GameEngine {
   }
 
   /// Shield level plus the "shield at start" perk (docs/02 §9.1).
-  int maxShieldCharges() {
-    var n = econ.shieldCharges();
-    if (s.perks.contains('startShield')) {
-      n = math.max(n, b.perk('startShield').params['charges']!.round());
-    }
-    return n;
-  }
+  int maxShieldCharges() => econ.shieldCharges();
+
+  /// Combo steps that refill one Shield charge: fewer with the Shield
+  /// recharge perk.
+  int shieldRechargeSteps() => s.perks.contains('shieldRecharge')
+      ? b.perk('shieldRecharge').params['steps']!.round()
+      : b.combo.shieldRechargeSteps;
 
   void _recordStats(Grade raw, Tier tier) {
     s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: true);
@@ -466,14 +468,17 @@ class GameEngine {
 
   // ----------------------------------------------------------- risk modes --
 
-  bool blindUnlocked() =>
-      s.perks.contains('earlyModes') ||
-      s.lifetime.perfects >= b.blind.unlockPerfects;
+  bool blindUnlocked() => s.lifetime.perfects >= b.blind.unlockPerfects;
 
   bool get blindActive => s.modeBlind && blindUnlocked();
 
   /// Reward multiplier of the mode switched on (R-TRYB-1).
-  double modeMultiplier() => blindActive ? b.blind.rewardMultiplier : 1;
+  double modeMultiplier() => blindActive ? blindMultiplier() : 1;
+
+  /// What Blind pays when on: ×3, ×4 with Daredevil.
+  double blindMultiplier() => s.perks.contains('daredevil')
+      ? b.perk('daredevil').params['blindMultiplier']!
+      : b.blind.rewardMultiplier;
 
   /// "Dziesiątka": counts perfects made on a 10th of the month.
   void recordPerfectDate(DateTime local) {
@@ -573,7 +578,6 @@ class GameEngine {
     if (s.shards < cost) return BuyResult.tooExpensive;
     s.shards -= cost;
     s.perks.add(id);
-    if (id == 'startShield') s.shieldCharges = maxShieldCharges();
     return BuyResult.ok;
   }
 

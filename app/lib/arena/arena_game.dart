@@ -849,7 +849,7 @@ class Dial extends Component {
       _drawDigits(
         canvas,
         // Blind mode (docs/02 §7): from 4.00 a pulsing "?" replaces the time.
-        hidden ? '?.??' : formatStopwatch(shown),
+        hidden ? '??.??' : formatStopwatch(shown),
         c,
         digitSize,
         hidden ? Palette.miss : digitColor,

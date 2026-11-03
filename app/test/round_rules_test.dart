@@ -86,6 +86,17 @@ void main() {
       expect(s.shieldCharges, 1);
     });
 
+    test('Quick shield perk: a charge every 7 steps', () {
+      s.perks.add('shieldRecharge');
+      s.skills['shield'] = 1;
+      for (var i = 0; i < 6; i++) {
+        e.resolveRound(good); // 1 step each
+      }
+      expect(s.shieldCharges, 0);
+      e.resolveRound(good);
+      expect(s.shieldCharges, 1);
+    });
+
     test('combo floor perk keeps 5 after a miss', () {
       s.perks.add('comboFloor');
       s.skills['combo'] = 5;
@@ -106,9 +117,13 @@ void main() {
       expect(e.resolveRound(great).tier, Tier.great);
     });
 
-    test('hot hand turns every hit into perfect', () {
+    test('hot hand turns every hit into perfect and pays ×10', () {
+      s.stats.rounds = 30; // past beginner's luck
+      final plain = e.hitPayout(perfect);
       e.hotHandLeft = 10;
-      expect(e.resolveRound(good).tier, Tier.perfect);
+      final o = e.resolveRound(good);
+      expect(o.tier, Tier.perfect);
+      expect(o.payout, closeTo(10 * plain * o.combo, 1e-6));
       expect(e.resolveRound(early).tier, Tier.miss);
     });
   });
@@ -155,10 +170,10 @@ void main() {
       expect(e.frenzy, 1);
     });
 
-    test('lucky pays min(600 s of income, 10 % of bank)', () {
+    test('lucky pays 600 s of clocks, whatever the bank', () {
       e = make([0.5]); // middle of the weights: lucky
       s.owned['grandma'] = 1; // 1/s → 600
-      s.tiki = 1e6; // 10 % = 100 000
+      s.tiki = 0; // no cap on the bank any more
       e.summonGolden();
       e.claimGolden();
       e.onRoundStart();

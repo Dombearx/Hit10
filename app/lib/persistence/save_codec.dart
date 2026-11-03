@@ -174,7 +174,8 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   _m(j['adCooldownUntil']).forEach((k, v) => s.adCooldownUntil[k] = _i(v));
   _m(j['owned']).forEach((k, v) => s.owned[k] = _i(v));
   _m(j['skills']).forEach((k, v) => s.skills[k] = _i(v));
-  s.perks.addAll(_sl(j['perks']));
+  // Perks replaced in playtest 25 keep their slot (and their Shards).
+  s.perks.addAll(_sl(j['perks']).map((id) => _renamedPerks[id] ?? id));
   s.achievements.addAll(_sl(j['achievements']));
   final stats = _m(j['stats']);
   s.stats.rounds = _i(stats['rounds']);
@@ -242,3 +243,10 @@ SaveData importSave(String text) {
   }
   return saveFromJsonString(utf8.decode(bytes));
 }
+
+/// Old perk ids → their replacements (playtest 25): Shield at start and
+/// the early Blind unlock never did anything a player could notice.
+const _renamedPerks = {
+  'startShield': 'shieldRecharge',
+  'earlyModes': 'daredevil',
+};

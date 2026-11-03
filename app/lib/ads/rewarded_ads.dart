@@ -7,9 +7,13 @@ abstract interface class RewardedAds {
   /// Whether an ad can be shown right now without waiting.
   bool get isReady;
 
-  /// Emits [isReady] whenever it changes (an ad finished loading, or was
-  /// used): screens that show an ad button without rebuilding otherwise,
-  /// like the offline summary, listen to it.
+  /// No ad yet, but one is on its way (consent, SDK start, a load in
+  /// progress): buttons show a spinner instead of looking broken.
+  bool get isLoading;
+
+  /// Emits whenever [isReady] or [isLoading] changes (an ad finished
+  /// loading, or was used): screens that show an ad button without
+  /// rebuilding otherwise, like the offline summary, listen to it.
   Stream<bool> get readiness;
 
   /// Shows an ad and completes with `true` only when the player earned the
@@ -24,6 +28,7 @@ class FakeRewardedAds implements RewardedAds {
     this.delay = const Duration(seconds: 1),
     this.grant = true,
     this._ready = true,
+    this._loading = false,
   });
 
   final Duration delay;
@@ -44,6 +49,18 @@ class FakeRewardedAds implements RewardedAds {
     if (v == _ready) return;
     _ready = v;
     _changes.add(v);
+  }
+
+  bool _loading;
+
+  @override
+  bool get isLoading => !_ready && _loading;
+
+  /// Tests: a load starts or gives up.
+  set loading(bool v) {
+    if (v == _loading) return;
+    _loading = v;
+    _changes.add(_ready);
   }
 
   @override

@@ -1184,17 +1184,17 @@ abstract class AppLocalizations {
   /// **'Golden seconds 15 % more often'**
   String get perk_goldRush_desc;
 
-  /// No description provided for @perk_startShield.
+  /// No description provided for @perk_shieldRecharge.
   ///
   /// In en, this message translates to:
-  /// **'Shield at start'**
-  String get perk_startShield;
+  /// **'Quick shield'**
+  String get perk_shieldRecharge;
 
-  /// No description provided for @perk_startShield_desc.
+  /// No description provided for @perk_shieldRecharge_desc.
   ///
   /// In en, this message translates to:
-  /// **'One Shield charge at the start of each run, even without the skill'**
-  String get perk_startShield_desc;
+  /// **'A Shield charge every 7 streak steps instead of 10'**
+  String get perk_shieldRecharge_desc;
 
   /// No description provided for @perk_comboFloor.
   ///
@@ -1220,17 +1220,17 @@ abstract class AppLocalizations {
   /// **'A switch that buys the cheapest clock every 5 s'**
   String get perk_autoBuyer_desc;
 
-  /// No description provided for @perk_earlyModes.
+  /// No description provided for @perk_daredevil.
   ///
   /// In en, this message translates to:
   /// **'Daredevil'**
-  String get perk_earlyModes;
+  String get perk_daredevil;
 
-  /// No description provided for @perk_earlyModes_desc.
+  /// No description provided for @perk_daredevil_desc.
   ///
   /// In en, this message translates to:
-  /// **'Blind mode unlocked from the start'**
-  String get perk_earlyModes_desc;
+  /// **'Blind mode pays ×4 instead of ×3'**
+  String get perk_daredevil_desc;
 
   /// No description provided for @perk_unlockSchrodinger.
   ///
@@ -1451,7 +1451,7 @@ abstract class AppLocalizations {
   /// No description provided for @prestigePendingBody.
   ///
   /// In en, this message translates to:
-  /// **'Spend your Shards on perks now: Muscle memory, Head start and Shield already work in the new run.'**
+  /// **'Spend your Shards on perks now: Muscle memory and Head start already work in the new run.'**
   String get prestigePendingBody;
 
   /// No description provided for @prestigeStartRun.
@@ -1523,8 +1523,8 @@ abstract class AppLocalizations {
   /// No description provided for @modeBlind.
   ///
   /// In en, this message translates to:
-  /// **'Blind ×3'**
-  String get modeBlind;
+  /// **'Blind ×{mult}'**
+  String modeBlind(int mult);
 
   /// No description provided for @modeSecond.
   ///
@@ -1793,7 +1793,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_golden.
   ///
   /// In en, this message translates to:
-  /// **'Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks\' work, at most 10% of what you have\n• Hot hand (10%): for 30 s every hit counts as a PERFECT'**
+  /// **'Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks\' work\n• Hot hand (10%): for 60 s every hit counts as a PERFECT and pays ×10'**
   String get help_golden;
 
   /// No description provided for @help_modes_t.
@@ -1805,7 +1805,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_modes.
   ///
   /// In en, this message translates to:
-  /// **'Later, toggles appear above the shop: \"Blind\" (the stopwatch hides before the end but pays ×3), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).'**
+  /// **'Later, toggles appear above the shop: \"Blind\" (from 4.00 the stopwatch and its ring disappear, but hits pay ×3, ×4 with the Daredevil perk), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).'**
   String get help_modes;
 
   /// No description provided for @help_season_t.

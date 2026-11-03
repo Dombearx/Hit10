@@ -12,6 +12,7 @@ import '../providers.dart';
 import '../theme.dart';
 import 'ad_offer_sheet.dart';
 import 'burst.dart';
+import 'buy_button.dart';
 
 String clockText(double seconds) {
   final t = seconds.ceil();
@@ -59,7 +60,24 @@ class AdCornerButtons extends ConsumerWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(EmojiArt.path('television'), width: 22, height: 22),
+                if (cd == 0 && !adsProvider.isReady && adsProvider.isLoading)
+                  const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: Padding(
+                      padding: EdgeInsets.all(3),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: Palette.outline,
+                      ),
+                    ),
+                  )
+                else
+                  Image.asset(
+                    EmojiArt.path('television'),
+                    width: 22,
+                    height: 22,
+                  ),
                 const SizedBox(width: 4),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,23 +132,33 @@ class RescuePopup extends ConsumerWidget {
     final c = controller;
     final r = c.ads.rescue;
     final adsProvider = ref.watch(rewardedAdsProvider);
-    if (r == null || !c.ads.available(AdOffer.rescue, c.wallMs())) {
+    // No ad to show and none on its way: an offer that cannot be taken
+    // only teases.
+    if (r == null ||
+        !c.ads.available(AdOffer.rescue, c.wallMs()) ||
+        (!adsProvider.isReady && !adsProvider.isLoading)) {
       return const SizedBox.shrink();
     }
+    final ready = adsProvider.isReady;
     final l = AppLocalizations.of(context);
     final left = (r.expiresAtPlay - c.state.playSeconds).clamp(0.0, 9.0);
     return GestureDetector(
       key: const Key('ad-rescue'),
       // The 5 s offer says it all on the button: no second screen.
-      onTap: () => unawaited(() async {
-        final ok = await watchAdWithReward(
-          context,
-          c,
-          AdOffer.rescue,
-          adsProvider,
-        );
-        if (context.mounted) confirmAdResult(context, c, AdOffer.rescue, ok);
-      }()),
+      onTap: !ready
+          ? null
+          : () => unawaited(() async {
+              // The popup goes with the offer: say what happened from the screen
+              // (playtest 25: "no streak back" and no word why).
+              final messenger = ScaffoldMessenger.of(context);
+              final ok = await watchAdWithReward(
+                context,
+                c,
+                AdOffer.rescue,
+                adsProvider,
+              );
+              confirmAdResultWith(messenger, l, c, AdOffer.rescue, ok);
+            }()),
       child: Container(
         margin: const EdgeInsets.only(bottom: 4),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -142,14 +170,31 @@ class RescuePopup extends ConsumerWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(EmojiArt.path('television'), width: 22, height: 22),
+            if (ready)
+              Image.asset(EmojiArt.path('television'), width: 22, height: 22)
+            else
+              const SizedBox(
+                width: 22,
+                height: 22,
+                child: Padding(
+                  padding: EdgeInsets.all(3),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             const SizedBox(width: 6),
-            Text(
-              '${l.adRescue(r.streak)} · ${left.ceil()}',
-              style: const TextStyle(
-                fontFamily: Fonts.display,
-                fontSize: 14,
-                color: Colors.white,
+            // Narrow phones: wraps rather than running off the screen.
+            Flexible(
+              child: Text(
+                '${l.adRescue(r.streak)} · ${left.ceil()}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: Fonts.display,
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
@@ -182,4 +227,43 @@ Future<bool> watchAdWithReward(
     );
   }
   return ok;
+}
+
+/// A "watch an ad" button that follows the ad's loading: a spinner while
+/// one is on its way, "Ad unavailable" when none is coming (playtest 24:
+/// a grey button read as broken).
+class AdWatchButton extends StatelessWidget {
+  const AdWatchButton({
+    super.key,
+    required this.ads,
+    required this.price,
+    required this.onPressed,
+    this.minWidth = 120,
+  });
+
+  final RewardedAds ads;
+  final String price;
+  final VoidCallback onPressed;
+  final double minWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return StreamBuilder<bool>(
+      stream: ads.readiness,
+      builder: (context, _) {
+        final ready = ads.isReady;
+        final loading = !ready && ads.isLoading;
+        return BuyButton(
+          label: ready || loading ? '📺' : l.adUnavailable,
+          price: price,
+          enabled: ready,
+          loading: loading,
+          minWidth: minWidth,
+          celebrate: false,
+          onPressed: onPressed,
+        );
+      },
+    );
+  }
 }

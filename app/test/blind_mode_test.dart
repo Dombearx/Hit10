@@ -21,4 +21,27 @@ void main() {
     slot.round.cancel();
     expect(c.blindHidden(slot, 4.9), isFalse); // stopped: nothing to hide
   });
+
+  test('switching blind off mid-round shows the clock, without the bonus', () {
+    final c = GameController(
+      balance: loadBalance(),
+      state: GameState()
+        ..tutorialDone = true
+        ..modeBlind = true
+        ..lifetime.perfects = 100,
+    );
+    final slot = c.clocks.first;
+    slot.round.tap(0);
+    slot
+      ..blind = true
+      ..mode = 3;
+    expect(c.blindHidden(slot, 4.5), isTrue);
+    c.setMode(blind: false);
+    expect(c.blindHidden(slot, 4.5), isFalse);
+    expect(slot.mode, 1);
+    // Switching it back on mid-round changes nothing until the next round.
+    c.setMode(blind: true);
+    expect(c.blindHidden(slot, 4.5), isFalse);
+    expect(slot.mode, 1);
+  });
 }
