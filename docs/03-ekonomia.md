@@ -91,7 +91,7 @@ Testy balansu w CI pilnują tych przedziałów:
 | id | Cel | Przedział |
 |---|---|---|
 | **B-1** | Pierwszy Dziadek | ≤ 2 min |
-| **B-2** | Pierwszy Zegarmistrz (5.) | 15–40 min |
+| **B-2** | Pierwszy Zegarmistrz (5.) | 13–40 min (było 15; Fart bez limitu stanu konta, playtest 25, przyspiesza start o ~2 min) |
 | **B-3** | Pierwszy Zegar atomowy (9.) | 1.5–4 h |
 | **B-4** | Pierwsza Maszyna czasu (12.) | > 6 h w pierwszym runie (cel na kolejne runy) |
 | **B-5** | Chronony możliwe po 6 h pierwszego runu | 15–30 |

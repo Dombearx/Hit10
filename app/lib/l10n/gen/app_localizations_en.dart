@@ -992,7 +992,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_golden =>
-      'Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks\' work, at most 10% of what you have\n• Hot hand (10%): for 30 s every hit counts as a PERFECT';
+      'Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks\' work\n• Hot hand (10%): for 60 s every hit counts as a PERFECT and pays ×10';
 
   @override
   String get help_modes_t => 'Toggles';

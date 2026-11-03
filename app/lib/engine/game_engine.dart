@@ -231,12 +231,9 @@ class GameEngine {
         frenzy = pick.multiplier;
         return GoldenOutcome(GoldenEffect.frenzy, strength, secs);
       case 'lucky':
-        final amount =
-            strength *
-            math.min(
-              passive() * pick.productionSeconds,
-              s.tiki * pick.bankFraction,
-            );
+        // No cap on the bank (playtest 25): the player spends as they go,
+        // so "10 % of what you have" made it worth almost nothing.
+        final amount = strength * passive() * pick.productionSeconds;
         s.earn(amount);
         return GoldenOutcome(GoldenEffect.lucky, strength, amount);
       default:
@@ -316,12 +313,16 @@ class GameEngine {
     final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
     // The 10.00 jackpot goes by the raw tap: Luck and Hot hand don't win it.
     final jackpot = isJackpot(g) ? jackpotAmount() * combo * mode : 0.0;
+    // Hot hand also multiplies what the hit pays (playtest 25: turning
+    // hits into PERFECTs alone was worth a second of income).
+    final hotPay = hot ? b.golden.effect('hotHand').multiplier : 1.0;
     final payout =
         hitPayout(
-          Grade(tier, g.error, g.missKind, g.close),
-          combo: combo,
-          mode: mode,
-        ) +
+              Grade(tier, g.error, g.missKind, g.close),
+              combo: combo,
+              mode: mode,
+            ) *
+            hotPay +
         jackpot;
     s.earn(payout);
     _recordStats(g, tier);

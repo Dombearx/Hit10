@@ -994,7 +994,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_golden =>
-      'Co jakiś czas (średnio co 10 minut) po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota. Trafisz ją — dostaniesz jeden z bonusów; im lepsze trafienie, tym mocniejszy (PERFEKT w pełni, ŚWIETNIE 60%, DOBRZE 30%, pudło nic):\n• Szał (45% szans): cały dochód — zegary i trafienia — ×7 przez 77 s\n• Fart (45%): od razu Tiki — 10 minut pracy zegarów, najwyżej 10% tego, co masz\n• Gorąca ręka (10%): przez 30 s każde trafienie liczy się jak PERFEKT';
+      'Co jakiś czas (średnio co 10 minut) po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota. Trafisz ją — dostaniesz jeden z bonusów; im lepsze trafienie, tym mocniejszy (PERFEKT w pełni, ŚWIETNIE 60%, DOBRZE 30%, pudło nic):\n• Szał (45% szans): cały dochód — zegary i trafienia — ×7 przez 77 s\n• Fart (45%): od razu Tiki — 10 minut pracy zegarów\n• Gorąca ręka (10%): przez 60 s każde trafienie liczy się jak PERFEKT i płaci ×10';
 
   @override
   String get help_modes_t => 'Przełączniki';

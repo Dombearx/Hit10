@@ -190,14 +190,22 @@ class Simulator {
   double totalIncome(bool idle) {
     final p = _passive();
     if (idle) return p;
-    final total = p + _activeIncome(p);
+    final active = _activeIncome(p);
+    final total = p + active;
     final str = _goldenStrength();
     final iv = _goldenInterval();
     final fr = b.golden.effect('frenzy');
     final lucky = b.golden.effect('lucky');
+    final hot = b.golden.effect('hotHand');
     final frenzyShare = fr.weight * fr.duration * str / iv;
     final luckyIncome = lucky.weight * lucky.productionSeconds * str * p / iv;
-    return total * (1 + (fr.multiplier - 1) * frenzyShare) + luckyIncome;
+    // Hot hand: the hits pay ×multiplier for a while (all PERFECT is a
+    // small extra, left out).
+    final hotIncome =
+        active * (hot.multiplier - 1) * hot.weight * hot.duration * str / iv;
+    return total * (1 + (fr.multiplier - 1) * frenzyShare) +
+        luckyIncome +
+        hotIncome;
   }
 
   // ------------------------------------------------------------- buying --

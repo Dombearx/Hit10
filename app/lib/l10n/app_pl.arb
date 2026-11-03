@@ -289,7 +289,7 @@
   "help_combo_t": "Seria (combo)",
   "help_combo": "Kolejne trafienia bez pudła budują serię, a seria mnoży każdą wypłatę (pasek COMBO pod zegarem). Pudło ją zeruje, chyba że masz Tarczę.",
   "help_golden_t": "Złota Sekunda",
-  "help_golden": "Co jakiś czas (średnio co 10 minut) po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota. Trafisz ją — dostaniesz jeden z bonusów; im lepsze trafienie, tym mocniejszy (PERFEKT w pełni, ŚWIETNIE 60%, DOBRZE 30%, pudło nic):\n• Szał (45% szans): cały dochód — zegary i trafienia — ×7 przez 77 s\n• Fart (45%): od razu Tiki — 10 minut pracy zegarów, najwyżej 10% tego, co masz\n• Gorąca ręka (10%): przez 30 s każde trafienie liczy się jak PERFEKT",
+  "help_golden": "Co jakiś czas (średnio co 10 minut) po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota. Trafisz ją — dostaniesz jeden z bonusów; im lepsze trafienie, tym mocniejszy (PERFEKT w pełni, ŚWIETNIE 60%, DOBRZE 30%, pudło nic):\n• Szał (45% szans): cały dochód — zegary i trafienia — ×7 przez 77 s\n• Fart (45%): od razu Tiki — 10 minut pracy zegarów\n• Gorąca ręka (10%): przez 60 s każde trafienie liczy się jak PERFEKT i płaci ×10",
   "help_modes_t": "Przełączniki",
   "help_modes": "Później nad sklepem pojawią się przełączniki: „Na ślepo” (od 4.00 stoper i pasek znikają, ale trafienia płacą ×3, z perkiem Śmiałek ×4), „Drugi zegar” (dwa stopery naraz, każda połowa ekranu to jeden) i „Auto-kupiec” (sam kupuje zegary).",
   "help_season_t": "Wydarzenia",

@@ -31,7 +31,6 @@ void main(List<String> args) {
   final marks = [15, 60, 180, 360, 480];
   // mark → effect → gains (s of income), one per seed
   final gains = <int, Map<String, List<double>>>{};
-  final luckyCap = <int, List<double>>{};
   final hitShare = <int, List<double>>{};
 
   for (var seed = 1; seed <= seeds; seed++) {
@@ -87,14 +86,10 @@ void main(List<String> args) {
       for (final fx in ['frenzy', 'hotHand']) {
         m.putIfAbsent(fx, () => []).add((play(fx) - base) / perSecond);
       }
-      // Lucky is a lump: 10 min of clocks, at most 10 % of the bank.
+      // Lucky is a lump: minutes of the clocks' work.
       final lucky = b.golden.effect('lucky');
-      final passive = sim.e.passive();
-      final full = passive * lucky.productionSeconds;
-      final capped = math.min(full, sim.s.tiki * lucky.bankFraction);
-      m.putIfAbsent('lucky', () => []).add(capped / perSecond);
-      m.putIfAbsent('lucky (no cap)', () => []).add(full / perSecond);
-      luckyCap.putIfAbsent(mark, () => []).add(capped < full ? 1 : 0);
+      final full = sim.e.passive() * lucky.productionSeconds;
+      m.putIfAbsent('lucky', () => []).add(full / perSecond);
     };
     sim.run();
   }
@@ -108,21 +103,16 @@ void main(List<String> args) {
     'Złota Sekunda przy PERFEKCIE (σ = ${(sigma * 1000).round()} ms, '
     '$seeds ziaren, mediana). Zysk w sekundach normalnego dochodu.\n',
   );
-  stdout.writeln(
-    '  czas    Szał   Gorąca ręka   Fart   Fart bez limitu  limit 10%   udział trafień',
-  );
+  stdout.writeln('  czas    Szał   Gorąca ręka   Fart   udział trafień');
   for (final mark in marks) {
     final m = gains[mark];
     if (m == null) continue;
-    final capHit = luckyCap[mark]!.fold<double>(0, (a, v) => a + v);
     String f(String k) => median(m[k]!).round().toString();
     stdout.writeln(
       '  ${mark.toString().padLeft(3)} min'
       '${f('frenzy').padLeft(7)}'
       '${f('hotHand').padLeft(14)}'
       '${f('lucky').padLeft(7)}'
-      '${f('lucky (no cap)').padLeft(17)}'
-      '${'${capHit.round()}/$seeds'.padLeft(11)}'
       '${'${(median(hitShare[mark]!) * 100).round()}%'.padLeft(17)}',
     );
   }

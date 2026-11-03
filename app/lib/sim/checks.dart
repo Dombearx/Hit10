@@ -68,7 +68,9 @@ Future<List<CheckRow>> runChecks(
   ], (v) => v <= 2);
   add('B-2', 'first watchmaker (min)', [
     for (final r in skilled) first(r, 'watchmaker') / 60,
-  ], (v) => v >= 15 && v <= 40);
+    // 13, not 15: Lucky without the bank cap (playtest 25) pays a first
+    // golden second in full, ~2 min sooner.
+  ], (v) => v >= 13 && v <= 40);
   add('B-3', 'first atomic clock (h)', [
     for (final r in skilled) first(r, 'atomic') / hr,
   ], (v) => v >= 1.5 && v <= 4);
