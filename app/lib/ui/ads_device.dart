@@ -121,26 +121,44 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
     }
     _ad = null;
     var earned = false;
+    var closed = false;
     final done = Completer<bool>();
-    void finish(Ad a) {
+    void finish(Ad a, {bool failed = false}) {
+      closed = true;
       a.dispose();
-      if (!done.isCompleted) done.complete(earned);
       _load();
+      if (done.isCompleted) return;
+      if (earned || failed) {
+        done.complete(earned);
+        return;
+      }
+      // On some devices the reward callback lands just after the ad is
+      // closed: wait a moment for it before calling the ad unwatched
+      // (playtest 25: a watched rescue gave nothing).
+      Timer(const Duration(milliseconds: 1500), () {
+        if (!done.isCompleted) done.complete(earned);
+      });
     }
 
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: finish,
       onAdFailedToShowFullScreenContent: (a, _) {
         earned = false;
-        finish(a);
+        finish(a, failed: true);
       },
     );
     try {
       // R-AD-3: the reward counts only once the network says it was earned.
-      await ad.show(onUserEarnedReward: (_, _) => earned = true);
+      await ad.show(
+        onUserEarnedReward: (_, _) {
+          earned = true;
+          // Late reward: the ad is already closed and waiting for it.
+          if (closed && !done.isCompleted) done.complete(true);
+        },
+      );
     } on Object catch (e) {
       debugPrint('ad show failed: $e');
-      finish(ad);
+      finish(ad, failed: true);
     }
     return done.future;
   }

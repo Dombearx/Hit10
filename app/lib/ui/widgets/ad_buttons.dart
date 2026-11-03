@@ -132,23 +132,33 @@ class RescuePopup extends ConsumerWidget {
     final c = controller;
     final r = c.ads.rescue;
     final adsProvider = ref.watch(rewardedAdsProvider);
-    if (r == null || !c.ads.available(AdOffer.rescue, c.wallMs())) {
+    // No ad to show and none on its way: an offer that cannot be taken
+    // only teases.
+    if (r == null ||
+        !c.ads.available(AdOffer.rescue, c.wallMs()) ||
+        (!adsProvider.isReady && !adsProvider.isLoading)) {
       return const SizedBox.shrink();
     }
+    final ready = adsProvider.isReady;
     final l = AppLocalizations.of(context);
     final left = (r.expiresAtPlay - c.state.playSeconds).clamp(0.0, 9.0);
     return GestureDetector(
       key: const Key('ad-rescue'),
       // The 5 s offer says it all on the button: no second screen.
-      onTap: () => unawaited(() async {
-        final ok = await watchAdWithReward(
-          context,
-          c,
-          AdOffer.rescue,
-          adsProvider,
-        );
-        if (context.mounted) confirmAdResult(context, c, AdOffer.rescue, ok);
-      }()),
+      onTap: !ready
+          ? null
+          : () => unawaited(() async {
+              // The popup goes with the offer: say what happened from the screen
+              // (playtest 25: "no streak back" and no word why).
+              final messenger = ScaffoldMessenger.of(context);
+              final ok = await watchAdWithReward(
+                context,
+                c,
+                AdOffer.rescue,
+                adsProvider,
+              );
+              confirmAdResultWith(messenger, l, c, AdOffer.rescue, ok);
+            }()),
       child: Container(
         margin: const EdgeInsets.only(bottom: 4),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -160,14 +170,31 @@ class RescuePopup extends ConsumerWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(EmojiArt.path('television'), width: 22, height: 22),
+            if (ready)
+              Image.asset(EmojiArt.path('television'), width: 22, height: 22)
+            else
+              const SizedBox(
+                width: 22,
+                height: 22,
+                child: Padding(
+                  padding: EdgeInsets.all(3),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             const SizedBox(width: 6),
-            Text(
-              '${l.adRescue(r.streak)} · ${left.ceil()}',
-              style: const TextStyle(
-                fontFamily: Fonts.display,
-                fontSize: 14,
-                color: Colors.white,
+            // Narrow phones: wraps rather than running off the screen.
+            Flexible(
+              child: Text(
+                '${l.adRescue(r.streak)} · ${left.ceil()}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: Fonts.display,
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/ads/rewarded_ads.dart';
+import 'package:hit10/engine/ad_offers.dart';
 import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/engine/round_engine.dart';
 import 'package:hit10/model/game_state.dart';
@@ -165,4 +166,21 @@ void main() {
     expect(c.paused, isFalse);
     expect(c.state.comboStreak, 5);
   });
+
+  testWidgets(
+    'rescue: tapping the popup plays the ad and restores the streak',
+    (tester) async {
+      final ads = FakeRewardedAds(delay: const Duration(milliseconds: 50));
+      final c = await pumpGame(tester, played()..skills['combo'] = 15, ads);
+      c.ads.rescue = RescueOffer(20, c.state.playSeconds + 5);
+      c.state.comboStreak = 0;
+      c.notifyListeners();
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.tap(find.byKey(const Key('ad-rescue')));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle();
+      expect(ads.shown, 1);
+      expect(c.state.comboStreak, 20);
+    },
+  );
 }

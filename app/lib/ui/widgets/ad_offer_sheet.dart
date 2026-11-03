@@ -37,7 +37,20 @@ void confirmAdResult(
   AdOffer offer,
   bool ok,
 ) {
-  final l = AppLocalizations.of(context);
+  final m = ScaffoldMessenger.maybeOf(context);
+  if (m == null) return;
+  confirmAdResultWith(m, AppLocalizations.of(context), c, offer, ok);
+}
+
+/// [confirmAdResult] for callers whose widget may be gone once the ad
+/// ends (the rescue popup disappears with the offer).
+void confirmAdResultWith(
+  ScaffoldMessengerState messenger,
+  AppLocalizations l,
+  GameController c,
+  AdOffer offer,
+  bool ok,
+) {
   final text = !ok
       ? l.adNoReward
       : switch (offer) {
@@ -47,8 +60,8 @@ void confirmAdResult(
           AdOffer.rescue => l.adDoneRescue,
           AdOffer.offline => l.adDoneOffline,
         };
-  ScaffoldMessenger.maybeOf(context)
-    ?..hideCurrentSnackBar()
+  messenger
+    ..hideCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
         content: Text(text),
