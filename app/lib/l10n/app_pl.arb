@@ -105,8 +105,40 @@
   "skillEffect": "{label}: {now} → {next}",
   "skillEffectMax": "{label}: {now}",
   "skillMaxed": "MAX",
-  "skillKeptInfo": "Po paradoksie zostaje {kept} poz. (Pamięć mięśniowa: do {cap}).",
-  "skillKeptNone": "Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów — kupione dziś dadzą lepszy start następnym razem.",
+  "skillKeptInfo": "Po paradoksie zostaje {kept} poz. (Pamięć mięśniowa: {share}% poziomów, zaokrąglone).",
+  "skillKeptNone": "Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów, a Nawyk całą wybraną umiejętność — kupione dziś dadzą lepszy start następnym razem.",
+  "prestigeHabitTitle": "Nawyk {used}/{slots}: które umiejętności zachowają wszystkie poziomy?",
+  "@prestigeHabitTitle": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillKeptHabit": "W slocie Nawyku: po paradoksie zostają wszystkie poziomy.",
+  "skillHabitRemove": "Wyjmij z Nawyku",
+  "skillHabitAdd": "Zachowaj w całości (Nawyk {used}/{slots})",
+  "@skillHabitAdd": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillHabitMove": "Zachowaj w całości zamiast: {skill}",
+  "@skillHabitMove": {
+    "placeholders": {
+      "skill": {
+        "type": "String"
+      }
+    }
+  },
   "inHundred": "{n}%",
   "oddsPerfect": "PERFEKTY",
   "oddsGreatOrBetter": "ŚWIETNIE lub lepiej",
@@ -166,11 +198,15 @@
   "perk_headStart": "Szybki start",
   "perk_headStart_desc": "Po każdym paradoksie zaczynasz z 10 Dziadkami i 1K Tików",
   "perk_muscleMemory1": "Pamięć mięśniowa I",
-  "perk_muscleMemory1_desc": "Po paradoksie każda umiejętność zostaje do 4. poziomu",
+  "perk_muscleMemory1_desc": "Po paradoksie każda umiejętność zachowuje 50% poziomów",
   "perk_muscleMemory2": "Pamięć mięśniowa II",
-  "perk_muscleMemory2_desc": "…do 6. poziomu",
+  "perk_muscleMemory2_desc": "…65% poziomów",
   "perk_muscleMemory3": "Pamięć mięśniowa III",
-  "perk_muscleMemory3_desc": "…do 8. poziomu",
+  "perk_muscleMemory3_desc": "…80% poziomów",
+  "perk_habit1": "Nawyk I",
+  "perk_habit1_desc": "Wybrana umiejętność zachowuje po paradoksie wszystkie poziomy (wybór w szczegółach umiejętności)",
+  "perk_habit2": "Nawyk II",
+  "perk_habit2_desc": "…i druga wybrana",
   "perk_longNap1": "Długa drzemka I",
   "perk_longNap1_desc": "Limit offline 12 h",
   "perk_longNap2": "Długa drzemka II",

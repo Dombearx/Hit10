@@ -495,15 +495,49 @@ class GameEngine {
 
   bool canPrestige() => econ.prestigeGain() >= 1;
 
-  /// How many levels of each skill survive a paradox: the best Muscle
-  /// memory perk owned (0 without one).
-  int keptSkillLevels() {
-    var keep = 0;
+  /// Share of every skill's levels that survives a paradox: the best
+  /// Muscle memory perk owned (0 without one, R-PRES-5a).
+  double keptSkillShare() {
+    var keep = 0.0;
     for (final p in b.prestige.perks) {
-      final n = p.params['keepLevels'];
-      if (n != null && s.perks.contains(p.id)) keep = math.max(keep, n.round());
+      final n = p.params['keepShare'];
+      if (n != null && s.perks.contains(p.id)) keep = math.max(keep, n);
     }
     return keep;
+  }
+
+  /// Habit slots owned: each keeps one chosen skill whole (R-PRES-5b).
+  int habitSlots() {
+    var n = 0;
+    for (final p in b.prestige.perks) {
+      final k = p.params['habitSlots'];
+      if (k != null && s.perks.contains(p.id)) n = math.max(n, k.round());
+    }
+    return n;
+  }
+
+  /// Skills in a Habit slot that is owned (a save may hold more).
+  List<String> get activeHabits => s.habits.take(habitSlots()).toList();
+
+  /// Levels of [id] the next paradox leaves: all of them in a Habit slot,
+  /// else the Muscle memory share, rounded half up.
+  int keptLevels(String id) {
+    final level = econ.level(id);
+    if (activeHabits.contains(id)) return level;
+    return (level * keptSkillShare() + 1e-9).round().clamp(0, level);
+  }
+
+  /// Puts [id] in a Habit slot (the oldest one moves out when all are
+  /// taken) or takes it out. Returns whether it is in a slot now.
+  bool toggleHabit(String id) {
+    final slots = habitSlots();
+    if (s.habits.remove(id)) return false;
+    if (slots == 0) return false;
+    s.habits.add(id);
+    while (s.habits.length > slots) {
+      s.habits.removeAt(0);
+    }
+    return true;
   }
 
   /// Time paradox (R-PRES-1…5): converts lifetime Tiki into Chronons and
@@ -533,10 +567,9 @@ class GameEngine {
   void finishPrestige() {
     if (!s.rewindPending) return;
     s.rewindPending = false;
-    // Muscle memory (R-PRES-5a): every skill keeps up to N levels.
-    final keep = keptSkillLevels();
+    // Muscle memory and Habits (R-PRES-5a, 5b).
     final kept = <String, int>{
-      for (final e in s.skills.entries) e.key: math.min(e.value, keep),
+      for (final id in s.skills.keys) id: keptLevels(id),
     };
     s
       ..tiki = 0

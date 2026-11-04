@@ -702,6 +702,14 @@ class GameController extends ChangeNotifier {
     return r;
   }
 
+  /// Puts a skill in a Habit slot or takes it out (R-PRES-5b).
+  void toggleHabit(String id) {
+    final on = engine.toggleHabit(id);
+    _log('habit', {'id': id, 'on': on ? 1 : 0});
+    unawaited(save());
+    notifyListeners();
+  }
+
   BuyResult buyPerk(String id) {
     final r = _afterBuy(engine.buyPerk(id));
     if (r == BuyResult.ok) _log('perk_buy', {'id': id, 'shards': state.shards});

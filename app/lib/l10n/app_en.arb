@@ -213,18 +213,50 @@
     }
   },
   "skillMaxed": "MAX",
-  "skillKeptInfo": "After a paradox {kept} levels stay (Muscle memory: up to {cap}).",
+  "skillKeptInfo": "After a paradox {kept} levels stay (Muscle memory: {share}% of levels, rounded).",
   "@skillKeptInfo": {
     "placeholders": {
       "kept": {
         "type": "String"
       },
-      "cap": {
+      "share": {
         "type": "String"
       }
     }
   },
-  "skillKeptNone": "After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.",
+  "skillKeptNone": "After a paradox skills go back to zero. The Muscle memory perk keeps part of the levels, and a Habit keeps a chosen skill whole — what you buy now gives the next run a better start.",
+  "prestigeHabitTitle": "Habit {used}/{slots}: which skills keep every level?",
+  "@prestigeHabitTitle": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillKeptHabit": "In a Habit slot: after a paradox every level stays.",
+  "skillHabitRemove": "Take out of the Habit",
+  "skillHabitAdd": "Keep it whole (Habit {used}/{slots})",
+  "@skillHabitAdd": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillHabitMove": "Keep it whole instead of {skill}",
+  "@skillHabitMove": {
+    "placeholders": {
+      "skill": {
+        "type": "String"
+      }
+    }
+  },
   "inHundred": "{n}%",
   "@inHundred": {
     "placeholders": {
@@ -453,11 +485,15 @@
   "perk_headStart": "Head start",
   "perk_headStart_desc": "After each paradox start with 10 Grandpas and 1K Ticks",
   "perk_muscleMemory1": "Muscle memory I",
-  "perk_muscleMemory1_desc": "After a paradox every skill keeps up to level 4",
+  "perk_muscleMemory1_desc": "After a paradox every skill keeps 50% of its levels",
   "perk_muscleMemory2": "Muscle memory II",
-  "perk_muscleMemory2_desc": "…up to level 6",
+  "perk_muscleMemory2_desc": "…65% of its levels",
   "perk_muscleMemory3": "Muscle memory III",
-  "perk_muscleMemory3_desc": "…up to level 8",
+  "perk_muscleMemory3_desc": "…80% of its levels",
+  "perk_habit1": "Habit I",
+  "perk_habit1_desc": "One skill you choose keeps all its levels after a paradox (choose in the skill details)",
+  "perk_habit2": "Habit II",
+  "perk_habit2_desc": "…and a second one",
   "perk_longNap1": "Long nap I",
   "perk_longNap1_desc": "Offline limit 12 h",
   "perk_longNap2": "Long nap II",

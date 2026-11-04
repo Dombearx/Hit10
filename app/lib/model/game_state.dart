@@ -25,6 +25,10 @@ class GameState {
   int chronons = 0;
   int shards = 0;
   final Set<String> perks = {};
+
+  /// Skills put in a Habit slot: they keep every level through the paradox
+  /// (R-PRES-5b). At most as many as the Habit perks owned give slots.
+  final List<String> habits = [];
   final Set<String> achievements = {};
   int prestiges = 0;
 

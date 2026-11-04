@@ -731,14 +731,44 @@ abstract class AppLocalizations {
   /// No description provided for @skillKeptInfo.
   ///
   /// In en, this message translates to:
-  /// **'After a paradox {kept} levels stay (Muscle memory: up to {cap}).'**
-  String skillKeptInfo(String kept, String cap);
+  /// **'After a paradox {kept} levels stay (Muscle memory: {share}% of levels, rounded).'**
+  String skillKeptInfo(String kept, String share);
 
   /// No description provided for @skillKeptNone.
   ///
   /// In en, this message translates to:
-  /// **'After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.'**
+  /// **'After a paradox skills go back to zero. The Muscle memory perk keeps part of the levels, and a Habit keeps a chosen skill whole — what you buy now gives the next run a better start.'**
   String get skillKeptNone;
+
+  /// No description provided for @prestigeHabitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit {used}/{slots}: which skills keep every level?'**
+  String prestigeHabitTitle(String used, String slots);
+
+  /// No description provided for @skillKeptHabit.
+  ///
+  /// In en, this message translates to:
+  /// **'In a Habit slot: after a paradox every level stays.'**
+  String get skillKeptHabit;
+
+  /// No description provided for @skillHabitRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Take out of the Habit'**
+  String get skillHabitRemove;
+
+  /// No description provided for @skillHabitAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it whole (Habit {used}/{slots})'**
+  String skillHabitAdd(String used, String slots);
+
+  /// No description provided for @skillHabitMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it whole instead of {skill}'**
+  String skillHabitMove(String skill);
 
   /// No description provided for @inHundred.
   ///
@@ -1097,7 +1127,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory1_desc.
   ///
   /// In en, this message translates to:
-  /// **'After a paradox every skill keeps up to level 4'**
+  /// **'After a paradox every skill keeps 50% of its levels'**
   String get perk_muscleMemory1_desc;
 
   /// No description provided for @perk_muscleMemory2.
@@ -1109,7 +1139,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory2_desc.
   ///
   /// In en, this message translates to:
-  /// **'…up to level 6'**
+  /// **'…65% of its levels'**
   String get perk_muscleMemory2_desc;
 
   /// No description provided for @perk_muscleMemory3.
@@ -1121,8 +1151,32 @@ abstract class AppLocalizations {
   /// No description provided for @perk_muscleMemory3_desc.
   ///
   /// In en, this message translates to:
-  /// **'…up to level 8'**
+  /// **'…80% of its levels'**
   String get perk_muscleMemory3_desc;
+
+  /// No description provided for @perk_habit1.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit I'**
+  String get perk_habit1;
+
+  /// No description provided for @perk_habit1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'One skill you choose keeps all its levels after a paradox (choose in the skill details)'**
+  String get perk_habit1_desc;
+
+  /// No description provided for @perk_habit2.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit II'**
+  String get perk_habit2;
+
+  /// No description provided for @perk_habit2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'…and a second one'**
+  String get perk_habit2_desc;
 
   /// No description provided for @perk_longNap1.
   ///

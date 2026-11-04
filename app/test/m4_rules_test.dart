@@ -72,24 +72,51 @@ void main() {
         'headStart',
       });
       e.prestige();
-      // Muscle memory III: every skill keeps up to 8 levels (R-PRES-5a).
-      expect(s.skills['fastForward'], 6);
-      expect(s.skills['wideEye'], 4);
-      expect(s.skills['magnet'], 5);
-      expect(s.skills['echo'], 8); // 12 → capped at 8
+      // Muscle memory III: every skill keeps 80 % of its levels, rounded
+      // (R-PRES-5a).
+      expect(s.skills['fastForward'], 5); // 4.8
+      expect(s.skills['wideEye'], 3); // 3.2
+      expect(s.skills['magnet'], 4);
+      expect(s.skills['echo'], 10); // 9.6
       expect(s.owned['grandpa'], 10);
       expect(s.tiki, 1000);
     });
 
-    test('muscle memory I keeps every skill up to level 4', () {
+    test('muscle memory I keeps half of every skill, rounded up', () {
       s.perks.add('muscleMemory1');
       e.prestige();
       expect(s.skills, {
-        'fastForward': 4,
-        'wideEye': 4,
-        'magnet': 4,
-        'echo': 4,
+        'fastForward': 3,
+        'wideEye': 2,
+        'magnet': 3, // 2.5
+        'echo': 6,
       });
+    });
+
+    test('a Habit keeps the chosen skill whole (R-PRES-5b)', () {
+      expect(e.toggleHabit('echo'), isFalse); // no slot without the perk
+      s.perks.addAll({'muscleMemory1', 'habit1'});
+      expect(e.toggleHabit('echo'), isTrue);
+      expect(e.keptLevels('echo'), 12);
+      e.prestige();
+      expect(s.skills['echo'], 12);
+      expect(s.skills['magnet'], 3);
+      expect(s.habits, ['echo']); // stays for the next paradox
+    });
+
+    test('one Habit slot: choosing another skill moves it', () {
+      s.perks.add('habit1');
+      e.toggleHabit('echo');
+      expect(e.toggleHabit('magnet'), isTrue);
+      expect(s.habits, ['magnet']);
+      expect(e.toggleHabit('magnet'), isFalse); // taken out
+      expect(s.habits, isEmpty);
+      s.perks.add('habit2');
+      e
+        ..toggleHabit('echo')
+        ..toggleHabit('magnet');
+      expect(e.activeHabits, ['echo', 'magnet']);
+      expect(e.keptLevels('wideEye'), 0); // no Muscle memory
     });
 
     test('shards from this paradox buy perks for the new run (R-PRES-6a)', () {
@@ -103,7 +130,7 @@ void main() {
       expect(e.buyPerk('headStart'), BuyResult.ok);
       e.finishPrestige();
       expect(s.rewindPending, isFalse);
-      expect(s.skills['echo'], 4);
+      expect(s.skills['echo'], 6);
       expect(s.owned['grandpa'], 10);
       expect(s.tiki, 1000);
       e.finishPrestige(); // no second reset

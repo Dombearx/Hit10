@@ -324,18 +324,33 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   Chrononom. Okruchy wydaje się na perki. Wydawanie ich **nie** zmniejsza
   liczby Chrononów.
 - **R-PRES-5:** Reset zeruje: Tiki, generatory, ulepszenia generatorów,
-  umiejętności (powyżej limitu Pamięci mięśniowej, R-PRES-5a), combo i
-  aktywne efekty.
-  **Zostają:** Chronony, Okruchy, perki, osiągnięcia, statystyki, odblokowane
-  tryby i ustawienia.
+  umiejętności (poza tym, co zachowują Pamięć mięśniowa i Nawyk,
+  R-PRES-5a/5b), combo i aktywne efekty.
+  **Zostają:** Chronony, Okruchy, perki, wybrane Nawyki, osiągnięcia,
+  statystyki, odblokowane tryby i ustawienia.
 - **R-PRES-5a:** Pamięć mięśniowa I/II/III: po paradoksie każda umiejętność
-  zostaje do **4 / 6 / 8** poziomu; wyższe poziomy trzeba odkupić. Karta
-  umiejętności pokazuje kłódkę z liczbą zachowanych poziomów, szczegóły
-  mówią, ile zostanie (albo że bez perku wszystko wraca do zera).
-  Symulacja (tool/prestige_report.dart): zachowanie 3 poziomów prawie nic
-  nie daje (tanie poziomy i tak się odkupuje), 5–7 poziomów skraca kolejne
-  przejścia o 10–25%, zachowanie wszystkiego o ok. 35% — ale wtedy od
-  drugiego przejścia nie ma już w co inwestować.
+  zachowuje **50% / 65% / 80%** swoich poziomów, zaokrąglone (połówka
+  w górę). Wcześniej był to stały próg „do 4 / 6 / 8 poziomu”. Zmiana po
+  playteście: poziomy powyżej 8 (np. drogiej Siły trafienia kupowanej
+  jako inwestycja w następny start) przepadały w całości. Teraz im wyżej
+  gracz zainwestuje, tym więcej zostaje. Karta umiejętności pokazuje kłódkę
+  z liczbą zachowanych poziomów, a szczegóły mówią, ile zostanie (albo że
+  bez perku wszystko wraca do zera).
+- **R-PRES-5b:** Nawyk I/II (wzór: „stałe sloty na ulepszenia” w Cookie
+  Clickerze): każdy daje slot na **jedną wybraną umiejętność, która
+  zachowuje po paradoksie wszystkie poziomy**. Wybór jest w szczegółach
+  umiejętności („Zachowaj w całości”). Można go zmienić w każdej chwili
+  i liczy się dopiero przy paradoksie. Gdy sloty są zajęte, nowy wybór
+  wypycha najstarszy. Wybrane umiejętności mają na karcie pinezkę zamiast
+  kłódki.
+- **Symulacja** (tool/prestige_report.dart, 3 przejścia po 6 h, czas, po
+  którym drugie przejście dogania całe pierwsze): bez perku 4.4 h,
+  50/65/80% 4.25/4.07/3.90 h, 80% + Nawyk I/II 3.72/3.48 h, wszystko
+  zostaje 3.26 h (dawne „do 4/6/8” 4.18/3.92/3.55 h). Cały zestaw daje tyle
+  co dawna Pamięć III, ale sam procent jest słabszy, bo tanie dolne poziomy
+  i tak szybko się odkupuje. Zachowanie wszystkiego skraca przejścia
+  o ok. 35%, ale wtedy od drugiego przejścia nie ma już w co inwestować,
+  więc żaden zestaw perków nie zachowuje wszystkiego.
 - **R-PRES-6:** Prestiż wymaga podwójnego potwierdzenia i ma spektakularną
   animację („przewinięcie czasu” wstecz).
 - **R-PRES-6a:** Po animacji gracz dostaje Chronony i Okruchy, ale run
@@ -350,9 +365,11 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | id | Nazwa | Koszt (Okruchy) | Działanie | Wymaga |
 |---|---|---|---|---|
 | `headStart` | Szybki start | 5 | start runu z 10 dziadkami i 1K Tików | – |
-| `muscleMemory1` | Pamięć mięśniowa I | 10 | każda umiejętność zostaje po resecie do 4. poziomu | – |
-| `muscleMemory2` | Pamięć mięśniowa II | 50 | …do 6. poziomu | I |
-| `muscleMemory3` | Pamięć mięśniowa III | 250 | …do 8. poziomu | II |
+| `muscleMemory1` | Pamięć mięśniowa I | 10 | każda umiejętność zachowuje po paradoksie 50% poziomów | – |
+| `muscleMemory2` | Pamięć mięśniowa II | 50 | …65% poziomów | I |
+| `muscleMemory3` | Pamięć mięśniowa III | 250 | …80% poziomów | II |
+| `habit1` | Nawyk I | 40 | slot: jedna wybrana umiejętność zachowuje wszystkie poziomy (R-PRES-5b) | – |
+| `habit2` | Nawyk II | 150 | drugi slot | I |
 | `longNap1` | Długa drzemka I | 10 | limit offline 12 h | – |
 | `longNap2` | Długa drzemka II | 40 | limit offline 24 h | I |
 | `deepSleep1` | Głęboki sen I | 20 | offline 75% wydajności | – |

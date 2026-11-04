@@ -26,7 +26,7 @@ void main() {
     final b = Balance.fromJsonString(repoBalance());
     expect(b.generators, hasLength(14));
     expect(b.skills, hasLength(11));
-    expect(b.prestige.perks, hasLength(16));
+    expect(b.prestige.perks, hasLength(18));
     expect(b.synergies, hasLength(6));
     expect(b.tier('perfect').window, 0.015);
     expect(b.jackpot.window, 0.010);

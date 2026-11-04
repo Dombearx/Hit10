@@ -383,7 +383,7 @@
         "id": "muscleMemory1",
         "cost": 10,
         "params": {
-          "keepLevels": 4
+          "keepShare": 0.5
         }
       },
       {
@@ -391,7 +391,7 @@
         "cost": 50,
         "requires": "muscleMemory1",
         "params": {
-          "keepLevels": 6
+          "keepShare": 0.65
         }
       },
       {
@@ -399,7 +399,22 @@
         "cost": 250,
         "requires": "muscleMemory2",
         "params": {
-          "keepLevels": 8
+          "keepShare": 0.8
+        }
+      },
+      {
+        "id": "habit1",
+        "cost": 40,
+        "params": {
+          "habitSlots": 1
+        }
+      },
+      {
+        "id": "habit2",
+        "cost": 150,
+        "requires": "habit1",
+        "params": {
+          "habitSlots": 2
         }
       },
       {

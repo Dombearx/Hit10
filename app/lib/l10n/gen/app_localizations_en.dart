@@ -355,13 +355,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skillMaxed => 'MAX';
 
   @override
-  String skillKeptInfo(String kept, String cap) {
-    return 'After a paradox $kept levels stay (Muscle memory: up to $cap).';
+  String skillKeptInfo(String kept, String share) {
+    return 'After a paradox $kept levels stay (Muscle memory: $share% of levels, rounded).';
   }
 
   @override
   String get skillKeptNone =>
-      'After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.';
+      'After a paradox skills go back to zero. The Muscle memory perk keeps part of the levels, and a Habit keeps a chosen skill whole — what you buy now gives the next run a better start.';
+
+  @override
+  String prestigeHabitTitle(String used, String slots) {
+    return 'Habit $used/$slots: which skills keep every level?';
+  }
+
+  @override
+  String get skillKeptHabit =>
+      'In a Habit slot: after a paradox every level stays.';
+
+  @override
+  String get skillHabitRemove => 'Take out of the Habit';
+
+  @override
+  String skillHabitAdd(String used, String slots) {
+    return 'Keep it whole (Habit $used/$slots)';
+  }
+
+  @override
+  String skillHabitMove(String skill) {
+    return 'Keep it whole instead of $skill';
+  }
 
   @override
   String inHundred(String n) {
@@ -588,19 +610,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get perk_muscleMemory1_desc =>
-      'After a paradox every skill keeps up to level 4';
+      'After a paradox every skill keeps 50% of its levels';
 
   @override
   String get perk_muscleMemory2 => 'Muscle memory II';
 
   @override
-  String get perk_muscleMemory2_desc => '…up to level 6';
+  String get perk_muscleMemory2_desc => '…65% of its levels';
 
   @override
   String get perk_muscleMemory3 => 'Muscle memory III';
 
   @override
-  String get perk_muscleMemory3_desc => '…up to level 8';
+  String get perk_muscleMemory3_desc => '…80% of its levels';
+
+  @override
+  String get perk_habit1 => 'Habit I';
+
+  @override
+  String get perk_habit1_desc =>
+      'One skill you choose keeps all its levels after a paradox (choose in the skill details)';
+
+  @override
+  String get perk_habit2 => 'Habit II';
+
+  @override
+  String get perk_habit2_desc => '…and a second one';
 
   @override
   String get perk_longNap1 => 'Long nap I';

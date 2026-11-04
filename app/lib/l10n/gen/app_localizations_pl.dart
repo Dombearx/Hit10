@@ -357,13 +357,35 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skillMaxed => 'MAX';
 
   @override
-  String skillKeptInfo(String kept, String cap) {
-    return 'Po paradoksie zostaje $kept poz. (Pamięć mięśniowa: do $cap).';
+  String skillKeptInfo(String kept, String share) {
+    return 'Po paradoksie zostaje $kept poz. (Pamięć mięśniowa: $share% poziomów, zaokrąglone).';
   }
 
   @override
   String get skillKeptNone =>
-      'Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów — kupione dziś dadzą lepszy start następnym razem.';
+      'Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów, a Nawyk całą wybraną umiejętność — kupione dziś dadzą lepszy start następnym razem.';
+
+  @override
+  String prestigeHabitTitle(String used, String slots) {
+    return 'Nawyk $used/$slots: które umiejętności zachowają wszystkie poziomy?';
+  }
+
+  @override
+  String get skillKeptHabit =>
+      'W slocie Nawyku: po paradoksie zostają wszystkie poziomy.';
+
+  @override
+  String get skillHabitRemove => 'Wyjmij z Nawyku';
+
+  @override
+  String skillHabitAdd(String used, String slots) {
+    return 'Zachowaj w całości (Nawyk $used/$slots)';
+  }
+
+  @override
+  String skillHabitMove(String skill) {
+    return 'Zachowaj w całości zamiast: $skill';
+  }
 
   @override
   String inHundred(String n) {
@@ -589,19 +611,32 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get perk_muscleMemory1_desc =>
-      'Po paradoksie każda umiejętność zostaje do 4. poziomu';
+      'Po paradoksie każda umiejętność zachowuje 50% poziomów';
 
   @override
   String get perk_muscleMemory2 => 'Pamięć mięśniowa II';
 
   @override
-  String get perk_muscleMemory2_desc => '…do 6. poziomu';
+  String get perk_muscleMemory2_desc => '…65% poziomów';
 
   @override
   String get perk_muscleMemory3 => 'Pamięć mięśniowa III';
 
   @override
-  String get perk_muscleMemory3_desc => '…do 8. poziomu';
+  String get perk_muscleMemory3_desc => '…80% poziomów';
+
+  @override
+  String get perk_habit1 => 'Nawyk I';
+
+  @override
+  String get perk_habit1_desc =>
+      'Wybrana umiejętność zachowuje po paradoksie wszystkie poziomy (wybór w szczegółach umiejętności)';
+
+  @override
+  String get perk_habit2 => 'Nawyk II';
+
+  @override
+  String get perk_habit2_desc => '…i druga wybrana';
 
   @override
   String get perk_longNap1 => 'Długa drzemka I';

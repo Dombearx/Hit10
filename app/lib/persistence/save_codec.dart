@@ -47,6 +47,7 @@ Map<String, Object?> encodeSave(SaveData d) {
     'chronons': s.chronons,
     'shards': s.shards,
     'perks': s.perks.toList(),
+    'habits': s.habits,
     'achievements': s.achievements.toList(),
     'prestiges': s.prestiges,
     'rewindPending': s.rewindPending,
@@ -177,6 +178,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   _m(j['skills']).forEach((k, v) => s.skills[k] = _i(v));
   // Perks replaced in playtest 25 keep their slot (and their Shards).
   s.perks.addAll(_sl(j['perks']).map((id) => _renamedPerks[id] ?? id));
+  s.habits.addAll(_sl(j['habits']));
   s.achievements.addAll(_sl(j['achievements']));
   final stats = _m(j['stats']);
   s.stats.rounds = _i(stats['rounds']);
