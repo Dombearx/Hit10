@@ -159,4 +159,27 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets('the clock card lists every bonus and its synergy', (
+    tester,
+  ) async {
+    final s = GameState()
+      ..tutorialDone = true
+      ..dailyKey = dateKey(DateTime.now());
+    s.owned.addAll({'grandpa': 25, 'grandma': 3});
+    await pumpGame(tester, state: s);
+    await tester.tap(find.byKey(const Key('gen-info-grandpa')));
+    await tester.pumpAndSettle();
+    final sheet = find.byKey(const Key('gen-info-sheet'));
+    Finder inSheet(String t) =>
+        find.descendant(of: sheet, matching: find.textContaining(t));
+    // Reached at 10: name and joke; the 250 one is listed too.
+    expect(inSheet('Okulary do czytania'), findsOneWidget);
+    expect(inSheet('Wreszcie widzi wskazówki.'), findsOneWidget);
+    expect(find.byKey(const Key('gen-bonus-7')), findsOneWidget);
+    expect(inSheet('250 szt.'), findsOneWidget);
+    // Grandpa + Grandma: not on yet, with what it needs.
+    expect(find.byKey(const Key('gen-synergy-grandparents')), findsOneWidget);
+    expect(inSheet('Babcia z minutnikiem 3/25'), findsOneWidget);
+  });
 }

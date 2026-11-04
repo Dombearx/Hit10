@@ -93,8 +93,8 @@ List<AchievementDef> buildAchievements(Balance b) {
       ),
     );
   }
-  for (final g in b.generators) {
-    for (final n in a.ownedThresholds) {
+  for (final (i, g) in b.generators.indexed) {
+    for (final n in a.ownedThresholdsFor(i)) {
       list.add(
         AchievementDef(
           'owned_${g.id}_$n',

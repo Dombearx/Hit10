@@ -96,6 +96,10 @@ class GameController extends ChangeNotifier {
     engine.finishPrestige();
     ads = AdOffers(engine);
     achievements = buildAchievements(balance);
+    // Thresholds retuned after the achievement report (playtest 25):
+    // badges that no longer exist neither show nor count.
+    final known = {for (final a in achievements) a.id};
+    this.state.achievements.retainWhere(known.contains);
     _rebuildClocks();
     _applySettings();
     engine.goldenEnabled = this.state.tutorialDone;

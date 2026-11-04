@@ -91,4 +91,20 @@ void main() {
     s.achievements.addAll(List.generate(30, (i) => 'x$i'));
     expect(unlock(), contains('achievements_25'));
   });
+
+  test('atomic clock needs a full window of 100 taps', () {
+    s.stats.recentErrors.add(0.001); // one great tap is not enough
+    expect(unlock(), isNot(contains('hidden_atomic')));
+    s.stats.recentErrors
+      ..clear()
+      ..addAll(List.generate(100, (i) => i.isEven ? 0.01 : -0.012));
+    expect(unlock(), contains('hidden_atomic'));
+  });
+
+  test('later clocks count fewer pieces (playtest 25 report)', () {
+    final ids = all.map((a) => a.id).toSet();
+    expect(ids, containsAll(['owned_grandpa_200', 'owned_chronos_50']));
+    expect(ids, isNot(contains('owned_chronos_200')));
+    expect(ids, contains('owned_quartz_100'));
+  });
 }

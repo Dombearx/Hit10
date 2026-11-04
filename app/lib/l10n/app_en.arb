@@ -661,7 +661,7 @@
   "ach_hidden_stubborn": "Stubborn",
   "ach_hidden_stubborn_desc": "1000 misses",
   "ach_hidden_atomic": "Atomic clock",
-  "ach_hidden_atomic_desc": "Typical error of 10 ms or less over your recent taps",
+  "ach_hidden_atomic_desc": "Half of your last 100 taps within 15 ms",
   "perk_headStart": "Head start",
   "perk_headStart_desc": "After each paradox start with 10 Grandpas and 1K Ticks",
   "perk_muscleMemory1": "Muscle memory I",
@@ -1418,6 +1418,61 @@
     }
   },
   "generatorTotal": "{perSecond} in total",
+  "generatorBonuses": "Bonuses",
+  "generatorBonusLine": "{count} pcs · {name} · ×{mult}",
+  "@generatorBonusLine": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "generatorSynergies": "Synergies",
+  "generatorSynergyOn": "{name} ✓ active",
+  "@generatorSynergyOn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "generatorSynergyEffect": "+{pct}% for each {other}",
+  "@generatorSynergyEffect": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      },
+      "other": {
+        "type": "String"
+      }
+    }
+  },
+  "generatorSynergyNeeds": "Turns on at {need} of both: {a} {aOwned}/{need}, {b} {bOwned}/{need}",
+  "@generatorSynergyNeeds": {
+    "placeholders": {
+      "need": {
+        "type": "String"
+      },
+      "a": {
+        "type": "String"
+      },
+      "aOwned": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "bOwned": {
+        "type": "String"
+      }
+    }
+  },
   "@generatorTotal": {
     "placeholders": {
       "perSecond": {

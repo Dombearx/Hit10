@@ -283,6 +283,10 @@ class AchievementsConfig {
     : bonusEach = _d(j['bonusEach']),
       earnedThresholds = _dl(j['earnedThresholds']),
       ownedThresholds = _ints(j['ownedThresholds']),
+      ownedLateFrom = _i(_m(j['ownedThresholdsLate'])['fromGenerator']),
+      ownedThresholdsLate = _ints(_m(j['ownedThresholdsLate'])['thresholds']),
+      ownedLastFrom = _i(_m(j['ownedThresholdsLast'])['fromGenerator']),
+      ownedThresholdsLast = _ints(_m(j['ownedThresholdsLast'])['thresholds']),
       perfectThresholds = _ints(j['perfectThresholds']),
       perfectStreakThresholds = _ints(j['perfectStreakThresholds']),
       comboThresholds = _ints(j['comboThresholds']),
@@ -312,6 +316,20 @@ class AchievementsConfig {
   final double bonusEach;
   final List<double> earnedThresholds;
   final List<int> ownedThresholds;
+
+  /// Later clocks cost far more: fewer pieces count (playtest 25, the
+  /// achievement report showed 200 of the last clocks out of reach).
+  final int ownedLateFrom;
+  final List<int> ownedThresholdsLate;
+  final int ownedLastFrom;
+  final List<int> ownedThresholdsLast;
+
+  /// Piece counts with an achievement for the generator at [index].
+  List<int> ownedThresholdsFor(int index) => index >= ownedLastFrom
+      ? ownedThresholdsLast
+      : index >= ownedLateFrom
+      ? ownedThresholdsLate
+      : ownedThresholds;
   final List<int> perfectThresholds;
   final List<int> perfectStreakThresholds;
   final List<int> comboThresholds;

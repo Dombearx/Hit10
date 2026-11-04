@@ -296,19 +296,19 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 
 | Kategoria | Progi | Liczba |
 |---|---|---|
-| Zarobione łącznie | 1K, 1M, 1B, 1T, 1aa, 1ab, … co ×1000 do 1e30 | 10 |
-| Posiadane sztuki generatora | 1, 50, 100, 200 dla każdego z 14 | 56 |
+| Zarobione łącznie | 1K, 1M, 1B, 1T, 1aa, 1ab, 100ab, 1ac | 8 |
+| Posiadane sztuki generatora | zegary 1–6: 1, 50, 100, 200; zegary 7–11: 1, 25, 50, 100; zegary 12–14: 1, 10, 25, 50 | 56 |
 | PERFEKTY łącznie | 1, 10, 100, 1K, 10K, 100K | 6 |
 | PERFEKTY z rzędu | 3, 5, 10 | 3 |
 | Najwyższe combo | 10, 15, 25 (max) | 3 |
 | Złapane Złote Sekundy | 1, 10, 50, 200, 500 | 5 |
-| Prestiże | 1, 5, 10, 25, 50, 100 | 6 |
+| Prestiże | 1, 5, 10, 25, 50 | 5 |
 | Tryby | PERFEKT na ślepo; PERFEKT na ślepo przy serii 10+; przy serii 25+ (wystarczy PERFEKT, nie równe 5.00) | 3 |
 | Wydarzenia sezonowe | po jednym na wydarzenie (§14) | 7 |
-| Równo 5.00 na tarczy (PERFEKT z błędem < 0.005 s) | 1, 10, 100, 1K | 4 |
+| Równo 5.00 na tarczy (PERFEKT z błędem < 0.005 s) | 1, 100, 1K, 10K | 4 |
 | Zagrane rundy | 100, 1K, 10K, 100K | 4 |
-| Dochód pasywny na sekundę (bez Szału i Turbo) | 1K, 1M, 1B, 1T, 1aa, 1ab | 6 |
-| Zegary łącznie | 100, 500, 1000, 2000 | 4 |
+| Dochód pasywny na sekundę (bez Szału i Turbo) | 1K, 1M, 1B, 1T, 100T, 1aa | 6 |
+| Zegary łącznie | 100, 500, 1000, 1500 | 4 |
 | Poziomy umiejętności łącznie | 25, 50, 100 | 3 |
 | PERFEKTY na ślepo łącznie | 10, 100, 1K | 3 |
 | Czas gry | 1 h, 10 h, 100 h | 3 |
@@ -316,8 +316,29 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Odebrane dzienne premie | 7, 30, 100 | 3 |
 | Seria uratowana Tarczą | 10, 100 | 2 |
 | Wyczyny | „Refleks” (Złota Sekunda złapana do 1 s od pojawienia się), „Złoto do złota” (w trakcie Szału), „Pełny tydzień” (7. dzień premii), „Sen zimowy” (powrót po przerwie dłuższej niż limit offline), „Obie ręce” (PERFEKT na jednym zegarze zaraz po PERFEKCIE na drugim), „Władca czasu” (wszystkie perki), „Bez rąk” (1M Tików w jednym przejściu przy najwyżej 15 trafieniach, wzór: Neverclick z Cookie Clickera) | 7 |
-| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć), „Kopciuszek” (PERFEKT o północy), „Uparty” (1000 pudeł), „Zegar atomowy” (typowy błąd ≤ 10 ms z co najmniej 50 ostatnich celnych dotknięć) | 11 |
+| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć), „Kopciuszek” (PERFEKT o północy), „Uparty” (1000 pudeł), „Zegar atomowy” (połowa z ostatnich 100 trafień w granicach 15 ms, czyli w oknie PERFEKT; liczy dopiero przy pełnych 100 trafieniach) | 11 |
 
+- **R-OSIAG-2b:** Każde osiągnięcie ma być osiągalne. Sprawdza to
+  `tool/achievement_report.dart`: bot gra kolejne 8-godzinne przejścia,
+  kupuje perki za Okruchy i robi paradoks na końcu każdego. Gra bez
+  dochodu offline i premii z osiągnięć, więc jest wolniejszy od gracza.
+  Wyniki (σ = 30 ms):
+
+  | Czas gry | Dochód pasywny/s | Zegary łącznie | Zarobione łącznie | Rundy |
+  |---|---|---|---|---|
+  | 8 h | 29.5M | 493 | 1.4T | 5.7K |
+  | 80 h | 2.3B | 645 | 388T | 58K |
+  | 160 h | 284B | 900 | 34aa | 117K |
+  | 240 h | 389T | 1572 | 230ab | 176K |
+  | 400 h | 1.6aa | 1741 | 4.7ac | 293K |
+
+  Po ok. 240 h przyrost się wypłaszcza: wszystkie perki są kupione,
+  a Chronony rosną z pierwiastkiem sześciennym. Stąd górne progi:
+  1aa/s (~350 h bota), 1500 zegarów (~230 h), 1ac zarobione (~300 h).
+  Dawne 1ab/s, 2000 zegarów, 1e24–1e30 zarobionych i 200 sztuk ostatnich
+  zegarów były nieosiągalne i zostały obniżone. Mediana błędu bota wynosi
+  ok. 21 ms przy σ = 30 ms i 11.5 ms przy σ = 15 ms, stąd 15 ms dla Zegara
+  atomowego.
 - **R-OSIAG-2a:** Razem osiągnięcia mogą dać do ok. +150% do `G`.
   Symulator tempa ich nie liczy (03), więc prawdziwa gra jest nieco
   szybsza niż cele B-x. Nowe dotyczą głównie późnej gry.

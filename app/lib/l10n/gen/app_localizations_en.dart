@@ -762,7 +762,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ach_hidden_atomic_desc =>
-      'Typical error of 10 ms or less over your recent taps';
+      'Half of your last 100 taps within 15 ms';
 
   @override
   String get perk_headStart => 'Head start';
@@ -2196,6 +2196,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String generatorTotal(String perSecond) {
     return '$perSecond in total';
+  }
+
+  @override
+  String get generatorBonuses => 'Bonuses';
+
+  @override
+  String generatorBonusLine(String count, String name, String mult) {
+    return '$count pcs · $name · ×$mult';
+  }
+
+  @override
+  String get generatorSynergies => 'Synergies';
+
+  @override
+  String generatorSynergyOn(String name) {
+    return '$name ✓ active';
+  }
+
+  @override
+  String generatorSynergyEffect(String pct, String other) {
+    return '+$pct% for each $other';
+  }
+
+  @override
+  String generatorSynergyNeeds(
+    String need,
+    String a,
+    String aOwned,
+    String b,
+    String bOwned,
+  ) {
+    return 'Turns on at $need of both: $a $aOwned/$need, $b $bOwned/$need';
   }
 
   @override

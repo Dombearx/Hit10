@@ -1343,7 +1343,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_hidden_atomic_desc.
   ///
   /// In en, this message translates to:
-  /// **'Typical error of 10 ms or less over your recent taps'**
+  /// **'Half of your last 100 taps within 15 ms'**
   String get ach_hidden_atomic_desc;
 
   /// No description provided for @perk_headStart.
@@ -3985,6 +3985,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{perSecond} in total'**
   String generatorTotal(String perSecond);
+
+  /// No description provided for @generatorBonuses.
+  ///
+  /// In en, this message translates to:
+  /// **'Bonuses'**
+  String get generatorBonuses;
+
+  /// No description provided for @generatorBonusLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pcs · {name} · ×{mult}'**
+  String generatorBonusLine(String count, String name, String mult);
+
+  /// No description provided for @generatorSynergies.
+  ///
+  /// In en, this message translates to:
+  /// **'Synergies'**
+  String get generatorSynergies;
+
+  /// No description provided for @generatorSynergyOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ✓ active'**
+  String generatorSynergyOn(String name);
+
+  /// No description provided for @generatorSynergyEffect.
+  ///
+  /// In en, this message translates to:
+  /// **'+{pct}% for each {other}'**
+  String generatorSynergyEffect(String pct, String other);
+
+  /// No description provided for @generatorSynergyNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Turns on at {need} of both: {a} {aOwned}/{need}, {b} {bOwned}/{need}'**
+  String generatorSynergyNeeds(
+    String need,
+    String a,
+    String aOwned,
+    String b,
+    String bOwned,
+  );
 
   /// No description provided for @season_fiveDay.
   ///
