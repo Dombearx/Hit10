@@ -64,14 +64,14 @@ i bullet time) zabierała rytm — gracz liczy w głowie, a przyspieszony
 start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 **zawsze płynie równo**, a obie umiejętności dają tę samą pomoc inaczej.
 
-- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.08·L` (L =
-  poziom 0–10: 0, 0.08 … 0.80) — każdy poziom daje tyle samo, a
-  kolejne są coraz droższe (×7) — w normalnym tempie. Przy celu 5.00 to
+- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.0533·L` (L =
+  poziom 0–15: 0 … 0.80, §4) — każdy poziom daje tyle samo, a
+  kolejne są coraz droższe — w normalnym tempie. Przy celu 5.00 to
   już mały bonus (do ~15% więcej rund); kandydat do zastąpienia. Cel zostaje `5.00`, a do celu zawsze zostają
   co najmniej 4 s (`round.latestStart` ≤ cel − strefa − 4), żeby złapać
   rytm.
 - **R-RUNDA-11:** Zimna krew: okna gracza (PERFEKT, ŚWIETNIE, DOBRZE,
-  BLISKO) są `1 / (1 − 0.06·L)` razy szersze (×2.5 na max). Matematycznie
+  BLISKO) są `1 / (1 − 0.04·L)` razy szersze (L = 0–15, ×2.5 na max, §4). Matematycznie
   to ta sama pomoc co dawne zwolnienie zegara, ale bez zmiany tempa.
   Generatory jej nie dostają.
 - **R-RUNDA-12:** Ocena trafienia jest w czasie gry, który przy stałym tempie
@@ -232,6 +232,12 @@ Capitalist: bonus przychodzi sam za zbieranie sztuk.
 - **R-ULEP-2:** Każdy próg ma śmieszną nazwę w PL i EN (dawne nazwy
   ulepszeń), np. dziadek: „Okulary do czytania”, „Nowa bateria”,
   „Sanatorium”; pokazuje ją powiadomienie przy osiągnięciu progu.
+- **R-ULEP-2a:** Pełna karta zegara (dotknięcie zegara w sklepie) pokazuje
+  wszystkie 8 progów i synergie z tym zegarem. Zdobyte progi mają nazwę
+  i śmieszny opis. Niezdobyte pokazują tylko liczbę sztuk i ×2, a zamiast
+  nazwy „???”, żeby zdobycie było niespodzianką. Niewłączona synergia też
+  ma „???” zamiast nazwy, ale mówi, co daje i ile sztuk brakuje
+  (playtest 25: nazwy migały tylko w powiadomieniu).
 - **R-ULEP-3:** Karta generatora ma pasek postępu do następnego progu
   („7/10 → ×2”), po ostatnim „Wszystkie bonusy zdobyte”. Osiągnięcie
   progu: fanfara, wibracja, powiadomienie „Nowy bonus · <nazwa>
@@ -292,20 +298,56 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 - **R-OSIAG-1:** Każde osiągnięcie daje **+1%** do globalnego mnożnika
   (sumowane: 50 osiągnięć to +50%). Ma ikonę-odznakę, nazwę i opis PL/EN.
   Zdobycie pokazuje toast z fanfarą.
-- **R-OSIAG-2:** Lista, ok. 100 sztuk:
+- **R-OSIAG-2:** Lista, ok. 150 sztuk (po playteście 25 dołożone kategorie wzorowane na Cookie Clickerze: dochód na sekundę, łączna liczba budynków i ulepszeń, liczba kliknięć, wyzwanie „Neverclick”, osiągnięcia za osiągnięcia):
 
 | Kategoria | Progi | Liczba |
 |---|---|---|
-| Zarobione łącznie | 1K, 1M, 1B, 1T, 1aa, 1ab, … co ×1000 do 1e30 | 10 |
-| Posiadane sztuki generatora | 1, 50, 100, 200 dla każdego z 14 | 56 |
+| Zarobione łącznie | 1K, 1M, 1B, 1T, 1aa, 1ab, 100ab, 1ac | 8 |
+| Posiadane sztuki generatora | zegary 1–6: 1, 50, 100, 200; zegary 7–11: 1, 25, 50, 100; zegary 12–14: 1, 10, 25, 50 | 56 |
 | PERFEKTY łącznie | 1, 10, 100, 1K, 10K, 100K | 6 |
 | PERFEKTY z rzędu | 3, 5, 10 | 3 |
 | Najwyższe combo | 10, 15, 25 (max) | 3 |
-| Złapane Złote Sekundy | 1, 10, 50, 200 | 4 |
-| Prestiże | 1, 5, 10, 25 | 4 |
-| Tryby | PERFEKT na ślepo; PERFEKT w szybkim zegarze; PERFEKT w obu naraz | 3 |
-| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć) | 8 |
+| Złapane Złote Sekundy | 1, 10, 50, 200, 500 | 5 |
+| Prestiże | 1, 5, 10, 25, 50 | 5 |
+| Tryby | PERFEKT na ślepo; PERFEKT na ślepo przy serii 10+; przy serii 25+ (wystarczy PERFEKT, nie równe 5.00) | 3 |
+| Wydarzenia sezonowe | po jednym na wydarzenie (§14) | 7 |
+| Równo 5.00 na tarczy (PERFEKT z błędem < 0.005 s) | 1, 100, 1K, 10K | 4 |
+| Zagrane rundy | 100, 1K, 10K, 100K | 4 |
+| Dochód pasywny na sekundę (bez Szału i Turbo) | 1K, 1M, 1B, 1T, 100T, 1aa | 6 |
+| Zegary łącznie | 100, 500, 1000, 1500 | 4 |
+| Poziomy umiejętności łącznie | 25, 50, 100 | 3 |
+| PERFEKTY na ślepo łącznie | 10, 100, 1K | 3 |
+| Czas gry | 1 h, 10 h, 100 h | 3 |
+| Zdobyte osiągnięcia | 25, 50, 100 | 3 |
+| Odebrane dzienne premie | 7, 30, 100 | 3 |
+| Seria uratowana Tarczą | 10, 100 | 2 |
+| Wyczyny | „Refleks” (Złota Sekunda złapana do 1 s od pojawienia się), „Złoto do złota” (w trakcie Szału), „Pełny tydzień” (7. dzień premii), „Sen zimowy” (powrót po przerwie dłuższej niż limit offline), „Obie ręce” (PERFEKT na jednym zegarze zaraz po PERFEKCIE na drugim), „Władca czasu” (wszystkie perki), „Bez rąk” (1M Tików w jednym przejściu przy najwyżej 15 trafieniach, wzór: Neverclick z Cookie Clickera) | 7 |
+| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć), „Kopciuszek” (PERFEKT o północy), „Uparty” (1000 pudeł), „Zegar atomowy” (połowa z ostatnich 100 trafień w granicach 15 ms, czyli w oknie PERFEKT; liczy dopiero przy pełnych 100 trafieniach) | 11 |
 
+- **R-OSIAG-2b:** Każde osiągnięcie ma być osiągalne. Sprawdza to
+  `tool/achievement_report.dart`: bot gra kolejne 8-godzinne przejścia,
+  kupuje perki za Okruchy i robi paradoks na końcu każdego. Gra bez
+  dochodu offline i premii z osiągnięć, więc jest wolniejszy od gracza.
+  Wyniki (σ = 30 ms):
+
+  | Czas gry | Dochód pasywny/s | Zegary łącznie | Zarobione łącznie | Rundy |
+  |---|---|---|---|---|
+  | 8 h | 29.5M | 493 | 1.4T | 5.7K |
+  | 80 h | 2.3B | 645 | 388T | 58K |
+  | 160 h | 284B | 900 | 34aa | 117K |
+  | 240 h | 389T | 1572 | 230ab | 176K |
+  | 400 h | 1.6aa | 1741 | 4.7ac | 293K |
+
+  Po ok. 240 h przyrost się wypłaszcza: wszystkie perki są kupione,
+  a Chronony rosną z pierwiastkiem sześciennym. Stąd górne progi:
+  1aa/s (~350 h bota), 1500 zegarów (~230 h), 1ac zarobione (~300 h).
+  Dawne 1ab/s, 2000 zegarów, 1e24–1e30 zarobionych i 200 sztuk ostatnich
+  zegarów były nieosiągalne i zostały obniżone. Mediana błędu bota wynosi
+  ok. 21 ms przy σ = 30 ms i 11.5 ms przy σ = 15 ms, stąd 15 ms dla Zegara
+  atomowego.
+- **R-OSIAG-2a:** Razem osiągnięcia mogą dać do ok. +150% do `G`.
+  Symulator tempa ich nie liczy (03), więc prawdziwa gra jest nieco
+  szybsza niż cele B-x. Nowe dotyczą głównie późnej gry.
 - **R-OSIAG-3:** Ukryte osiągnięcia wyglądają jak „???” do momentu zdobycia.
   Tak samo osiągnięcia „Miej N × zegar” dla zegarów, których gracz jeszcze
   nie odkrył (nie miał ich i nie są następne w kolejce w sklepie) —
@@ -324,18 +366,33 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   Chrononom. Okruchy wydaje się na perki. Wydawanie ich **nie** zmniejsza
   liczby Chrononów.
 - **R-PRES-5:** Reset zeruje: Tiki, generatory, ulepszenia generatorów,
-  umiejętności (powyżej limitu Pamięci mięśniowej, R-PRES-5a), combo i
-  aktywne efekty.
-  **Zostają:** Chronony, Okruchy, perki, osiągnięcia, statystyki, odblokowane
-  tryby i ustawienia.
+  umiejętności (poza tym, co zachowują Pamięć mięśniowa i Nawyk,
+  R-PRES-5a/5b), combo i aktywne efekty.
+  **Zostają:** Chronony, Okruchy, perki, wybrane Nawyki, osiągnięcia,
+  statystyki, odblokowane tryby i ustawienia.
 - **R-PRES-5a:** Pamięć mięśniowa I/II/III: po paradoksie każda umiejętność
-  zostaje do **4 / 6 / 8** poziomu; wyższe poziomy trzeba odkupić. Karta
-  umiejętności pokazuje kłódkę z liczbą zachowanych poziomów, szczegóły
-  mówią, ile zostanie (albo że bez perku wszystko wraca do zera).
-  Symulacja (tool/prestige_report.dart): zachowanie 3 poziomów prawie nic
-  nie daje (tanie poziomy i tak się odkupuje), 5–7 poziomów skraca kolejne
-  przejścia o 10–25%, zachowanie wszystkiego o ok. 35% — ale wtedy od
-  drugiego przejścia nie ma już w co inwestować.
+  zachowuje **50% / 65% / 80%** swoich poziomów, zaokrąglone (połówka
+  w górę). Wcześniej był to stały próg „do 4 / 6 / 8 poziomu”. Zmiana po
+  playteście: poziomy powyżej 8 (np. drogiej Siły trafienia kupowanej
+  jako inwestycja w następny start) przepadały w całości. Teraz im wyżej
+  gracz zainwestuje, tym więcej zostaje. Karta umiejętności pokazuje kłódkę
+  z liczbą zachowanych poziomów, a szczegóły mówią, ile zostanie (albo że
+  bez perku wszystko wraca do zera).
+- **R-PRES-5b:** Nawyk I/II (wzór: „stałe sloty na ulepszenia” w Cookie
+  Clickerze): każdy daje slot na **jedną wybraną umiejętność, która
+  zachowuje po paradoksie wszystkie poziomy**. Wybór jest w szczegółach
+  umiejętności („Zachowaj w całości”). Można go zmienić w każdej chwili
+  i liczy się dopiero przy paradoksie. Gdy sloty są zajęte, nowy wybór
+  wypycha najstarszy. Wybrane umiejętności mają na karcie pinezkę zamiast
+  kłódki.
+- **Symulacja** (tool/prestige_report.dart, 3 przejścia po 6 h, czas, po
+  którym drugie przejście dogania całe pierwsze): bez perku 4.4 h,
+  50/65/80% 4.25/4.07/3.90 h, 80% + Nawyk I/II 3.72/3.48 h, wszystko
+  zostaje 3.26 h (dawne „do 4/6/8” 4.18/3.92/3.55 h). Cały zestaw daje tyle
+  co dawna Pamięć III, ale sam procent jest słabszy, bo tanie dolne poziomy
+  i tak szybko się odkupuje. Zachowanie wszystkiego skraca przejścia
+  o ok. 35%, ale wtedy od drugiego przejścia nie ma już w co inwestować,
+  więc żaden zestaw perków nie zachowuje wszystkiego.
 - **R-PRES-6:** Prestiż wymaga podwójnego potwierdzenia i ma spektakularną
   animację („przewinięcie czasu” wstecz).
 - **R-PRES-6a:** Po animacji gracz dostaje Chronony i Okruchy, ale run
@@ -350,9 +407,11 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | id | Nazwa | Koszt (Okruchy) | Działanie | Wymaga |
 |---|---|---|---|---|
 | `headStart` | Szybki start | 5 | start runu z 10 dziadkami i 1K Tików | – |
-| `muscleMemory1` | Pamięć mięśniowa I | 10 | każda umiejętność zostaje po resecie do 4. poziomu | – |
-| `muscleMemory2` | Pamięć mięśniowa II | 50 | …do 6. poziomu | I |
-| `muscleMemory3` | Pamięć mięśniowa III | 250 | …do 8. poziomu | II |
+| `muscleMemory1` | Pamięć mięśniowa I | 10 | każda umiejętność zachowuje po paradoksie 50% poziomów | – |
+| `muscleMemory2` | Pamięć mięśniowa II | 50 | …65% poziomów | I |
+| `muscleMemory3` | Pamięć mięśniowa III | 250 | …80% poziomów | II |
+| `habit1` | Nawyk I | 40 | slot: jedna wybrana umiejętność zachowuje wszystkie poziomy (R-PRES-5b) | – |
+| `habit2` | Nawyk II | 150 | drugi slot | I |
 | `longNap1` | Długa drzemka I | 10 | limit offline 12 h | – |
 | `longNap2` | Długa drzemka II | 40 | limit offline 24 h | I |
 | `deepSleep1` | Głęboki sen I | 20 | offline 75% wydajności | – |
@@ -529,6 +588,12 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 - **R-AD-8:** Po reklamie komunikat potwierdza nagrodę („Turbo włączone!
   ×2 jeszcze przez 30:00”) albo jej brak („Reklama nie została obejrzana
   do końca — bez nagrody”).
+- **R-AD-9:** Na czas okna oferty i samej reklamy **czas gry stoi**. Szał,
+  Gorąca ręka, zapas Turbo, złoty zegar na ekranie, czas do następnej
+  Złotej Sekundy i dochód pasywny czekają na gracza. Reklama ani czytanie
+  oferty nie zabierają aktywnego bonusu (playtest: Szał przepadał
+  w trakcie reklamy Turbo). Gra tylko stoi, bez kary i bez nagrody, tak jak
+  pauza (R-RUNDA-8a).
 
 ## 14. Wydarzenia sezonowe
 

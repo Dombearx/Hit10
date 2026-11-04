@@ -355,13 +355,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skillMaxed => 'MAX';
 
   @override
-  String skillKeptInfo(String kept, String cap) {
-    return 'After a paradox $kept levels stay (Muscle memory: up to $cap).';
+  String skillKeptInfo(String kept, String share) {
+    return 'After a paradox $kept levels stay (Muscle memory: $share% of levels, rounded).';
   }
 
   @override
   String get skillKeptNone =>
-      'After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.';
+      'After a paradox skills go back to zero. The Muscle memory perk keeps part of the levels, and a Habit keeps a chosen skill whole — what you buy now gives the next run a better start.';
+
+  @override
+  String prestigeHabitTitle(String used, String slots) {
+    return 'Habit $used/$slots: which skills keep every level?';
+  }
+
+  @override
+  String get skillKeptHabit =>
+      'In a Habit slot: after a paradox every level stays.';
+
+  @override
+  String get skillHabitRemove => 'Take out of the Habit';
+
+  @override
+  String skillHabitAdd(String used, String slots) {
+    return 'Keep it whole (Habit $used/$slots)';
+  }
+
+  @override
+  String skillHabitMove(String skill) {
+    return 'Keep it whole instead of $skill';
+  }
 
   @override
   String inHundred(String n) {
@@ -577,6 +599,172 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ach_hidden_boiledEgg_desc => '100 grandmas';
 
   @override
+  String ach_exact(String count) {
+    return 'Spot on $count';
+  }
+
+  @override
+  String ach_exact_desc(String count) {
+    return 'Stop the dial at exactly 5.00 $count times';
+  }
+
+  @override
+  String ach_rounds(String count) {
+    return 'Persistent $count';
+  }
+
+  @override
+  String ach_rounds_desc(String count) {
+    return 'Play $count rounds';
+  }
+
+  @override
+  String ach_income(String count) {
+    return 'Time factory $count/s';
+  }
+
+  @override
+  String ach_income_desc(String count) {
+    return 'Your clocks earn $count Ticks a second (without Frenzy and Turbo)';
+  }
+
+  @override
+  String ach_clocks(String count) {
+    return 'Clockmaker $count';
+  }
+
+  @override
+  String ach_clocks_desc(String count) {
+    return 'Own $count clocks in total';
+  }
+
+  @override
+  String ach_skillLevels(String count) {
+    return 'Practice $count';
+  }
+
+  @override
+  String ach_skillLevels_desc(String count) {
+    return 'Have $count skill levels in total';
+  }
+
+  @override
+  String ach_blindPerfects(String count) {
+    return 'Bat $count';
+  }
+
+  @override
+  String ach_blindPerfects_desc(String count) {
+    return '$count blind PERFECTs';
+  }
+
+  @override
+  String ach_playHours(String count) {
+    return 'Regular $count h';
+  }
+
+  @override
+  String ach_playHours_desc(String count) {
+    return 'Play $count h in total';
+  }
+
+  @override
+  String ach_achievements(String count) {
+    return 'Collector $count';
+  }
+
+  @override
+  String ach_achievements_desc(String count) {
+    return 'Earn $count achievements';
+  }
+
+  @override
+  String ach_daily(String count) {
+    return 'Daily ritual $count';
+  }
+
+  @override
+  String ach_daily_desc(String count) {
+    return 'Collect the daily bonus $count times';
+  }
+
+  @override
+  String ach_shield(String count) {
+    return 'Armored $count';
+  }
+
+  @override
+  String ach_shield_desc(String count) {
+    return 'Your Shield saved the combo $count times';
+  }
+
+  @override
+  String get ach_feat_goldenFast => 'Reflexes';
+
+  @override
+  String get ach_feat_goldenFast_desc =>
+      'Catch a Golden Second within a second of it appearing';
+
+  @override
+  String get ach_feat_goldenFrenzy => 'Gold on gold';
+
+  @override
+  String get ach_feat_goldenFrenzy_desc =>
+      'Catch a Golden Second during a Frenzy';
+
+  @override
+  String get ach_feat_dailyWeek => 'Full week';
+
+  @override
+  String get ach_feat_dailyWeek_desc => 'Reach day 7 of the daily bonus';
+
+  @override
+  String get ach_feat_offlineFull => 'Hibernation';
+
+  @override
+  String get ach_feat_offlineFull_desc =>
+      'Come back after a break longer than the offline limit';
+
+  @override
+  String get ach_feat_bothClocks => 'Both hands';
+
+  @override
+  String get ach_feat_bothClocks_desc =>
+      'A PERFECT on one clock right after a PERFECT on the other';
+
+  @override
+  String get ach_feat_allPerks => 'Master of time';
+
+  @override
+  String get ach_feat_allPerks_desc => 'Buy every perk';
+
+  @override
+  String get ach_feat_noHands => 'No hands';
+
+  @override
+  String get ach_feat_noHands_desc =>
+      'Earn 1M Ticks in one run with at most 15 taps';
+
+  @override
+  String get ach_hidden_midnight => 'Cinderella';
+
+  @override
+  String get ach_hidden_midnight_desc => 'A PERFECT at midnight';
+
+  @override
+  String get ach_hidden_stubborn => 'Stubborn';
+
+  @override
+  String get ach_hidden_stubborn_desc => '1000 misses';
+
+  @override
+  String get ach_hidden_atomic => 'Atomic clock';
+
+  @override
+  String get ach_hidden_atomic_desc =>
+      'Half of your last 100 taps within 15 ms';
+
+  @override
   String get perk_headStart => 'Head start';
 
   @override
@@ -588,19 +776,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get perk_muscleMemory1_desc =>
-      'After a paradox every skill keeps up to level 4';
+      'After a paradox every skill keeps 50% of its levels';
 
   @override
   String get perk_muscleMemory2 => 'Muscle memory II';
 
   @override
-  String get perk_muscleMemory2_desc => '…up to level 6';
+  String get perk_muscleMemory2_desc => '…65% of its levels';
 
   @override
   String get perk_muscleMemory3 => 'Muscle memory III';
 
   @override
-  String get perk_muscleMemory3_desc => '…up to level 8';
+  String get perk_muscleMemory3_desc => '…80% of its levels';
+
+  @override
+  String get perk_habit1 => 'Habit I';
+
+  @override
+  String get perk_habit1_desc =>
+      'One skill you choose keeps all its levels after a paradox (choose in the skill details)';
+
+  @override
+  String get perk_habit2 => 'Habit II';
+
+  @override
+  String get perk_habit2_desc => '…and a second one';
 
   @override
   String get perk_longNap1 => 'Long nap I';
@@ -1044,6 +1245,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsNotifications => 'Tell me when the clocks are full';
+
+  @override
+  String get settingsAnalytics => 'Send game statistics';
+
+  @override
+  String get settingsAnalyticsHint =>
+      'Helps us balance the game. No account, no name, no ad ID.';
 
   @override
   String get settingsLanguage => 'Language';
@@ -1988,6 +2196,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String generatorTotal(String perSecond) {
     return '$perSecond in total';
+  }
+
+  @override
+  String get generatorBonuses => 'Bonuses';
+
+  @override
+  String generatorBonusLine(String count, String name, String mult) {
+    return '$count pcs · $name · ×$mult';
+  }
+
+  @override
+  String get generatorSynergies => 'Synergies';
+
+  @override
+  String generatorSynergyOn(String name) {
+    return '$name ✓ active';
+  }
+
+  @override
+  String generatorSynergyEffect(String pct, String other) {
+    return '+$pct% for each $other';
+  }
+
+  @override
+  String generatorSynergyNeeds(
+    String need,
+    String a,
+    String aOwned,
+    String b,
+    String bOwned,
+  ) {
+    return 'Turns on at $need of both: $a $aOwned/$need, $b $bOwned/$need';
   }
 
   @override

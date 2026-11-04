@@ -105,8 +105,40 @@
   "skillEffect": "{label}: {now} → {next}",
   "skillEffectMax": "{label}: {now}",
   "skillMaxed": "MAX",
-  "skillKeptInfo": "Po paradoksie zostaje {kept} poz. (Pamięć mięśniowa: do {cap}).",
-  "skillKeptNone": "Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów — kupione dziś dadzą lepszy start następnym razem.",
+  "skillKeptInfo": "Po paradoksie zostaje {kept} poz. (Pamięć mięśniowa: {share}% poziomów, zaokrąglone).",
+  "skillKeptNone": "Po paradoksie umiejętności wracają do zera. Perk Pamięć mięśniowa zachowuje część poziomów, a Nawyk całą wybraną umiejętność — kupione dziś dadzą lepszy start następnym razem.",
+  "prestigeHabitTitle": "Nawyk {used}/{slots}: które umiejętności zachowają wszystkie poziomy?",
+  "@prestigeHabitTitle": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillKeptHabit": "W slocie Nawyku: po paradoksie zostają wszystkie poziomy.",
+  "skillHabitRemove": "Wyjmij z Nawyku",
+  "skillHabitAdd": "Zachowaj w całości (Nawyk {used}/{slots})",
+  "@skillHabitAdd": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillHabitMove": "Zachowaj w całości zamiast: {skill}",
+  "@skillHabitMove": {
+    "placeholders": {
+      "skill": {
+        "type": "String"
+      }
+    }
+  },
   "inHundred": "{n}%",
   "oddsPerfect": "PERFEKTY",
   "oddsGreatOrBetter": "ŚWIETNIE lub lepiej",
@@ -163,14 +195,58 @@
   "ach_hidden_museum_desc": "Po jednym z każdego zegara",
   "ach_hidden_boiledEgg": "Jajko na miękko",
   "ach_hidden_boiledEgg_desc": "100 babć",
+  "ach_exact": "Co do setnej {count}",
+  "ach_exact_desc": "Zatrzymaj stoper równo na 5.00 {count} razy",
+  "ach_rounds": "Wytrwały {count}",
+  "ach_rounds_desc": "Zagraj {count} rund",
+  "ach_income": "Fabryka czasu {count}/s",
+  "ach_income_desc": "Zegary zarabiają {count} Tików na sekundę (bez Szału i Turbo)",
+  "ach_clocks": "Zegarmistrz {count}",
+  "ach_clocks_desc": "Miej łącznie {count} zegarów",
+  "ach_skillLevels": "Wprawa {count}",
+  "ach_skillLevels_desc": "Miej łącznie {count} poziomów umiejętności",
+  "ach_blindPerfects": "Nietoperz {count}",
+  "ach_blindPerfects_desc": "{count} PERFEKTÓW na ślepo",
+  "ach_playHours": "Stały bywalec {count} h",
+  "ach_playHours_desc": "Graj łącznie {count} h",
+  "ach_achievements": "Kolekcjoner {count}",
+  "ach_achievements_desc": "Zdobądź {count} osiągnięć",
+  "ach_daily": "Codzienny rytuał {count}",
+  "ach_daily_desc": "Odbierz dzienną premię {count} razy",
+  "ach_shield": "Pancerny {count}",
+  "ach_shield_desc": "Tarcza obroniła serię {count} razy",
+  "ach_feat_goldenFast": "Refleks",
+  "ach_feat_goldenFast_desc": "Złap Złotą Sekundę w ciągu sekundy od jej pojawienia się",
+  "ach_feat_goldenFrenzy": "Złoto do złota",
+  "ach_feat_goldenFrenzy_desc": "Złap Złotą Sekundę w trakcie Szału",
+  "ach_feat_dailyWeek": "Pełny tydzień",
+  "ach_feat_dailyWeek_desc": "Odbierz 7. dzień dziennej premii",
+  "ach_feat_offlineFull": "Sen zimowy",
+  "ach_feat_offlineFull_desc": "Wróć po przerwie dłuższej niż limit offline",
+  "ach_feat_bothClocks": "Obie ręce",
+  "ach_feat_bothClocks_desc": "PERFEKT na jednym zegarze zaraz po PERFEKCIE na drugim",
+  "ach_feat_allPerks": "Władca czasu",
+  "ach_feat_allPerks_desc": "Kup wszystkie perki",
+  "ach_feat_noHands": "Bez rąk",
+  "ach_feat_noHands_desc": "Zarób 1M Tików w jednym przejściu, trafiając najwyżej 15 razy",
+  "ach_hidden_midnight": "Kopciuszek",
+  "ach_hidden_midnight_desc": "PERFEKT o północy",
+  "ach_hidden_stubborn": "Uparty",
+  "ach_hidden_stubborn_desc": "1000 pudeł",
+  "ach_hidden_atomic": "Zegar atomowy",
+  "ach_hidden_atomic_desc": "Połowa z ostatnich 100 trafień w granicach 15 ms",
   "perk_headStart": "Szybki start",
   "perk_headStart_desc": "Po każdym paradoksie zaczynasz z 10 Dziadkami i 1K Tików",
   "perk_muscleMemory1": "Pamięć mięśniowa I",
-  "perk_muscleMemory1_desc": "Po paradoksie każda umiejętność zostaje do 4. poziomu",
+  "perk_muscleMemory1_desc": "Po paradoksie każda umiejętność zachowuje 50% poziomów",
   "perk_muscleMemory2": "Pamięć mięśniowa II",
-  "perk_muscleMemory2_desc": "…do 6. poziomu",
+  "perk_muscleMemory2_desc": "…65% poziomów",
   "perk_muscleMemory3": "Pamięć mięśniowa III",
-  "perk_muscleMemory3_desc": "…do 8. poziomu",
+  "perk_muscleMemory3_desc": "…80% poziomów",
+  "perk_habit1": "Nawyk I",
+  "perk_habit1_desc": "Wybrana umiejętność zachowuje po paradoksie wszystkie poziomy (wybór w szczegółach umiejętności)",
+  "perk_habit2": "Nawyk II",
+  "perk_habit2_desc": "…i druga wybrana",
   "perk_longNap1": "Długa drzemka I",
   "perk_longNap1_desc": "Limit offline 12 h",
   "perk_longNap2": "Długa drzemka II",
@@ -305,6 +381,8 @@
   "settingsMusic": "Muzyka",
   "settingsHaptics": "Wibracje",
   "settingsNotifications": "Powiadom, gdy zegary uzbierają limit",
+  "settingsAnalytics": "Wysyłaj statystyki gry",
+  "settingsAnalyticsHint": "Pomagają nam dopracować grę. Bez konta, imienia i identyfikatora reklamowego.",
   "settingsLanguage": "Język",
   "languageSystem": "Systemowy",
   "settingsNotation": "Zapis liczb",
@@ -604,6 +682,12 @@
   "perfectNowSeconds": "PERFEKT teraz: +{amount} (≈ {seconds} s dochodu zegarów)",
   "jackpotPrice": "{target} = +{amount}",
   "generatorTotal": "razem {perSecond}",
+  "generatorBonuses": "Bonusy",
+  "generatorBonusLine": "{count} szt. · {name} · ×{mult}",
+  "generatorSynergies": "Synergie",
+  "generatorSynergyOn": "{name} ✓ aktywna",
+  "generatorSynergyEffect": "+{pct}% za każdą sztukę: {other}",
+  "generatorSynergyNeeds": "Włącza się przy {need} szt. obu: {a} {aOwned}/{need}, {b} {bOwned}/{need}",
   "season_fiveDay": "Dzień Piątki",
   "season_fiveDay_items": "Piątki",
   "skill_power_info": "Stała nagroda za trafienie: PERFEKT 6 Tików, ŚWIETNIE 3, DOBRZE 1. Każdy poziom dokłada półtora raza tyle (PERFEKT 6 → 15 → 24…). Bardzo mocne przez pierwsze minuty; później liczy się Echo, które rośnie razem z zegarami.",

@@ -1,5 +1,6 @@
 import '../balance/balance.dart';
 import 'game_state.dart';
+import 'grading.dart';
 
 enum AchievementCategory {
   earned,
@@ -12,6 +13,20 @@ enum AchievementCategory {
   mode,
   season,
   hidden,
+  // Added after playtest 25, after Cookie Clicker's kinds (docs/02 §8).
+  exact,
+  rounds,
+  income,
+  clocks,
+  skillLevels,
+  blindPerfects,
+  playTime,
+  meta,
+  daily,
+  shield,
+
+  /// One-off feats with a fixed name, like [mode].
+  feat,
 }
 
 /// What the latest event knows that the saved state does not (docs/02 §8).
@@ -21,6 +36,7 @@ class AchievementContext {
     this.lastHitBlind = false,
     this.streak = 0,
     this.lastHitPerfect = false,
+    this.passive,
   });
 
   /// Local wall-clock time of the event (punctual / tenth-day badges).
@@ -30,6 +46,10 @@ class AchievementContext {
   /// The combo streak right after the hit.
   final int streak;
   final bool lastHitPerfect;
+
+  /// Passive income per second without temporary boosts, when known
+  /// (the once-a-second check).
+  final double? passive;
 }
 
 class AchievementDef {
@@ -50,6 +70,12 @@ class AchievementDef {
   final String? generator;
 
   bool get hidden => category == AchievementCategory.hidden;
+
+  /// Name and description are fixed texts, not a template with a number.
+  bool get fixedText =>
+      category == AchievementCategory.mode ||
+      category == AchievementCategory.hidden ||
+      category == AchievementCategory.feat;
 }
 
 /// The full list (≈100), built from the thresholds in the balance file
@@ -67,8 +93,8 @@ List<AchievementDef> buildAchievements(Balance b) {
       ),
     );
   }
-  for (final g in b.generators) {
-    for (final n in a.ownedThresholds) {
+  for (final (i, g) in b.generators.indexed) {
+    for (final n in a.ownedThresholdsFor(i)) {
       list.add(
         AchievementDef(
           'owned_${g.id}_$n',
@@ -128,7 +154,86 @@ List<AchievementDef> buildAchievements(Balance b) {
     a.prestigeThresholds,
     (s) => s.prestiges,
   );
+  counts(
+    'exact',
+    AchievementCategory.exact,
+    a.exactThresholds,
+    (s) => s.lifetime.exactHits,
+  );
+  counts(
+    'rounds',
+    AchievementCategory.rounds,
+    a.roundThresholds,
+    (s) => s.stats.rounds,
+  );
+  for (final t in a.incomeThresholds) {
+    list.add(
+      AchievementDef(
+        'income_${t.toStringAsExponential(0)}',
+        AchievementCategory.income,
+        (s, c) => (c.passive ?? 0) >= t,
+        threshold: t,
+      ),
+    );
+  }
+  counts(
+    'clocks',
+    AchievementCategory.clocks,
+    a.clocksThresholds,
+    (s) => s.owned.values.fold(0, (x, n) => x + n),
+  );
+  counts(
+    'skillLevels',
+    AchievementCategory.skillLevels,
+    a.skillLevelThresholds,
+    (s) => s.skills.values.fold(0, (x, n) => x + n),
+  );
+  counts(
+    'blindPerfects',
+    AchievementCategory.blindPerfects,
+    a.blindPerfectThresholds,
+    (s) => s.lifetime.blindPerfects,
+  );
+  counts(
+    'playHours',
+    AchievementCategory.playTime,
+    a.playHoursThresholds,
+    (s) => (s.lifetime.secondsPlayed / 3600).floor(),
+  );
+  counts(
+    'achievements',
+    AchievementCategory.meta,
+    a.achievementCountThresholds,
+    (s) => s.achievements.length,
+  );
+  counts(
+    'daily',
+    AchievementCategory.daily,
+    a.dailyClaimThresholds,
+    (s) => s.lifetime.dailyClaims,
+  );
+  counts(
+    'shield',
+    AchievementCategory.shield,
+    a.shieldSaveThresholds,
+    (s) => s.lifetime.shieldSaves,
+  );
+  AchievementDef feat(String id, bool Function(GameState s) check) =>
+      AchievementDef(id, AchievementCategory.feat, (s, _) => check(s));
   list.addAll([
+    feat('feat_goldenFast', (s) => s.lifetime.goldenFast > 0),
+    feat('feat_goldenFrenzy', (s) => s.lifetime.goldenInFrenzy > 0),
+    feat('feat_dailyWeek', (s) => s.dailyStreak >= 7),
+    feat('feat_offlineFull', (s) => s.lifetime.offlineFull > 0),
+    feat('feat_bothClocks', (s) => s.lifetime.bothClocksPerfects > 0),
+    feat(
+      'feat_allPerks',
+      (s) => b.prestige.perks.every((p) => s.perks.contains(p.id)),
+    ),
+    feat(
+      'feat_noHands',
+      (s) => s.earnedThisRun >= a.noHandsEarned && s.runTaps <= a.noHandsTaps,
+    ),
     AchievementDef(
       'mode_blind',
       AchievementCategory.mode,
@@ -201,6 +306,27 @@ List<AchievementDef> buildAchievements(Balance b) {
       'hidden_boiledEgg',
       AchievementCategory.hidden,
       (s, _) => (s.owned['grandma'] ?? 0) >= a.boiledEggGrandmas,
+    ),
+    AchievementDef(
+      'hidden_midnight',
+      AchievementCategory.hidden,
+      (s, c) =>
+          c.lastHitPerfect &&
+          c.now != null &&
+          c.now!.hour == 0 &&
+          c.now!.minute == 0,
+    ),
+    AchievementDef(
+      'hidden_stubborn',
+      AchievementCategory.hidden,
+      (s, _) => s.stats.byTier[Tier.miss]! >= a.stubbornMisses,
+    ),
+    AchievementDef(
+      'hidden_atomic',
+      AchievementCategory.hidden,
+      (s, _) =>
+          s.stats.nearErrors.length >= a.atomicSamples &&
+          s.stats.typicalError <= a.atomicTypicalError,
     ),
   ]);
   return list;

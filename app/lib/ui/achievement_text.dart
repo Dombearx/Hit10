@@ -30,8 +30,29 @@ import 'seasons_ui.dart';
     case AchievementCategory.season:
       final name = seasonName(l, a.id.substring('season_'.length));
       return (l.ach_season(name), l.ach_season_desc(name));
+    case AchievementCategory.exact:
+      return (l.ach_exact(count), l.ach_exact_desc(count));
+    case AchievementCategory.rounds:
+      return (l.ach_rounds(count), l.ach_rounds_desc(count));
+    case AchievementCategory.income:
+      return (l.ach_income(count), l.ach_income_desc(count));
+    case AchievementCategory.clocks:
+      return (l.ach_clocks(count), l.ach_clocks_desc(count));
+    case AchievementCategory.skillLevels:
+      return (l.ach_skillLevels(count), l.ach_skillLevels_desc(count));
+    case AchievementCategory.blindPerfects:
+      return (l.ach_blindPerfects(count), l.ach_blindPerfects_desc(count));
+    case AchievementCategory.playTime:
+      return (l.ach_playHours(count), l.ach_playHours_desc(count));
+    case AchievementCategory.meta:
+      return (l.ach_achievements(count), l.ach_achievements_desc(count));
+    case AchievementCategory.daily:
+      return (l.ach_daily(count), l.ach_daily_desc(count));
+    case AchievementCategory.shield:
+      return (l.ach_shield(count), l.ach_shield_desc(count));
     case AchievementCategory.mode:
     case AchievementCategory.hidden:
+    case AchievementCategory.feat:
       return (
         fixedAchievementName(l, a.id) ?? a.id,
         fixedAchievementDescription(l, a.id) ?? '',
@@ -61,6 +82,20 @@ EmojiArt achievementArt(AchievementDef a) {
       seasonLooks[a.id.substring('season_'.length)]?.art ??
           const EmojiArt('trophy', _gold),
     AchievementCategory.hidden => const EmojiArt('trophy', _gold),
+    AchievementCategory.exact => const EmojiArt('bullseye', _peach),
+    AchievementCategory.rounds => const EmojiArt('stopwatch', _lilac),
+    AchievementCategory.income => const EmojiArt('high_voltage', _gold),
+    AchievementCategory.clocks => const EmojiArt('gear', _lilac),
+    AchievementCategory.skillLevels => const EmojiArt('flexed_biceps', _peach),
+    AchievementCategory.blindPerfects => const EmojiArt(
+      'see_no_evil_monkey',
+      _lilac,
+    ),
+    AchievementCategory.playTime => const EmojiArt('sun_with_face', _gold),
+    AchievementCategory.meta => const EmojiArt('trophy', _lilac),
+    AchievementCategory.daily => const EmojiArt('wrapped_gift', _peach),
+    AchievementCategory.shield => const EmojiArt('shield', _lilac),
+    AchievementCategory.feat => const EmojiArt('party_popper', _gold),
   };
 }
 

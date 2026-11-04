@@ -20,10 +20,18 @@ Future<void> offerAd(
   RewardedAds ads,
 ) async {
   c.pause(); // a running round must not end while the player reads
-  final watch = await showDialog<bool>(
-    context: context,
-    builder: (context) => _OfferDialog(controller: c, offer: offer, ads: ads),
-  );
+  // Reading the offer costs no Frenzy or Turbo time (R-AD-9).
+  c.offerOpen = true;
+  final bool? watch;
+  try {
+    watch = await showDialog<bool>(
+      context: context,
+      builder: (context) => _OfferDialog(controller: c, offer: offer, ads: ads),
+    );
+  } finally {
+    c.offerOpen = false;
+  }
+  c.adOfferAnswered(offer, watch: watch == true);
   if (watch != true || !context.mounted) return;
   final ok = await watchAdWithReward(context, c, offer, ads);
   if (context.mounted) confirmAdResult(context, c, offer, ok);

@@ -213,18 +213,50 @@
     }
   },
   "skillMaxed": "MAX",
-  "skillKeptInfo": "After a paradox {kept} levels stay (Muscle memory: up to {cap}).",
+  "skillKeptInfo": "After a paradox {kept} levels stay (Muscle memory: {share}% of levels, rounded).",
   "@skillKeptInfo": {
     "placeholders": {
       "kept": {
         "type": "String"
       },
-      "cap": {
+      "share": {
         "type": "String"
       }
     }
   },
-  "skillKeptNone": "After a paradox skills go back to zero. The Muscle memory perk keeps some levels — what you buy now gives the next run a better start.",
+  "skillKeptNone": "After a paradox skills go back to zero. The Muscle memory perk keeps part of the levels, and a Habit keeps a chosen skill whole — what you buy now gives the next run a better start.",
+  "prestigeHabitTitle": "Habit {used}/{slots}: which skills keep every level?",
+  "@prestigeHabitTitle": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillKeptHabit": "In a Habit slot: after a paradox every level stays.",
+  "skillHabitRemove": "Take out of the Habit",
+  "skillHabitAdd": "Keep it whole (Habit {used}/{slots})",
+  "@skillHabitAdd": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "skillHabitMove": "Keep it whole instead of {skill}",
+  "@skillHabitMove": {
+    "placeholders": {
+      "skill": {
+        "type": "String"
+      }
+    }
+  },
   "inHundred": "{n}%",
   "@inHundred": {
     "placeholders": {
@@ -450,14 +482,198 @@
   "ach_hidden_museum_desc": "One of every clock",
   "ach_hidden_boiledEgg": "Soft-boiled",
   "ach_hidden_boiledEgg_desc": "100 grandmas",
+  "ach_exact": "Spot on {count}",
+  "@ach_exact": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_exact_desc": "Stop the dial at exactly 5.00 {count} times",
+  "@ach_exact_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_rounds": "Persistent {count}",
+  "@ach_rounds": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_rounds_desc": "Play {count} rounds",
+  "@ach_rounds_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_income": "Time factory {count}/s",
+  "@ach_income": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_income_desc": "Your clocks earn {count} Ticks a second (without Frenzy and Turbo)",
+  "@ach_income_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_clocks": "Clockmaker {count}",
+  "@ach_clocks": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_clocks_desc": "Own {count} clocks in total",
+  "@ach_clocks_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_skillLevels": "Practice {count}",
+  "@ach_skillLevels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_skillLevels_desc": "Have {count} skill levels in total",
+  "@ach_skillLevels_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_blindPerfects": "Bat {count}",
+  "@ach_blindPerfects": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_blindPerfects_desc": "{count} blind PERFECTs",
+  "@ach_blindPerfects_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_playHours": "Regular {count} h",
+  "@ach_playHours": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_playHours_desc": "Play {count} h in total",
+  "@ach_playHours_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_achievements": "Collector {count}",
+  "@ach_achievements": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_achievements_desc": "Earn {count} achievements",
+  "@ach_achievements_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_daily": "Daily ritual {count}",
+  "@ach_daily": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_daily_desc": "Collect the daily bonus {count} times",
+  "@ach_daily_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_shield": "Armored {count}",
+  "@ach_shield": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_shield_desc": "Your Shield saved the combo {count} times",
+  "@ach_shield_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "ach_feat_goldenFast": "Reflexes",
+  "ach_feat_goldenFast_desc": "Catch a Golden Second within a second of it appearing",
+  "ach_feat_goldenFrenzy": "Gold on gold",
+  "ach_feat_goldenFrenzy_desc": "Catch a Golden Second during a Frenzy",
+  "ach_feat_dailyWeek": "Full week",
+  "ach_feat_dailyWeek_desc": "Reach day 7 of the daily bonus",
+  "ach_feat_offlineFull": "Hibernation",
+  "ach_feat_offlineFull_desc": "Come back after a break longer than the offline limit",
+  "ach_feat_bothClocks": "Both hands",
+  "ach_feat_bothClocks_desc": "A PERFECT on one clock right after a PERFECT on the other",
+  "ach_feat_allPerks": "Master of time",
+  "ach_feat_allPerks_desc": "Buy every perk",
+  "ach_feat_noHands": "No hands",
+  "ach_feat_noHands_desc": "Earn 1M Ticks in one run with at most 15 taps",
+  "ach_hidden_midnight": "Cinderella",
+  "ach_hidden_midnight_desc": "A PERFECT at midnight",
+  "ach_hidden_stubborn": "Stubborn",
+  "ach_hidden_stubborn_desc": "1000 misses",
+  "ach_hidden_atomic": "Atomic clock",
+  "ach_hidden_atomic_desc": "Half of your last 100 taps within 15 ms",
   "perk_headStart": "Head start",
   "perk_headStart_desc": "After each paradox start with 10 Grandpas and 1K Ticks",
   "perk_muscleMemory1": "Muscle memory I",
-  "perk_muscleMemory1_desc": "After a paradox every skill keeps up to level 4",
+  "perk_muscleMemory1_desc": "After a paradox every skill keeps 50% of its levels",
   "perk_muscleMemory2": "Muscle memory II",
-  "perk_muscleMemory2_desc": "…up to level 6",
+  "perk_muscleMemory2_desc": "…65% of its levels",
   "perk_muscleMemory3": "Muscle memory III",
-  "perk_muscleMemory3_desc": "…up to level 8",
+  "perk_muscleMemory3_desc": "…80% of its levels",
+  "perk_habit1": "Habit I",
+  "perk_habit1_desc": "One skill you choose keeps all its levels after a paradox (choose in the skill details)",
+  "perk_habit2": "Habit II",
+  "perk_habit2_desc": "…and a second one",
   "perk_longNap1": "Long nap I",
   "perk_longNap1_desc": "Offline limit 12 h",
   "perk_longNap2": "Long nap II",
@@ -764,6 +980,8 @@
   "settingsMusic": "Music",
   "settingsHaptics": "Vibration",
   "settingsNotifications": "Tell me when the clocks are full",
+  "settingsAnalytics": "Send game statistics",
+  "settingsAnalyticsHint": "Helps us balance the game. No account, no name, no ad ID.",
   "settingsLanguage": "Language",
   "languageSystem": "System",
   "settingsNotation": "Numbers",
@@ -1200,6 +1418,61 @@
     }
   },
   "generatorTotal": "{perSecond} in total",
+  "generatorBonuses": "Bonuses",
+  "generatorBonusLine": "{count} pcs · {name} · ×{mult}",
+  "@generatorBonusLine": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "generatorSynergies": "Synergies",
+  "generatorSynergyOn": "{name} ✓ active",
+  "@generatorSynergyOn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "generatorSynergyEffect": "+{pct}% for each {other}",
+  "@generatorSynergyEffect": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      },
+      "other": {
+        "type": "String"
+      }
+    }
+  },
+  "generatorSynergyNeeds": "Turns on at {need} of both: {a} {aOwned}/{need}, {b} {bOwned}/{need}",
+  "@generatorSynergyNeeds": {
+    "placeholders": {
+      "need": {
+        "type": "String"
+      },
+      "a": {
+        "type": "String"
+      },
+      "aOwned": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "bOwned": {
+        "type": "String"
+      }
+    }
+  },
   "@generatorTotal": {
     "placeholders": {
       "perSecond": {

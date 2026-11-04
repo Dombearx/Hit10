@@ -85,6 +85,12 @@ jobs:
           HIT10_KEY_PASSWORD: ${{ secrets.HIT10_KEY_PASSWORD }}
           ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
           ADMOB_REWARDED_ID: ${{ secrets.ADMOB_REWARDED_ID }}
+          # Game statistics (docs/05 T-30): the Firebase project, only in
+          # the Play upload, so our test APKs never mix into the numbers.
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
         run: |
           cd app
           flutter pub get
@@ -93,11 +99,13 @@ jobs:
             export HIT10_KEYSTORE="$RUNNER_TEMP/upload.jks"
             signed=signed
           else
-            unset ADMOB_APP_ID ADMOB_REWARDED_ID
+            unset ADMOB_APP_ID ADMOB_REWARDED_ID FIREBASE_APP_ID
             signed=unsigned
           fi
           define=()
-          [ -n "${ADMOB_REWARDED_ID:-}" ] && define=(--dart-define=ADMOB_REWARDED_ID="$ADMOB_REWARDED_ID")
+          for v in ADMOB_REWARDED_ID FIREBASE_APP_ID FIREBASE_API_KEY FIREBASE_PROJECT_ID FIREBASE_SENDER_ID; do
+            [ -n "${!v:-}" ] && define+=(--dart-define="$v=${!v}")
+          done
           flutter build appbundle --release --build-number=${{ github.run_number }} "${define[@]}"
           cp build/app/outputs/bundle/release/app-release.aab "../hit5-${GITHUB_REF_NAME//\//-}-$signed.aab"
           rm -f "$RUNNER_TEMP/upload.jks"

@@ -11,4 +11,7 @@ class Settings {
   Notation notation = Notation.short;
   bool reduceMotion = false;
   bool notifications = true;
+
+  /// Game statistics for balancing (docs/05 T-30); the player can opt out.
+  bool analytics = true;
 }

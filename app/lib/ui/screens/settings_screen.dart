@@ -157,6 +157,13 @@ class _Settings extends ConsumerWidget {
         _Group(
           title: l.settingsOther,
           children: [
+            _Switch(
+              key: const Key('set-analytics'),
+              label: l.settingsAnalytics,
+              hint: l.settingsAnalyticsHint,
+              value: s.analytics,
+              onChanged: (v) => apply(() => s.analytics = v),
+            ),
             _Action(
               key: const Key('set-privacy'),
               label: l.settingsPrivacyPolicy,

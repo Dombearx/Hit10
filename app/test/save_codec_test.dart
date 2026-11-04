@@ -21,6 +21,7 @@ GameState sample() {
   s.owned.addAll({'grandpa': 12, 'grandma': 3});
   s.skills.addAll({'magnet': 4});
   s.perks.add('headStart');
+  s.habits.add('magnet');
   s.achievements.addAll({'earned_1', 'owned_grandpa_1'});
   s.stats.record(const Grade(Tier.perfect, 0.001), tapped: true);
   s.lifetime
@@ -42,6 +43,7 @@ void main() {
     expect(saveToJsonString(back), text);
     expect(back.state.owned['grandpa'], 12);
     expect(back.state.rewindPending, isTrue);
+    expect(back.state.habits, ['magnet']);
     expect(back.state.stats.byTier[Tier.perfect], 1);
     expect(back.settings.notation, Notation.scientific);
     expect(back.settings.haptics, isFalse);

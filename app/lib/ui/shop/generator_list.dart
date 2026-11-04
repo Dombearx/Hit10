@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../engine/ad_offers.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../../l10n/upgrade_texts.dart';
 import '../providers.dart';
 import '../catalog.dart';
 import '../format.dart';
@@ -506,10 +507,149 @@ Future<void> showGeneratorInfo(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
+              const SizedBox(height: 12),
+              // Every bonus with its name and joke (R-ULEP-2), not only
+              // the toast when it is reached (playtest 25).
+              Flexible(
+                child: SingleChildScrollView(
+                  child: _GeneratorBonuses(controller: c, id: id),
+                ),
+              ),
             ],
           ),
         ),
       );
     },
   );
+}
+
+/// The milestones of one clock and the synergies it takes part in.
+class _GeneratorBonuses extends StatelessWidget {
+  const _GeneratorBonuses({required this.controller, required this.id});
+  final GameController controller;
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final owned = c.econ.owned(id);
+    final mult = c.balance.milestones.multiplier.round();
+    final syns = [
+      for (final s in c.balance.synergies)
+        if (s.a == id || s.b == id) s,
+    ];
+    const header = TextStyle(fontFamily: Fonts.display, fontSize: 17);
+    final dim = Palette.outline.withValues(alpha: 0.6);
+    return Column(
+      key: const Key('gen-bonuses'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l.generatorBonuses, style: header),
+        const SizedBox(height: 4),
+        for (final (i, need) in c.balance.milestones.thresholds.indexed)
+          Padding(
+            key: Key('gen-bonus-$i'),
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Opacity(
+              opacity: owned >= need ? 1 : 0.55,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    owned >= need
+                        ? Icons.check_circle_rounded
+                        : Icons.radio_button_unchecked_rounded,
+                    size: 18,
+                    color: owned >= need ? Palette.perfectDeep : dim,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Not reached yet: only what it takes; the name and
+                        // the joke are the surprise (playtest 25).
+                        Text(
+                          l.generatorBonusLine(
+                            '$need',
+                            owned >= need
+                                ? upgradeTexts(l, id, i + 1)?.$1 ?? roman(i)
+                                : '???',
+                            '$mult',
+                          ),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        if (owned >= need)
+                          if (upgradeTexts(l, id, i + 1)?.$2 case final d?)
+                            Text(
+                              d,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        if (syns.isNotEmpty) ...[
+          const SizedBox(height: 10),
+          Text(l.generatorSynergies, style: header),
+          for (final s in syns)
+            Padding(
+              key: Key('gen-synergy-${s.id}'),
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Builder(
+                builder: (context) {
+                  final other = s.a == id ? s.b : s.a;
+                  final pct = (s.a == id ? s.aPerB : s.bPerA) * 100;
+                  final on = c.econ.synergyActive(s);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        on ? l.generatorSynergyOn(synergyName(l, s.id)) : '???',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        l.generatorSynergyEffect(
+                          pct >= 1
+                              ? pct.toStringAsFixed(0)
+                              : pct
+                                    .toStringAsFixed(1)
+                                    .replaceAll('.', l.decimalSeparator),
+                          generatorName(l, other),
+                        ),
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                      if (!on)
+                        Text(
+                          l.generatorSynergyNeeds(
+                            '${s.requires}',
+                            generatorName(l, s.a),
+                            '${c.econ.owned(s.a)}',
+                            generatorName(l, s.b),
+                            '${c.econ.owned(s.b)}',
+                          ),
+                          style: TextStyle(fontSize: 12.5, color: dim),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
+        ],
+      ],
+    );
+  }
 }

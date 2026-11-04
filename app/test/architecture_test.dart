@@ -5,7 +5,13 @@ import 'package:test/test.dart';
 /// T-3: game logic must stay plain Dart so it can be unit-tested and
 /// simulated without a device.
 void main() {
-  const pureDirs = ['lib/model', 'lib/engine', 'lib/balance', 'lib/ads'];
+  const pureDirs = [
+    'lib/model',
+    'lib/engine',
+    'lib/balance',
+    'lib/ads',
+    'lib/analytics',
+  ];
   final forbidden = RegExp(
     r'''^\s*(import|export)\s+['"](package:(flutter|flame|flutter_riverpod|flutter_soloud|flutter_animate)\b|dart:ui)''',
     multiLine: true,

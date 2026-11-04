@@ -283,6 +283,10 @@ class AchievementsConfig {
     : bonusEach = _d(j['bonusEach']),
       earnedThresholds = _dl(j['earnedThresholds']),
       ownedThresholds = _ints(j['ownedThresholds']),
+      ownedLateFrom = _i(_m(j['ownedThresholdsLate'])['fromGenerator']),
+      ownedThresholdsLate = _ints(_m(j['ownedThresholdsLate'])['thresholds']),
+      ownedLastFrom = _i(_m(j['ownedThresholdsLast'])['fromGenerator']),
+      ownedThresholdsLast = _ints(_m(j['ownedThresholdsLast'])['thresholds']),
       perfectThresholds = _ints(j['perfectThresholds']),
       perfectStreakThresholds = _ints(j['perfectStreakThresholds']),
       comboThresholds = _ints(j['comboThresholds']),
@@ -291,12 +295,41 @@ class AchievementsConfig {
       impatientEarlyTaps = _i(j['impatientEarlyTaps']),
       napMissedRounds = _i(j['napMissedRounds']),
       boiledEggGrandmas = _i(j['boiledEggGrandmas']),
-      tenthDayPerfects = _i(j['tenthDayPerfects']);
+      tenthDayPerfects = _i(j['tenthDayPerfects']),
+      exactThresholds = _ints(j['exactThresholds']),
+      roundThresholds = _ints(j['roundThresholds']),
+      incomeThresholds = _dl(j['incomeThresholds']),
+      clocksThresholds = _ints(j['clocksThresholds']),
+      skillLevelThresholds = _ints(j['skillLevelThresholds']),
+      blindPerfectThresholds = _ints(j['blindPerfectThresholds']),
+      playHoursThresholds = _ints(j['playHoursThresholds']),
+      achievementCountThresholds = _ints(j['achievementCountThresholds']),
+      dailyClaimThresholds = _ints(j['dailyClaimThresholds']),
+      shieldSaveThresholds = _ints(j['shieldSaveThresholds']),
+      noHandsEarned = _d(j['noHandsEarned']),
+      noHandsTaps = _i(j['noHandsTaps']),
+      stubbornMisses = _i(j['stubbornMisses']),
+      atomicTypicalError = _d(j['atomicTypicalError']),
+      atomicSamples = _i(j['atomicSamples']);
   static List<int> _ints(Object? v) =>
       (v as List).map(_i).toList(growable: false);
   final double bonusEach;
   final List<double> earnedThresholds;
   final List<int> ownedThresholds;
+
+  /// Later clocks cost far more: fewer pieces count (playtest 25, the
+  /// achievement report showed 200 of the last clocks out of reach).
+  final int ownedLateFrom;
+  final List<int> ownedThresholdsLate;
+  final int ownedLastFrom;
+  final List<int> ownedThresholdsLast;
+
+  /// Piece counts with an achievement for the generator at [index].
+  List<int> ownedThresholdsFor(int index) => index >= ownedLastFrom
+      ? ownedThresholdsLast
+      : index >= ownedLateFrom
+      ? ownedThresholdsLate
+      : ownedThresholds;
   final List<int> perfectThresholds;
   final List<int> perfectStreakThresholds;
   final List<int> comboThresholds;
@@ -306,6 +339,21 @@ class AchievementsConfig {
   final int napMissedRounds;
   final int boiledEggGrandmas;
   final int tenthDayPerfects;
+  final List<int> exactThresholds;
+  final List<int> roundThresholds;
+  final List<double> incomeThresholds;
+  final List<int> clocksThresholds;
+  final List<int> skillLevelThresholds;
+  final List<int> blindPerfectThresholds;
+  final List<int> playHoursThresholds;
+  final List<int> achievementCountThresholds;
+  final List<int> dailyClaimThresholds;
+  final List<int> shieldSaveThresholds;
+  final double noHandsEarned;
+  final int noHandsTaps;
+  final int stubbornMisses;
+  final double atomicTypicalError;
+  final int atomicSamples;
 }
 
 class PerkConfig {

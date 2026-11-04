@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
@@ -152,7 +150,10 @@ class _SkillTile extends StatelessWidget {
                         Positioned(
                           left: -4,
                           bottom: -4,
-                          child: _KeptBadge(levels: keptLevels(c, id)),
+                          child: _KeptBadge(
+                            levels: keptLevels(c, id),
+                            habit: c.engine.activeHabits.contains(id),
+                          ),
                         ),
                     ],
                   ),
@@ -291,13 +292,14 @@ String _perfectNow(GameController c, AppLocalizations l, Fmt f) {
 }
 
 /// Levels of [id] that survive the next paradox.
-int keptLevels(GameController c, String id) =>
-    math.min(c.econ.level(id), c.engine.keptSkillLevels());
+int keptLevels(GameController c, String id) => c.engine.keptLevels(id);
 
-/// A small padlock with the levels kept through the paradox.
+/// A small padlock with the levels kept through the paradox; a pin when
+/// the skill is in a Habit slot and keeps them all (R-PRES-5b).
 class _KeptBadge extends StatelessWidget {
-  const _KeptBadge({required this.levels});
+  const _KeptBadge({required this.levels, this.habit = false});
   final int levels;
+  final bool habit;
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +314,11 @@ class _KeptBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.lock_rounded, size: 12, color: Palette.outline),
+          Icon(
+            habit ? Icons.push_pin_rounded : Icons.lock_rounded,
+            size: 12,
+            color: habit ? Palette.accent : Palette.outline,
+          ),
           const SizedBox(width: 2),
           Text(
             '$levels',
@@ -373,6 +379,9 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
         final cost = c.econ.skillCost(id);
         final (now, next) = skillEffectValues(l, c.econ, id, level);
         final label = skillLabel(l, id);
+        final share = c.engine.keptSkillShare();
+        final slots = c.engine.habitSlots();
+        final habit = c.engine.activeHabits.contains(id);
         return Container(
           margin: const EdgeInsets.all(12),
           padding: const EdgeInsets.all(18),
@@ -447,19 +456,23 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
-                      c.engine.keptSkillLevels() > 0
+                      habit
+                          ? Icons.push_pin_rounded
+                          : share > 0
                           ? Icons.lock_rounded
                           : Icons.lock_open_rounded,
                       size: 16,
-                      color: Palette.outline,
+                      color: habit ? Palette.accent : Palette.outline,
                     ),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        c.engine.keptSkillLevels() > 0
+                        habit
+                            ? l.skillKeptHabit
+                            : share > 0
                             ? l.skillKeptInfo(
                                 '${keptLevels(c, id)}',
-                                '${c.engine.keptSkillLevels()}',
+                                '${(share * 100).round()}',
                               )
                             : l.skillKeptNone,
                         key: const Key('skill-kept-info'),
@@ -468,6 +481,33 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                     ),
                   ],
                 ),
+                // Habit slots (R-PRES-5b): this skill keeps everything.
+                if (slots > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: OutlinedButton.icon(
+                      key: const Key('skill-habit'),
+                      onPressed: () => c.toggleHabit(id),
+                      icon: Icon(
+                        habit
+                            ? Icons.push_pin_rounded
+                            : Icons.push_pin_outlined,
+                        size: 18,
+                      ),
+                      label: Text(
+                        habit
+                            ? l.skillHabitRemove
+                            : c.engine.activeHabits.length < slots
+                            ? l.skillHabitAdd(
+                                '${c.engine.activeHabits.length}',
+                                '$slots',
+                              )
+                            : l.skillHabitMove(
+                                skillName(l, c.engine.activeHabits.first),
+                              ),
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 8),
                 Text(
                   skillInfo(l, id),

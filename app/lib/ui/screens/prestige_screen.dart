@@ -83,6 +83,12 @@ class _Prestige extends StatelessWidget {
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600),
         ),
+        // Habits bought just now can be filled before the reset
+        // (R-PRES-5b); otherwise they would wait a whole run.
+        if (controller.engine.habitSlots() > 0) ...[
+          const SizedBox(height: 10),
+          _HabitPicker(controller: controller),
+        ],
         const SizedBox(height: 10),
         BuyButton(
           key: const Key('prestige-start'),
@@ -171,6 +177,49 @@ class _Prestige extends StatelessWidget {
         const SizedBox(height: 6),
         for (final p in c.balance.prestige.perks)
           _PerkTile(controller: c, id: p.id),
+      ],
+    );
+  }
+}
+
+/// Which skills keep every level through this paradox (R-PRES-5b).
+class _HabitPicker extends StatelessWidget {
+  const _HabitPicker({required this.controller});
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final skills = [
+      for (final s in c.balance.skills)
+        if (c.econ.level(s.id) > 0) s.id,
+    ]..sort((a, b) => c.econ.level(b).compareTo(c.econ.level(a)));
+    return Column(
+      children: [
+        Text(
+          l.prestigeHabitTitle(
+            '${c.engine.activeHabits.length}',
+            '${c.engine.habitSlots()}',
+          ),
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 6),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 6,
+          runSpacing: 6,
+          children: [
+            for (final id in skills)
+              FilterChip(
+                key: Key('habit-$id'),
+                label: Text('${skillName(l, id)} ${c.econ.level(id)}'),
+                selected: c.engine.activeHabits.contains(id),
+                onSelected: (_) => c.toggleHabit(id),
+              ),
+          ],
+        ),
       ],
     );
   }

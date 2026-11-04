@@ -47,6 +47,7 @@ Map<String, Object?> encodeSave(SaveData d) {
     'chronons': s.chronons,
     'shards': s.shards,
     'perks': s.perks.toList(),
+    'habits': s.habits,
     'achievements': s.achievements.toList(),
     'prestiges': s.prestiges,
     'rewindPending': s.rewindPending,
@@ -74,6 +75,7 @@ Map<String, Object?> encodeSave(SaveData d) {
     'seasonsDone': s.seasonsDone.toList(),
     'seasonStash': s.seasonStash,
     'theme': s.theme,
+    'runTaps': s.runTaps,
     'stats': {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
@@ -92,6 +94,14 @@ Map<String, Object?> encodeSave(SaveData d) {
       'secondsPlayed': l.secondsPlayed,
       'tenthDayPerfects': l.tenthDayPerfects,
       'tenthDayKey': l.tenthDayKey,
+      'exactHits': l.exactHits,
+      'blindPerfects': l.blindPerfects,
+      'bothClocksPerfects': l.bothClocksPerfects,
+      'dailyClaims': l.dailyClaims,
+      'shieldSaves': l.shieldSaves,
+      'goldenFast': l.goldenFast,
+      'goldenInFrenzy': l.goldenInFrenzy,
+      'offlineFull': l.offlineFull,
     },
     'settings': {
       'sfxVolume': st.sfxVolume,
@@ -101,6 +111,7 @@ Map<String, Object?> encodeSave(SaveData d) {
       'notation': st.notation.name,
       'reduceMotion': st.reduceMotion,
       'notifications': st.notifications,
+      'analytics': st.analytics,
     },
   };
 }
@@ -165,7 +176,9 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..seasonKey = j['seasonKey'] is String ? j['seasonKey']! as String : ''
     ..seasonCatches = _i(j['seasonCatches'])
     ..seasonHits = _i(j['seasonHits'])
-    ..theme = j['theme'] is String ? j['theme']! as String : '';
+    ..theme = j['theme'] is String ? j['theme']! as String : ''
+    // A save from before the counter: this run's taps are unknown.
+    ..runTaps = j.containsKey('runTaps') ? _i(j['runTaps']) : 1 << 30;
   s.seasonsDone.addAll(_sl(j['seasonsDone']));
   _m(j['seasonStash']).forEach((k, v) {
     if (v is List && v.length == 2) s.seasonStash[k] = [_i(v[0]), _i(v[1])];
@@ -176,6 +189,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   _m(j['skills']).forEach((k, v) => s.skills[k] = _i(v));
   // Perks replaced in playtest 25 keep their slot (and their Shards).
   s.perks.addAll(_sl(j['perks']).map((id) => _renamedPerks[id] ?? id));
+  s.habits.addAll(_sl(j['habits']));
   s.achievements.addAll(_sl(j['achievements']));
   final stats = _m(j['stats']);
   s.stats.rounds = _i(stats['rounds']);
@@ -199,7 +213,15 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..goldenCaught = _i(l['goldenCaught'])
     ..secondsPlayed = _d(l['secondsPlayed'])
     ..tenthDayPerfects = _i(l['tenthDayPerfects'])
-    ..tenthDayKey = _i(l['tenthDayKey']);
+    ..tenthDayKey = _i(l['tenthDayKey'])
+    ..exactHits = _i(l['exactHits'])
+    ..blindPerfects = _i(l['blindPerfects'])
+    ..bothClocksPerfects = _i(l['bothClocksPerfects'])
+    ..dailyClaims = _i(l['dailyClaims'])
+    ..shieldSaves = _i(l['shieldSaves'])
+    ..goldenFast = _i(l['goldenFast'])
+    ..goldenInFrenzy = _i(l['goldenInFrenzy'])
+    ..offlineFull = _i(l['offlineFull']);
   final st = _m(j['settings']);
   final settings = Settings()
     ..sfxVolume = _d(st['sfxVolume'], 1)
@@ -210,7 +232,8 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
         ? Notation.scientific
         : Notation.short
     ..reduceMotion = st['reduceMotion'] == true
-    ..notifications = st['notifications'] != false;
+    ..notifications = st['notifications'] != false
+    ..analytics = st['analytics'] != false;
   if (s.tiki < 0 || s.earnedTotal < 0) {
     throw SaveFormatException('negative money');
   }
