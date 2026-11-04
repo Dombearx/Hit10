@@ -529,6 +529,12 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 - **R-AD-8:** Po reklamie komunikat potwierdza nagrodę („Turbo włączone!
   ×2 jeszcze przez 30:00”) albo jej brak („Reklama nie została obejrzana
   do końca — bez nagrody”).
+- **R-AD-9:** Na czas okna oferty i samej reklamy **czas gry stoi**. Szał,
+  Gorąca ręka, zapas Turbo, złoty zegar na ekranie, czas do następnej
+  Złotej Sekundy i dochód pasywny czekają na gracza. Reklama ani czytanie
+  oferty nie zabierają aktywnego bonusu (playtest: Szał przepadał
+  w trakcie reklamy Turbo). Gra tylko stoi, bez kary i bez nagrody, tak jak
+  pauza (R-RUNDA-8a).
 
 ## 14. Wydarzenia sezonowe
 

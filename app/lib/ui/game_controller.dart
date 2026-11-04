@@ -379,6 +379,12 @@ class GameController extends ChangeNotifier {
   /// Called every frame by the arena.
   void tick() {
     if (qaFrozen) return;
+    if (timeHeld) {
+      // Game time stands still (R-AD-9): Frenzy, Hot hand, Turbo and the
+      // golden clock wait for the player; the frame after counts from here.
+      _lastTick = null;
+      return;
+    }
     final t = now();
     final last = _lastTick;
     _lastTick = t;
@@ -752,6 +758,14 @@ class GameController extends ChangeNotifier {
   }
 
   // ----------------------------------------------------------- ad offers --
+
+  /// A rewarded offer's dialog is open (set by the UI around it).
+  bool offerOpen = false;
+
+  /// Game time stands still: an offer is being read or an ad plays
+  /// (R-AD-9). On Android the ad covers the game without stopping its
+  /// frames, so the timers would run on under it.
+  bool get timeHeld => _adPlaying || offerOpen;
 
   /// Pauses the rounds, plays an ad and grants the offer only if it was
   /// watched to the end (R-AD-3). Returns whether the reward was granted.
