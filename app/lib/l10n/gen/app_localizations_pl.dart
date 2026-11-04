@@ -600,6 +600,171 @@ class AppLocalizationsPl extends AppLocalizations {
   String get ach_hidden_boiledEgg_desc => '100 babć';
 
   @override
+  String ach_exact(String count) {
+    return 'Co do setnej $count';
+  }
+
+  @override
+  String ach_exact_desc(String count) {
+    return 'Zatrzymaj stoper równo na 5.00 $count razy';
+  }
+
+  @override
+  String ach_rounds(String count) {
+    return 'Wytrwały $count';
+  }
+
+  @override
+  String ach_rounds_desc(String count) {
+    return 'Zagraj $count rund';
+  }
+
+  @override
+  String ach_income(String count) {
+    return 'Fabryka czasu $count/s';
+  }
+
+  @override
+  String ach_income_desc(String count) {
+    return 'Zegary zarabiają $count Tików na sekundę (bez Szału i Turbo)';
+  }
+
+  @override
+  String ach_clocks(String count) {
+    return 'Zegarmistrz $count';
+  }
+
+  @override
+  String ach_clocks_desc(String count) {
+    return 'Miej łącznie $count zegarów';
+  }
+
+  @override
+  String ach_skillLevels(String count) {
+    return 'Wprawa $count';
+  }
+
+  @override
+  String ach_skillLevels_desc(String count) {
+    return 'Miej łącznie $count poziomów umiejętności';
+  }
+
+  @override
+  String ach_blindPerfects(String count) {
+    return 'Nietoperz $count';
+  }
+
+  @override
+  String ach_blindPerfects_desc(String count) {
+    return '$count PERFEKTÓW na ślepo';
+  }
+
+  @override
+  String ach_playHours(String count) {
+    return 'Stały bywalec $count h';
+  }
+
+  @override
+  String ach_playHours_desc(String count) {
+    return 'Graj łącznie $count h';
+  }
+
+  @override
+  String ach_achievements(String count) {
+    return 'Kolekcjoner $count';
+  }
+
+  @override
+  String ach_achievements_desc(String count) {
+    return 'Zdobądź $count osiągnięć';
+  }
+
+  @override
+  String ach_daily(String count) {
+    return 'Codzienny rytuał $count';
+  }
+
+  @override
+  String ach_daily_desc(String count) {
+    return 'Odbierz dzienną premię $count razy';
+  }
+
+  @override
+  String ach_shield(String count) {
+    return 'Pancerny $count';
+  }
+
+  @override
+  String ach_shield_desc(String count) {
+    return 'Tarcza obroniła serię $count razy';
+  }
+
+  @override
+  String get ach_feat_goldenFast => 'Refleks';
+
+  @override
+  String get ach_feat_goldenFast_desc =>
+      'Złap Złotą Sekundę w ciągu sekundy od jej pojawienia się';
+
+  @override
+  String get ach_feat_goldenFrenzy => 'Złoto do złota';
+
+  @override
+  String get ach_feat_goldenFrenzy_desc => 'Złap Złotą Sekundę w trakcie Szału';
+
+  @override
+  String get ach_feat_dailyWeek => 'Pełny tydzień';
+
+  @override
+  String get ach_feat_dailyWeek_desc => 'Odbierz 7. dzień dziennej premii';
+
+  @override
+  String get ach_feat_offlineFull => 'Sen zimowy';
+
+  @override
+  String get ach_feat_offlineFull_desc =>
+      'Wróć po przerwie dłuższej niż limit offline';
+
+  @override
+  String get ach_feat_bothClocks => 'Obie ręce';
+
+  @override
+  String get ach_feat_bothClocks_desc =>
+      'PERFEKT na jednym zegarze zaraz po PERFEKCIE na drugim';
+
+  @override
+  String get ach_feat_allPerks => 'Władca czasu';
+
+  @override
+  String get ach_feat_allPerks_desc => 'Kup wszystkie perki';
+
+  @override
+  String get ach_feat_noHands => 'Bez rąk';
+
+  @override
+  String get ach_feat_noHands_desc =>
+      'Zarób 1M Tików w jednym przejściu, trafiając najwyżej 15 razy';
+
+  @override
+  String get ach_hidden_midnight => 'Kopciuszek';
+
+  @override
+  String get ach_hidden_midnight_desc => 'PERFEKT o północy';
+
+  @override
+  String get ach_hidden_stubborn => 'Uparty';
+
+  @override
+  String get ach_hidden_stubborn_desc => '1000 pudeł';
+
+  @override
+  String get ach_hidden_atomic => 'Zegar atomowy';
+
+  @override
+  String get ach_hidden_atomic_desc =>
+      'Typowy błąd najwyżej 10 ms w ostatnich trafieniach';
+
+  @override
   String get perk_headStart => 'Szybki start';
 
   @override

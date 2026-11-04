@@ -292,7 +292,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 - **R-OSIAG-1:** Każde osiągnięcie daje **+1%** do globalnego mnożnika
   (sumowane: 50 osiągnięć to +50%). Ma ikonę-odznakę, nazwę i opis PL/EN.
   Zdobycie pokazuje toast z fanfarą.
-- **R-OSIAG-2:** Lista, ok. 100 sztuk:
+- **R-OSIAG-2:** Lista, ok. 150 sztuk (po playteście 25 dołożone kategorie wzorowane na Cookie Clickerze: dochód na sekundę, łączna liczba budynków i ulepszeń, liczba kliknięć, wyzwanie „Neverclick”, osiągnięcia za osiągnięcia):
 
 | Kategoria | Progi | Liczba |
 |---|---|---|
@@ -301,11 +301,26 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | PERFEKTY łącznie | 1, 10, 100, 1K, 10K, 100K | 6 |
 | PERFEKTY z rzędu | 3, 5, 10 | 3 |
 | Najwyższe combo | 10, 15, 25 (max) | 3 |
-| Złapane Złote Sekundy | 1, 10, 50, 200 | 4 |
-| Prestiże | 1, 5, 10, 25 | 4 |
-| Tryby | PERFEKT na ślepo; PERFEKT w szybkim zegarze; PERFEKT w obu naraz | 3 |
-| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć) | 8 |
+| Złapane Złote Sekundy | 1, 10, 50, 200, 500 | 5 |
+| Prestiże | 1, 5, 10, 25, 50, 100 | 6 |
+| Tryby | PERFEKT na ślepo; PERFEKT na ślepo przy serii 10+; przy serii 25+ (wystarczy PERFEKT, nie równe 5.00) | 3 |
+| Wydarzenia sezonowe | po jednym na wydarzenie (§14) | 7 |
+| Równo 5.00 na tarczy (PERFEKT z błędem < 0.005 s) | 1, 10, 100, 1K | 4 |
+| Zagrane rundy | 100, 1K, 10K, 100K | 4 |
+| Dochód pasywny na sekundę (bez Szału i Turbo) | 1K, 1M, 1B, 1T, 1aa, 1ab | 6 |
+| Zegary łącznie | 100, 500, 1000, 2000 | 4 |
+| Poziomy umiejętności łącznie | 25, 50, 100 | 3 |
+| PERFEKTY na ślepo łącznie | 10, 100, 1K | 3 |
+| Czas gry | 1 h, 10 h, 100 h | 3 |
+| Zdobyte osiągnięcia | 25, 50, 100 | 3 |
+| Odebrane dzienne premie | 7, 30, 100 | 3 |
+| Seria uratowana Tarczą | 10, 100 | 2 |
+| Wyczyny | „Refleks” (Złota Sekunda złapana do 1 s od pojawienia się), „Złoto do złota” (w trakcie Szału), „Pełny tydzień” (7. dzień premii), „Sen zimowy” (powrót po przerwie dłuższej niż limit offline), „Obie ręce” (PERFEKT na jednym zegarze zaraz po PERFEKCIE na drugim), „Władca czasu” (wszystkie perki), „Bez rąk” (1M Tików w jednym przejściu przy najwyżej 15 trafieniach, wzór: Neverclick z Cookie Clickera) | 7 |
+| Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć), „Kopciuszek” (PERFEKT o północy), „Uparty” (1000 pudeł), „Zegar atomowy” (typowy błąd ≤ 10 ms z co najmniej 50 ostatnich celnych dotknięć) | 11 |
 
+- **R-OSIAG-2a:** Razem osiągnięcia mogą dać do ok. +150% do `G`.
+  Symulator tempa ich nie liczy (03), więc prawdziwa gra jest nieco
+  szybsza niż cele B-x. Nowe dotyczą głównie późnej gry.
 - **R-OSIAG-3:** Ukryte osiągnięcia wyglądają jak „???” do momentu zdobycia.
   Tak samo osiągnięcia „Miej N × zegar” dla zegarów, których gracz jeszcze
   nie odkrył (nie miał ich i nie są następne w kolejce w sklepie) —

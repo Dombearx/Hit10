@@ -437,7 +437,7 @@ class GameController extends ChangeNotifier {
     _sinceAchievementCheck += dt;
     if (_sinceAchievementCheck >= 1) {
       _sinceAchievementCheck = 0;
-      _checkAchievements(const AchievementContext());
+      _checkAchievements(AchievementContext(passive: econ.passive()));
       if (engine.canPrestige()) _tip('prestige');
       checkTips();
     }
@@ -471,6 +471,7 @@ class GameController extends ChangeNotifier {
         _trackTutorial();
         final local = _localNow();
         if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
+        _countForAchievements(slot, o.tier);
         if (state.comboStreak >= 3) _tip('combo');
         _playFeedback(o);
         _feedback.add(HitFeedback(o, gameTime, clock: slot.index));
@@ -485,6 +486,21 @@ class GameController extends ChangeNotifier {
         );
         notifyListeners();
     }
+  }
+
+  /// The clock of the last graded round if it was a PERFEKT.
+  int? _lastPerfectClock;
+
+  void _countForAchievements(ClockSlot slot, Tier tier) {
+    final l = state.lifetime;
+    if (tier != Tier.perfect) {
+      _lastPerfectClock = null;
+      return;
+    }
+    if (slot.blind) l.blindPerfects++;
+    final other = _lastPerfectClock;
+    if (other != null && other != slot.index) l.bothClocksPerfects++;
+    _lastPerfectClock = slot.index;
   }
 
   /// How well the player times the stopwatch, at a few round counts:

@@ -133,6 +133,9 @@ class GameEngine {
   /// The player tapped the flying golden clock.
   bool claimGolden() {
     if (goldenVisibleLeft <= 0) return false;
+    final l = s.lifetime;
+    if (b.golden.visibleFor - goldenVisibleLeft <= 1) l.goldenFast++;
+    if (frenzyLeft > 0) l.goldenInFrenzy++;
     goldenVisibleLeft = 0;
     goldenArmed = true;
     if (_seasonRunning) {
@@ -292,6 +295,7 @@ class GameEngine {
     if (tier == Tier.miss) {
       if (s.shieldCharges > 0 && before > 0) {
         s.shieldCharges--;
+        s.lifetime.shieldSaves++;
         shieldUsed = true;
       } else {
         final floor = s.perks.contains('comboFloor')
@@ -378,9 +382,12 @@ class GameEngine {
 
   void _recordStats(Grade raw, Tier tier) {
     s.stats.record(Grade(tier, raw.error, raw.missKind), tapped: true);
+    s.runTaps++;
     final l = s.lifetime;
     if (tier == Tier.perfect) {
       l.perfects++;
+      // The dial shows 5.00 (two decimals, docs/02 R-RUNDA-9).
+      if (raw.error.abs() < 0.005) l.exactHits++;
       l.perfectStreak++;
       l.bestPerfectStreak = math.max(l.bestPerfectStreak, l.perfectStreak);
     } else {
@@ -576,7 +583,8 @@ class GameEngine {
       ..earnedThisRun = 0
       ..peakTiki = 0
       ..comboStreak = 0
-      ..shieldProgress = 0;
+      ..shieldProgress = 0
+      ..runTaps = 0;
     s.owned.clear();
     s.skills
       ..clear()
@@ -721,10 +729,12 @@ class GameEngine {
     s.earn(d.amount);
     s.dailyKey = d.key;
     s.dailyStreak = d.day;
+    s.lifetime.dailyClaims++;
   }
 
   void claimOffline(OfflineReport r, {double multiplier = 1}) {
     s.earn(r.amount * multiplier);
+    if (r.countedSeconds < r.awaySeconds) s.lifetime.offlineFull++;
     holdOffline(null);
   }
 }

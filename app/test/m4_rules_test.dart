@@ -245,8 +245,8 @@ void main() {
   group('achievements (R-OSIAG-1…3)', () {
     final all = buildAchievements(b);
 
-    test('about a hundred, unique ids', () {
-      expect(all.length, inInclusiveRange(95, 105));
+    test('about 150, unique ids', () {
+      expect(all.length, inInclusiveRange(145, 160));
       expect(all.map((a) => a.id).toSet(), hasLength(all.length));
     });
 

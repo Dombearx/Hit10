@@ -75,6 +75,7 @@ Map<String, Object?> encodeSave(SaveData d) {
     'seasonsDone': s.seasonsDone.toList(),
     'seasonStash': s.seasonStash,
     'theme': s.theme,
+    'runTaps': s.runTaps,
     'stats': {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
@@ -93,6 +94,14 @@ Map<String, Object?> encodeSave(SaveData d) {
       'secondsPlayed': l.secondsPlayed,
       'tenthDayPerfects': l.tenthDayPerfects,
       'tenthDayKey': l.tenthDayKey,
+      'exactHits': l.exactHits,
+      'blindPerfects': l.blindPerfects,
+      'bothClocksPerfects': l.bothClocksPerfects,
+      'dailyClaims': l.dailyClaims,
+      'shieldSaves': l.shieldSaves,
+      'goldenFast': l.goldenFast,
+      'goldenInFrenzy': l.goldenInFrenzy,
+      'offlineFull': l.offlineFull,
     },
     'settings': {
       'sfxVolume': st.sfxVolume,
@@ -167,7 +176,9 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..seasonKey = j['seasonKey'] is String ? j['seasonKey']! as String : ''
     ..seasonCatches = _i(j['seasonCatches'])
     ..seasonHits = _i(j['seasonHits'])
-    ..theme = j['theme'] is String ? j['theme']! as String : '';
+    ..theme = j['theme'] is String ? j['theme']! as String : ''
+    // A save from before the counter: this run's taps are unknown.
+    ..runTaps = j.containsKey('runTaps') ? _i(j['runTaps']) : 1 << 30;
   s.seasonsDone.addAll(_sl(j['seasonsDone']));
   _m(j['seasonStash']).forEach((k, v) {
     if (v is List && v.length == 2) s.seasonStash[k] = [_i(v[0]), _i(v[1])];
@@ -202,7 +213,15 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..goldenCaught = _i(l['goldenCaught'])
     ..secondsPlayed = _d(l['secondsPlayed'])
     ..tenthDayPerfects = _i(l['tenthDayPerfects'])
-    ..tenthDayKey = _i(l['tenthDayKey']);
+    ..tenthDayKey = _i(l['tenthDayKey'])
+    ..exactHits = _i(l['exactHits'])
+    ..blindPerfects = _i(l['blindPerfects'])
+    ..bothClocksPerfects = _i(l['bothClocksPerfects'])
+    ..dailyClaims = _i(l['dailyClaims'])
+    ..shieldSaves = _i(l['shieldSaves'])
+    ..goldenFast = _i(l['goldenFast'])
+    ..goldenInFrenzy = _i(l['goldenInFrenzy'])
+    ..offlineFull = _i(l['offlineFull']);
   final st = _m(j['settings']);
   final settings = Settings()
     ..sfxVolume = _d(st['sfxVolume'], 1)

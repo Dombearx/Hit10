@@ -1106,6 +1106,246 @@ abstract class AppLocalizations {
   /// **'100 grandmas'**
   String get ach_hidden_boiledEgg_desc;
 
+  /// No description provided for @ach_exact.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot on {count}'**
+  String ach_exact(String count);
+
+  /// No description provided for @ach_exact_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop the dial at exactly 5.00 {count} times'**
+  String ach_exact_desc(String count);
+
+  /// No description provided for @ach_rounds.
+  ///
+  /// In en, this message translates to:
+  /// **'Persistent {count}'**
+  String ach_rounds(String count);
+
+  /// No description provided for @ach_rounds_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play {count} rounds'**
+  String ach_rounds_desc(String count);
+
+  /// No description provided for @ach_income.
+  ///
+  /// In en, this message translates to:
+  /// **'Time factory {count}/s'**
+  String ach_income(String count);
+
+  /// No description provided for @ach_income_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your clocks earn {count} Ticks a second (without Frenzy and Turbo)'**
+  String ach_income_desc(String count);
+
+  /// No description provided for @ach_clocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Clockmaker {count}'**
+  String ach_clocks(String count);
+
+  /// No description provided for @ach_clocks_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Own {count} clocks in total'**
+  String ach_clocks_desc(String count);
+
+  /// No description provided for @ach_skillLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice {count}'**
+  String ach_skillLevels(String count);
+
+  /// No description provided for @ach_skillLevels_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Have {count} skill levels in total'**
+  String ach_skillLevels_desc(String count);
+
+  /// No description provided for @ach_blindPerfects.
+  ///
+  /// In en, this message translates to:
+  /// **'Bat {count}'**
+  String ach_blindPerfects(String count);
+
+  /// No description provided for @ach_blindPerfects_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} blind PERFECTs'**
+  String ach_blindPerfects_desc(String count);
+
+  /// No description provided for @ach_playHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular {count} h'**
+  String ach_playHours(String count);
+
+  /// No description provided for @ach_playHours_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play {count} h in total'**
+  String ach_playHours_desc(String count);
+
+  /// No description provided for @ach_achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Collector {count}'**
+  String ach_achievements(String count);
+
+  /// No description provided for @ach_achievements_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn {count} achievements'**
+  String ach_achievements_desc(String count);
+
+  /// No description provided for @ach_daily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily ritual {count}'**
+  String ach_daily(String count);
+
+  /// No description provided for @ach_daily_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect the daily bonus {count} times'**
+  String ach_daily_desc(String count);
+
+  /// No description provided for @ach_shield.
+  ///
+  /// In en, this message translates to:
+  /// **'Armored {count}'**
+  String ach_shield(String count);
+
+  /// No description provided for @ach_shield_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Shield saved the combo {count} times'**
+  String ach_shield_desc(String count);
+
+  /// No description provided for @ach_feat_goldenFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflexes'**
+  String get ach_feat_goldenFast;
+
+  /// No description provided for @ach_feat_goldenFast_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch a Golden Second within a second of it appearing'**
+  String get ach_feat_goldenFast_desc;
+
+  /// No description provided for @ach_feat_goldenFrenzy.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold on gold'**
+  String get ach_feat_goldenFrenzy;
+
+  /// No description provided for @ach_feat_goldenFrenzy_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch a Golden Second during a Frenzy'**
+  String get ach_feat_goldenFrenzy_desc;
+
+  /// No description provided for @ach_feat_dailyWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Full week'**
+  String get ach_feat_dailyWeek;
+
+  /// No description provided for @ach_feat_dailyWeek_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach day 7 of the daily bonus'**
+  String get ach_feat_dailyWeek_desc;
+
+  /// No description provided for @ach_feat_offlineFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Hibernation'**
+  String get ach_feat_offlineFull;
+
+  /// No description provided for @ach_feat_offlineFull_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Come back after a break longer than the offline limit'**
+  String get ach_feat_offlineFull_desc;
+
+  /// No description provided for @ach_feat_bothClocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Both hands'**
+  String get ach_feat_bothClocks;
+
+  /// No description provided for @ach_feat_bothClocks_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A PERFECT on one clock right after a PERFECT on the other'**
+  String get ach_feat_bothClocks_desc;
+
+  /// No description provided for @ach_feat_allPerks.
+  ///
+  /// In en, this message translates to:
+  /// **'Master of time'**
+  String get ach_feat_allPerks;
+
+  /// No description provided for @ach_feat_allPerks_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy every perk'**
+  String get ach_feat_allPerks_desc;
+
+  /// No description provided for @ach_feat_noHands.
+  ///
+  /// In en, this message translates to:
+  /// **'No hands'**
+  String get ach_feat_noHands;
+
+  /// No description provided for @ach_feat_noHands_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn 1M Ticks in one run with at most 15 taps'**
+  String get ach_feat_noHands_desc;
+
+  /// No description provided for @ach_hidden_midnight.
+  ///
+  /// In en, this message translates to:
+  /// **'Cinderella'**
+  String get ach_hidden_midnight;
+
+  /// No description provided for @ach_hidden_midnight_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A PERFECT at midnight'**
+  String get ach_hidden_midnight_desc;
+
+  /// No description provided for @ach_hidden_stubborn.
+  ///
+  /// In en, this message translates to:
+  /// **'Stubborn'**
+  String get ach_hidden_stubborn;
+
+  /// No description provided for @ach_hidden_stubborn_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'1000 misses'**
+  String get ach_hidden_stubborn_desc;
+
+  /// No description provided for @ach_hidden_atomic.
+  ///
+  /// In en, this message translates to:
+  /// **'Atomic clock'**
+  String get ach_hidden_atomic;
+
+  /// No description provided for @ach_hidden_atomic_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Typical error of 10 ms or less over your recent taps'**
+  String get ach_hidden_atomic_desc;
+
   /// No description provided for @perk_headStart.
   ///
   /// In en, this message translates to:

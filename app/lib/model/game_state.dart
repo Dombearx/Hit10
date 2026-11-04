@@ -55,6 +55,10 @@ class GameState {
 
   bool tutorialDone = false;
 
+  /// Taps graded this run (reset by the paradox): the "no hands"
+  /// achievement allows only a few. Saves from before it count as many.
+  int runTaps = 0;
+
   // ---------------------------------------------------------- the combo --
   /// Combo streak (docs/02 §3); survives pauses (R-RUNDA-8), reset by misses.
   int comboStreak = 0;
@@ -194,4 +198,23 @@ class LifetimeStats {
 
   /// yyyymmdd the counter above belongs to.
   int tenthDayKey = 0;
+
+  // Counters for the achievements added after playtest 25 (docs/02 §8).
+  /// Hits the dial showed as exactly 5.00.
+  int exactHits = 0;
+  int blindPerfects = 0;
+
+  /// PERFEKT on one clock right after a PERFEKT on the other one.
+  int bothClocksPerfects = 0;
+  int dailyClaims = 0;
+
+  /// Misses a Shield charge took instead of the combo.
+  int shieldSaves = 0;
+
+  /// Golden clocks caught within a second of appearing / during Frenzy.
+  int goldenFast = 0;
+  int goldenInFrenzy = 0;
+
+  /// Offline income collected after an absence longer than the limit.
+  int offlineFull = 0;
 }

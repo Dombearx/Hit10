@@ -353,18 +353,36 @@
       1,
       10,
       50,
-      200
+      200,
+      500
     ],
     "prestigeThresholds": [
       1,
       5,
       10,
-      25
+      25,
+      50,
+      100
     ],
     "impatientEarlyTaps": 100,
     "napMissedRounds": 2,
     "boiledEggGrandmas": 100,
-    "tenthDayPerfects": 10
+    "tenthDayPerfects": 10,
+    "exactThresholds": [1, 10, 100, 1000],
+    "roundThresholds": [100, 1000, 10000, 100000],
+    "incomeThresholds": [1000.0, 1000000.0, 1000000000.0, 1000000000000.0, 1000000000000000.0, 1e+18],
+    "clocksThresholds": [100, 500, 1000, 2000],
+    "skillLevelThresholds": [25, 50, 100],
+    "blindPerfectThresholds": [10, 100, 1000],
+    "playHoursThresholds": [1, 10, 100],
+    "achievementCountThresholds": [25, 50, 100],
+    "dailyClaimThresholds": [7, 30, 100],
+    "shieldSaveThresholds": [10, 100],
+    "noHandsEarned": 1000000.0,
+    "noHandsTaps": 15,
+    "stubbornMisses": 1000,
+    "atomicTypicalError": 0.01,
+    "atomicSamples": 50
   },
   "prestige": {
     "divisor": 100000000.0,

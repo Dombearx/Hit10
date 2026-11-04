@@ -291,7 +291,22 @@ class AchievementsConfig {
       impatientEarlyTaps = _i(j['impatientEarlyTaps']),
       napMissedRounds = _i(j['napMissedRounds']),
       boiledEggGrandmas = _i(j['boiledEggGrandmas']),
-      tenthDayPerfects = _i(j['tenthDayPerfects']);
+      tenthDayPerfects = _i(j['tenthDayPerfects']),
+      exactThresholds = _ints(j['exactThresholds']),
+      roundThresholds = _ints(j['roundThresholds']),
+      incomeThresholds = _dl(j['incomeThresholds']),
+      clocksThresholds = _ints(j['clocksThresholds']),
+      skillLevelThresholds = _ints(j['skillLevelThresholds']),
+      blindPerfectThresholds = _ints(j['blindPerfectThresholds']),
+      playHoursThresholds = _ints(j['playHoursThresholds']),
+      achievementCountThresholds = _ints(j['achievementCountThresholds']),
+      dailyClaimThresholds = _ints(j['dailyClaimThresholds']),
+      shieldSaveThresholds = _ints(j['shieldSaveThresholds']),
+      noHandsEarned = _d(j['noHandsEarned']),
+      noHandsTaps = _i(j['noHandsTaps']),
+      stubbornMisses = _i(j['stubbornMisses']),
+      atomicTypicalError = _d(j['atomicTypicalError']),
+      atomicSamples = _i(j['atomicSamples']);
   static List<int> _ints(Object? v) =>
       (v as List).map(_i).toList(growable: false);
   final double bonusEach;
@@ -306,6 +321,21 @@ class AchievementsConfig {
   final int napMissedRounds;
   final int boiledEggGrandmas;
   final int tenthDayPerfects;
+  final List<int> exactThresholds;
+  final List<int> roundThresholds;
+  final List<double> incomeThresholds;
+  final List<int> clocksThresholds;
+  final List<int> skillLevelThresholds;
+  final List<int> blindPerfectThresholds;
+  final List<int> playHoursThresholds;
+  final List<int> achievementCountThresholds;
+  final List<int> dailyClaimThresholds;
+  final List<int> shieldSaveThresholds;
+  final double noHandsEarned;
+  final int noHandsTaps;
+  final int stubbornMisses;
+  final double atomicTypicalError;
+  final int atomicSamples;
 }
 
 class PerkConfig {
