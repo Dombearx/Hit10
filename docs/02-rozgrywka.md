@@ -64,14 +64,14 @@ i bullet time) zabierała rytm — gracz liczy w głowie, a przyspieszony
 start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 **zawsze płynie równo**, a obie umiejętności dają tę samą pomoc inaczej.
 
-- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.08·L` (L =
-  poziom 0–10: 0, 0.08 … 0.80) — każdy poziom daje tyle samo, a
-  kolejne są coraz droższe (×7) — w normalnym tempie. Przy celu 5.00 to
+- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.0533·L` (L =
+  poziom 0–15: 0 … 0.80, §4) — każdy poziom daje tyle samo, a
+  kolejne są coraz droższe — w normalnym tempie. Przy celu 5.00 to
   już mały bonus (do ~15% więcej rund); kandydat do zastąpienia. Cel zostaje `5.00`, a do celu zawsze zostają
   co najmniej 4 s (`round.latestStart` ≤ cel − strefa − 4), żeby złapać
   rytm.
 - **R-RUNDA-11:** Zimna krew: okna gracza (PERFEKT, ŚWIETNIE, DOBRZE,
-  BLISKO) są `1 / (1 − 0.06·L)` razy szersze (×2.5 na max). Matematycznie
+  BLISKO) są `1 / (1 − 0.04·L)` razy szersze (L = 0–15, ×2.5 na max, §4). Matematycznie
   to ta sama pomoc co dawne zwolnienie zegara, ale bez zmiany tempa.
   Generatory jej nie dostają.
 - **R-RUNDA-12:** Ocena trafienia jest w czasie gry, który przy stałym tempie
@@ -232,6 +232,12 @@ Capitalist: bonus przychodzi sam za zbieranie sztuk.
 - **R-ULEP-2:** Każdy próg ma śmieszną nazwę w PL i EN (dawne nazwy
   ulepszeń), np. dziadek: „Okulary do czytania”, „Nowa bateria”,
   „Sanatorium”; pokazuje ją powiadomienie przy osiągnięciu progu.
+- **R-ULEP-2a:** Pełna karta zegara (dotknięcie zegara w sklepie) pokazuje
+  wszystkie 8 progów i synergie z tym zegarem. Zdobyte progi mają nazwę
+  i śmieszny opis. Niezdobyte pokazują tylko liczbę sztuk i ×2, a zamiast
+  nazwy „???”, żeby zdobycie było niespodzianką. Niewłączona synergia też
+  ma „???” zamiast nazwy, ale mówi, co daje i ile sztuk brakuje
+  (playtest 25: nazwy migały tylko w powiadomieniu).
 - **R-ULEP-3:** Karta generatora ma pasek postępu do następnego progu
   („7/10 → ×2”), po ostatnim „Wszystkie bonusy zdobyte”. Osiągnięcie
   progu: fanfara, wibracja, powiadomienie „Nowy bonus · <nazwa>

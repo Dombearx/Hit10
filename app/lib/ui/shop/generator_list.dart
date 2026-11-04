@@ -568,10 +568,14 @@ class _GeneratorBonuses extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Not reached yet: only what it takes; the name and
+                        // the joke are the surprise (playtest 25).
                         Text(
                           l.generatorBonusLine(
                             '$need',
-                            upgradeTexts(l, id, i + 1)?.$1 ?? roman(i),
+                            owned >= need
+                                ? upgradeTexts(l, id, i + 1)?.$1 ?? roman(i)
+                                : '???',
                             '$mult',
                           ),
                           style: const TextStyle(
@@ -579,14 +583,15 @@ class _GeneratorBonuses extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        if (upgradeTexts(l, id, i + 1)?.$2 case final d?)
-                          Text(
-                            d,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontStyle: FontStyle.italic,
+                        if (owned >= need)
+                          if (upgradeTexts(l, id, i + 1)?.$2 case final d?)
+                            Text(
+                              d,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
-                          ),
                       ],
                     ),
                   ),
@@ -610,9 +615,7 @@ class _GeneratorBonuses extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        on
-                            ? l.generatorSynergyOn(synergyName(l, s.id))
-                            : synergyName(l, s.id),
+                        on ? l.generatorSynergyOn(synergyName(l, s.id)) : '???',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
