@@ -64,12 +64,13 @@ i bullet time) zabierała rytm — gracz liczy w głowie, a przyspieszony
 start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 **zawsze płynie równo**, a obie umiejętności dają tę samą pomoc inaczej.
 
-- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.0533·L` (L =
-  poziom 0–15: 0 … 0.80, §4) — każdy poziom daje tyle samo, a
-  kolejne są coraz droższe — w normalnym tempie. Przy celu 5.00 to
-  już mały bonus (do ~15% więcej rund); kandydat do zastąpienia. Cel zostaje `5.00`, a do celu zawsze zostają
-  co najmniej 4 s (`round.latestStart` ≤ cel − strefa − 4), żeby złapać
-  rytm.
+- **R-RUNDA-10:** Start później: stoper rusza od `S(L) = 0.1333·L` (L =
+  poziom 0–15: 0 … 2.00, §4) — każdy poziom daje tyle samo, a
+  kolejne są coraz droższe — w normalnym tempie. Na max to ok. 54%
+  więcej rund (5.7 → 3.7 s; przy dawnym limicie 0.80 było tylko ~16%).
+  Cel zostaje `5.00`, a do strefy przy celu zawsze zostaje
+  co najmniej 2.8 s (`round.latestStart` ≤ cel − strefa − 2.8), żeby
+  złapać rytm.
 - **R-RUNDA-11:** Zimna krew: okna gracza (PERFEKT, ŚWIETNIE, DOBRZE,
   BLISKO) są `1 / (1 − 0.04·L)` razy szersze (L = 0–15, ×2.5 na max, §4). Matematycznie
   to ta sama pomoc co dawne zwolnienie zegara, ale bez zmiany tempa.
@@ -79,7 +80,7 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 - **R-RUNDA-13:** Z Zimną krwią strefa `4.8–5.2` ma tylko wskazówki:
   winietę, pulsujące cyfry i bicie serca. Tempo i dźwięk się nie zmieniają.
 - Długość rundy w czasie rzeczywistym: od ok. **5.7 s** (bez ulepszeń) do
-  ok. **4.9 s** (max Start później).
+  ok. **3.7 s** (max Start później).
 
 ## 2. Progi trafienia
 
@@ -133,7 +134,7 @@ symulatorem (PERFEKT 10 → 6, Echo PERFEKTU 100% → 60%, jackpot 8 s → 5 s).
 
 ## 3. Wypłata za trafienie i combo
 
-- **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + 1.5·L_siła) · G + 0.5 s · L_echo · udział_echa · P) · combo · mnożnik_trybu`
+- **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + 1.5·L_siła) · G + ⅓ s · L_echo · udział_echa · P) · combo · mnożnik_trybu`
   - `G` to globalny mnożnik (osiągnięcia, Chronony, Szał), patrz 03;
   - `P` to aktualny dochód pasywny na sekundę (już z `G`).
 - **R-COMBO-1:** `seria` rośnie o krok combo progu (tabela wyżej). Pudło
@@ -153,12 +154,12 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 | id | Nazwa PL / EN | Max | Koszt bazowy | Wzrost | Efekt na poziomie L |
 |---|---|---|---|---|---|
 | `power` | Siła trafienia / Strike Power | 15 | 50 | ×7 | nagroda progu ×(1+1.5L) |
-| `fastForward` | Start później / Late Start | 15 | 150 | ×3.66 | stoper rusza od 0.0533·L, max 0.8 |
+| `fastForward` | Start później / Late Start | 15 | 150 | ×3.66 | stoper rusza od 0.1333·L, max 2.0 |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
 | `wideEye` | Sokole oko / Hawk Eye | 15 | 600 | ×2.6 | okna ŚWIETNIE i DOBRZE ×(1+0.0533L), max ×1.8 |
 | `combo` | Combo / Combo | 15 | 500 | ×8 | limit combo +2 na poziom (5 → 35) |
 | `magnet` | Magnes / Magnet | 15 | 2 000 | ×3.66 | okno PERFEKT +0.00067 s na poziom, ±0.015 → ±0.025 |
-| `echo` | Echo / Echo | 15 | 5 000 | ×9 | trafienie płaci dodatkowo 0.5·L s dochodu pasywnego × udział echa (max 7.5 s) |
+| `echo` | Echo / Echo | 15 | 5 000 | ×9 | trafienie płaci dodatkowo ⅓·L s dochodu pasywnego × udział echa (max 5 s) |
 | `bulletTime` | Zimna krew / Cold Blood | 15 | 5 000 | ×3.66 | okna gracza ×1/(1−0.04L), max ×2.5 |
 | `luck` | Szczęście / Luck | 15 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
 | `shield` | Tarcza / Shield | 5 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |

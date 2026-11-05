@@ -634,8 +634,8 @@ class Balance {
       e.add('prestige divisor and root must be > 0');
     }
     if (round.latestStart < 0 ||
-        round.latestStart > round.target - round.bulletZone - 4 + 1e-9) {
-      e.add('latestStart must leave at least 4 s before the focus zone');
+        round.latestStart > round.target - round.bulletZone - 2.8 + 1e-9) {
+      e.add('latestStart must leave at least 2.8 s before the focus zone');
     }
     for (final se in seasons.list) {
       final fixed = se.from != null && se.to != null;

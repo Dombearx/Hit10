@@ -54,15 +54,16 @@ void main() {
   test('hit payout (R-WYPLATA-1) with echo, combo and mode', () {
     s.stats.rounds = 30; // past beginner's luck
     s.owned['grandma'] = 5; // P = 5/s (under the first ×2 at 10)
-    s.skills.addAll({'power': 2, 'echo': 4}); // ×(1 + 1.5·2) = ×4, 2 s
+    s.skills.addAll({'power': 2, 'echo': 6}); // ×(1 + 1.5·2) = ×4, ~2 s
+    final echo = 6 * b.skill('echo').perLevel; // seconds of clock work
     const perfect = Grade(Tier.perfect, 0);
     // (6·4·1 + 2·0.6·5) · combo 1.5 · mode 3
     expect(
       g.hitPayout(perfect, combo: 1.5, mode: 3),
-      closeTo((24 + 6) * 4.5, 1e-9),
+      closeTo((24 + echo * 0.6 * 5) * 4.5, 1e-9),
     );
     const good = Grade(Tier.good, 0.04);
-    expect(g.hitPayout(good), closeTo(1 * 4 + 2 * 0.1 * 5, 1e-9));
+    expect(g.hitPayout(good), closeTo(1 * 4 + echo * 0.1 * 5, 1e-9));
     expect(g.hitPayout(const Grade(Tier.miss, 1, MissKind.late)), 0);
   });
 

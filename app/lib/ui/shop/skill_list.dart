@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../model/economy.dart';
 import '../../model/grading.dart';
-import '../../model/time_map.dart';
 import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -56,13 +55,10 @@ class SkillList extends StatelessWidget {
           0,
         );
       case 'fastForward':
-        final r = e.b.round;
-        final map = TimeMap(
-          start: e.laterStart(lv),
-          zoneStart: r.target - r.bulletZone,
-          zoneEnd: r.target + r.bulletZone,
-        );
-        return '${n(map.realAt(r.target) + r.resultPause, 2)} s';
+        // Where the stopwatch starts, not the round's length: the length
+        // included the result pause, so it read "5.70 → … 4.90 s" next to
+        // a 5.00 target (playtest).
+        return '${n(e.laterStart(lv), 2)} s';
       case 'ticking':
         return lv > 0 ? l.on : l.off;
       case 'wideEye':

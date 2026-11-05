@@ -7,7 +7,7 @@
     "inputGraceAfterStart": 0.25,
     "ignoreTapsBefore": 1.0,
     "resultPause": 0.7,
-    "latestStart": 0.8,
+    "latestStart": 2.0,
     "bulletZone": 0.2,
     "idleStopAfter": 2
   },
@@ -52,7 +52,7 @@
       "maxLevel": 15,
       "baseCost": 150,
       "costGrowth": 3.659,
-      "perLevel": 0.05333
+      "perLevel": 0.13333
     },
     {
       "id": "ticking",
@@ -87,7 +87,7 @@
       "maxLevel": 15,
       "baseCost": 5000,
       "costGrowth": 9,
-      "perLevel": 0.5
+      "perLevel": 0.33333
     },
     {
       "id": "bulletTime",

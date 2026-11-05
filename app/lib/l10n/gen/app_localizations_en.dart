@@ -238,7 +238,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_power => 'Strike Power';
 
   @override
-  String get skill_power_desc => 'For the start: more Ticks for every hit.';
+  String get skill_power_desc => 'More Ticks for every hit.';
 
   @override
   String get skill_power_label => 'Ticks per PERFECT';
@@ -247,16 +247,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_fastForward => 'Late Start';
 
   @override
-  String get skill_fastForward_desc => 'Shorter rounds — more rounds a minute.';
+  String get skill_fastForward_desc =>
+      'The stopwatch starts from a higher value, so a round is shorter.';
 
   @override
-  String get skill_fastForward_label => 'A round takes';
+  String get skill_fastForward_label => 'Stopwatch starts at';
 
   @override
   String get skill_ticking => 'Ticking';
 
   @override
-  String get skill_ticking_desc => 'A helper: ticking in the last second.';
+  String get skill_ticking_desc =>
+      'Ticking in the last second before the target.';
 
   @override
   String get skill_ticking_label => 'Ticking';
@@ -266,7 +268,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_wideEye_desc =>
-      'Wider GREAT and GOOD: fewer misses, longer streaks. Clocks too.';
+      'Wider GREAT and GOOD windows. Yours and your clocks\'.';
 
   @override
   String get skill_wideEye_label => 'GREAT / GOOD';
@@ -275,7 +277,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc => 'A higher ceiling for the streak multiplier.';
+  String get skill_combo_desc => 'A higher cap on the streak multiplier.';
 
   @override
   String get skill_combo_label => 'Streak multiplies up to';
@@ -284,7 +286,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_magnet => 'Magnet';
 
   @override
-  String get skill_magnet_desc => 'A wider PERFECT window. Clocks too.';
+  String get skill_magnet_desc =>
+      'A wider PERFECT window. Yours and your clocks\'.';
 
   @override
   String get skill_magnet_label => 'PERFECT window';
@@ -294,7 +297,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_echo_desc =>
-      'A hit pays seconds of your clocks\' work — grows with the game.';
+      'A hit adds the Ticks your clocks make in a fraction of a second.';
 
   @override
   String get skill_echo_label => 'PERFECT adds clock time';
@@ -303,7 +306,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_bulletTime => 'Cold Blood';
 
   @override
-  String get skill_bulletTime_desc => 'All your windows wider.';
+  String get skill_bulletTime_desc =>
+      'All your windows wider. Doesn\'t work on clocks.';
 
   @override
   String get skill_bulletTime_label => 'Your GOOD window';
@@ -312,7 +316,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_luck => 'Luck';
 
   @override
-  String get skill_luck_desc => 'Some hits jump a tier up.';
+  String get skill_luck_desc => 'Some hits land a tier higher.';
 
   @override
   String get skill_luck_label => 'Hits bumped a tier up';
@@ -331,7 +335,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_goldenTouch => 'Golden Touch';
 
   @override
-  String get skill_goldenTouch_desc => 'Golden Second more often and stronger.';
+  String get skill_goldenTouch_desc =>
+      'Golden Second more often, with a stronger effect.';
 
   @override
   String get skill_goldenTouch_label => 'Golden Second every';
@@ -2238,45 +2243,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_power_info =>
-      'The fixed reward for a hit: PERFECT 6 Ticks, GREAT 3, GOOD 1. Each level adds one and a half times that (PERFECT 6 → 15 → 24…). Very strong in the first minutes; later Echo counts, as it grows with your clocks.';
+      'A hit pays a fixed number of Ticks: PERFECT 6, GREAT 3, GOOD 1. Each level adds 150% of that (PERFECT: 6 → 15 → 24…).';
 
   @override
   String get skill_fastForward_info =>
-      'The stopwatch starts from a higher value, so a round is shorter and you play more rounds in the same time. At least 4 seconds are always left to find the rhythm.';
+      'Each level moves the stopwatch\'s start by about 0.13 s, up to 2.00 s at the top level. The stopwatch runs at normal speed and the target is still 5.00.';
 
   @override
   String get skill_ticking_info =>
-      'In the last second before the target you hear a tick every tenth of a second (with vibration if it\'s on). It helps you feel the moment.';
+      'From 4.00 to 5.00 you hear a tick every 0.1 s (with vibration if it\'s on).';
 
   @override
   String get skill_wideEye_info =>
-      'The GREAT window (±30 ms) grows by about 1.6 ms a level and GOOD (±50 ms) by about 2.7 ms, up to 1.8 times at the top level. Fewer misses mean longer streaks. Works on your clocks too: every level raises their income.';
+      'The GREAT (±30 ms) and GOOD (±50 ms) windows grow by about 5% a level, up to ×1.8 at the top level (±54 and ±90 ms). Works on clocks too.';
 
   @override
   String get skill_combo_info =>
-      'Every hit without a miss raises the streak multiplier by 0.05 a step (PERFECT 3 steps, GREAT 2, GOOD 1). The base ceiling is ×1.25; each level raises it by 0.10. It multiplies the whole payout, 5.00 and Echo included.';
+      'Every hit without a miss raises the streak multiplier: PERFECT by 0.15, GREAT by 0.10, GOOD by 0.05. Without upgrades it stops at ×1.25; each level raises that cap by 0.10. It multiplies the whole payout for a hit, 5.00 and Echo included.';
 
   @override
   String get skill_magnet_info =>
-      'The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Clocks hit PERFECT more often too.';
+      'The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Works on clocks too.';
 
   @override
   String get skill_echo_info =>
-      'Every hit adds seconds of your clocks\' work, per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s. It grows with your clocks, so later on it is where most clicking Ticks come from.';
+      'A hit adds as many Ticks as your clocks make in the given time. Per level: PERFECT 0.2 s, GREAT about 0.11 s, GOOD about 0.03 s.';
 
   @override
   String get skill_bulletTime_info =>
-      'All your windows (PERFECT, GREAT, GOOD, CLOSE) get wider, up to 2.5 times at the top level — e.g. GOOD from ±50 to ±125 ms. The 5.00 window stays. Near the target you feel a heartbeat. Doesn\'t work on clocks.';
+      'The PERFECT, GREAT, GOOD and CLOSE windows grow up to ×2.5 at the top level (e.g. GOOD: ±50 → ±125 ms). The 5.00 window stays. Near the target the screen pulses and you hear a heartbeat. Doesn\'t work on clocks.';
 
   @override
   String get skill_luck_info =>
-      'At each level 2% of hits jump a tier: GREAT becomes PERFECT, GOOD becomes GREAT. Never a 5.00.';
+      'At each level 2 hits in 100 jump a tier: GREAT → PERFECT, GOOD → GREAT. A PERFECT never becomes a 5.00.';
 
   @override
   String get skill_shield_info =>
-      'Each level is a Shield charge: a miss uses a charge instead of breaking your streak. Charges refill every 10 streak steps.';
+      'Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps.';
 
   @override
   String get skill_goldenTouch_info =>
-      'A Golden Second flies in every 10 minutes on average. Each level cuts that by 30 seconds and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.';
+      'A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.';
 }
