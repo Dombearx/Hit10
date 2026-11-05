@@ -241,7 +241,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_power => 'Siła trafienia';
 
   @override
-  String get skill_power_desc => 'Na start: więcej Tików za każde trafienie.';
+  String get skill_power_desc =>
+      'Więcej Tików za każde trafienie.';
 
   @override
   String get skill_power_label => 'Tiki za PERFEKT';
@@ -250,16 +251,19 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_fastForward => 'Start później';
 
   @override
-  String get skill_fastForward_desc => 'Krótsze rundy — więcej rund na minutę.';
+  String get skill_fastForward_desc =>
+      'Stoper rusza od wyższej wartości, więc runda jest krótsza.';
 
   @override
-  String get skill_fastForward_label => 'Runda trwa';
+  String get skill_fastForward_label =>
+      'Stoper startuje od';
 
   @override
   String get skill_ticking => 'Tykanie';
 
   @override
-  String get skill_ticking_desc => 'Pomoc: tykanie w ostatniej sekundzie.';
+  String get skill_ticking_desc =>
+      'Tykanie w ostatniej sekundzie przed celem.';
 
   @override
   String get skill_ticking_label => 'Tykanie';
@@ -269,7 +273,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_wideEye_desc =>
-      'Szersze ŚWIETNIE i DOBRZE: mniej pudeł, dłuższe serie. Zegarom też.';
+      'Szersze okna ŚWIETNIE i DOBRZE. Twoje i zegarów.';
 
   @override
   String get skill_wideEye_label => 'ŚWIETNIE / DOBRZE';
@@ -278,7 +282,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc => 'Wyższy sufit mnożnika serii.';
+  String get skill_combo_desc =>
+      'Wyższy limit mnożnika serii.';
 
   @override
   String get skill_combo_label => 'Seria mnoży do';
@@ -287,7 +292,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_magnet => 'Magnes';
 
   @override
-  String get skill_magnet_desc => 'Szersze okno PERFEKT. Zegarom też.';
+  String get skill_magnet_desc =>
+      'Szersze okno PERFEKT. Twoje i zegarów.';
 
   @override
   String get skill_magnet_label => 'Okno PERFEKT';
@@ -297,7 +303,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_echo_desc =>
-      'Trafienie płaci sekundy pracy zegarów — rośnie z grą.';
+      'Trafienie dodaje Tiki, które zegary zarabiają w ułamku sekundy.';
 
   @override
   String get skill_echo_label => 'PERFEKT dokłada pracy zegarów';
@@ -306,7 +312,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_bulletTime => 'Zimna krew';
 
   @override
-  String get skill_bulletTime_desc => 'Wszystkie twoje okna szersze.';
+  String get skill_bulletTime_desc =>
+      'Szersze wszystkie twoje okna. Nie działa na zegary.';
 
   @override
   String get skill_bulletTime_label => 'Twoje okno DOBRZE';
@@ -315,7 +322,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_luck => 'Szczęście';
 
   @override
-  String get skill_luck_desc => 'Część trafień podskakuje o próg w górę.';
+  String get skill_luck_desc =>
+      'Część trafień wpada o próg wyżej.';
 
   @override
   String get skill_luck_label => 'Trafienia o próg w górę';
@@ -324,7 +332,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_shield => 'Tarcza';
 
   @override
-  String get skill_shield_desc => 'Pudło zużywa ładunek zamiast zerować serię.';
+  String get skill_shield_desc =>
+      'Pudło zużywa ładunek zamiast zerować serię.';
 
   @override
   String get skill_shield_label => 'Ładunki';
@@ -333,7 +342,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_goldenTouch => 'Złoty dotyk';
 
   @override
-  String get skill_goldenTouch_desc => 'Złota Sekunda częściej i mocniej.';
+  String get skill_goldenTouch_desc =>
+      'Złota Sekunda częściej i z mocniejszym efektem.';
 
   @override
   String get skill_goldenTouch_label => 'Złota Sekunda co';
@@ -2241,45 +2251,45 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_power_info =>
-      'Stała nagroda za trafienie: PERFEKT 6 Tików, ŚWIETNIE 3, DOBRZE 1. Każdy poziom dokłada półtora raza tyle (PERFEKT 6 → 15 → 24…). Bardzo mocne przez pierwsze minuty; później liczy się Echo, które rośnie razem z zegarami.';
+      'Trafienie daje stałą liczbę Tików: PERFEKT 6, ŚWIETNIE 3, DOBRZE 1. Każdy poziom dodaje 150% tej wartości (PERFEKT: 6 → 15 → 24…).';
 
   @override
   String get skill_fastForward_info =>
-      'Stoper rusza od wyższej wartości, więc runda jest krótsza i w tym samym czasie zagrasz więcej rund. Do celu zawsze zostają co najmniej 4 sekundy na złapanie rytmu.';
+      'Każdy poziom przesuwa start stopera o ok. 0,05 s, do 0,80 s na maksymalnym poziomie. Stoper płynie w normalnym tempie, a cel wciąż wynosi 5.00.';
 
   @override
   String get skill_ticking_info =>
-      'W ostatniej sekundzie przed celem słychać tykanie co dziesiątą część sekundy (z wibracją, jeśli jest włączona). Ułatwia wyczucie momentu.';
+      'Od 4.00 do 5.00 słychać tyknięcie co 0,1 s (z wibracją, jeśli jest włączona).';
 
   @override
   String get skill_wideEye_info =>
-      'Okno ŚWIETNIE (±30 ms) rośnie o ok. 1,6 ms na poziom, a DOBRZE (±50 ms) o ok. 2,7 ms, do 1,8 raza na maksymalnym poziomie. Mniej pudeł to dłuższe serie. Działa też na twoje zegary: każdy poziom podnosi ich dochód.';
+      'Okna ŚWIETNIE (±30 ms) i DOBRZE (±50 ms) rosną o ok. 5% na poziom, do ×1,8 na maksymalnym poziomie (±54 i ±90 ms). Działa też na zegary.';
 
   @override
   String get skill_combo_info =>
-      'Każde trafienie bez pudła podnosi mnożnik serii o 0,05 za krok (PERFEKT 3 kroki, ŚWIETNIE 2, DOBRZE 1). Bazowo seria mnoży najwyżej ×1,25; każdy poziom podnosi ten sufit o 0,10. Mnoży całą wypłatę, także 5.00 i Echo.';
+      'Każde trafienie bez pudła podnosi mnożnik serii: PERFEKT o 0,15, ŚWIETNIE o 0,10, DOBRZE o 0,05. Bez ulepszeń mnożnik kończy się na ×1,25; każdy poziom podnosi ten limit o 0,10. Mnoży całą wypłatę za trafienie, także 5.00 i Echo.';
 
   @override
   String get skill_magnet_info =>
-      'Okno PERFEKT (±15 ms) rośnie o ok. 0,7 ms na poziom, do ±25 ms. Okno 5.00 (±10 ms) się nie zmienia. Zegary też częściej trafiają PERFEKT.';
+      'Okno PERFEKT (±15 ms) rośnie o ok. 0,7 ms na poziom, do ±25 ms. Okno 5.00 (±10 ms) się nie zmienia. Działa też na zegary.';
 
   @override
   String get skill_echo_info =>
-      'Każde trafienie dokłada sekundy pracy twoich zegarów, na poziom: PERFEKT 0,3 s, ŚWIETNIE ok. 0,17 s, DOBRZE 0,05 s. Rośnie razem z zegarami, więc w dalszej grze to główne źródło Tików z klikania.';
+      'Trafienie dodaje tyle Tików, ile twoje zegary zarabiają w danym czasie. Na poziom: PERFEKT 0,3 s, ŚWIETNIE ok. 0,17 s, DOBRZE 0,05 s.';
 
   @override
   String get skill_bulletTime_info =>
-      'Wszystkie twoje okna (PERFEKT, ŚWIETNIE, DOBRZE, BLISKO) stają się szersze, do 2,5 raza na maksymalnym poziomie — np. DOBRZE z ±50 do ±125 ms. Okno 5.00 się nie zmienia. Przy celu czujesz bicie serca. Nie działa na zegary.';
+      'Okna PERFEKT, ŚWIETNIE, DOBRZE i BLISKO rosną do ×2,5 na maksymalnym poziomie (np. DOBRZE: ±50 → ±125 ms). Okno 5.00 się nie zmienia. Tuż przy celu ekran pulsuje i słychać bicie serca. Nie działa na zegary.';
 
   @override
   String get skill_luck_info =>
-      'Na każdym poziomie 2% trafień podskakuje o próg: ŚWIETNIE staje się PERFEKTEM, DOBRZE — ŚWIETNIE. 5.00 tak nie wpadnie.';
+      'Na każdym poziomie 2 trafienia na 100 podskakują o próg: ŚWIETNIE → PERFEKT, DOBRZE → ŚWIETNIE. PERFEKT nie zmienia się w 5.00.';
 
   @override
   String get skill_shield_info =>
-      'Każdy poziom to ładunek Tarczy: pudło zużywa ładunek zamiast zerować serię. Ładunki odnawiają się co 10 kroków serii.';
+      'Każdy poziom to jeden ładunek. Pudło zużywa ładunek, a seria zostaje. Zużyte ładunki wracają po jednym co 10 kroków serii.';
 
   @override
   String get skill_goldenTouch_info =>
-      'Złota Sekunda przylatuje średnio co 10 minut. Każdy poziom skraca ten czas o 30 sekund i wzmacnia jej efekty (Szał, Fart, Gorąca ręka) o 5%.';
+      'Złota Sekunda pojawia się średnio co 10 minut. Każdy poziom skraca ten czas o 30 s i wzmacnia jej efekty (Szał, Fart, Gorąca ręka) o 5%.';
 }
