@@ -113,10 +113,10 @@ void main() {
     expect(e.skillCost('ticking'), isNull);
   });
 
-  test('round length matches docs/03 (5.7 s → 4.9 s)', () {
+  test('round length matches docs/03 (5.7 s → 3.7 s)', () {
     expect(e.roundSeconds(), closeTo(5.7, 1e-9));
     s.skills.addAll({'fastForward': 15, 'bulletTime': 15});
-    expect(e.roundSeconds(), closeTo(4.2 + 0.7, 1e-3));
+    expect(e.roundSeconds(), closeTo(3.0 + 0.7, 1e-3));
   });
 
   test('permanent multiplier from Chronons and achievements', () {

@@ -34,7 +34,7 @@ void main() {
 
   test('numbers match the tuned design values (docs/02, 03)', () {
     final b = Balance.fromJsonString(repoBalance());
-    expect(b.skill('echo').perLevel, 0.5);
+    expect(b.skill('echo').perLevel, 0.33333);
     expect(b.combo.multiplierPerStep, 0.05);
     expect(b.skill('combo').perLevel, 2);
     expect(b.golden.intervalMin, 300);

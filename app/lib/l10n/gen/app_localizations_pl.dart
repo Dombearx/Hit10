@@ -241,8 +241,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_power => 'Siła trafienia';
 
   @override
-  String get skill_power_desc =>
-      'Więcej Tików za każde trafienie.';
+  String get skill_power_desc => 'Więcej Tików za każde trafienie.';
 
   @override
   String get skill_power_label => 'Tiki za PERFEKT';
@@ -255,15 +254,13 @@ class AppLocalizationsPl extends AppLocalizations {
       'Stoper rusza od wyższej wartości, więc runda jest krótsza.';
 
   @override
-  String get skill_fastForward_label =>
-      'Stoper startuje od';
+  String get skill_fastForward_label => 'Stoper startuje od';
 
   @override
   String get skill_ticking => 'Tykanie';
 
   @override
-  String get skill_ticking_desc =>
-      'Tykanie w ostatniej sekundzie przed celem.';
+  String get skill_ticking_desc => 'Tykanie w ostatniej sekundzie przed celem.';
 
   @override
   String get skill_ticking_label => 'Tykanie';
@@ -282,8 +279,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc =>
-      'Wyższy limit mnożnika serii.';
+  String get skill_combo_desc => 'Wyższy limit mnożnika serii.';
 
   @override
   String get skill_combo_label => 'Seria mnoży do';
@@ -292,8 +288,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_magnet => 'Magnes';
 
   @override
-  String get skill_magnet_desc =>
-      'Szersze okno PERFEKT. Twoje i zegarów.';
+  String get skill_magnet_desc => 'Szersze okno PERFEKT. Twoje i zegarów.';
 
   @override
   String get skill_magnet_label => 'Okno PERFEKT';
@@ -322,8 +317,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_luck => 'Szczęście';
 
   @override
-  String get skill_luck_desc =>
-      'Część trafień wpada o próg wyżej.';
+  String get skill_luck_desc => 'Część trafień wpada o próg wyżej.';
 
   @override
   String get skill_luck_label => 'Trafienia o próg w górę';
@@ -332,8 +326,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_shield => 'Tarcza';
 
   @override
-  String get skill_shield_desc =>
-      'Pudło zużywa ładunek zamiast zerować serię.';
+  String get skill_shield_desc => 'Pudło zużywa ładunek zamiast zerować serię.';
 
   @override
   String get skill_shield_label => 'Ładunki';
@@ -2255,7 +2248,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_fastForward_info =>
-      'Każdy poziom przesuwa start stopera o ok. 0,05 s, do 0,80 s na maksymalnym poziomie. Stoper płynie w normalnym tempie, a cel wciąż wynosi 5.00.';
+      'Każdy poziom przesuwa start stopera o ok. 0,13 s, do 2,00 s na maksymalnym poziomie. Stoper płynie w normalnym tempie, a cel wciąż wynosi 5.00.';
 
   @override
   String get skill_ticking_info =>
@@ -2275,7 +2268,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_echo_info =>
-      'Trafienie dodaje tyle Tików, ile twoje zegary zarabiają w danym czasie. Na poziom: PERFEKT 0,3 s, ŚWIETNIE ok. 0,17 s, DOBRZE 0,05 s.';
+      'Trafienie dodaje tyle Tików, ile twoje zegary zarabiają w danym czasie. Na poziom: PERFEKT 0,2 s, ŚWIETNIE ok. 0,11 s, DOBRZE ok. 0,03 s.';
 
   @override
   String get skill_bulletTime_info =>

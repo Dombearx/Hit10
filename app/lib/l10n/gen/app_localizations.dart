@@ -4049,7 +4049,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_fastForward_info.
   ///
   /// In en, this message translates to:
-  /// **'Each level moves the stopwatch\'s start by about 0.05 s, up to 0.80 s at the top level. The stopwatch runs at normal speed and the target is still 5.00.'**
+  /// **'Each level moves the stopwatch\'s start by about 0.13 s, up to 2.00 s at the top level. The stopwatch runs at normal speed and the target is still 5.00.'**
   String get skill_fastForward_info;
 
   /// No description provided for @skill_ticking_info.
@@ -4079,7 +4079,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_echo_info.
   ///
   /// In en, this message translates to:
-  /// **'A hit adds as many Ticks as your clocks make in the given time. Per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s.'**
+  /// **'A hit adds as many Ticks as your clocks make in the given time. Per level: PERFECT 0.2 s, GREAT about 0.11 s, GOOD about 0.03 s.'**
   String get skill_echo_info;
 
   /// No description provided for @skill_bulletTime_info.

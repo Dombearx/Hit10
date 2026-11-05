@@ -131,7 +131,7 @@ kolejne runy, co spełnia życzenie, żeby gracz miał do czego dążyć.
 | 8 | 436M | 2.06B | 4.7× | 2.71T | 30 |
 
 Umiejętności: każdą ktoś kupuje. Pierwsze poziomy pojawiają się między 9.
-a 45. minutą. Start później osiąga max po ok. 3–4 h, a Sokole oko po ok. 3.5 h.
+a 45. minutą. Start później osiąga max po ok. 4.5 h, a Sokole oko po ok. 3.5 h.
 Magnes, Combo i Echo dochodzą do max dopiero pod koniec 8 h, więc są
 dobrym celem na długo.
 
@@ -153,6 +153,8 @@ dobrym celem na długo.
 | Krok combo | 0.10 → 0.05 | z Echem i limitem 55 klikanie dawało 12–50× więcej niż generatory |
 | Limit combo | 5 + 5·L (55) → 5 + 2·L (25) | jw. |
 | Echo na poziom | 2 s → 0.5 s | jw. |
+| Start później, max | 0.8 s → 2.0 s (krok 0.0533 → 0.1333) | dawał tylko ~16% więcej rund; teraz ~54% (playtest) |
+| Echo na poziom | 0.5 s → ⅓ s | po dłuższym Starcie później klikanie dawało 6.7× pasywnego (B-6c ≤ 5); teraz 4.7× |
 | Złota Sekunda co | 3–7 min → 5–15 min | Szał zbyt często podwajał klikanie; teraz jak w Cookie Clickerze |
 | Złoty dotyk na poziom | 10% → 5% | jw. |
 | Tarcza | 100K ×100 → 2K ×50 | przy starej cenie nikt jej nie kupował (B-10) |

@@ -238,8 +238,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_power => 'Strike Power';
 
   @override
-  String get skill_power_desc =>
-      'More Ticks for every hit.';
+  String get skill_power_desc => 'More Ticks for every hit.';
 
   @override
   String get skill_power_label => 'Ticks per PERFECT';
@@ -252,8 +251,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'The stopwatch starts from a higher value, so a round is shorter.';
 
   @override
-  String get skill_fastForward_label =>
-      'Stopwatch starts at';
+  String get skill_fastForward_label => 'Stopwatch starts at';
 
   @override
   String get skill_ticking => 'Ticking';
@@ -279,8 +277,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc =>
-      'A higher cap on the streak multiplier.';
+  String get skill_combo_desc => 'A higher cap on the streak multiplier.';
 
   @override
   String get skill_combo_label => 'Streak multiplies up to';
@@ -319,8 +316,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_luck => 'Luck';
 
   @override
-  String get skill_luck_desc =>
-      'Some hits land a tier higher.';
+  String get skill_luck_desc => 'Some hits land a tier higher.';
 
   @override
   String get skill_luck_label => 'Hits bumped a tier up';
@@ -2251,7 +2247,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_fastForward_info =>
-      'Each level moves the stopwatch\'s start by about 0.05 s, up to 0.80 s at the top level. The stopwatch runs at normal speed and the target is still 5.00.';
+      'Each level moves the stopwatch\'s start by about 0.13 s, up to 2.00 s at the top level. The stopwatch runs at normal speed and the target is still 5.00.';
 
   @override
   String get skill_ticking_info =>
@@ -2271,7 +2267,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_echo_info =>
-      'A hit adds as many Ticks as your clocks make in the given time. Per level: PERFECT 0.3 s, GREAT about 0.17 s, GOOD 0.05 s.';
+      'A hit adds as many Ticks as your clocks make in the given time. Per level: PERFECT 0.2 s, GREAT about 0.11 s, GOOD about 0.03 s.';
 
   @override
   String get skill_bulletTime_info =>

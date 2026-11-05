@@ -105,7 +105,7 @@ void main() {
     await tester.tap(find.byKey(const Key('skill-info-power')));
     await tester.pumpAndSettle();
     final info = tester.widget<Text>(find.byKey(const Key('skill-info-text')));
-    expect(info.data, startsWith('Stała nagroda za trafienie'));
+    expect(info.data, startsWith('Trafienie daje stałą liczbę Tików'));
     await tester.tap(find.byKey(const Key('skill-info-buy')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.skills['power'], 1);
