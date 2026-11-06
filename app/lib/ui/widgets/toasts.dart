@@ -93,7 +93,6 @@ class _AchievementToastsState extends State<AchievementToasts> {
     final t = _current;
     final l = AppLocalizations.of(context);
     final c = widget.controller;
-    final mult = c.balance.milestones.multiplier.round();
     // What the toast shows: art, small header, title, the bonus on the right.
     final (EmojiArt?, String, String, String) look = switch (t) {
       null => (null, '', '', ''),
@@ -110,8 +109,11 @@ class _AchievementToastsState extends State<AchievementToasts> {
           l.milestoneToast(
             upgradeTexts(l, m.generator!, m.index + 1)?.$1 ?? roman(m.index),
           ),
-          l.milestoneTitle(generatorName(l, m.generator!), '$mult'),
-          '×$mult',
+          l.milestoneTitle(
+            generatorName(l, m.generator!),
+            Fmt.of(context, c).round(c.econ.milestoneMultiplier(m.generator!)),
+          ),
+          '×${Fmt.of(context, c).round(c.econ.milestoneMultiplier(m.generator!))}',
         ),
       (achievement: null, bonus: final MilestoneEvent m) => (
         generatorArt[c.balance.synergies

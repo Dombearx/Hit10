@@ -359,7 +359,7 @@
   "help_clocks_t": "Zegary",
   "help_clocks": "Zegary (zakładka Zegary) grają za ciebie i co sekundę dokładają Tiki — także gdy gra jest zamknięta. Pierwszy jest Dziadek; kupienie zegara odkrywa następny, mocniejszy. Liczba na ikonie to ile ich masz. Przyciski ×1, ×10, ×100 i MAX ustalają, ile kupujesz naraz.",
   "help_upgrades_t": "Bonusy zegarów",
-  "help_upgrades": "Pod każdym zegarem jest pasek. Gdy uzbierasz 10, 20, 40… sztuk, wszystkie zegary tego rodzaju zaczynają zarabiać ×2 — za darmo, same z siebie. Gdy masz po 25 sztuk dwóch zegarów, które do siebie pasują (np. Dziadka i Babci), włącza się synergia: wzmacniają się nawzajem.",
+  "help_upgrades": "Pod każdym zegarem jest pasek. Gdy uzbierasz ich tyle, ile pokazuje (u Dziadka 10, 20, 40…), wszystkie zegary tego rodzaju zaczynają zarabiać więcej — za darmo, same z siebie. Pierwsze zegary dostają ×2; droższe mają niższe progi i mniejszy mnożnik. Gdy masz po 25 sztuk dwóch zegarów, które do siebie pasują (np. Dziadka i Babci), włącza się synergia: wzmacniają się nawzajem.",
   "help_skills_t": "Umiejętności",
   "help_skills": "Umiejętności (zakładka Umiejętności) wzmacniają twoje własne trafienia: większa nagroda, szersze okna, dłuższa seria. Mają poziomy — „Poziom 2/10” to drugi z dziesięciu możliwych. Dotknij karty, by przeczytać szczegóły.",
   "help_combo_t": "Seria (combo)",

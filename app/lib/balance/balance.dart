@@ -203,9 +203,49 @@ class GeneratorConfig {
 class MilestonesConfig {
   MilestonesConfig(Map<String, Object?> j)
     : thresholds = (j['thresholds'] as List).map(_i).toList(growable: false),
-      multiplier = _d(j['multiplier']);
+      lateFrom = _i(_m(j['late'])['fromGenerator']),
+      thresholdsLate = (_m(j['late'])['thresholds'] as List)
+          .map(_i)
+          .toList(growable: false),
+      lastFrom = _i(_m(j['last'])['fromGenerator']),
+      thresholdsLast = (_m(j['last'])['thresholds'] as List)
+          .map(_i)
+          .toList(growable: false),
+      multiplier = _d(j['multiplier']),
+      multiplierLate = _d(_m(j['late'])['multiplier']),
+      multiplierLast = _d(_m(j['last'])['multiplier']);
+
+  /// Counts for the first clocks. Later clocks cost far more, so their
+  /// counts are lower: every milestone (and its funny name) has to be
+  /// reachable in a full game (playtest 27, tool/achievement_report.dart).
   final List<int> thresholds;
+  final int lateFrom;
+  final List<int> thresholdsLate;
+  final int lastFrom;
+  final List<int> thresholdsLast;
   final double multiplier;
+
+  /// Later clocks reach all 8 milestones on fewer pieces, so each one
+  /// gives less: about what they used to get from the few they reached
+  /// (×2 everywhere sent a full game into a runaway, playtest 27).
+  final double multiplierLate;
+  final double multiplierLast;
+
+  /// What each milestone multiplies the generator at [index] by.
+  double multiplierFor(int index) => index >= lastFrom
+      ? multiplierLast
+      : index >= lateFrom
+      ? multiplierLate
+      : multiplier;
+
+  /// The milestone counts of the generator at [index].
+  List<int> thresholdsFor(int index) => index >= lastFrom
+      ? thresholdsLast
+      : index >= lateFrom
+      ? thresholdsLate
+      : thresholds;
+
+  List<List<int>> get groups => [thresholds, thresholdsLate, thresholdsLast];
 }
 
 class SynergyConfig {
@@ -579,15 +619,26 @@ class Balance {
     }
     if (generatorCostGrowth <= 1) e.add('generatorCostGrowth must be > 1');
     final ms = milestones;
-    if (ms.thresholds.isEmpty || ms.thresholds.first <= 0) {
-      e.add('milestones thresholds must start above 0');
-    }
-    for (var i = 1; i < ms.thresholds.length; i++) {
-      if (ms.thresholds[i] <= ms.thresholds[i - 1]) {
-        e.add('milestones thresholds must increase');
+    for (final t in ms.groups) {
+      if (t.isEmpty || t.first <= 0) {
+        e.add('milestones thresholds must start above 0');
+      }
+      for (var i = 1; i < t.length; i++) {
+        if (t[i] <= t[i - 1]) e.add('milestones thresholds must increase');
+      }
+      // One funny name per milestone (tools/l10n/upgrades.py writes 8).
+      if (t.length != ms.thresholds.length) {
+        e.add('every milestones group needs the same number of counts');
       }
     }
-    if (ms.multiplier <= 1) e.add('milestones multiplier must be > 1');
+    if (ms.lateFrom > ms.lastFrom) {
+      e.add('milestones late group must start before the last one');
+    }
+    if (ms.multiplier <= 1 ||
+        ms.multiplierLate <= 1 ||
+        ms.multiplierLast <= 1) {
+      e.add('milestones multiplier must be > 1');
+    }
     final genIds = generators.map((g) => g.id).toSet();
     final perkIds = prestige.perks.map((p) => p.id).toSet();
     unique('synergy', synergies.map((s) => s.id));

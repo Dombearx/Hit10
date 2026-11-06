@@ -103,8 +103,10 @@ void main() {
 
   test('later clocks count fewer pieces (playtest 25 report)', () {
     final ids = all.map((a) => a.id).toSet();
-    expect(ids, containsAll(['owned_grandpa_200', 'owned_chronos_50']));
+    expect(ids, containsAll(['owned_grandpa_150', 'owned_chronos_50']));
     expect(ids, isNot(contains('owned_chronos_200')));
-    expect(ids, contains('owned_quartz_100'));
+    expect(ids, contains('owned_quartz_80'));
+    // The bot owns at most ~100 pulsars in 400 h (playtest 27 report).
+    expect(ids, isNot(contains('owned_pulsar_100')));
   });
 }

@@ -226,10 +226,23 @@ zakupem w sklepie (Dziadek ×2 przy 1 Dziadku zwracał się 25 min, kolejny
 Dziadek 3 min), a wskazówka do nich kierowała. Teraz jak w AdVenture
 Capitalist: bonus przychodzi sam za zbieranie sztuk.
 
-- **R-ULEP-1:** Każdy generator ma 8 progów: **10, 20, 40, 75, 100, 150,
-  200, 250** sztuk. Na każdym progu wszystkie sztuki tego generatora
-  zarabiają **×2** — za darmo, od razu, nic nie trzeba kupować. Prestiż
-  zeruje sztuki, więc i bonusy.
+- **R-ULEP-1:** Każdy generator ma 8 progów. Na każdym progu wszystkie
+  sztuki tego generatora zarabiają więcej — za darmo, od razu, nic nie
+  trzeba kupować. Prestiż zeruje sztuki, więc i bonusy. Droższe zegary
+  mają niższe progi i mniejszy mnożnik, bo każdy próg (i jego śmieszna
+  nazwa) ma być do zdobycia w pełnej grze:
+
+  | Zegary | Progi (sztuki) | Mnożnik za próg | Razem |
+  |---|---|---|---|
+  | 1–6 (Dziadek … Sędzia) | 10, 20, 40, 75, 100, 115, 130, 150 | ×2 | ×256 |
+  | 7–11 (Zegar dworcowy … Pulsar) | 10, 20, 30, 40, 50, 60, 70, 80 | ×1.7 | ×70 |
+  | 12–14 (Maszyna czasu … Chronos) | 5, 10, 15, 20, 25, 30, 40, 50 | ×1.4 | ×15 |
+
+  Playtest 27: dawne 200 i 250 sztuk nie padały nawet po 400 h bota
+  (najwięcej 162 sztuki, ostatnie zegary 69–95). Niższe progi przy ×2
+  wszędzie wpychały pełną grę w spiralę (ostatnie zegary 8 podwojeń
+  zamiast 3–4, sufit gry ~2× wcześniej), stąd mniejsze mnożniki: przy
+  10/20/40 sztukach dają mniej więcej tyle, co dawne ×2.
 - **R-ULEP-2:** Każdy próg ma śmieszną nazwę w PL i EN (dawne nazwy
   ulepszeń), np. dziadek: „Okulary do czytania”, „Nowa bateria”,
   „Sanatorium”; pokazuje ją powiadomienie przy osiągnięciu progu.
@@ -304,7 +317,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Kategoria | Progi | Liczba |
 |---|---|---|
 | Zarobione łącznie | 1K, 1M, 1B, 1T, 1aa, 1ab, 100ab, 1ac | 8 |
-| Posiadane sztuki generatora | zegary 1–6: 1, 50, 100, 200; zegary 7–11: 1, 25, 50, 100; zegary 12–14: 1, 10, 25, 50 | 56 |
+| Posiadane sztuki generatora | zegary 1–6: 1, 50, 100, 150; zegary 7–11: 1, 25, 50, 80; zegary 12–14: 1, 10, 25, 50 | 56 |
 | PERFEKTY łącznie | 1, 10, 100, 1K, 10K, 100K | 6 |
 | PERFEKTY z rzędu | 3, 5, 10 | 3 |
 | Najwyższe combo | 10, 15, 25 (max) | 3 |
@@ -333,15 +346,20 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 
   | Czas gry | Dochód pasywny/s | Zegary łącznie | Zarobione łącznie | Rundy |
   |---|---|---|---|---|
-  | 8 h | 29.5M | 493 | 1.4T | 5.7K |
-  | 80 h | 2.3B | 645 | 388T | 58K |
-  | 160 h | 284B | 900 | 34aa | 117K |
-  | 240 h | 389T | 1572 | 230ab | 176K |
-  | 400 h | 1.6aa | 1741 | 4.7ac | 293K |
+  | 8 h | 25.4M | 484 | 1.1T | 7.3K |
+  | 80 h | 1.13B | 632 | 238T | 76K |
+  | 160 h | 70.2B | 785 | 8.9aa | 153K |
+  | 240 h | 1.13aa | 1762 | 636ab | 231K |
+  | 400 h | 4.25aa | 1921 | 14.8ac | 386K |
 
+  (Playtest 27: progi bonusów zegarów z R-ULEP-1 i Start później do 2 s.)
   Po ok. 240 h przyrost się wypłaszcza: wszystkie perki są kupione,
   a Chronony rosną z pierwiastkiem sześciennym. Stąd górne progi:
-  1aa/s (~350 h bota), 1500 zegarów (~230 h), 1ac zarobione (~300 h).
+  1aa/s (~240 h bota), 1500 zegarów (~230 h), 1ac zarobione (~255 h).
+  Raport wypisuje też, ile sztuk każdego zegara bot miał naraz: po 400 h
+  co najmniej 165 z zegarów 1–6, 106 z 7–11 i 79 z 12–14, więc ostatnie
+  progi bonusów i osiągnięć (150 / 80 / 50) padają. Dawne 200 sztuk
+  zegarów 1–6 i 100 sztuk zegarów 7–11 nie padały.
   Dawne 1ab/s, 2000 zegarów, 1e24–1e30 zarobionych i 200 sztuk ostatnich
   zegarów były nieosiągalne i zostały obniżone. Mediana błędu bota wynosi
   ok. 21 ms przy σ = 30 ms i 11.5 ms przy σ = 15 ms, stąd 15 ms dla Zegara

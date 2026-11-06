@@ -154,6 +154,7 @@ dobrym celem na długo.
 | Limit combo | 5 + 5·L (55) → 5 + 2·L (25) | jw. |
 | Echo na poziom | 2 s → 0.5 s | jw. |
 | Start później, max | 0.8 s → 2.0 s (krok 0.0533 → 0.1333) | dawał tylko ~16% więcej rund; teraz ~54% (playtest) |
+| Progi bonusów zegarów | 10…250 ×2 dla wszystkich → 3 grupy: do 150 ×2, do 80 ×1.7, do 50 ×1.4 (02 R-ULEP-1) | 200 i 250 sztuk nie padały nawet po 400 h; same niższe progi przy ×2 dawały spiralę w pełnej grze (playtest 27) |
 | Echo na poziom | 0.5 s → ⅓ s | po dłuższym Starcie później klikanie dawało 6.7× pasywnego (B-6c ≤ 5); teraz 4.7× |
 | Złota Sekunda co | 3–7 min → 5–15 min | Szał zbyt często podwajał klikanie; teraz jak w Cookie Clickerze |
 | Złoty dotyk na poziom | 10% → 5% | jw. |

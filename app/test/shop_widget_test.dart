@@ -173,10 +173,10 @@ void main() {
     final sheet = find.byKey(const Key('gen-info-sheet'));
     Finder inSheet(String t) =>
         find.descendant(of: sheet, matching: find.textContaining(t));
-    // Reached at 10: name and joke; the 250 one only says what it takes.
+    // Reached at 10: name and joke; the 150 one only says what it takes.
     expect(inSheet('Okulary do czytania'), findsOneWidget);
     expect(inSheet('Wreszcie widzi wskazówki.'), findsOneWidget);
-    expect(inSheet('250 szt. · ??? · ×2'), findsOneWidget);
+    expect(inSheet('150 szt. · ??? · ×2'), findsOneWidget);
     expect(inSheet('Zegarek po pradziadku'), findsNothing);
     expect(inSheet('Tyka w rodzinie od trzech pokoleń.'), findsNothing);
     // Grandpa + Grandma: not on yet, with what it needs.

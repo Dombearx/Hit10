@@ -1176,7 +1176,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_upgrades =>
-      'Pod każdym zegarem jest pasek. Gdy uzbierasz 10, 20, 40… sztuk, wszystkie zegary tego rodzaju zaczynają zarabiać ×2 — za darmo, same z siebie. Gdy masz po 25 sztuk dwóch zegarów, które do siebie pasują (np. Dziadka i Babci), włącza się synergia: wzmacniają się nawzajem.';
+      'Pod każdym zegarem jest pasek. Gdy uzbierasz ich tyle, ile pokazuje (u Dziadka 10, 20, 40…), wszystkie zegary tego rodzaju zaczynają zarabiać więcej — za darmo, same z siebie. Pierwsze zegary dostają ×2; droższe mają niższe progi i mniejszy mnożnik. Gdy masz po 25 sztuk dwóch zegarów, które do siebie pasują (np. Dziadka i Babci), włącza się synergia: wzmacniają się nawzajem.';
 
   @override
   String get help_skills_t => 'Umiejętności';

@@ -208,16 +208,9 @@
   ],
   "generatorCostGrowth": 1.15,
   "milestones": {
-    "thresholds": [
-      10,
-      20,
-      40,
-      75,
-      100,
-      150,
-      200,
-      250
-    ],
+    "thresholds": [10, 20, 40, 75, 100, 115, 130, 150],
+    "late": {"fromGenerator": 6, "thresholds": [10, 20, 30, 40, 50, 60, 70, 80], "multiplier": 1.7},
+    "last": {"fromGenerator": 11, "thresholds": [5, 10, 15, 20, 25, 30, 40, 50], "multiplier": 1.4},
     "multiplier": 2
   },
   "synergies": [
@@ -314,8 +307,8 @@
   "achievements": {
     "bonusEach": 0.01,
     "earnedThresholds": [1000.0, 1000000.0, 1000000000.0, 1000000000000.0, 1000000000000000.0, 1e+18, 1e+20, 1e+21],
-    "ownedThresholds": [1, 50, 100, 200],
-    "ownedThresholdsLate": {"fromGenerator": 6, "thresholds": [1, 25, 50, 100]},
+    "ownedThresholds": [1, 50, 100, 150],
+    "ownedThresholdsLate": {"fromGenerator": 6, "thresholds": [1, 25, 50, 80]},
     "ownedThresholdsLast": {"fromGenerator": 11, "thresholds": [1, 10, 25, 50]},
     "perfectThresholds": [
       1,

@@ -2051,7 +2051,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_upgrades.
   ///
   /// In en, this message translates to:
-  /// **'Each clock has a bar. Once you own 10, 20, 40… of it, all clocks of that kind earn ×2 — free, on their own. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.'**
+  /// **'Each clock has a bar. Once you own as many as it shows (10, 20, 40… for Grandpa), all clocks of that kind earn more — free, on their own. The first clocks get ×2; pricier ones have lower counts and a smaller multiplier. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.'**
   String get help_upgrades;
 
   /// No description provided for @help_skills_t.

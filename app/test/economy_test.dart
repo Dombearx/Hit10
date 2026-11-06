@@ -85,6 +85,23 @@ void main() {
     expect(e.milestonesReached('grandpa'), 8);
   });
 
+  test('later clocks: lower counts, smaller multiplier (playtest 27)', () {
+    expect(e.milestoneThresholds('grandpa').last, 150);
+    expect(e.milestoneMultiplier('grandpa'), 2);
+    expect(e.milestoneThresholds('quartz').last, 80);
+    expect(e.milestoneMultiplier('quartz'), 1.7);
+    expect(e.milestoneThresholds('chronos').first, 5);
+    expect(e.milestoneThresholds('chronos').last, 50);
+    expect(e.milestoneMultiplier('chronos'), 1.4);
+    s.owned['chronos'] = 50;
+    expect(e.milestonesReached('chronos'), 8);
+    final r = b.generator('chronos').baseRate * math.pow(1.4, 8);
+    expect(
+      e.unitRate('chronos'),
+      closeTo(r * e.windowGain('chronos'), r * 1e-9),
+    );
+  });
+
   test('skills: windows, speeds, caps', () {
     // Window and tempo skills reach the same top effect in 15 finer steps.
     s.skills.addAll({
