@@ -200,6 +200,30 @@ pod progiem: B-6a (0,95) i B-7 (0,399). Korekta:
 Wszystkie cele B-1…B-10, A-1 i A-2 przechodzą. Aktualne wyniki zawsze
 pokazuje `dart run tool/simulate.dart --check`.
 
+### 4.2 Gracz idle (playtest 27)
+
+`app/tool/idle_sim.dart`: 3 sesje dziennie po 3 min co 8 h, między nimi
+dochód offline według reguł gry (limit 8 h, 50% wydajności, więcej
+z perkami), dzienna premia, paradoks na początku sesji, gdy co najmniej
+podwaja Chronony, perki kupowane od razu. σ = 50 ms, bez reklam.
+
+| Dzień | Dochód pasywny/s | Chronony | Perki | Bonusy zegarów | Osiągnięcia |
+|---|---|---|---|---|---|
+| 7 | (po paradoksie) | 26 | 2 | 25/112 | 45/149 |
+| 14 | 782M | 52 | 4 | 34/112 | 57/149 |
+| 30 | 3.46T | 1129 | 17 | 67/112 | 79/149 |
+| 42 | 1.65aa | 10.7K | 18 | **112/112** | 109/149 |
+| 120 | 10.3aa | 43.5K | 18 | 112/112 | 115/149 |
+
+- Ok. 96–98% Tików przychodzi offline; klikanie w 9 min dziennie to
+  dodatek.
+- Pierwszy paradoks 2. dnia, potem co 3–5 dni. Wszystkie perki ok.
+  31. dnia, wszystkie teksty bonusów 42. dnia, od ok. 75. dnia Chronony
+  przestają rosnąć (paradoks nie podwaja już Chrononów).
+- Brakujące osiągnięcia wymagają gry, nie czekania (100 h gry to przy
+  9 min dziennie ponad 600 dni, 100K rund, tryb na ślepo, wydarzenia
+  sezonowe, godziny zegarowe).
+
 ## 5. Reklamy a balans
 
 Cele tempa B-1…B-10 są liczone **bez reklam**. Reklamy mają osobne cele:
