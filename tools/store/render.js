@@ -4,7 +4,7 @@
 //   make web-qa && (cd app/build/web-qa && python3 -m http.server 8713) &
 //   node tools/store/render.js
 //
-// Output: store/feature-1024x500.png, store/screens/{pl,en}/N.png
+// Output: store/feature-{pl,en}.png (1024×500), store/screens/{pl,en}/N.png
 // (1080×1920, Play's 9:16).
 const { chromium } = require('playwright');
 const fs = require('fs');
@@ -20,37 +20,43 @@ const fonts = `
   @font-face { font-family: Body; font-weight: 800; src: url(data:font/ttf;base64,${font('Nunito-800.ttf')}); }`;
 const url = process.env.QA_URL || 'http://localhost:8713/';
 
+// One headline per screenshot (Play shows them as thumbnails: short, large,
+// one idea each). Order matters: the first three appear in search results.
 const captions = {
-  pl: ['Zatrzymaj stoper na 5.00!', 'Zatrudnij dziadka, babcię… i Chronosa',
-       'Złap złoty zegarek', 'Szał! Wszystko razy więcej', 'Ulepszenia i umiejętności',
-       'Cofnij czas, wróć silniejszy'],
-  en: ['Stop the watch at 5.00!', 'Hire grandpa, grandma… and Chronos',
-       'Catch the golden clock', 'Frenzy! Everything multiplied', 'Upgrades and skills',
+  pl: ['Zatrzymaj stoper dokładnie na 5.00', 'Złap Złotą Sekundę: Szał ×7',
+       '14 zegarów: od dziadka po maszynę czasu', 'Umiejętności zmieniają każdą rundę',
+       'Zegary zarabiają, gdy Cię nie ma', '149 osiągnięć do zdobycia',
+       'Cofnij czas i wróć silniejszy'],
+  en: ['Stop the watch at exactly 5.00', 'Catch the Golden Second: Frenzy ×7',
+       '14 clocks, from grandpa to a time machine', 'Skills change every round',
+       'Your clocks earn while you’re away', '149 achievements to unlock',
        'Rewind time, come back stronger'],
 };
+const taglines = { pl: 'Zatrzymasz stoper na 5.00?', en: 'Can you stop it at 5.00?' };
 
-async function featureGraphic(browser) {
+async function featureGraphic(browser, lang) {
   const p = await browser.newPage({ viewport: { width: 1024, height: 500 } });
   const cards = ['art/grandpa', 'art/grandma', 'art/cuckoo', 'art/watchmaker', 'art/atomic', 'art/timeMachine', 'art/schrodinger']
     .map((n, i) => `<div class="card" style="background:${['#FFD36E','#FFB38A','#9BE7C4','#FFC9DE','#D7C4FF','#FFC2A8','#E2D2FF'][i]}"><img src="${emoji(n)}"></div>`).join('');
   const icon = 'data:image/png;base64,' + fs.readFileSync(path.join(out, 'icon-512.png')).toString('base64');
+  // Key content kept away from the edges: Play may crop or overlay them.
   await p.setContent(`<html><head><style>${fonts}
     body { margin:0; width:1024px; height:500px; overflow:hidden; color:#2B2D42;
            background: linear-gradient(#FFD36E, #FF8A5B); font-family: Display; }
-    .icon { position:absolute; left:70px; top:70px; width:220px; height:220px; border-radius:48px;
+    .icon { position:absolute; left:90px; top:64px; width:220px; height:220px; border-radius:48px;
             box-shadow: 0 10px 0 rgba(43,45,66,.25); }
-    h1 { position:absolute; left:330px; top:40px; margin:0; font-size:120px; font-weight:400; }
-    .tag { position:absolute; left:336px; top:200px; font-size:44px; }
-    .row { position:absolute; left:60px; right:60px; bottom:40px; display:flex; gap:22px; justify-content:center; }
+    h1 { position:absolute; left:350px; top:36px; margin:0; font-size:124px; font-weight:400; }
+    .tag { position:absolute; left:354px; top:196px; font-size:46px; }
+    .row { position:absolute; left:60px; right:60px; bottom:44px; display:flex; gap:22px; justify-content:center; }
     .card { width:100px; height:100px; border-radius:22px; border:4px solid #2B2D42; position:relative;
             box-shadow: 0 6px 0 rgba(43,45,66,.3); overflow:hidden; }
     .card::after { content:''; position:absolute; left:0; right:0; top:0; height:40%; background:rgba(255,255,255,.3); }
     .card img { position:absolute; left:16px; top:16px; width:68px; height:68px; }
   </style></head><body>
-    <img class="icon" src="${icon}"><h1>Hit5</h1><div class="tag">5.00 — trafisz? · can you?</div>
+    <img class="icon" src="${icon}"><h1>Hit5</h1><div class="tag">${taglines[lang]}</div>
     <div class="row">${cards}</div></body></html>`);
   await p.evaluate(() => document.fonts.ready);
-  await p.screenshot({ path: path.join(out, 'feature-1024x500.png') });
+  await p.screenshot({ path: path.join(out, `feature-${lang}.png`) });
   await p.close();
 }
 
@@ -61,18 +67,26 @@ async function scenes(browser, lang) {
   const q = (f, a) => p.evaluate(f, a);
   await p.goto(url); await ready();
   await q(() => window.hit10Qa.wipe()); await p.reload(); await ready();
-  const rich = async () => {
-    await q(() => { const h = window.hit10Qa;
-      h.setup(JSON.stringify({ tutorialDone: true, playSeconds: 4000, perfects: 300,
-        tipsSeen: ['golden', 'prestige', 'skills', 'combo', 'notifyAsked'] }));
-      h.grant(5e9);
-      for (const [g, n] of [['grandpa', 60], ['grandma', 50], ['cuckoo', 40], ['metronome', 30], ['watchmaker', 25], ['sprintJudge', 15], ['stationClock', 5]]) h.buy(g, n);
-      h.setSkill('power', 4); h.setSkill('combo', 3); h.setSkill('bulletTime', 2); h.setSkill('wideEye', 2);
-      h.previewSeason(''); // store screenshots show no seasonal event
-    });
-    await p.waitForTimeout(1500);
-  };
-  await rich();
+  // A mid-game save: a dozen clocks, some skills, numbers a player sees
+  // after a few days (billions, not the late game's "aa").
+  await q(() => { const h = window.hit10Qa;
+    h.setup(JSON.stringify({ tutorialDone: true, playSeconds: 4000, perfects: 300,
+      tipsSeen: ['golden', 'prestige', 'skills', 'combo', 'notifyAsked', 'modes'] }));
+    h.grant(5e13);
+    for (const [g, n] of [['grandpa', 90], ['grandma', 75], ['cuckoo', 60], ['metronome', 50], ['watchmaker', 40],
+      ['sprintJudge', 30], ['stationClock', 25], ['quartz', 20], ['atomic', 15], ['gps', 10], ['pulsar', 6],
+      ['timeMachine', 3], ['schrodinger', 1]]) h.buy(g, n);
+    h.setSkill('power', 4); h.setSkill('combo', 3); h.setSkill('bulletTime', 2); h.setSkill('wideEye', 2);
+    h.previewSeason(''); // store screenshots show no seasonal event
+  });
+  // Save and reload: the dozens of achievement and milestone toasts the
+  // purchases queued are gone, the unlocks stay.
+  await p.waitForTimeout(1500);
+  await q(() => window.hit10Qa.save()); await p.waitForTimeout(500);
+  await p.reload(); await ready();
+  await q(() => window.hit10Qa.previewSeason('')); await p.waitForTimeout(2000);
+  // The reload counts as a new day: collect the daily bonus sheet.
+  await p.touchscreen.tap(195, 552); await p.waitForTimeout(3000);
   const shots = [];
   const snap = async () => shots.push(await p.screenshot());
   const round = async (t, wait) => {
@@ -102,27 +116,35 @@ async function scenes(browser, lang) {
     await thaw(); await p.waitForTimeout(1200);
   }
   await snap(); await thaw();
-  await p.waitForTimeout(1500);
-  // 2: the shop full of clocks.
-  await p.mouse.wheel(0, 0); await snap();
-  // 3: the golden clock in flight.
-  // Summon until it is in the air (a just-finished round may swallow it).
-  await p.waitForFunction(() => {
-    window.hit10Qa.summonGolden();
-    return JSON.parse(window.hit10Qa.state()).goldenVisible > 0;
-  }, null, { timeout: 15000, polling: 300 });
-  await p.waitForTimeout(2200);
-  await snap();
-  // 4: Frenzy.
+  await p.waitForTimeout(2500);
+  // 2: Frenzy from the Golden Second.
   await q(() => window.hit10Qa.effect('frenzy', 20)); await p.waitForTimeout(1200);
   await round(5.0, 30); await snap(); await thaw();
-  await p.waitForTimeout(1500);
-  // 5: skills tab.
+  await q(() => window.hit10Qa.effect('frenzy', 0));
+  await p.waitForTimeout(3000);
+  // 3: the shop scrolled down to the late clocks, once the self-starting
+  // round has run out and the clock waits again (no dimmed arena).
+  await p.waitForFunction(() => JSON.parse(window.hit10Qa.state()).phase === 'waiting',
+    null, { timeout: 60000, polling: 200 });
+  await p.waitForTimeout(800);
+  await p.mouse.move(195, 680); await p.mouse.wheel(0, 4000); await p.waitForTimeout(1200);
+  await snap();
+  await p.mouse.wheel(0, -2000); await p.waitForTimeout(600);
+  // 4: skills tab.
   await p.getByText(lang === 'pl' ? 'Umiejętności' : 'Skills', { exact: true }).first().click().catch(() => {});
-  await p.touchscreen.tap(140, 540); await p.waitForTimeout(800); await snap();
-  // 6: the paradox sheet.
+  await p.touchscreen.tap(140, 500); await p.waitForTimeout(1000); await snap();
+  await p.touchscreen.tap(46, 500); await p.waitForTimeout(600);
+  // 5: back after a night away: the offline earnings sheet.
+  await q(() => window.hit10Qa.awayFor(8 * 3600)); await p.waitForTimeout(2500); await snap();
+  await p.getByText(lang === 'pl' ? 'Odbierz' : 'Collect', { exact: true }).first().click().catch(() => {});
+  await p.touchscreen.tap(195, 491); await p.waitForTimeout(500);
+  await q(() => window.hit10Qa.collectOffline()); await p.waitForTimeout(4000);
+  // 6: achievements (top-left trophy).
+  await p.touchscreen.tap(28, 24); await p.waitForTimeout(1500); await snap();
+  await p.touchscreen.tap(365, 108); await p.waitForTimeout(1000);
+  // 7: the paradox sheet.
   await q(() => window.hit10Qa.setup(JSON.stringify({ earnedTotal: 2e12, shards: 40 })));
-  await p.waitForTimeout(3500); // let the achievement toasts pass
+  await p.waitForTimeout(6000); // let the achievement toasts pass
   await p.touchscreen.tap(360, 26); await p.waitForTimeout(1000); await snap();
   await p.close();
   return shots;
@@ -134,8 +156,9 @@ async function frame(browser, shot, caption, file) {
   await p.setContent(`<html><head><style>${fonts}
     body { margin:0; width:1080px; height:1920px; overflow:hidden;
            background: linear-gradient(#FFD36E, #FF8A5B); }
-    .cap { position:absolute; left:60px; right:60px; top:70px; text-align:center; color:#2B2D42;
-           font-family: Display; font-size:78px; line-height:1.1; }
+    .cap { position:absolute; left:70px; right:70px; top:0; height:330px; display:flex;
+           align-items:center; justify-content:center; text-align:center; color:#2B2D42;
+           font-family: Display; font-size:84px; line-height:1.08; text-wrap:balance; }
     .phone { position:absolute; left:155px; top:330px; width:770px; height:1540px; border-radius:64px;
              border:14px solid #2B2D42; overflow:hidden; box-shadow: 0 24px 0 rgba(43,45,66,.25);
              background:#2B2D42; }
@@ -150,8 +173,8 @@ async function frame(browser, shot, caption, file) {
 
 (async () => {
   const browser = await chromium.launch();
-  await featureGraphic(browser);
   for (const lang of ['pl', 'en']) {
+    await featureGraphic(browser, lang);
     const shots = await scenes(browser, lang);
     for (let i = 0; i < shots.length; i++) {
       await frame(browser, shots[i], captions[lang][i], path.join(out, 'screens', lang, `${i + 1}.png`));
