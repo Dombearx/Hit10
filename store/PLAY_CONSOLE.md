@@ -103,7 +103,10 @@ not uploadable.)
    icon `icon-512.png`, feature graphic `feature-pl.png` (PL) /
    `feature-en.png` (EN), phone screenshots `screens/pl/1–7.png` (PL) and
    `screens/en/1–7.png` (EN), in that order (the first three show in
-   search results). No tablet screenshots or video needed to publish.
+   search results). Tablet screenshots (same order): **7-inch** from
+   `screens-tablet7/pl|en/1–7.png`, **10-inch** from
+   `screens-tablet10/pl|en/1–7.png` — they let Play show and recommend
+   the game on tablets and Chromebooks.
    Category: **Casual** (or Arcade). Contact email + website (step 4).
 3. **App content**:
    - Privacy policy URL: `https://dombearx.github.io/hit5/privacy.html`

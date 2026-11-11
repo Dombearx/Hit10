@@ -5,7 +5,8 @@
 //   node tools/store/render.js
 //
 // Output: store/feature-{pl,en}.png (1024×500), store/screens/{pl,en}/N.png
-// (1080×1920, Play's 9:16).
+// (phone, 1080×1920), store/screens-tablet7/{pl,en}/N.png (1200×1920) and
+// store/screens-tablet10/{pl,en}/N.png (1600×2560).
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
@@ -60,10 +61,58 @@ async function featureGraphic(browser, lang) {
   await p.close();
 }
 
-async function scenes(browser, lang) {
-  const p = await browser.newPage({ viewport: { width: 390, height: 780 }, deviceScaleFactor: 2,
+// Devices Play takes screenshots for. The game is portrait-only and keeps a
+// phone-width column on tablets (M-9), so tablet shots show exactly that.
+const devices = {
+  phone:    { vp: [390, 780],  canvas: [1080, 1920], dir: 'screens',          bezel: 'phone' },
+  tablet7:  { vp: [600, 960],  canvas: [1200, 1920], dir: 'screens-tablet7',  bezel: 'tablet' },
+  tablet10: { vp: [800, 1280], canvas: [1600, 2560], dir: 'screens-tablet10', bezel: 'tablet' },
+};
+
+async function scenes(browser, lang, device) {
+  const [W, H] = device.vp;
+  const p = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 2,
     isMobile: true, hasTouch: true, locale: lang === 'pl' ? 'pl-PL' : 'en-US' });
-  const ready = () => p.waitForFunction(() => window.hit10Qa, null, { timeout: 20000 }).then(() => p.waitForTimeout(800));
+  // Flutter's accessibility tree gives buttons and texts DOM boxes to find
+  // them by label, so the same script works on every screen size.
+  const ready = async () => {
+    await p.waitForFunction(() => window.hit10Qa, null, { timeout: 20000 });
+    await p.waitForTimeout(800);
+    await p.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
+    await p.waitForTimeout(500);
+  };
+  const tapText = async (text) => {
+    const at = await p.evaluate((t) => {
+      const e = [...document.querySelectorAll('flt-semantics')]
+        .filter((e) => (e.getAttribute('aria-label') || e.textContent || '').trim() === t).pop();
+      if (!e) return null;
+      const b = e.getBoundingClientRect();
+      return [b.x + b.width / 2, b.y + b.height / 2];
+    }, text);
+    if (at) await p.touchscreen.tap(at[0], at[1]);
+    return at != null;
+  };
+  // The daily-bonus and offline sheets expose only their icon to the
+  // accessibility tree: tap down the middle below the icon until the sheet
+  // is gone. Their main button comes first (the ad offer sits below it).
+  const dialogIcon = () => p.evaluate(() => {
+    const e = document.querySelector('flt-semantics[role="dialog"] flt-semantics[role="img"]');
+    if (!e) return null;
+    const b = e.getBoundingClientRect();
+    return b.y + b.height / 2;
+  });
+  const closeDialog = async () => {
+    const y = await dialogIcon();
+    if (y == null) return;
+    for (let d = 120; d <= 420; d += 16) {
+      await p.touchscreen.tap(W / 2, y + d); await p.waitForTimeout(250);
+      if (await dialogIcon() == null) return;
+    }
+  };
+  // The header's icon buttons, in the centred column (max 560 wide).
+  const x0 = Math.max(0, (W - 560) / 2), cw = Math.min(W, 560);
+  const trophy = [x0 + 29, 25], paradox = [x0 + cw - 29, 25];
+  const t = (pl, en) => (lang === 'pl' ? pl : en);
   const q = (f, a) => p.evaluate(f, a);
   await p.goto(url); await ready();
   await q(() => window.hit10Qa.wipe()); await p.reload(); await ready();
@@ -86,17 +135,17 @@ async function scenes(browser, lang) {
   await p.reload(); await ready();
   await q(() => window.hit10Qa.previewSeason('')); await p.waitForTimeout(2000);
   // The reload counts as a new day: collect the daily bonus sheet.
-  await p.touchscreen.tap(195, 552); await p.waitForTimeout(3000);
+  await closeDialog(); await p.waitForTimeout(3000);
   const shots = [];
   const snap = async () => shots.push(await p.screenshot());
-  const round = async (t, wait) => {
+  const round = async (target, wait) => {
     // A tap right after a result is ignored for a moment: tap until it runs.
     await p.waitForFunction(() => {
       const s = JSON.parse(window.hit10Qa.state());
       if (s.phase !== 'running') window.hit10Qa.tapNow();
       return JSON.parse(window.hit10Qa.state()).phase === 'running';
     }, null, { timeout: 10000, polling: 100 });
-    await q((t) => window.hit10Qa.tapAt(t), t);
+    await q((v) => window.hit10Qa.tapAt(v), target);
     // Freeze the moment the result appears; the next round would start
     // 0.7 s later (R-RUNDA-6), faster than a DPR-2 screenshot.
     await p.waitForFunction(() => {
@@ -107,6 +156,9 @@ async function scenes(browser, lang) {
     await p.waitForTimeout(wait);
   };
   const thaw = () => q(() => window.hit10Qa.freeze(false));
+  // A warm-up hit first: its first-PERFECT achievement toast must not end
+  // up in screenshot 1.
+  await round(5.0, 200); await thaw(); await p.waitForTimeout(4500);
   // 1: a PERFECT hit (retried until it is one), once the burst has settled
   // enough to see the dial; the result is frozen meanwhile.
   for (let i = 0; i < 8; i++) {
@@ -116,10 +168,16 @@ async function scenes(browser, lang) {
     await thaw(); await p.waitForTimeout(1200);
   }
   await snap(); await thaw();
-  await p.waitForTimeout(2500);
-  // 2: Frenzy from the Golden Second.
-  await q(() => window.hit10Qa.effect('frenzy', 20)); await p.waitForTimeout(1200);
-  await round(5.0, 30); await snap(); await thaw();
+  await p.waitForTimeout(4500);
+  // 2: Frenzy from the Golden Second, again retried until a PERFECT.
+  await q(() => window.hit10Qa.effect('frenzy', 40)); await p.waitForTimeout(1200);
+  for (let i = 0; i < 8; i++) {
+    await round(5.0, 30);
+    const s = JSON.parse(await q(() => window.hit10Qa.state()));
+    if (Math.abs(s.lastError ?? 1) < 0.005) break;
+    await thaw(); await p.waitForTimeout(1500);
+  }
+  await snap(); await thaw();
   await q(() => window.hit10Qa.effect('frenzy', 0));
   await p.waitForTimeout(3000);
   // 3: the shop scrolled down to the late clocks, once the self-starting
@@ -127,44 +185,48 @@ async function scenes(browser, lang) {
   await p.waitForFunction(() => JSON.parse(window.hit10Qa.state()).phase === 'waiting',
     null, { timeout: 60000, polling: 200 });
   await p.waitForTimeout(800);
-  await p.mouse.move(195, 680); await p.mouse.wheel(0, 4000); await p.waitForTimeout(1200);
+  await p.mouse.move(W / 2, H * 0.87); await p.mouse.wheel(0, 4000); await p.waitForTimeout(1200);
   await snap();
-  await p.mouse.wheel(0, -2000); await p.waitForTimeout(600);
+  await p.mouse.wheel(0, -4000); await p.waitForTimeout(600);
   // 4: skills tab.
-  await p.getByText(lang === 'pl' ? 'Umiejętności' : 'Skills', { exact: true }).first().click().catch(() => {});
-  await p.touchscreen.tap(140, 500); await p.waitForTimeout(1000); await snap();
-  await p.touchscreen.tap(46, 500); await p.waitForTimeout(600);
+  await tapText(t('Umiejętności', 'Skills')); await p.waitForTimeout(1000); await snap();
+  await tapText(t('Zegary', 'Clocks')); await p.waitForTimeout(600);
   // 5: back after a night away: the offline earnings sheet.
   await q(() => window.hit10Qa.awayFor(8 * 3600)); await p.waitForTimeout(2500); await snap();
-  await p.getByText(lang === 'pl' ? 'Odbierz' : 'Collect', { exact: true }).first().click().catch(() => {});
-  await p.touchscreen.tap(195, 491); await p.waitForTimeout(500);
+  await closeDialog(); await p.waitForTimeout(500);
   await q(() => window.hit10Qa.collectOffline()); await p.waitForTimeout(4000);
   // 6: achievements (top-left trophy).
-  await p.touchscreen.tap(28, 24); await p.waitForTimeout(1500); await snap();
-  await p.touchscreen.tap(365, 108); await p.waitForTimeout(1000);
+  await p.touchscreen.tap(...trophy); await p.waitForTimeout(1500); await snap();
+  await p.touchscreen.tap(W / 2, 12); await p.waitForTimeout(1000); // the barrier closes it
   // 7: the paradox sheet.
   await q(() => window.hit10Qa.setup(JSON.stringify({ earnedTotal: 2e12, shards: 40 })));
   await p.waitForTimeout(6000); // let the achievement toasts pass
-  await p.touchscreen.tap(360, 26); await p.waitForTimeout(1000); await snap();
+  await p.touchscreen.tap(...paradox); await p.waitForTimeout(1000); await snap();
   await p.close();
   return shots;
 }
 
-async function frame(browser, shot, caption, file) {
-  const p = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+async function frame(browser, shot, caption, file, device) {
+  const [cw, ch] = device.canvas;
+  const k = ch / 1920; // everything scales with the canvas height
+  const cap = Math.round(330 * k), devH = ch - cap - Math.round(50 * k);
+  const devW = Math.round(devH * device.vp[0] / device.vp[1]);
+  const tablet = device.bezel === 'tablet';
+  const border = Math.round((tablet ? 20 : 14) * k), radius = Math.round((tablet ? 48 : 64) * k);
+  const p = await browser.newPage({ viewport: { width: cw, height: ch } });
   const img = 'data:image/png;base64,' + shot.toString('base64');
   await p.setContent(`<html><head><style>${fonts}
-    body { margin:0; width:1080px; height:1920px; overflow:hidden;
+    body { margin:0; width:${cw}px; height:${ch}px; overflow:hidden;
            background: linear-gradient(#FFD36E, #FF8A5B); }
-    .cap { position:absolute; left:70px; right:70px; top:0; height:330px; display:flex;
+    .cap { position:absolute; left:${70 * k}px; right:${70 * k}px; top:0; height:${cap}px; display:flex;
            align-items:center; justify-content:center; text-align:center; color:#2B2D42;
-           font-family: Display; font-size:84px; line-height:1.08; text-wrap:balance; }
-    .phone { position:absolute; left:155px; top:330px; width:770px; height:1540px; border-radius:64px;
-             border:14px solid #2B2D42; overflow:hidden; box-shadow: 0 24px 0 rgba(43,45,66,.25);
-             background:#2B2D42; }
-    .phone img { width:100%; height:100%; display:block; }
+           font-family: Display; font-size:${84 * k}px; line-height:1.08; text-wrap:balance; }
+    .dev { position:absolute; left:${(cw - devW) / 2}px; top:${cap}px; width:${devW - 2 * border}px;
+           height:${devH - 2 * border}px; border-radius:${radius}px; border:${border}px solid #2B2D42;
+           overflow:hidden; box-shadow: 0 ${24 * k}px 0 rgba(43,45,66,.25); background:#2B2D42; }
+    .dev img { width:100%; height:100%; display:block; }
   </style></head><body><div class="cap">${caption}</div>
-    <div class="phone"><img src="${img}"></div></body></html>`);
+    <div class="dev"><img src="${img}"></div></body></html>`);
   await p.evaluate(() => document.fonts.ready);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   await p.screenshot({ path: file });
@@ -172,12 +234,17 @@ async function frame(browser, shot, caption, file) {
 }
 
 (async () => {
+  // `node render.js tablet7 tablet10` renders only those devices.
+  const only = process.argv.slice(2);
   const browser = await chromium.launch();
   for (const lang of ['pl', 'en']) {
-    await featureGraphic(browser, lang);
-    const shots = await scenes(browser, lang);
-    for (let i = 0; i < shots.length; i++) {
-      await frame(browser, shots[i], captions[lang][i], path.join(out, 'screens', lang, `${i + 1}.png`));
+    if (!only.length) await featureGraphic(browser, lang);
+    for (const [name, device] of Object.entries(devices)) {
+      if (only.length && !only.includes(name)) continue;
+      const shots = await scenes(browser, lang, device);
+      for (let i = 0; i < shots.length; i++) {
+        await frame(browser, shots[i], captions[lang][i], path.join(out, device.dir, lang, `${i + 1}.png`), device);
+      }
     }
   }
   await browser.close();
