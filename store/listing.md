@@ -3,8 +3,9 @@
 Limits: name ≤ 30 characters, short description ≤ 80, full ≤ 4000
 (`tools/store/check_listing.py` counts them). Graphics, regenerated with
 `make store`: `icon-512.png`, `feature-pl.png` / `feature-en.png`
-(1024×500, one per language) and `screens/pl/1–7.png`,
-`screens/en/1–7.png` (1080×1920, 9:16).
+(1024×500, one per language), phone `screens/{pl,en}/1–7.png`
+(1080×1920), 7-inch tablet `screens-tablet7/{pl,en}/1–7.png` (1200×1920)
+and 10-inch tablet `screens-tablet10/{pl,en}/1–7.png` (1600×2560).
 
 Choices behind the texts (Play metadata policy and store-listing best
 practice):
