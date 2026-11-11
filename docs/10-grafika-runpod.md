@@ -31,6 +31,18 @@ tools/art/.venv/bin/python tools/art/process.py [id] # wycięcie tła + 160 px �
   zegar.
 - Koszt zegarów razem z testem: ~$0.75.
 
+## Stan (11.11.2026): wszystkie ikony własne
+
+- Pozostałe **44 ikony** (umiejętności, perki, osiągnięcia, sezony, UI)
+  wygenerowane tym samym pipeline'em (Qwen t2i, seedy 1010/2020; trzy
+  poprawione prompty z seedami 3030/4040). Koszt: ~$1.9.
+- Każda ikona ma plik `app/assets/art/<nazwa>.png` o **tej samej nazwie co
+  dawne emoji** (`trophy`, `fire`, `keycap_5`…), więc kod dalej podaje gołe
+  nazwy, a `EmojiArt.file` kieruje je do `art/`. Katalog `app/assets/emoji/`
+  i licencja Fluent zostały usunięte.
+- `process.py` uruchamiać **po jednej ikonie** (`process.py <id>`) — przy
+  wielu naraz BiRefNet wyczerpuje 7 GB RAM i proces znika bez komunikatu.
+
 ## Cel
 
 Zastąpić gotowe ikony Fluent Emoji (Microsoft, MIT) własnymi, spójnymi

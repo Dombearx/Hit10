@@ -1008,7 +1008,7 @@
   },
   "resetWord": "RESET",
   "settingsCredits": "Credits and licences",
-  "creditsLegalese": "Art: Microsoft Fluent Emoji (MIT).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.",
+  "creditsLegalese": "Art: our own, generated with Qwen-Image (Apache 2.0).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.",
   "settingsOther": "Other",
   "upg_grandpa_1": "Reading Glasses",
   "upg_grandpa_1_desc": "Finally sees the hands.",

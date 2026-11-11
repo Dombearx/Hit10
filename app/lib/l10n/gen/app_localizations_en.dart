@@ -1323,7 +1323,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get creditsLegalese =>
-      'Art: Microsoft Fluent Emoji (MIT).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.';
+      'Art: our own, generated with Qwen-Image (Apache 2.0).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.';
 
   @override
   String get settingsOther => 'Other';

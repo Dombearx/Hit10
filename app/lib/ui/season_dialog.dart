@@ -5,6 +5,7 @@ import '../l10n/gen/app_localizations.dart';
 import 'format.dart';
 import 'game_controller.dart';
 import 'seasons_ui.dart';
+import 'catalog.dart';
 import 'theme.dart';
 import 'widgets/buy_button.dart';
 import 'widgets/emoji_card.dart';
@@ -123,7 +124,7 @@ class _Progress extends StatelessWidget {
     final v = done ? goal : value.clamp(0, goal);
     return Row(
       children: [
-        Image.asset('assets/emoji/$icon.png', width: 26, height: 26),
+        Image.asset(EmojiArt.path(icon), width: 26, height: 26),
         const SizedBox(width: 8),
         Expanded(
           child: Column(
@@ -174,7 +175,7 @@ class SeasonBadge extends StatelessWidget {
     final done = c.engine.seasonDone;
     const style = TextStyle(fontFamily: Fonts.display, fontSize: 13);
     Widget icon(String name) =>
-        Image.asset('assets/emoji/$name.png', width: 18, height: 18);
+        Image.asset(EmojiArt.path(name), width: 18, height: 18);
     // Each count next to what it counts (playtest: a bare "0/5 · 0/50"
     // meant nothing).
     final progress = done
@@ -208,11 +209,7 @@ class SeasonBadge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              'assets/emoji/${look.badge}.png',
-              width: 30,
-              height: 30,
-            ),
+            Image.asset(EmojiArt.path(look.badge), width: 30, height: 30),
             const SizedBox(width: 4),
             ...progress,
           ],

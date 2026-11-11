@@ -2309,7 +2309,7 @@ abstract class AppLocalizations {
   /// No description provided for @creditsLegalese.
   ///
   /// In en, this message translates to:
-  /// **'Art: Microsoft Fluent Emoji (MIT).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.'**
+  /// **'Art: our own, generated with Qwen-Image (Apache 2.0).\nFonts: Paytone One and Nunito (SIL Open Font License 1.1).\nSounds and music: our own, synthesised in code.'**
   String get creditsLegalese;
 
   /// No description provided for @settingsOther.

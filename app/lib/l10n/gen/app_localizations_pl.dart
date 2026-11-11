@@ -1321,7 +1321,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get creditsLegalese =>
-      'Grafika: Microsoft Fluent Emoji (MIT).\nCzcionki: Paytone One i Nunito (SIL Open Font License 1.1).\nDźwięki i muzyka: własne, syntezowane w kodzie.';
+      'Grafika: własna, wygenerowana modelem Qwen-Image (Apache 2.0).\nCzcionki: Paytone One i Nunito (SIL Open Font License 1.1).\nDźwięki i muzyka: własne, syntezowane w kodzie.';
 
   @override
   String get settingsOther => 'Inne';
