@@ -37,6 +37,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missClose => 'CLOSE!';
 
   @override
+  String get arenaLabel => 'Stopwatch. Stop it at exactly 5.00.';
+
+  @override
   String get tapToStart => 'Tap to start';
 
   @override

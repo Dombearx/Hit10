@@ -104,14 +104,19 @@ async function scenes(browser, lang, device) {
   const closeDialog = async () => {
     const y = await dialogIcon();
     if (y == null) return;
-    for (let d = 120; d <= 420; d += 16) {
+    for (let d = 120; d <= 800; d += 16) {
       await p.touchscreen.tap(W / 2, y + d); await p.waitForTimeout(250);
       if (await dialogIcon() == null) return;
     }
   };
-  // The header's icon buttons, in the centred column (max 560 wide).
-  const x0 = Math.max(0, (W - 560) / 2), cw = Math.min(W, 560);
-  const trophy = [x0 + 29, 25], paradox = [x0 + cw - 29, 25];
+  // Achievement and bonus toasts slide in over the top: wait them out.
+  const toastRe = 'Nowe osiągnięcie|nowych osiągnięć|Nowy bonus|Achievement unlocked|achievements unlocked|New bonus';
+  const toastJs = (re) => [...document.querySelectorAll('flt-semantics')]
+    .some((e) => new RegExp(re).test(e.getAttribute('aria-label') || e.textContent || ''));
+  const hasToast = () => p.evaluate(toastJs, toastRe);
+  const waitNoToast = () => p.waitForFunction((re) => ![...document.querySelectorAll('flt-semantics')]
+    .some((e) => new RegExp(re).test(e.getAttribute('aria-label') || e.textContent || '')),
+    toastRe, { timeout: 60000, polling: 250 }).then(() => p.waitForTimeout(400));
   const t = (pl, en) => (lang === 'pl' ? pl : en);
   const q = (f, a) => p.evaluate(f, a);
   await p.goto(url); await ready();
@@ -158,24 +163,25 @@ async function scenes(browser, lang, device) {
   const thaw = () => q(() => window.hit10Qa.freeze(false));
   // A warm-up hit first: its first-PERFECT achievement toast must not end
   // up in screenshot 1.
-  await round(5.0, 200); await thaw(); await p.waitForTimeout(4500);
+  await round(5.0, 200); await thaw(); await p.waitForTimeout(1500); await waitNoToast();
   // 1: a PERFECT hit (retried until it is one), once the burst has settled
   // enough to see the dial; the result is frozen meanwhile.
   for (let i = 0; i < 8; i++) {
     await round(5.0, 1800);
     const s = JSON.parse(await q(() => window.hit10Qa.state()));
-    if (Math.abs(s.lastError ?? 1) < 0.01) break;
-    await thaw(); await p.waitForTimeout(1200);
+    if (Math.abs(s.lastError ?? 1) < 0.01 && !(await hasToast())) break;
+    await thaw(); await p.waitForTimeout(1200); await waitNoToast();
   }
   await snap(); await thaw();
-  await p.waitForTimeout(4500);
+  await p.waitForTimeout(1500); await waitNoToast();
   // 2: Frenzy from the Golden Second, again retried until a PERFECT.
   await q(() => window.hit10Qa.effect('frenzy', 40)); await p.waitForTimeout(1200);
+  await waitNoToast();
   for (let i = 0; i < 8; i++) {
     await round(5.0, 30);
     const s = JSON.parse(await q(() => window.hit10Qa.state()));
-    if (Math.abs(s.lastError ?? 1) < 0.005) break;
-    await thaw(); await p.waitForTimeout(1500);
+    if (Math.abs(s.lastError ?? 1) < 0.005 && !(await hasToast())) break;
+    await thaw(); await p.waitForTimeout(1500); await waitNoToast();
   }
   await snap(); await thaw();
   await q(() => window.hit10Qa.effect('frenzy', 0));
@@ -185,23 +191,25 @@ async function scenes(browser, lang, device) {
   await p.waitForFunction(() => JSON.parse(window.hit10Qa.state()).phase === 'waiting',
     null, { timeout: 60000, polling: 200 });
   await p.waitForTimeout(800);
+  await waitNoToast();
   await p.mouse.move(W / 2, H * 0.87); await p.mouse.wheel(0, 4000); await p.waitForTimeout(1200);
   await snap();
   await p.mouse.wheel(0, -4000); await p.waitForTimeout(600);
   // 4: skills tab.
-  await tapText(t('Umiejętności', 'Skills')); await p.waitForTimeout(1000); await snap();
+  await tapText(t('Umiejętności', 'Skills')); await p.waitForTimeout(1000); await waitNoToast(); await snap();
   await tapText(t('Zegary', 'Clocks')); await p.waitForTimeout(600);
   // 5: back after a night away: the offline earnings sheet.
   await q(() => window.hit10Qa.awayFor(8 * 3600)); await p.waitForTimeout(2500); await snap();
   await closeDialog(); await p.waitForTimeout(500);
   await q(() => window.hit10Qa.collectOffline()); await p.waitForTimeout(4000);
   // 6: achievements (top-left trophy).
-  await p.touchscreen.tap(...trophy); await p.waitForTimeout(1500); await snap();
+  await tapText(t('Osiągnięcia', 'Achievements')); await p.waitForTimeout(1500); await snap();
   await p.touchscreen.tap(W / 2, 12); await p.waitForTimeout(1000); // the barrier closes it
   // 7: the paradox sheet.
   await q(() => window.hit10Qa.setup(JSON.stringify({ earnedTotal: 2e12, shards: 40 })));
   await p.waitForTimeout(6000); // let the achievement toasts pass
-  await p.touchscreen.tap(...paradox); await p.waitForTimeout(1000); await snap();
+  await waitNoToast();
+  await tapText(t('Paradoks czasowy', 'Time paradox')); await p.waitForTimeout(1000); await snap();
   await p.close();
   return shots;
 }

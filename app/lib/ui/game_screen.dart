@@ -233,7 +233,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       body: FrenzyBackground(
         controller: controller,
         child: SafeArea(
-          // Tablets (M-9): the game keeps a phone's proportions, centred;
+          // Landscape windows keep a phone's proportions, centred;
           // the background still fills the screen.
           child: Center(
             child: ConstrainedBox(
@@ -285,8 +285,17 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             key: CoachTargets.arena,
                             children: [
                               Positioned.fill(
-                                child: RepaintBoundary(
-                                  child: GameWidget(game: arena),
+                                // The dial is drawn by Flame: name it for
+                                // screen readers, whose double tap stops it.
+                                child: Semantics(
+                                  button: true,
+                                  label: AppLocalizations.of(context)
+                                      .arenaLabel,
+                                  onTap: () =>
+                                      controller.onPointerDown(Duration.zero),
+                                  child: RepaintBoundary(
+                                    child: GameWidget(game: arena),
+                                  ),
                                 ),
                               ),
                               // Offer tiles float over the arena's top corners but
@@ -442,22 +451,28 @@ class _Header extends StatelessWidget {
 
   Widget _icon(
     String emoji,
+    String label,
     Key key,
     VoidCallback onTap, {
     bool glow = false,
-  }) => GestureDetector(
-    key: key,
-    onTap: onTap,
-    child: Container(
-      width: 38,
-      height: 38,
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: glow ? Palette.perfect : Colors.white.withValues(alpha: 0.6),
-        shape: BoxShape.circle,
-        border: Border.all(color: Palette.outline, width: 2),
+  }) => Semantics(
+    button: true,
+    label: label,
+    excludeSemantics: true,
+    child: GestureDetector(
+      key: key,
+      onTap: onTap,
+      child: Container(
+        width: 38,
+        height: 38,
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: glow ? Palette.perfect : Colors.white.withValues(alpha: 0.6),
+          shape: BoxShape.circle,
+          border: Border.all(color: Palette.outline, width: 2),
+        ),
+        child: Image.asset(EmojiArt.path(emoji)),
       ),
-      child: Image.asset(EmojiArt.path(emoji)),
     ),
   );
 
@@ -479,11 +494,17 @@ class _Header extends StatelessWidget {
                   const SizedBox(width: 10),
                   _icon(
                     'trophy',
+                    l.achievementsTitle,
                     const Key('open-achievements'),
                     onAchievements,
                   ),
                   const SizedBox(width: 6),
-                  _icon('bar_chart', const Key('open-stats'), onStats),
+                  _icon(
+                    'bar_chart',
+                    l.statsTitle,
+                    const Key('open-stats'),
+                    onStats,
+                  ),
                   Expanded(
                     child: Center(
                       // Not during the tutorial: one new thing at a time
@@ -505,14 +526,25 @@ class _Header extends StatelessWidget {
                           : null,
                     ),
                   ),
-                  _icon('red_question_mark', const Key('open-help'), onHelp),
+                  _icon(
+                    'red_question_mark',
+                    l.helpTitle,
+                    const Key('open-help'),
+                    onHelp,
+                  ),
                   const SizedBox(width: 6),
-                  _icon('gear', const Key('open-settings'), onSettings),
+                  _icon(
+                    'gear',
+                    l.settingsTitle,
+                    const Key('open-settings'),
+                    onSettings,
+                  ),
                   const SizedBox(width: 6),
                   KeyedSubtree(
                     key: CoachTargets.prestige,
                     child: _icon(
                       'cyclone',
+                      l.prestigeTitle,
                       const Key('open-prestige'),
                       onPrestige,
                       glow: controller.engine.canPrestige(),

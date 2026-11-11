@@ -68,7 +68,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | **M-6** | Dźwięk i wibracje | dźwięk trafienia bez odczuwalnego opóźnienia (U-14), wyłączniki działają |
 | **M-7** | Ogranicz ruch | brak wstrząsów i błysków (U-6) |
 | **M-8** | „Czy to wciąga?” — 3 osoby spoza projektu grają 15 min bez instrukcji | każda rozumie zasadę w < 1 min, ≥2 z 3 chcą grać dalej; notujemy, co było niejasne |
-| **M-9** | Małe i duże ekrany (≈5" i tablet), tryb ciemny systemu | nic nie wychodzi poza ekran, cyfry czytelne |
+| **M-9** | Małe i duże ekrany (≈5" i tablet), tryb ciemny systemu | nic nie wychodzi poza ekran, cyfry czytelne; na tablecie układ telefonu powiększony na cały ekran (`TabletScale`), bez pustych pasów po bokach |
 | **M-10** | Reklamy na telefonie (M6): testowe jednostki, zgoda UMP z adresu w UE (VPN albo ustawienia debug UMP), brak sieci, przerwanie reklamy w połowie | nagroda tylko po pełnym obejrzeniu, okno zgody pojawia się i da się je zmienić z ustawień, gra działa bez sieci |
 | **M-11** | Powiadomienie: wyjście z gry, odczekanie do limitu (z limitem skróconym w trybie diagnostycznym), odmowa zgody, wyłączenie w ustawieniach | przychodzi jedno powiadomienie z poprawną kwotą; po odmowie albo wyłączeniu żadnego; powrót do gry anuluje zaplanowane |
 

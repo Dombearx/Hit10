@@ -37,6 +37,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get missClose => 'BLISKO!';
 
   @override
+  String get arenaLabel => 'Stoper. Zatrzymaj go dokładnie na 5.00.';
+
+  @override
   String get tapToStart => 'Dotknij, aby zacząć';
 
   @override

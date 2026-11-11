@@ -15,6 +15,7 @@
   "missEarly": "TOO EARLY",
   "missLate": "TOO LATE",
   "missClose": "CLOSE!",
+  "arenaLabel": "Stopwatch. Stop it at exactly 5.00.",
   "tapToStart": "Tap to start",
   "pausedTapToPlay": "Paused · tap to play",
   "pause": "Pause",
