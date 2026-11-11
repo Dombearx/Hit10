@@ -9,7 +9,7 @@ import argparse, json, os, pathlib, sys, urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 HERE = ROOT / "tools" / "art"
-REF_BASE = "https://raw.githubusercontent.com/Dombearx/Hit10/main/app/assets/emoji/"
+REF_BASE = "https://raw.githubusercontent.com/Dombearx/Hit10/main/app/assets/art/"
 
 MODELS = {
     # endpoint id, builder(spec, cfg) -> input dict
@@ -31,7 +31,8 @@ def api_key():
     if not k and (ROOT / ".env").exists():
         for line in (ROOT / ".env").read_text().splitlines():
             if line.startswith("RUNPOD_API_KEY="):
-                k = line.split("=", 1)[1].strip()
+                k = line.split("=", 1)[1].strip().strip("'\"")
+    k = (k or "").strip().strip("'\"")
     if not k:
         sys.exit("RUNPOD_API_KEY not set")
     return k

@@ -119,9 +119,10 @@ mają stałą szerokość (tabular figures), żeby nie skakały.
 
 ### 4.1 Karty z emoji (grafika postaci i ikon w 1.0)
 
-Źródło: [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji),
-styl **3D** (PNG 256×256, licencja MIT). Do repo trafiają tylko używane pliki
-(`assets/emoji/`), razem z plikiem licencji i wpisem w `CREDITS.md`.
+Źródło: własne ikony 3D wygenerowane modelem Qwen-Image (Apache 2.0) przez
+RunPod, PNG 160×160 z przezroczystym tłem w `assets/art/` (docs/10,
+`tools/art/`). Do 11.2026 były to Microsoft Fluent Emoji 3D; nazwy plików
+zostały te same (`trophy`, `fire`…).
 
 - **U-10:** Karta to widżet składany w kodzie, a nie gotowy obrazek:
   - zaokrąglony kwadrat (promień 20% boku) w pastelowym kolorze danej pozycji;

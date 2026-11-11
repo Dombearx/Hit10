@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../catalog.dart';
 import '../theme.dart';
 
-/// Card built in code from Fluent Emoji 3D (docs/04 U-10): rounded pastel
-/// square, dark outline, glossy top band, soft shadow, main emoji at 68%
-/// and an optional corner emoji in a white bubble.
+/// Card built in code from our generated 3D icons (docs/04 U-10, docs/10):
+/// rounded pastel square, dark outline, glossy top band, soft shadow, main
+/// icon at 68% and an optional corner icon in a white bubble.
 class EmojiCard extends StatelessWidget {
   const EmojiCard({
     super.key,

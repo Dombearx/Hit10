@@ -67,7 +67,6 @@ Stream<LicenseEntry> _assetLicenses() async* {
   for (final (name, asset) in [
     ('Paytone One', 'assets/fonts/OFL-PaytoneOne.txt'),
     ('Nunito', 'assets/fonts/OFL-Nunito.txt'),
-    ('Fluent Emoji', 'assets/emoji/LICENSE-fluentui-emoji.txt'),
   ]) {
     yield LicenseEntryWithLineBreaks([
       name,

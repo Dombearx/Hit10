@@ -10,10 +10,11 @@ class EmojiArt {
   final String? corner;
   final Color background;
 
-  /// Asset path below `assets/`: a name with a folder (`art/grandpa`) is
-  /// our own generated art (tools/art/), a bare name a Fluent emoji.
+  /// Asset path below `assets/`. All icons are our own generated art
+  /// (docs/10, tools/art/); a bare name (`trophy`) and one with its folder
+  /// (`art/grandpa`) both resolve to `assets/art/`.
   static String file(String name) =>
-      name.contains('/') ? '$name.png' : 'emoji/$name.png';
+      name.contains('/') ? '$name.png' : 'art/$name.png';
 
   static String path(String name) => 'assets/${file(name)}';
 }

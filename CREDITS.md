@@ -16,8 +16,7 @@ Both are subset to Latin and Latin Extended (Polish included) with
 
 | Asset | Author | Licence | Source |
 |---|---|---|---|
-| Clock (generator) art, `app/assets/art/` | generated for this project with Qwen-Image (Alibaba Qwen team) via RunPod Public Endpoints; background removed with BiRefNet | Qwen-Image: Apache 2.0; BiRefNet: MIT | prompts and seeds in `tools/art/prompts.json`, picks in `tools/art/picks.json` |
-| Fluent Emoji (3D style), `app/assets/emoji/` | Microsoft | MIT (`app/assets/emoji/LICENSE-fluentui-emoji.txt`) | [microsoft/fluentui-emoji](https://github.com/microsoft/fluentui-emoji) |
+| All icons (clocks, skills, perks, achievements, seasons, UI), `app/assets/art/` | generated for this project with Qwen-Image (Alibaba Qwen team) via RunPod Public Endpoints; background removed with BiRefNet | Qwen-Image: Apache 2.0; BiRefNet: MIT | prompts and seeds in `tools/art/prompts.json`, picks in `tools/art/picks.json` |
 
 ## Sounds and music
 

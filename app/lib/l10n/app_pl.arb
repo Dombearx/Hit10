@@ -402,7 +402,7 @@
   "settingsResetConfirm2": "Wpisz {word}, aby potwierdzić.",
   "resetWord": "RESET",
   "settingsCredits": "Autorzy i licencje",
-  "creditsLegalese": "Grafika: Microsoft Fluent Emoji (MIT).\nCzcionki: Paytone One i Nunito (SIL Open Font License 1.1).\nDźwięki i muzyka: własne, syntezowane w kodzie.",
+  "creditsLegalese": "Grafika: własna, wygenerowana modelem Qwen-Image (Apache 2.0).\nCzcionki: Paytone One i Nunito (SIL Open Font License 1.1).\nDźwięki i muzyka: własne, syntezowane w kodzie.",
   "settingsOther": "Inne",
   "upg_grandpa_1": "Okulary do czytania",
   "upg_grandpa_1_desc": "Wreszcie widzi wskazówki.",
