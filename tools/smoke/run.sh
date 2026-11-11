@@ -8,7 +8,17 @@ APK=$(ls hit5-*.apk | head -1)
 out=smoke-out
 mkdir -p "$out"
 
-adb install -r "$APK" || exit 1
+# The package manager comes up a moment after boot_completed: an install
+# right away can fail with an empty error ("failed to install: \x02").
+# Wait for it and retry a few times; a real install error still fails.
+for i in 1 2 3 4 5; do
+  if adb shell pm path android >/dev/null 2>&1 && adb install -r "$APK"; then
+    break
+  fi
+  if [ "$i" = 5 ]; then exit 1; fi
+  echo "install attempt $i failed, retrying in 5 s"
+  sleep 5
+done
 adb logcat -c
 adb shell am start -W -n "$PKG/.MainActivity"
 sleep 25
