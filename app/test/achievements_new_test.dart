@@ -33,11 +33,15 @@ void main() {
 
   test('5.00 on the dial counts as exact; a PERFEKT 5.01 does not', () {
     final w = e.econ.playerWindows();
-    e.resolveRound(grade(0.008, w)); // 5.01: PERFEKT, not exact
+    e.resolveRound(grade(0.012, w)); // 5.01: PERFEKT, not exact
     expect(s.lifetime.perfects, 1);
     expect(s.lifetime.exactHits, 0);
     e.resolveRound(grade(-0.003, w)); // 5.00
     expect(s.lifetime.exactHits, 1);
+    // The dial snaps to 5.00 inside the jackpot window, so this counts too.
+    e.resolveRound(grade(0.008, w));
+    expect(s.lifetime.exactHits, 2);
+    expect(e.isJackpot(grade(0.008, w)), isTrue);
     expect(unlock(), contains('exact_1'));
   });
 

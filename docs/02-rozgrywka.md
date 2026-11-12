@@ -312,7 +312,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Prestiże | 1, 5, 10, 25, 50 | 5 |
 | Tryby | PERFEKT na ślepo; PERFEKT na ślepo przy serii 10+; przy serii 25+ (wystarczy PERFEKT, nie równe 5.00) | 3 |
 | Wydarzenia sezonowe | po jednym na wydarzenie (§14) | 7 |
-| Równo 5.00 na tarczy (PERFEKT z błędem < 0.005 s) | 1, 100, 1K, 10K | 4 |
+| Równo 5.00 na tarczy (PERFEKT w oknie jackpotu, błąd < 0.010 s) | 1, 100, 1K, 10K | 4 |
 | Zagrane rundy | 100, 1K, 10K, 100K | 4 |
 | Dochód pasywny na sekundę (bez Szału i Turbo) | 1K, 1M, 1B, 1T, 100T, 1aa | 6 |
 | Zegary łącznie | 100, 500, 1000, 1500 | 4 |
