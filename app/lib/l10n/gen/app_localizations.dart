@@ -152,6 +152,12 @@ abstract class AppLocalizations {
   /// **'CLOSE!'**
   String get missClose;
 
+  /// No description provided for @arenaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopwatch. Stop it at exactly 5.00.'**
+  String get arenaLabel;
+
   /// No description provided for @tapToStart.
   ///
   /// In en, this message translates to:

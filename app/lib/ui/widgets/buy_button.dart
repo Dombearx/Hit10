@@ -71,78 +71,88 @@ class _BuyButtonState extends ConsumerState<BuyButton>
   @override
   Widget build(BuildContext context) {
     final on = widget.enabled && !widget.loading;
-    return GestureDetector(
-      onTapDown: on ? (_) => setState(() => _down = true) : null,
-      onTapCancel: () => setState(() => _down = false),
-      onTapUp: on
-          ? (_) {
-              setState(() => _down = false);
-              widget.onPressed();
-              if (widget.celebrate) _celebrate();
-            }
-          : null,
-      child: ScaleTransition(
-        scale: _popScale,
-        child: AnimatedScale(
-          scale: _down ? 0.92 : 1,
-          duration: const Duration(milliseconds: 80),
-          child: Container(
-            constraints: BoxConstraints(minWidth: widget.minWidth),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: on ? Palette.accent : const Color(0xFFD9D2C7),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Palette.outline, width: 2.5),
-              boxShadow: [
-                if (!_down)
-                  const BoxShadow(color: Palette.outline, offset: Offset(0, 3)),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.label != null)
-                  Text(
-                    widget.label!,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                      color: on ? Colors.white : Palette.outline,
-                      height: 1.1,
+    // Its own node for screen readers: "Collect, button", not merged into
+    // the card or dialog around it.
+    return Semantics(
+      container: true,
+      button: true,
+      enabled: on,
+      child: GestureDetector(
+        onTapDown: on ? (_) => setState(() => _down = true) : null,
+        onTapCancel: () => setState(() => _down = false),
+        onTapUp: on
+            ? (_) {
+                setState(() => _down = false);
+                widget.onPressed();
+                if (widget.celebrate) _celebrate();
+              }
+            : null,
+        child: ScaleTransition(
+          scale: _popScale,
+          child: AnimatedScale(
+            scale: _down ? 0.92 : 1,
+            duration: const Duration(milliseconds: 80),
+            child: Container(
+              constraints: BoxConstraints(minWidth: widget.minWidth),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: on ? Palette.accent : const Color(0xFFD9D2C7),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Palette.outline, width: 2.5),
+                boxShadow: [
+                  if (!_down)
+                    const BoxShadow(
+                      color: Palette.outline,
+                      offset: Offset(0, 3),
                     ),
-                  ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.loading) ...[
-                      SizedBox(
-                        key: const Key('buy-loading'),
-                        width: 14,
-                        height: 14,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          color: Palette.outline.withValues(alpha: 0.6),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.label != null)
+                    Text(
+                      widget.label!,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: on ? Colors.white : Palette.outline,
+                        height: 1.1,
+                      ),
+                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.loading) ...[
+                        SizedBox(
+                          key: const Key('buy-loading'),
+                          width: 14,
+                          height: 14,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Palette.outline.withValues(alpha: 0.6),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                      ],
+                      Flexible(
+                        child: Text(
+                          widget.price,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: Fonts.display,
+                            fontSize: 17,
+                            color: on
+                                ? Colors.white
+                                : Palette.outline.withValues(alpha: 0.6),
+                            height: 1.15,
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 6),
                     ],
-                    Flexible(
-                      child: Text(
-                        widget.price,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: Fonts.display,
-                          fontSize: 17,
-                          color: on
-                              ? Colors.white
-                              : Palette.outline.withValues(alpha: 0.6),
-                          height: 1.15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

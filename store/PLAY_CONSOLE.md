@@ -100,8 +100,13 @@ not uploadable.)
 1. Create app: name "Hit5", default language **Polish**, Game, Free.
 2. **Store listing** (Main store listing + add translation English):
    texts from `listing.md`; graphics from this folder:
-   icon `icon-512.png`, feature graphic `feature-1024x500.png`, phone
-   screenshots `screens/pl/1–6.png` (PL) and `screens/en/1–6.png` (EN).
+   icon `icon-512.png`, feature graphic `feature-pl.png` (PL) /
+   `feature-en.png` (EN), phone screenshots `screens/pl/1–7.png` (PL) and
+   `screens/en/1–7.png` (EN), in that order (the first three show in
+   search results). Tablet screenshots (same order): **7-inch** from
+   `screens-tablet7/pl|en/1–7.png`, **10-inch** from
+   `screens-tablet10/pl|en/1–7.png` — they let Play show and recommend
+   the game on tablets and Chromebooks.
    Category: **Casual** (or Arcade). Contact email + website (step 4).
 3. **App content**:
    - Privacy policy URL: `https://dombearx.github.io/hit5/privacy.html`
