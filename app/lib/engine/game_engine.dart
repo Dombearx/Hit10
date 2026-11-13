@@ -386,8 +386,9 @@ class GameEngine {
     final l = s.lifetime;
     if (tier == Tier.perfect) {
       l.perfects++;
-      // The dial shows 5.00 (two decimals, docs/02 R-RUNDA-9).
-      if (raw.error.abs() < 0.005) l.exactHits++;
+      // Counted by the same rule that makes the dial read 5.00
+      // (R-RUNDA-9): the jackpot window, not hundredth rounding.
+      if (raw.error.abs() < b.jackpot.window) l.exactHits++;
       l.perfectStreak++;
       l.bestPerfectStreak = math.max(l.bestPerfectStreak, l.perfectStreak);
     } else {
