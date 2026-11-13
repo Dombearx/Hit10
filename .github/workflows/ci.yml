@@ -4,6 +4,9 @@ on:
   push:
     branches: ['**']
   pull_request:
+  # Manual run: Actions → CI → Run workflow. On main it also uploads the
+  # signed AAB to the testers (job `play`), like a merge does.
+  workflow_dispatch:
 
 permissions:
   contents: write # attaching APKs to milestone releases

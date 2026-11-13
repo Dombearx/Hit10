@@ -86,7 +86,10 @@ not uploadable.)
 ## 3a. Automatic upload to the testers (after the first manual upload)
 
 Every merge to `main` uploads the signed AAB to the closed test, once the
-smoke test passed (CI job `play`). It needs a service account once:
+smoke test passed (CI job `play`). To upload without a merge, run it by
+hand: GitHub → Actions → CI → **Run workflow** → branch `main` (other
+branches build and test but skip the upload). It needs a service account
+once:
 
 1. Google Cloud Console → the project linked to Play Console (or a new
    one) → APIs & Services → enable **Google Play Android Developer API**.
