@@ -952,7 +952,7 @@
   "help_clocks_t": "Clocks",
   "help_clocks": "Clocks (the Clocks tab) play for you and add Ticks every second — even while the game is closed. Grandpa comes first; buying a clock reveals the next, stronger one. The number on the icon is how many you own. ×1, ×10, ×100 and MAX set how many you buy at once.",
   "help_upgrades_t": "Clock bonuses",
-  "help_upgrades": "Each clock has a bar. Once you own 10, 20, 40… of it, all clocks of that kind earn ×2 — free, on their own. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.",
+  "help_upgrades": "Each clock has a bar. Once you own as many as it shows (10, 20, 40… for Grandpa), all clocks of that kind earn more — free, on their own. The first clocks get ×2; pricier ones have lower counts and a smaller multiplier. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.",
   "help_skills_t": "Skills",
   "help_skills": "Skills (the Skills tab) boost your own hits: bigger rewards, wider windows, longer streaks. They have levels — \"Level 2/10\" means the second of ten. Tap a card to read the details.",
   "help_combo_t": "Streak (combo)",

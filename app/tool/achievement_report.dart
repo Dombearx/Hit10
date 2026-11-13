@@ -49,6 +49,9 @@ void main(List<String> args) {
 
   var bestPassive = 0.0;
   var bestClocks = 0;
+  // The most of each clock owned at once, and the play time it took.
+  final bestOwned = <String, int>{};
+  final bestOwnedAt = <String, double>{};
   String n(double v) => formatNumber(v);
   stdout.writeln(
     'run  played  passive/s best  clocks best  skill lv  rounds  Chronons',
@@ -56,12 +59,18 @@ void main(List<String> args) {
   for (var r = 1; r <= runs; r++) {
     var runPassive = 0.0;
     var runClocks = 0;
-    sim.onStep = (_) {
+    sim.onStep = (t) {
       runPassive = math.max(runPassive, sim.econ.passive());
       runClocks = math.max(
         runClocks,
         sim.s.owned.values.fold(0, (a, x) => a + x),
       );
+      sim.s.owned.forEach((id, x) {
+        if (x > (bestOwned[id] ?? 0)) {
+          bestOwned[id] = x;
+          bestOwnedAt[id] = (r - 1) * hours + t / 3600;
+        }
+      });
     };
     sim.run();
     bestPassive = math.max(bestPassive, runPassive);
@@ -92,4 +101,28 @@ void main(List<String> args) {
     sim = Simulator(b, cfg, state: sim.s);
   }
   stdout.writeln('best passive ${n(bestPassive)}/s, best clocks $bestClocks');
+  // Milestones (docs/02 R-ULEP-1) and owned achievements must be reachable.
+  // The bot only buys what pays back fastest, so it leaves cheap old
+  // clocks alone; a player chasing a milestone would top them up. Hence
+  // also: how many one could own from scratch with 15 min of the best
+  // income.
+  final growth = b.generatorCostGrowth;
+  stdout.writeln(
+    'clock           most owned (play h)  with 15 min income  top milestone',
+  );
+  for (final (i, g) in b.generators.indexed) {
+    final x = bestOwned[g.id] ?? 0;
+    final at = bestOwnedAt[g.id];
+    final budget = bestPassive * 15 * 60;
+    final afford =
+        (math.log(1 + budget * (growth - 1) / g.baseCost) / math.log(growth))
+            .floor();
+    final top = b.milestones.thresholdsFor(i).last;
+    stdout.writeln(
+      '  ${g.id.padRight(14)} ${'$x'.padLeft(4)}'
+      '${(at == null ? '' : ' (${at.toStringAsFixed(0)} h)').padRight(9)}'
+      '  ${'$afford'.padLeft(16)}  ${'$top'.padLeft(13)}'
+      '${math.max(x, afford) < top ? '  OUT OF REACH' : ''}',
+    );
+  }
 }

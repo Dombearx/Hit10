@@ -213,7 +213,7 @@ class Economy {
   int milestonesReached(String id) {
     final n = owned(id);
     var k = 0;
-    for (final t in b.milestones.thresholds) {
+    for (final t in milestoneThresholds(id)) {
       if (n >= t) k++;
     }
     return k;
@@ -222,7 +222,7 @@ class Economy {
   /// The next milestone's owned count, or null when all are reached.
   int? nextMilestone(String id) {
     final k = milestonesReached(id);
-    final t = b.milestones.thresholds;
+    final t = milestoneThresholds(id);
     return k < t.length ? t[k] : null;
   }
 
@@ -230,8 +230,18 @@ class Economy {
   /// progress bar starts.
   int lastMilestone(String id) {
     final k = milestonesReached(id);
-    return k == 0 ? 0 : b.milestones.thresholds[k - 1];
+    return k == 0 ? 0 : milestoneThresholds(id)[k - 1];
   }
+
+  /// R-ULEP-1: the owned counts that double [id]; lower for later clocks.
+  List<int> milestoneThresholds(String id) =>
+      b.milestones.thresholdsFor(_genIndex(id));
+
+  /// What each milestone of [id] multiplies it by (×2 for the first clocks).
+  double milestoneMultiplier(String id) =>
+      b.milestones.multiplierFor(_genIndex(id));
+
+  int _genIndex(String id) => b.generators.indexWhere((g) => g.id == id);
 
   /// R-SYN-1: on, for free, once both partners reach [SynergyConfig.requires].
   bool synergyActive(SynergyConfig syn) =>
@@ -250,7 +260,7 @@ class Economy {
   /// Tiki/s of one unit of [id] before the global multiplier.
   double unitRate(String id) =>
       b.generator(id).baseRate *
-      math.pow(b.milestones.multiplier, milestonesReached(id)) *
+      math.pow(milestoneMultiplier(id), milestonesReached(id)) *
       _synergyFactor(id) *
       windowGain(id);
 

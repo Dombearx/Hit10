@@ -42,8 +42,8 @@ EV(σ) = 10·pP' + 3·pS' + 1·pD'       # wartość oczekiwana jednej próby
 ```
 zysk_okien_i = EV(σ_i, okna obecne) / EV(σ_i, okna bazowe, bez Szczęścia)   # 1 dla σ = 0
 synergia_i   = Π (1 + procent · liczba_partnera)  po aktywnych synergiach z i (obie strony ≥ 25 szt.)
-dochód_i     = n_i · Tiki_bazowo_i · 2^(progi_i) · synergia_i · zysk_okien_i
-progi_i      = ile z progów 10, 20, 40, 75, 100, 150, 200, 250 osiągnięto (n_i ≥ próg)
+dochód_i     = n_i · Tiki_bazowo_i · m_i^(progi_i) · synergia_i · zysk_okien_i
+progi_i      = ile z 8 progów zegara i osiągnięto (n_i ≥ próg), m_i = 2 / 1.7 / 1.4 (02 R-ULEP-1)
 ```
 
 **Globalny mnożnik:**
@@ -154,6 +154,7 @@ dobrym celem na długo.
 | Limit combo | 5 + 5·L (55) → 5 + 2·L (25) | jw. |
 | Echo na poziom | 2 s → 0.5 s | jw. |
 | Start później, max | 0.8 s → 2.0 s (krok 0.0533 → 0.1333) | dawał tylko ~16% więcej rund; teraz ~54% (playtest) |
+| Progi bonusów zegarów | 10…250 ×2 dla wszystkich → 3 grupy: do 150 ×2, do 80 ×1.7, do 50 ×1.4 (02 R-ULEP-1) | 200 i 250 sztuk nie padały nawet po 400 h; same niższe progi przy ×2 dawały spiralę w pełnej grze (playtest 27) |
 | Echo na poziom | 0.5 s → ⅓ s | po dłuższym Starcie później klikanie dawało 6.7× pasywnego (B-6c ≤ 5); teraz 4.7× |
 | Złota Sekunda co | 3–7 min → 5–15 min | Szał zbyt często podwajał klikanie; teraz jak w Cookie Clickerze |
 | Złoty dotyk na poziom | 10% → 5% | jw. |
@@ -198,6 +199,30 @@ pod progiem: B-6a (0,95) i B-7 (0,399). Korekta:
 
 Wszystkie cele B-1…B-10, A-1 i A-2 przechodzą. Aktualne wyniki zawsze
 pokazuje `dart run tool/simulate.dart --check`.
+
+### 4.2 Gracz idle (playtest 27)
+
+`app/tool/idle_sim.dart`: 3 sesje dziennie po 3 min co 8 h, między nimi
+dochód offline według reguł gry (limit 8 h, 50% wydajności, więcej
+z perkami), dzienna premia, paradoks na początku sesji, gdy co najmniej
+podwaja Chronony, perki kupowane od razu. σ = 50 ms, bez reklam.
+
+| Dzień | Dochód pasywny/s | Chronony | Perki | Bonusy zegarów | Osiągnięcia |
+|---|---|---|---|---|---|
+| 7 | (po paradoksie) | 26 | 2 | 25/112 | 45/149 |
+| 14 | 782M | 52 | 4 | 34/112 | 57/149 |
+| 30 | 3.46T | 1129 | 17 | 67/112 | 79/149 |
+| 42 | 1.65aa | 10.7K | 18 | **112/112** | 109/149 |
+| 120 | 10.3aa | 43.5K | 18 | 112/112 | 115/149 |
+
+- Ok. 96–98% Tików przychodzi offline; klikanie w 9 min dziennie to
+  dodatek.
+- Pierwszy paradoks 2. dnia, potem co 3–5 dni. Wszystkie perki ok.
+  31. dnia, wszystkie teksty bonusów 42. dnia, od ok. 75. dnia Chronony
+  przestają rosnąć (paradoks nie podwaja już Chrononów).
+- Brakujące osiągnięcia wymagają gry, nie czekania (100 h gry to przy
+  9 min dziennie ponad 600 dni, 100K rund, tryb na ślepo, wydarzenia
+  sezonowe, godziny zegarowe).
 
 ## 5. Reklamy a balans
 

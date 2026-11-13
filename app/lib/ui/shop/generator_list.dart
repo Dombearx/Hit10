@@ -297,7 +297,7 @@ class _MilestoneBar extends StatelessWidget {
     final next = c.econ.nextMilestone(id);
     final last = c.econ.lastMilestone(id);
     final k = next == null ? 1.0 : (owned - last) / (next - last);
-    final mult = c.balance.milestones.multiplier;
+    final mult = Fmt.of(context, c).round(c.econ.milestoneMultiplier(id));
     return Padding(
       // The tutorial's bonus tip points at the first clock's bar.
       key: id == c.balance.generators.first.id
@@ -322,11 +322,7 @@ class _MilestoneBar extends StatelessWidget {
           Text(
             next == null
                 ? l.milestoneMax
-                : l.milestoneProgress(
-                    '$owned',
-                    '$next',
-                    mult == mult.roundToDouble() ? '${mult.round()}' : '$mult',
-                  ),
+                : l.milestoneProgress('$owned', '$next', mult),
             style: const TextStyle(
               fontSize: 11.5,
               fontWeight: FontWeight.w800,
@@ -534,7 +530,7 @@ class _GeneratorBonuses extends StatelessWidget {
     final c = controller;
     final l = AppLocalizations.of(context);
     final owned = c.econ.owned(id);
-    final mult = c.balance.milestones.multiplier.round();
+    final mult = Fmt.of(context, c).round(c.econ.milestoneMultiplier(id));
     final syns = [
       for (final s in c.balance.synergies)
         if (s.a == id || s.b == id) s,
@@ -547,7 +543,7 @@ class _GeneratorBonuses extends StatelessWidget {
       children: [
         Text(l.generatorBonuses, style: header),
         const SizedBox(height: 4),
-        for (final (i, need) in c.balance.milestones.thresholds.indexed)
+        for (final (i, need) in c.econ.milestoneThresholds(id).indexed)
           Padding(
             key: Key('gen-bonus-$i'),
             padding: const EdgeInsets.symmetric(vertical: 4),
@@ -576,7 +572,7 @@ class _GeneratorBonuses extends StatelessWidget {
                             owned >= need
                                 ? upgradeTexts(l, id, i + 1)?.$1 ?? roman(i)
                                 : '???',
-                            '$mult',
+                            mult,
                           ),
                           style: const TextStyle(
                             fontSize: 14,
