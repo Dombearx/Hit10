@@ -146,6 +146,40 @@ jobs:
           path: smoke-out/
           retention-days: 14
 
+  # Every merge to main goes to the testers (store/PLAY_CONSOLE.md §3a):
+  # the signed AAB, once the APK built from the same commit played a round
+  # on the emulator. Skipped until the PLAY_SERVICE_ACCOUNT_JSON secret
+  # exists. The track is the closed test "Testerzy"; the PLAY_TRACK repo
+  # variable overrides it. Google reviews each closed-test release before
+  # testers get it (usually within hours).
+  play:
+    needs: [aab, smoke]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+    steps:
+      - uses: actions/download-artifact@v4
+        if: env.PLAY_JSON != ''
+        with:
+          name: hit5-aab
+      - name: Check for a signed AAB
+        if: env.PLAY_JSON != ''
+        run: |
+          ls hit5-*-signed.aab >/dev/null 2>&1 || {
+            echo "::error::No signed AAB: the HIT10_KEYSTORE_* secrets are missing."
+            exit 1
+          }
+      - name: Upload to Google Play
+        if: env.PLAY_JSON != ''
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: io.github.dombearx.hit10
+          releaseFiles: hit5-*-signed.aab
+          track: ${{ vars.PLAY_TRACK || 'Testerzy' }}
+          status: completed
+
   # Only an APK that started and played a round on the emulator is released.
   release:
     needs: [apk, aab, smoke]

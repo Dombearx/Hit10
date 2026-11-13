@@ -83,6 +83,28 @@ After the next push, the CI run's **hit5-aab** artifact contains
 `…-signed.aab`. (Without the secrets it is `…-unsigned.aab`, test ids,
 not uploadable.)
 
+## 3a. Automatic upload to the testers (after the first manual upload)
+
+Every merge to `main` uploads the signed AAB to the closed test, once the
+smoke test passed (CI job `play`). It needs a service account once:
+
+1. Google Cloud Console → the project linked to Play Console (or a new
+   one) → APIs & Services → enable **Google Play Android Developer API**.
+2. IAM & Admin → Service accounts → **Create service account** (no roles
+   needed) → Keys → Add key → JSON → download.
+3. Play Console → **Users and permissions** → Invite new users → the
+   service account's email → App permissions: Hit5 → **Release to testing
+   tracks** (and *View app information*) → Invite.
+4. GitHub secret **`PLAY_SERVICE_ACCOUNT_JSON`** = the whole JSON file.
+   Delete the downloaded file afterwards.
+5. The job uploads to the track **`Testerzy`**. If the closed test track
+   is named differently (the default one is `alpha` in the API), set the
+   repo **variable** `PLAY_TRACK` (Settings → Secrets and variables →
+   Actions → Variables).
+
+The versionCode is the CI run number: an AAB uploaded by hand with a
+higher versionCode blocks the next uploads until the run number passes it.
+
 ## 4. Website (dombearx.github.io)
 
 1. Create the public repo **`Dombearx/Dombearx.github.io`**.
