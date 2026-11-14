@@ -58,6 +58,8 @@ sprawdzić, czy jest potrzebny.
 
 ### 3.1 Gra kończy się za wcześnie (najważniejsze)
 
+Rozwinięcie i konkretna propozycja: [12-pozna-gra.md](12-pozna-gra.md).
+
 **Problem.** Po ok. 31 dniach nie ma już perków do kupienia, po ok. 75
 Chronony stoją. Najwierniejsi gracze (ci, którzy zostają najdłużej i
 oglądają najwięcej reklam) nie mają dalej celu.
