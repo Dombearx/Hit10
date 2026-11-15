@@ -32,6 +32,29 @@ class GameState {
   final Set<String> achievements = {};
   int prestiges = 0;
 
+  // ------------------------------------- mainsprings (docs/12 §3.1) --
+  /// Ready Mainsprings (R-SPR-4) and the seconds wound towards the next.
+  int springs = 0;
+  double springProgress = 0;
+
+  /// Wall-clock ms the winding was last brought up to date; 0 = not yet.
+  int springClockMs = 0;
+
+  /// Local date (yyyymmdd) and seconds exact hits wound that day (R-SPR-3).
+  int springHitDay = 0;
+  double springHitSeconds = 0;
+
+  /// Clock levels bought with Mainsprings; never reset (R-SPR-5).
+  final Map<String, int> clockLevels = {};
+
+  /// Clocks bought at least once in any run: only those can be levelled.
+  final Set<String> everOwned = {};
+
+  /// Stopwatch face chosen ('' = the classic one) and the faces already
+  /// announced (docs/12 §3.3).
+  String dial = '';
+  final Set<String> dialsSeen = {};
+
   /// Paradox paid out, run not reset yet: the player is spending Shards
   /// before the new run starts (R-PRES-6a).
   bool rewindPending = false;
@@ -217,4 +240,9 @@ class LifetimeStats {
 
   /// Offline income collected after an absence longer than the limit.
   int offlineFull = 0;
+
+  /// Mainsprings wound in total, and the seconds lost while the stock was
+  /// full (analytics: is the cap too low?).
+  int springsWound = 0;
+  double springSecondsLost = 0;
 }

@@ -2141,7 +2141,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_icons.
   ///
   /// In en, this message translates to:
-  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help.'**
+  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).'**
   String get help_icons;
 
   /// No description provided for @notificationTitle.
@@ -4111,6 +4111,630 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.'**
   String get skill_goldenTouch_info;
+
+  /// No description provided for @master_grandpa_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Retired Watchmaker'**
+  String get master_grandpa_5;
+
+  /// No description provided for @master_grandpa_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixes the neighbours\' watches. Free, with a lecture.'**
+  String get master_grandpa_5_desc;
+
+  /// No description provided for @master_grandpa_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandpa Knows Best'**
+  String get master_grandpa_10;
+
+  /// No description provided for @master_grandpa_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'And he\'s right. Sadly.'**
+  String get master_grandpa_10_desc;
+
+  /// No description provided for @master_grandma_5.
+  ///
+  /// In en, this message translates to:
+  /// **'The Perfect Egg'**
+  String get master_grandma_5;
+
+  /// No description provided for @master_grandma_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a second too long. Not one.'**
+  String get master_grandma_5_desc;
+
+  /// No description provided for @master_grandma_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Turbo Grandma'**
+  String get master_grandma_10;
+
+  /// No description provided for @master_grandma_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The egg timer is scared of her.'**
+  String get master_grandma_10_desc;
+
+  /// No description provided for @master_cuckoo_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuckoo with a Degree'**
+  String get master_cuckoo_5;
+
+  /// No description provided for @master_cuckoo_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cuckoos on time. Insists on being called Doctor.'**
+  String get master_cuckoo_5_desc;
+
+  /// No description provided for @master_cuckoo_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Celebrity Cuckoo'**
+  String get master_cuckoo_10;
+
+  /// No description provided for @master_cuckoo_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaves the little house only for interviews.'**
+  String get master_cuckoo_10_desc;
+
+  /// No description provided for @master_metronome_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick Virtuoso'**
+  String get master_metronome_5;
+
+  /// No description provided for @master_metronome_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick. Tock. Applause.'**
+  String get master_metronome_5_desc;
+
+  /// No description provided for @master_metronome_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Philharmonic Metronome'**
+  String get master_metronome_10;
+
+  /// No description provided for @master_metronome_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Conducts the conductor.'**
+  String get master_metronome_10_desc;
+
+  /// No description provided for @master_watchmaker_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Loupe'**
+  String get master_watchmaker_5;
+
+  /// No description provided for @master_watchmaker_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sees atoms. And the dust on them.'**
+  String get master_watchmaker_5_desc;
+
+  /// No description provided for @master_watchmaker_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Guild Master'**
+  String get master_watchmaker_10;
+
+  /// No description provided for @master_watchmaker_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Even sundials come to him for advice.'**
+  String get master_watchmaker_10_desc;
+
+  /// No description provided for @master_sprintJudge_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Eagle-eyed Judge'**
+  String get master_sprintJudge_5;
+
+  /// No description provided for @master_sprintJudge_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Spots a false start before the runner thinks of it.'**
+  String get master_sprintJudge_5_desc;
+
+  /// No description provided for @master_sprintJudge_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Olympic Judge'**
+  String get master_sprintJudge_10;
+
+  /// No description provided for @master_sprintJudge_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold-plated whistle. Patience not included.'**
+  String get master_sprintJudge_10_desc;
+
+  /// No description provided for @master_stationClock_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Train on Time'**
+  String get master_stationClock_5;
+
+  /// No description provided for @master_stationClock_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Passengers don\'t believe it. They take photos.'**
+  String get master_stationClock_5_desc;
+
+  /// No description provided for @master_stationClock_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero-delay Station'**
+  String get master_stationClock_10;
+
+  /// No description provided for @master_stationClock_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Subject to change\" is now in a museum.'**
+  String get master_stationClock_10_desc;
+
+  /// No description provided for @master_quartz_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Flawless Crystal'**
+  String get master_quartz_5;
+
+  /// No description provided for @master_quartz_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrates exactly 32,768 times. We checked.'**
+  String get master_quartz_5_desc;
+
+  /// No description provided for @master_quartz_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Royal Quartz'**
+  String get master_quartz_10;
+
+  /// No description provided for @master_quartz_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Worn at court instead of a crown.'**
+  String get master_quartz_10_desc;
+
+  /// No description provided for @master_atomic_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Atom of Calm'**
+  String get master_atomic_5;
+
+  /// No description provided for @master_atomic_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Electrons tiptoe around it.'**
+  String get master_atomic_5_desc;
+
+  /// No description provided for @master_atomic_10.
+  ///
+  /// In en, this message translates to:
+  /// **'The Standard Second'**
+  String get master_atomic_10;
+
+  /// No description provided for @master_atomic_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A second lasts as long as it says.'**
+  String get master_atomic_10_desc;
+
+  /// No description provided for @master_gps_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Never-lost Satellite'**
+  String get master_gps_5;
+
+  /// No description provided for @master_gps_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Never says \"make a U-turn when possible\".'**
+  String get master_gps_5_desc;
+
+  /// No description provided for @master_gps_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Lord of the Orbit'**
+  String get master_gps_10;
+
+  /// No description provided for @master_gps_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Other satellites set themselves by it.'**
+  String get master_gps_10_desc;
+
+  /// No description provided for @master_pulsar_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Pulsar with Rhythm'**
+  String get master_pulsar_5;
+
+  /// No description provided for @master_pulsar_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The universe taps its foot along.'**
+  String get master_pulsar_5_desc;
+
+  /// No description provided for @master_pulsar_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Lighthouse of the Galaxy'**
+  String get master_pulsar_10;
+
+  /// No description provided for @master_pulsar_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Alien ships set their watches by it.'**
+  String get master_pulsar_10_desc;
+
+  /// No description provided for @master_timeMachine_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Ticket'**
+  String get master_timeMachine_5;
+
+  /// No description provided for @master_timeMachine_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Back before it leaves. Never late.'**
+  String get master_timeMachine_5_desc;
+
+  /// No description provided for @master_timeMachine_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Loop'**
+  String get master_timeMachine_10;
+
+  /// No description provided for @master_timeMachine_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Met itself. Both hit 5.00.'**
+  String get master_timeMachine_10_desc;
+
+  /// No description provided for @master_schrodinger_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Observed Cat'**
+  String get master_schrodinger_5;
+
+  /// No description provided for @master_schrodinger_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hits when you look. When you don\'t, too.'**
+  String get master_schrodinger_5_desc;
+
+  /// No description provided for @master_schrodinger_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Cat in Both Boxes'**
+  String get master_schrodinger_10;
+
+  /// No description provided for @master_schrodinger_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Asleep and on target at once. Purrs in superposition.'**
+  String get master_schrodinger_10_desc;
+
+  /// No description provided for @master_chronos_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronos on Holiday'**
+  String get master_chronos_5;
+
+  /// No description provided for @master_chronos_5_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Time flows on its own, and still on the dot.'**
+  String get master_chronos_5_desc;
+
+  /// No description provided for @master_chronos_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Lord of All Seconds'**
+  String get master_chronos_10;
+
+  /// No description provided for @master_chronos_10_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Even the second that just passed was his.'**
+  String get master_chronos_10_desc;
+
+  /// No description provided for @dial_classic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get dial_classic;
+
+  /// No description provided for @dial_classic_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'White, clean, reliable.'**
+  String get dial_classic_desc;
+
+  /// No description provided for @dial_wood.
+  ///
+  /// In en, this message translates to:
+  /// **'Woodgrain'**
+  String get dial_wood;
+
+  /// No description provided for @dial_wood_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Smells like Grandpa\'s workshop.'**
+  String get dial_wood_desc;
+
+  /// No description provided for @dial_porcelain.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandma\'s Porcelain'**
+  String get dial_porcelain;
+
+  /// No description provided for @dial_porcelain_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'From the good china. Don\'t drop it.'**
+  String get dial_porcelain_desc;
+
+  /// No description provided for @dial_brass.
+  ///
+  /// In en, this message translates to:
+  /// **'Brass'**
+  String get dial_brass;
+
+  /// No description provided for @dial_brass_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Shines like a town hall door handle.'**
+  String get dial_brass_desc;
+
+  /// No description provided for @dial_station.
+  ///
+  /// In en, this message translates to:
+  /// **'Station'**
+  String get dial_station;
+
+  /// No description provided for @dial_station_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Big, so you can see the delay from far away.'**
+  String get dial_station_desc;
+
+  /// No description provided for @dial_swiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Swiss'**
+  String get dial_swiss;
+
+  /// No description provided for @dial_swiss_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Red, precise and a little smug.'**
+  String get dial_swiss_desc;
+
+  /// No description provided for @dial_quartz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quartz LCD'**
+  String get dial_quartz;
+
+  /// No description provided for @dial_quartz_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Green digits, like an 80s alarm clock.'**
+  String get dial_quartz_desc;
+
+  /// No description provided for @dial_atomic.
+  ///
+  /// In en, this message translates to:
+  /// **'Atomic'**
+  String get dial_atomic;
+
+  /// No description provided for @dial_atomic_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Glows faintly blue. Apparently that\'s normal.'**
+  String get dial_atomic_desc;
+
+  /// No description provided for @dial_neon.
+  ///
+  /// In en, this message translates to:
+  /// **'Neon'**
+  String get dial_neon;
+
+  /// No description provided for @dial_neon_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'For playing after midnight.'**
+  String get dial_neon_desc;
+
+  /// No description provided for @dial_cosmic.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmic'**
+  String get dial_cosmic;
+
+  /// No description provided for @dial_cosmic_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stars behind, seconds in front.'**
+  String get dial_cosmic_desc;
+
+  /// No description provided for @dial_golden.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden'**
+  String get dial_golden;
+
+  /// No description provided for @dial_golden_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Solid gold. Well, almost.'**
+  String get dial_golden_desc;
+
+  /// No description provided for @dial_rift.
+  ///
+  /// In en, this message translates to:
+  /// **'Spacetime Rift'**
+  String get dial_rift;
+
+  /// No description provided for @dial_rift_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Through the crack you can see yesterday\'s 5.00.'**
+  String get dial_rift_desc;
+
+  /// No description provided for @springWound.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainspring +{minutes} min'**
+  String springWound(String minutes);
+
+  /// No description provided for @springsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings'**
+  String get springsTitle;
+
+  /// No description provided for @springsBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings: {count}'**
+  String springsBadge(String count);
+
+  /// No description provided for @springsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'A Mainspring winds itself: one a day, even while you\'re away. Every exact 5.00 winds it faster. Spend Mainsprings on clock levels: +{pct}% to that clock\'s income per level, for good — levels survive the paradox.'**
+  String springsIntro(String pct);
+
+  /// No description provided for @springsNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next one in {time}'**
+  String springsNext(String time);
+
+  /// No description provided for @springsFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage full ({max}). Spend some to keep winding.'**
+  String springsFull(String max);
+
+  /// No description provided for @springsHitsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact 5.00 hits can wind {time} more today.'**
+  String springsHitsLeft(String time);
+
+  /// No description provided for @springsHitsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s winding by hits is used up.'**
+  String get springsHitsDone;
+
+  /// No description provided for @springsNoClocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy a clock to raise its level.'**
+  String get springsNoClocks;
+
+  /// No description provided for @clockLevelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock level'**
+  String get clockLevelTitle;
+
+  /// No description provided for @clockLevelLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}/{max} · +{pct}%'**
+  String clockLevelLine(String level, String max, String pct);
+
+  /// No description provided for @clockLevelUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Level up · {cost}'**
+  String clockLevelUp(String cost);
+
+  /// No description provided for @clockLevelMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max level'**
+  String get clockLevelMax;
+
+  /// No description provided for @clockLevelTitleAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}: {title}'**
+  String clockLevelTitleAt(String level, String title);
+
+  /// No description provided for @clockLevelLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings arrive with the first paradox.'**
+  String get clockLevelLocked;
+
+  /// No description provided for @ach_mastery_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'{generator} at level {level}'**
+  String ach_mastery_desc(String generator, String level);
+
+  /// No description provided for @dialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dial face'**
+  String get dialTitle;
+
+  /// No description provided for @dialHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New faces unlock as you earn Tiki across all your runs.'**
+  String get dialHint;
+
+  /// No description provided for @dialLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn {amount} in total'**
+  String dialLocked(String amount);
+
+  /// No description provided for @dialToast.
+  ///
+  /// In en, this message translates to:
+  /// **'New dial face'**
+  String get dialToast;
+
+  /// No description provided for @help_springs_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings and clock levels'**
+  String get help_springs_t;
+
+  /// No description provided for @help_springs.
+  ///
+  /// In en, this message translates to:
+  /// **'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.'**
+  String get help_springs;
+
+  /// No description provided for @help_dials_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Dial faces'**
+  String get help_dials_t;
+
+  /// No description provided for @help_dials.
+  ///
+  /// In en, this message translates to:
+  /// **'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one in Settings. They only change the look, not your results.'**
+  String get help_dials;
 }
 
 class _AppLocalizationsDelegate

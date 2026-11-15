@@ -23,8 +23,8 @@ void main() {
     AchievementContext c = const AchievementContext(),
   ]) => unlockAchievements(all, s, c).map((a) => a.id);
 
-  test('about 150, unique ids, every new kind present', () {
-    expect(all.length, inInclusiveRange(145, 160));
+  test('about 175, unique ids, every new kind present', () {
+    expect(all.length, inInclusiveRange(170, 185));
     expect(all.map((a) => a.id).toSet(), hasLength(all.length));
     for (final c in AchievementCategory.values) {
       expect(all.where((a) => a.category == c), isNotEmpty, reason: '$c');

@@ -215,6 +215,18 @@ void registerQaHook(GameController c) {
       if (m['tipsSeen'] case final List<dynamic> t) {
         c.state.tipsSeen.addAll(t.cast<String>());
       }
+      // Mainsprings and dial faces (docs/12).
+      if (m['prestiges'] case final num v) c.state.prestiges = v.toInt();
+      if (m['springs'] case final num v) c.state.springs = v.toInt();
+      if (m['clockLevels'] case final Map<String, dynamic> o) {
+        for (final e in o.entries) {
+          c.state.clockLevels[e.key] = (e.value as num).toInt();
+        }
+      }
+      if (m['earnedEver'] case final num v) {
+        c.state.lifetime.earnedEver = v.toDouble();
+      }
+      if (m['dial'] case final String d) c.setDial(d);
       if (m['tutorialDone'] == true) c.finishTutorial();
     }).toJS,
   );

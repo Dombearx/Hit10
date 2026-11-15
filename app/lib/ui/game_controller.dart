@@ -25,9 +25,17 @@ import 'notifications.dart';
 
 /// What the arena needs to animate a finished round.
 class HitFeedback {
-  HitFeedback(this.outcome, this.gameTime, {this.clock = 0});
+  HitFeedback(
+    this.outcome,
+    this.gameTime, {
+    this.clock = 0,
+    this.springSeconds = 0,
+  });
   final RoundOutcome outcome;
   final double gameTime;
+
+  /// Seconds an exact hit wound the Mainspring (docs/12 R-SPR-3).
+  final double springSeconds;
 
   /// Which stopwatch (0, or 1 for the second clock).
   final int clock;
@@ -45,13 +53,22 @@ class HitFeedback {
 /// milestone [index] (0-based) of [generator], or synergy [synergy].
 class MilestoneEvent {
   const MilestoneEvent.generator(String this.generator, this.index)
-    : synergy = null;
+    : synergy = null,
+      dial = null;
   const MilestoneEvent.synergy(String this.synergy)
     : generator = null,
+      index = 0,
+      dial = null;
+
+  /// A new stopwatch face (docs/12 §3.3).
+  const MilestoneEvent.dial(String this.dial)
+    : generator = null,
+      synergy = null,
       index = 0;
   final String? generator;
   final int index;
   final String? synergy;
+  final String? dial;
 }
 
 /// One stopwatch and what was fixed when its round started (R-TRYB-1).
@@ -100,6 +117,12 @@ class GameController extends ChangeNotifier {
     // badges that no longer exist neither show nor count.
     final known = {for (final a in achievements) a.id};
     this.state.achievements.retainWhere(known.contains);
+    // A new game, or a save from before the faces: what is already earned
+    // is not news (docs/12 §3.3).
+    final seen = this.state.dialsSeen;
+    if (seen.isEmpty || seen.remove('*')) {
+      seen.addAll(econ.unlockedDials.map((d) => d.id));
+    }
     _rebuildClocks();
     _applySettings();
     engine.goldenEnabled = this.state.tutorialDone;
@@ -443,6 +466,8 @@ class GameController extends ChangeNotifier {
       _sinceAchievementCheck = 0;
       _checkAchievements(AchievementContext(passive: econ.passive()));
       if (engine.canPrestige()) _tip('prestige');
+      _windSprings();
+      _announceDials();
       checkTips();
     }
     _sinceSave += dt;
@@ -475,10 +500,14 @@ class GameController extends ChangeNotifier {
         _trackTutorial();
         final local = _localNow();
         if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
+        // The dial read 5.00: the Mainspring winds faster (R-SPR-3).
+        final wound = o.jackpot > 0 ? engine.springHit(local) : 0.0;
         _countForAchievements(slot, o.tier);
         if (state.comboStreak >= 3) _tip('combo');
         _playFeedback(o);
-        _feedback.add(HitFeedback(o, gameTime, clock: slot.index));
+        _feedback.add(
+          HitFeedback(o, gameTime, clock: slot.index, springSeconds: wound),
+        );
         _afterSeasonProgress();
         _checkAchievements(
           AchievementContext(
@@ -734,6 +763,54 @@ class GameController extends ChangeNotifier {
     final r = _afterBuy(engine.buyPerk(id));
     if (r == BuyResult.ok) _log('perk_buy', {'id': id, 'shards': state.shards});
     return r;
+  }
+
+  // --------------------------------------- mainsprings (docs/12 §3.1) --
+
+  /// Winds the Mainsprings up to now; a ready one rings.
+  void _windSprings() {
+    final ready = engine.windSprings(_wallMs());
+    if (ready > 0) {
+      sfx.play('chimes', gain: 0.5);
+      notifyListeners();
+    }
+  }
+
+  /// Raises clock [id] one level for Mainsprings (R-SPR-5).
+  BuyResult levelClock(String id) {
+    final r = engine.levelClock(id);
+    if (r == BuyResult.ok) {
+      _log('clock_level', {
+        'id': id,
+        'level': econ.clockLevel(id),
+        'springs': state.springs,
+      });
+      sfx.play('fanfare', gain: 0.6);
+      unawaited(haptics.medium());
+      _checkAchievements(const AchievementContext());
+      unawaited(save());
+      notifyListeners();
+    }
+    return r;
+  }
+
+  // ------------------------------------------- dials (docs/12 §3.3) --
+
+  /// Celebrates every face the Tiki earned so far unlocked.
+  void _announceDials() {
+    for (final d in econ.unlockedDials) {
+      if (state.dialsSeen.add(d.id)) {
+        _milestones.add(MilestoneEvent.dial(d.id));
+        _log('dial_unlock', {'id': d.id});
+        sfx.play('fanfare', gain: 0.6);
+      }
+    }
+  }
+
+  void setDial(String id) {
+    state.dial = id == balance.dials.first.id ? '' : id;
+    unawaited(save());
+    notifyListeners();
   }
 
   /// The rewind animation's sound and long buzz (docs/04 §3).
@@ -1038,6 +1115,7 @@ class GameController extends ChangeNotifier {
     if (pendingOffline != null) unawaited(save());
     pendingDaily = engine.dailyFor(_localNow());
     state.lastSeenMs = _wallMs();
+    engine.windSprings(_wallMs());
     if (pendingOffline != null || pendingDaily != null || seasonIntroPending) {
       notifyListeners();
     }

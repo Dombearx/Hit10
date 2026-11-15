@@ -262,7 +262,52 @@ class Economy {
       b.generator(id).baseRate *
       math.pow(milestoneMultiplier(id), milestonesReached(id)) *
       _synergyFactor(id) *
-      windowGain(id);
+      windowGain(id) *
+      clockLevelFactor(id);
+
+  // ------------------------------------------- clock levels (R-SPR-5) --
+
+  int clockLevel(String id) => s.clockLevels[id] ?? 0;
+
+  /// What the Mainspring levels multiply clock [id] by.
+  double clockLevelFactor(String id, [int? level]) =>
+      1 + b.springs.levelBonus * (level ?? clockLevel(id));
+
+  /// Mainsprings the next level of [id] costs, or null when maxed.
+  int? clockLevelCost(String id) {
+    final l = clockLevel(id);
+    return l >= b.springs.maxLevel ? null : b.springs.costOf(l + 1);
+  }
+
+  /// Mainsprings appear with the first paradox (R-SPR-1).
+  bool get springsUnlocked => s.prestiges > 0;
+
+  /// Clock [id] can take a level at all (bought once, not maxed).
+  bool clockLevelable(String id) =>
+      springsUnlocked && s.everOwned.contains(id) && clockLevelCost(id) != null;
+
+  // ------------------------------------------------- dials (docs/12 §3.3) --
+
+  /// Faces unlocked by the Tiki earned in all runs.
+  List<DialConfig> get unlockedDials => [
+    for (final d in b.dials)
+      if (s.lifetime.earnedEver >= d.earned) d,
+  ];
+
+  /// The next face to unlock, or null when all are.
+  DialConfig? get nextDial {
+    for (final d in b.dials) {
+      if (s.lifetime.earnedEver < d.earned) return d;
+    }
+    return null;
+  }
+
+  /// The face to draw: the chosen one if unlocked, else the classic.
+  String get dialId {
+    final id = s.dial;
+    if (id.isEmpty) return b.dials.first.id;
+    return unlockedDials.any((d) => d.id == id) ? id : b.dials.first.id;
+  }
 
   double generatorRate(String id) => owned(id) * unitRate(id);
 

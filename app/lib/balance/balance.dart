@@ -456,6 +456,53 @@ class AdsConfig {
   final double goldenCooldown;
 }
 
+/// Mainsprings and clock levels (docs/12 §3.1, R-SPR): a currency that
+/// winds itself in real time and faster with exact hits, spent on levels
+/// that survive the paradox.
+class SpringsConfig {
+  SpringsConfig(Map<String, Object?> j)
+    : secondsPerSpring = _d(j['secondsPerSpring']),
+      hitSeconds = _d(j['hitSeconds']),
+      hitSecondsPerDay = _d(j['hitSecondsPerDay']),
+      maxStock = _i(j['maxStock']),
+      firstGift = _i(j['firstGift']),
+      levelBonus = _d(j['levelBonus']),
+      maxLevel = _i(j['maxLevel']),
+      titleLevels = [for (final v in j['titleLevels']! as List) _i(v)];
+
+  /// Real seconds that wind one Mainspring (R-SPR-2).
+  final double secondsPerSpring;
+
+  /// Seconds one exact hit winds, and at most this many a day (R-SPR-3).
+  final double hitSeconds;
+  final double hitSecondsPerDay;
+
+  /// Ready Mainsprings kept; winding stops while full (R-SPR-4).
+  final int maxStock;
+
+  /// Given with the first paradox, to try a level right away.
+  final int firstGift;
+
+  /// Income per clock level, and the most levels (R-SPR-5).
+  final double levelBonus;
+  final int maxLevel;
+
+  /// Levels that give a master title (an achievement, R-SPR-6).
+  final List<int> titleLevels;
+
+  /// Mainsprings level [level] (1-based) costs: N for level N.
+  int costOf(int level) => level;
+}
+
+/// A stopwatch face unlocked by Tiki earned in total (docs/12 §3.3).
+class DialConfig {
+  DialConfig(Map<String, Object?> j)
+    : id = j['id']! as String,
+      earned = _d(j['earned']);
+  final String id;
+  final double earned;
+}
+
 class UiConfig {
   UiConfig(Map<String, Object?> j)
     : skillRevealFraction = _d(j['skillRevealFraction']),
@@ -487,6 +534,8 @@ class Balance {
       daily = DailyConfig(_m(j['daily'])),
       seasons = SeasonsConfig(_m(j['seasons'])),
       jackpot = JackpotConfig(_m(j['jackpot'])),
+      springs = SpringsConfig(_m(j['springs'])),
+      dials = _ml(j['dials']).map(DialConfig.new).toList(growable: false),
       ui = UiConfig(_m(j['ui']));
 
   /// Parses and validates; throws [BalanceException] listing every problem.
@@ -530,6 +579,8 @@ class Balance {
   final DailyConfig daily;
   final SeasonsConfig seasons;
   final JackpotConfig jackpot;
+  final SpringsConfig springs;
+  final List<DialConfig> dials;
   final UiConfig ui;
 
   TierConfig tier(String id) => tiers.firstWhere((t) => t.id == id);
@@ -701,6 +752,30 @@ class Balance {
     }
     if (seasons.catches < 1 || seasons.hits < 1) {
       e.add('season goals must be ≥ 1');
+    }
+    final sp = springs;
+    if (sp.secondsPerSpring <= 0 || sp.maxStock < 1 || sp.maxLevel < 1) {
+      e.add('springs secondsPerSpring, maxStock and maxLevel must be positive');
+    }
+    if (sp.hitSeconds < 0 || sp.hitSecondsPerDay < 0 || sp.levelBonus < 0) {
+      e.add('springs hitSeconds, hitSecondsPerDay and levelBonus must be ≥ 0');
+    }
+    // Otherwise the dearest levels could never be afforded (idle_sim:
+    // a bot saving for level 8 sat on a full stock of 7 for months).
+    if (sp.maxStock < sp.costOf(sp.maxLevel)) {
+      e.add('springs maxStock must cover the dearest level');
+    }
+    for (final t in sp.titleLevels) {
+      if (t < 1 || t > sp.maxLevel) e.add('springs titleLevels within 1..max');
+    }
+    unique('dial', dials.map((d) => d.id));
+    if (dials.isEmpty || dials.first.earned != 0) {
+      e.add('the first dial must be free (earned 0)');
+    }
+    for (var i = 1; i < dials.length; i++) {
+      if (dials[i].earned <= dials[i - 1].earned) {
+        e.add('dial "${dials[i].id}" must need more than the previous one');
+      }
     }
     if (ads.turboMaxStock < ads.turboDuration) {
       e.add('ads turbo maxStock must be ≥ duration');

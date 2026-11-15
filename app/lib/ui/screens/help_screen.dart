@@ -35,6 +35,8 @@ class _Help extends StatelessWidget {
       ('see_no_evil_monkey', l.help_modes_t, l.help_modes),
       ('wrapped_gift', l.help_season_t, l.help_season),
       ('cyclone', l.help_prestige_t, l.help_prestige),
+      ('gear', l.help_springs_t, l.help_springs),
+      ('sun_with_face', l.help_dials_t, l.help_dials),
       ('red_question_mark', l.help_icons_t, l.help_icons),
     ];
     return ListView(

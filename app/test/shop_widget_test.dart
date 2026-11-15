@@ -184,4 +184,33 @@ void main() {
     expect(inSheet('Dziadkowie na randce'), findsNothing);
     expect(inSheet('Babcia z minutnikiem 3/25'), findsOneWidget);
   });
+
+  testWidgets('Mainsprings: the header badge opens the workshop, a tap '
+      'raises a level (docs/12 R-SPR-5)', (tester) async {
+    final s = GameState()
+      ..tutorialDone = true
+      ..dailyKey =
+          dateKey(DateTime.now()) // no daily-bonus dialog
+      ..prestiges = 1
+      ..springs = 3
+      ..owned['grandpa'] = 5
+      ..everOwned.add('grandpa');
+    final c = await pumpGame(tester, state: s);
+    expect(find.byKey(const Key('springs-count')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('open-springs')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('springs-sheet')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('level-up-grandpa')));
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(c.state.clockLevels['grandpa'], 1);
+    expect(c.state.springs, 2);
+    expect(find.text('Poziom 1/10 · +10%'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 10)); // let the toasts go
+  });
+
+  testWidgets('no Mainspring badge before the first paradox', (tester) async {
+    final s = GameState()..tutorialDone = true;
+    await pumpGame(tester, state: s);
+    expect(find.byKey(const Key('open-springs')), findsNothing);
+  });
 }

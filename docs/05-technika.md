@@ -213,6 +213,8 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | `golden_catch` | – | czy złota sekunda jest łapana |
   | `unlock_achievement` | `achievement_id` | które osiągnięcia są za łatwe lub za trudne |
   | `season_complete` | `season` | wydarzenia sezonowe |
+  | `clock_level` | `id`, `level`, `springs` | Sprężyny (12 §3.1): który zegar gracze podnoszą — różne czy tylko ostatni |
+  | `dial_unlock` | `id` | tarcze (12 §3.3): kiedy padają w porównaniu z `idle_sim.dart` |
   | `mode_toggle` | `mode`, `on` | czy tryby są używane |
   | `app_error` | `where`, `type`, `message`, `frame` | wyjątki Darta, maksymalnie 5 na uruchomienie |
 

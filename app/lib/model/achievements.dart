@@ -27,6 +27,9 @@ enum AchievementCategory {
 
   /// One-off feats with a fixed name, like [mode].
   feat,
+
+  /// A clock's Mainspring level reached a master title (docs/12 R-SPR-6).
+  mastery,
 }
 
 /// What the latest event knows that the saved state does not (docs/02 §8).
@@ -218,6 +221,20 @@ List<AchievementDef> buildAchievements(Balance b) {
     a.shieldSaveThresholds,
     (s) => s.lifetime.shieldSaves,
   );
+  // Master titles: levels bought with Mainsprings (docs/12 R-SPR-6).
+  for (final g in b.generators) {
+    for (final lv in b.springs.titleLevels) {
+      list.add(
+        AchievementDef(
+          'mastery_${g.id}_$lv',
+          AchievementCategory.mastery,
+          (s, _) => (s.clockLevels[g.id] ?? 0) >= lv,
+          threshold: lv.toDouble(),
+          generator: g.id,
+        ),
+      );
+    }
+  }
   AchievementDef feat(String id, bool Function(GameState s) check) =>
       AchievementDef(id, AchievementCategory.feat, (s, _) => check(s));
   list.addAll([

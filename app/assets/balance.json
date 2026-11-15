@@ -585,5 +585,29 @@
     "window": 0.01,
     "productionSeconds": 5,
     "perfectMultiple": 5
-  }
+  },
+  "springs": {
+    "secondsPerSpring": 86400,
+    "hitSeconds": 900,
+    "hitSecondsPerDay": 21600,
+    "maxStock": 10,
+    "firstGift": 1,
+    "levelBonus": 0.1,
+    "maxLevel": 10,
+    "titleLevels": [5, 10]
+  },
+  "dials": [
+    {"id": "classic", "earned": 0},
+    {"id": "wood", "earned": 1e6},
+    {"id": "porcelain", "earned": 1e10},
+    {"id": "brass", "earned": 1e12},
+    {"id": "station", "earned": 1e14},
+    {"id": "swiss", "earned": 1e16},
+    {"id": "quartz", "earned": 1e18},
+    {"id": "atomic", "earned": 1e20},
+    {"id": "neon", "earned": 5e21},
+    {"id": "cosmic", "earned": 6e22},
+    {"id": "golden", "earned": 3e23},
+    {"id": "rift", "earned": 1e24}
+  ]
 }

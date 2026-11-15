@@ -26,11 +26,11 @@ const url = process.env.QA_URL || 'http://localhost:8713/';
 const captions = {
   pl: ['Zatrzymaj stoper dokładnie na 5.00', 'Złap Złotą Sekundę: Szał ×7',
        '14 zegarów: od dziadka po maszynę czasu', 'Umiejętności zmieniają każdą rundę',
-       'Zegary zarabiają, gdy Cię nie ma', '149 osiągnięć do zdobycia',
+       'Zegary zarabiają, gdy Cię nie ma', '177 osiągnięć do zdobycia',
        'Cofnij czas i wróć silniejszy'],
   en: ['Stop the watch at exactly 5.00', 'Catch the Golden Second: Frenzy ×7',
        '14 clocks, from grandpa to a time machine', 'Skills change every round',
-       'Your clocks earn while you’re away', '149 achievements to unlock',
+       'Your clocks earn while you’re away', '177 achievements to unlock',
        'Rewind time, come back stronger'],
 };
 const taglines = { pl: 'Zatrzymasz stoper na 5.00?', en: 'Can you stop it at 5.00?' };

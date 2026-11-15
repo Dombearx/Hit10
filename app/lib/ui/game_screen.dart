@@ -32,6 +32,7 @@ import 'widgets/ad_buttons.dart';
 import 'widgets/effect_chips.dart';
 import 'widgets/mode_row.dart';
 import 'widgets/pause_button.dart';
+import 'widgets/springs.dart';
 import 'widgets/toasts.dart';
 import 'widgets/frenzy_background.dart';
 import 'widgets/alert_dot.dart';
@@ -101,6 +102,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       hotHand: l.goldenHotHand,
       luckyBump: l.luckyBump,
       shieldSaved: l.shieldSaved,
+      springWound: l.springWound,
     );
   }
 
@@ -516,10 +518,20 @@ class _Header extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 6,
                                 ),
-                                child: SeasonBadge(
-                                  controller: controller,
-                                  onTap: () =>
-                                      showSeasonDialog(context, controller),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SeasonBadge(
+                                      controller: controller,
+                                      onTap: () =>
+                                          showSeasonDialog(context, controller),
+                                    ),
+                                    if (controller.season != null &&
+                                        controller.econ.springsUnlocked)
+                                      const SizedBox(width: 6),
+                                    // Mainsprings (docs/12 §3.1).
+                                    SpringBadge(controller: controller),
+                                  ],
                                 ),
                               ),
                             )

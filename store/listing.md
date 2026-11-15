@@ -18,7 +18,8 @@ practice):
   in one sentence each.
 - The first lines of the full description are what Play shows before
   "More": the hook and the genre. Numbers match the game (14 clocks,
-  11 skills, 149 achievements, 18 perks, 7 seasonal events).
+  11 skills, 177 achievements, 18 perks, 12 dial faces, 7 seasonal
+  events).
 - No mention of other games, no prices, no requests for ratings.
 
 ## Polski (pl-PL)
@@ -55,8 +56,13 @@ Gorącą rękę.
 Cofnij czas, zdobądź Chronony na stały bonus i odkryj 18 perków — od
 szybkiego startu po drugi zegar.
 
+🔧 Sprężyny i tarcze
+Po paradoksie Sprężyny nakręcają się codziennie — a każde trafienie
+w równe 5.00 nakręca je szybciej. Podnoś nimi poziomy zegarów na stałe,
+zdobywaj tytuły mistrzów i odblokuj 12 tarcz stopera.
+
 🏆 Na długo
-149 osiągnięć, dzienna premia, tryb Na ślepo i 7 wydarzeń sezonowych
+177 osiągnięć, dzienna premia, tryb Na ślepo i 7 wydarzeń sezonowych
 w ciągu roku.
 
 📴 Bez internetu i bez konta
@@ -96,8 +102,13 @@ payout or a Hot Hand.
 Rewind time, earn Chronons for a permanent bonus and unlock 18 perks —
 from a head start to a second clock.
 
+🔧 Mainsprings and dial faces
+After a paradox, Mainsprings wind every day — and every exact 5.00 winds
+them faster. Use them to level up clocks for good, earn master titles
+and unlock 12 stopwatch faces.
+
 🏆 Plenty to do
-149 achievements, a daily bonus, Blind mode and 7 seasonal events
+177 achievements, a daily bonus, Blind mode and 7 seasonal events
 through the year.
 
 📴 Offline, no account
