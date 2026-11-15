@@ -1229,7 +1229,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_icons =>
-      'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help.';
+      'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).';
 
   @override
   String notificationTitle(String amount) {
@@ -2626,4 +2626,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dialToast => 'New dial face';
+
+  @override
+  String get help_springs_t => 'Mainsprings and clock levels';
+
+  @override
+  String get help_springs =>
+      'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.';
+
+  @override
+  String get help_dials_t => 'Dial faces';
+
+  @override
+  String get help_dials =>
+      'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one in Settings. They only change the look, not your results.';
 }

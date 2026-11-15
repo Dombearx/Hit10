@@ -1228,7 +1228,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_icons =>
-      'Puchar — osiągnięcia (każde daje +1% dochodu). Wykres — statystyki. Zębatka — ustawienia. Wir — paradoks czasowy. Znak zapytania — ta pomoc.';
+      'Puchar — osiągnięcia (każde daje +1% dochodu). Wykres — statystyki. Zębatka — ustawienia. Wir — paradoks czasowy. Znak zapytania — ta pomoc. Złota spirala — Sprężyny (po pierwszym cofnięciu czasu).';
 
   @override
   String notificationTitle(String amount) {
@@ -2627,4 +2627,18 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get dialToast => 'Nowa tarcza zegara';
+
+  @override
+  String get help_springs_t => 'Sprężyny i poziomy zegarów';
+
+  @override
+  String get help_springs =>
+      'Po pierwszym cofnięciu czasu u góry pojawia się spirala — to Sprężyny. Nakręcają się same: jedna na dobę, także gdy nie grasz, a każde trafienie „równo 5.00” dokręca 15 minut (do 6 godzin dziennie). Zbierzesz najwyżej 10. Dotknij spirali i podnieś poziom zegara: poziom 1 kosztuje 1 Sprężynę, poziom 2 — 2 i tak dalej. Każdy poziom to +10% dla tego zegara, na zawsze — poziomy zostają po cofnięciu czasu. Na poziomie 5 i 10 zegar dostaje tytuł mistrza.';
+
+  @override
+  String get help_dials_t => 'Tarcze zegara';
+
+  @override
+  String get help_dials =>
+      'Im więcej Tików zarobisz we wszystkich grach razem, tym więcej tarcz odblokujesz — od drewnianej po kosmiczną. Wybierasz je w Ustawieniach. To tylko wygląd, nie zmienia wyników.';
 }

@@ -2141,7 +2141,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_icons.
   ///
   /// In en, this message translates to:
-  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help.'**
+  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).'**
   String get help_icons;
 
   /// No description provided for @notificationTitle.
@@ -4711,6 +4711,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New dial face'**
   String get dialToast;
+
+  /// No description provided for @help_springs_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings and clock levels'**
+  String get help_springs_t;
+
+  /// No description provided for @help_springs.
+  ///
+  /// In en, this message translates to:
+  /// **'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.'**
+  String get help_springs;
+
+  /// No description provided for @help_dials_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Dial faces'**
+  String get help_dials_t;
+
+  /// No description provided for @help_dials.
+  ///
+  /// In en, this message translates to:
+  /// **'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one in Settings. They only change the look, not your results.'**
+  String get help_dials;
 }
 
 class _AppLocalizationsDelegate
