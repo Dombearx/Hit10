@@ -1967,8 +1967,32 @@ abstract class AppLocalizations {
   /// No description provided for @tutorialInfo.
   ///
   /// In en, this message translates to:
-  /// **'Grandpa earns {rate}/s for you, even offline.'**
+  /// **'Grandpa adds Ticks on his own: +{rate} a second, even while you\'re away.'**
   String tutorialInfo(String rate);
+
+  /// No description provided for @tutorialEarnedReplay.
+  ///
+  /// In en, this message translates to:
+  /// **'These are your Ticks. You spend them on clocks.'**
+  String get tutorialEarnedReplay;
+
+  /// No description provided for @goalBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: {name} {have}/{need} → ×{mult}'**
+  String goalBonus(String name, String have, String need, String mult);
+
+  /// No description provided for @goalNewClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: a new clock — {name}'**
+  String goalNewClock(String name);
+
+  /// No description provided for @goalPrestige.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: turn back time — tap the swirl up top'**
+  String get goalPrestige;
 
   /// No description provided for @tutorialGotIt.
   ///

@@ -1125,8 +1125,24 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String tutorialInfo(String rate) {
-    return 'Dziadek zarabia $rate/s za ciebie, nawet offline.';
+    return 'Dziadek sam dorzuca Tiki: +$rate na sekundę, także gdy nie grasz.';
   }
+
+  @override
+  String get tutorialEarnedReplay => 'To twoje Tiki. Wydajesz je na zegary.';
+
+  @override
+  String goalBonus(String name, String have, String need, String mult) {
+    return 'Cel: $name $have/$need → ×$mult';
+  }
+
+  @override
+  String goalNewClock(String name) {
+    return 'Cel: nowy zegar — $name';
+  }
+
+  @override
+  String get goalPrestige => 'Cel: cofnij czas — dotknij wiru u góry';
 
   @override
   String get tutorialGotIt => 'OK';

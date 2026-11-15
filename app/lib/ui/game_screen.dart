@@ -37,6 +37,7 @@ import 'widgets/toasts.dart';
 import 'widgets/frenzy_background.dart';
 import 'widgets/alert_dot.dart';
 import 'widgets/coach.dart';
+import 'widgets/next_goal.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({super.key});
@@ -361,6 +362,23 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         listenable: _slow,
                         builder: (context, _) =>
                             ModeRow(controller: controller),
+                      ),
+                      ListenableBuilder(
+                        listenable: _slow,
+                        builder: (context, _) => NextGoalBar(
+                          controller: controller,
+                          onTap: (goal) {
+                            if (goal.kind == GoalKind.prestige) {
+                              controller.tipActed('prestige');
+                              showPrestige(context, controller);
+                            } else {
+                              setState(() {
+                                _tab = 0;
+                                _shopCollapsed = false;
+                              });
+                            }
+                          },
+                        ),
                       ),
                       ListenableBuilder(
                         listenable: _slow,

@@ -916,7 +916,7 @@
     }
   },
   "tutorialBuy": "Buy Grandpa — he'll play for you!",
-  "tutorialInfo": "Grandpa earns {rate}/s for you, even offline.",
+  "tutorialInfo": "Grandpa adds Ticks on his own: +{rate} a second, even while you're away.",
   "@tutorialInfo": {
     "placeholders": {
       "rate": {
@@ -924,6 +924,33 @@
       }
     }
   },
+  "tutorialEarnedReplay": "These are your Ticks. You spend them on clocks.",
+  "goalBonus": "Goal: {name} {have}/{need} → ×{mult}",
+  "@goalBonus": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "have": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      },
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "goalNewClock": "Goal: a new clock — {name}",
+  "@goalNewClock": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPrestige": "Goal: turn back time — tap the swirl up top",
   "tutorialGotIt": "OK",
   "tip_skills": "Skills boost your own hits.",
   "tip_modes": "A new mode! Tap to switch it on.",
