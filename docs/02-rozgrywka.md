@@ -312,7 +312,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 - **R-OSIAG-1:** Każde osiągnięcie daje **+1%** do globalnego mnożnika
   (sumowane: 50 osiągnięć to +50%). Ma ikonę-odznakę, nazwę i opis PL/EN.
   Zdobycie pokazuje toast z fanfarą.
-- **R-OSIAG-2:** Lista, ok. 150 sztuk (po playteście 25 dołożone kategorie wzorowane na Cookie Clickerze: dochód na sekundę, łączna liczba budynków i ulepszeń, liczba kliknięć, wyzwanie „Neverclick”, osiągnięcia za osiągnięcia):
+- **R-OSIAG-2:** Lista, ok. 175 sztuk (w tym 28 tytułów mistrzowskich za poziomy zegarów, §15) (po playteście 25 dołożone kategorie wzorowane na Cookie Clickerze: dochód na sekundę, łączna liczba budynków i ulepszeń, liczba kliknięć, wyzwanie „Neverclick”, osiągnięcia za osiągnięcia):
 
 | Kategoria | Progi | Liczba |
 |---|---|---|
@@ -336,6 +336,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Odebrane dzienne premie | 7, 30, 100 | 3 |
 | Seria uratowana Tarczą | 10, 100 | 2 |
 | Wyczyny | „Refleks” (Złota Sekunda złapana do 1 s od pojawienia się), „Złoto do złota” (w trakcie Szału), „Pełny tydzień” (7. dzień premii), „Sen zimowy” (powrót po przerwie dłuższej niż limit offline), „Obie ręce” (PERFEKT na jednym zegarze zaraz po PERFEKCIE na drugim), „Władca czasu” (wszystkie perki), „Bez rąk” (1M Tików w jednym przejściu przy najwyżej 15 trafieniach, wzór: Neverclick z Cookie Clickera) | 7 |
+| Tytuły mistrzowskie (§15) | poziom 5 i 10 każdego zegara, nazwa i żart na każdy | 28 |
 | Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć), „Kopciuszek” (PERFEKT o północy), „Uparty” (1000 pudeł), „Zegar atomowy” (połowa z ostatnich 100 trafień w granicach 15 ms, czyli w oknie PERFEKT; liczy dopiero przy pełnych 100 trafieniach) | 11 |
 
 - **R-OSIAG-2b:** Każde osiągnięcie ma być osiągalne. Sprawdza to
@@ -648,3 +649,39 @@ Daty i cel są w `balance.json` (`seasons`).
   „Klasyczny” albo motyw ukończonego wydarzenia.
 - **R-SEZ-6:** Panel diagnostyczny (T-12) ma podgląd każdego wydarzenia bez
   zmiany daty; postęp innych wydarzeń zostaje zapamiętany.
+
+## 15. Sprężyny, poziomy zegarów i tarcze (późna gra)
+
+Skąd i dlaczego: [12-pozna-gra.md](12-pozna-gra.md). Wzór: kostki cukru
+w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
+
+- **R-SPR-1:** Sprężyny pojawiają się z pierwszym paradoksem; ten paradoks
+  daje od razu 1 Sprężynę na próbę. W nagłówku jest plakietka: spirala
+  z pierścieniem nakręcania i liczba gotowych Sprężyn. Gdy stać gracza na
+  jakiś poziom, plakietka jest złota. Dotknięcie otwiera warsztat (lista
+  kupionych kiedykolwiek zegarów z poziomami).
+- **R-SPR-2:** 1 Sprężyna na 24 h czasu rzeczywistego, także offline.
+  Cofnięty zegar telefonu nic nie nakręca (jak R-OFF-3).
+- **R-SPR-3:** Każde „równo 5.00” (okno jackpotu, |błąd| < 0.010 s)
+  dokręca 15 min, najwyżej 6 h na lokalną dobę. Pod tarczą wyskakuje
+  „Sprężyna +15 min”.
+- **R-SPR-4:** Gotowe Sprężyny odkładają się do 10 (tyle kosztuje
+  najdroższy poziom). Przy pełnym magazynie sprężyna się nie nakręca.
+  Wcześniej było 7: symulacja pokazała, że gracz odkładający na poziom 8
+  stał miesiącami z pełnym magazynem i nie mógł go kupić.
+- **R-SPR-5:** Poziom N zegara kosztuje N Sprężyn, max 10 poziomów
+  (razem 55 na zegar), każdy +10% dochodu tego zegara. Poziomy nie
+  przepadają przy paradoksie. Podnieść można zegar kupiony choć raz
+  w dowolnym przejściu. Sekcja poziomu jest też na pełnej karcie zegara.
+- **R-SPR-6:** Poziomy 5 i 10 każdego zegara to tytuł mistrzowski: nazwa
+  i żart (PL/EN, `tools/l10n/masters.py`), osiągnięcie +1%. Przed
+  zdobyciem widać tylko „Poziom 5: ???”.
+- **R-TARCZA-1:** 12 tarcz zegara (wygląd stopera, rysowany kodem:
+  kolory i dekoracja). Odblokowuje je suma Tików zarobionych we wszystkich
+  przejściach (`lifetime.earnedEver`): 0, 1M, 10B, 1T, 100T, 10aa, 1ab,
+  100ab, 5ac, 60ac, 300ac, 1ad. Nowa tarcza: toast „Nowa tarcza zegara”.
+- **R-TARCZA-2:** Wybór w Ustawieniach (pod motywem): odblokowane tarcze
+  z nazwą, następna zablokowana jako „?” z progiem („Zarób łącznie 1T”),
+  dalsze jako „???”. Pod galerią żart wybranej tarczy. Złota runda zawsze
+  wygląda po swojemu (złota tarcza), a ciemne tarcze mają jasne cyfry
+  i jaśniejsze kolory wyników.

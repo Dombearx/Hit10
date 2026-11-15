@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../../model/achievements.dart';
+import '../../l10n/master_texts.dart';
 import '../../l10n/upgrade_texts.dart';
 import '../achievement_text.dart';
 import '../catalog.dart';
+import '../dial_skins.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
@@ -94,8 +96,15 @@ class _AchievementToastsState extends State<AchievementToasts> {
     final l = AppLocalizations.of(context);
     final c = widget.controller;
     // What the toast shows: art, small header, title, the bonus on the right.
-    final (EmojiArt?, String, String, String) look = switch (t) {
+    final (Object?, String, String, String) look = switch (t) {
       null => (null, '', '', ''),
+      (achievement: null, bonus: final MilestoneEvent m) when m.dial != null =>
+        (
+          dialSkin(m.dial!),
+          l.dialToast,
+          dialTexts(l, m.dial!)?.$1 ?? m.dial!,
+          '',
+        ),
       (achievement: final AchievementDef a, bonus: _) => (
         achievementArt(a),
         _extra > 0 ? l.achievementsUnlocked(_extra + 1) : l.achievementUnlocked,
@@ -147,7 +156,10 @@ class _AchievementToastsState extends State<AchievementToasts> {
                 ),
                 child: Row(
                   children: [
-                    EmojiCard(art: a, size: 44, circle: true),
+                    if (a is DialSkin)
+                      DialPreview(skin: a, size: 44)
+                    else
+                      EmojiCard(art: a as EmojiArt, size: 44, circle: true),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(

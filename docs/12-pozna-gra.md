@@ -1,8 +1,12 @@
 # 12 — Późna gra: cele na miesiące
 
 Propozycja z 14.11.2026. Rozwija punkt 3.1 z [11-po-premierze.md](11-po-premierze.md)
-(„gra kończy się za wcześnie”). **Jeszcze nie jest zaplanowana.** Po
-akceptacji zasady trafiają do 02, liczby do pliku balansu, a zadania do 07.
+(„gra kończy się za wcześnie”).
+
+**Stan (15.11.2026):** etap 1 (Sprężyny, §3.1) i Kolekcja tarcz (§3.3)
+są zrobione. Zasady w 02 §15, wyniki symulacji w 03 §4.3. Zmiany po
+symulacji: magazyn 10 zamiast 7 (R-SPR-4) i progi tarcz. Etap 2
+(wyzwania) czeka.
 
 ## 1. Problem w liczbach
 
@@ -76,7 +80,8 @@ Odpowiednik kostek cukru, ale ładowany także celnością.
   16% rund to „równo 5.00”, więc 3-minutowa sesja daje 1.5–2 h, a cały
   limit jest w zasięgu przy kilku sesjach. To też część punktu 3.3 z 11:
   daje powód, żeby w krótkiej sesji przez chwilę celować.
-- **R-SPR-4:** Gotowe Sprężyny się odkładają, do **7 sztuk** (tydzień).
+- **R-SPR-4:** Gotowe Sprężyny się odkładają, do **10 sztuk** (zrobione;
+  pierwotnie 7, ale wtedy poziomy 8–10 byłyby nie do kupienia).
   Kto wraca raz w tygodniu, nic nie traci. Kto nie gra dłużej, traci
   tylko nadwyżkę, nigdy postęp. Limit można potem podnieść perkiem
   albo nagrodą z wyzwania (3.2).
@@ -163,7 +168,20 @@ ekranie paradoksu, plakietka z postępem w nagłówku, zapis, symulacja
 każdego wyzwania w `simulate.dart` (cele stopni muszą być osiągalne, jak
 R-OSIAG-2b).
 
-### 3.3 Czego teraz nie robimy
+### 3.3 Kolekcja tarcz (dodana po dyskusji)
+
+Problem: po ok. 42. dniu nie ma już tajemnic (wszystkie zegary i bonusy
+znane), a sam większy licznik przestaje motywować. Wzory: nowe jajka
+z nowym wyglądem w Egg, Inc., zmieniający się pasek wiadomości
+w Cookie Clickerze. Zasada: każdy duży próg zarobków coś pokazuje.
+
+Rozwiązanie: 12 tarcz stopera (wygląd zegara, środek ekranu), odblokowanych
+łącznymi zarobkami, czysto kosmetycznych. Następna widoczna jako „?”
+z progiem, dalsze jako „???”. Progi tak, żeby odstępy rosły: pierwsze
+tarcze w pierwszych dniach, ostatnia po ok. 9 miesiącach (03 §4.3).
+Zasady: 02 R-TARCZA-1/2.
+
+### 3.4 Czego teraz nie robimy
 
 - **Druga warstwa prestiżu** (np. „Pętla czasu”, reset Chrononów i perków).
   Najmocniejsze narzędzie, ale najdroższe, a wyzwania z R-WYZ-3 i tak

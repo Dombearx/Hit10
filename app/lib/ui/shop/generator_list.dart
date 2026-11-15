@@ -15,6 +15,7 @@ import '../theme.dart';
 import '../widgets/ad_offer_sheet.dart';
 import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
+import '../widgets/springs.dart';
 import '../widgets/coach.dart';
 
 enum BuyAmount { one, ten, hundred, max }
@@ -504,6 +505,11 @@ Future<void> showGeneratorInfo(
                   ),
                 ),
               const SizedBox(height: 12),
+              // Mainspring level (docs/12 R-SPR-5).
+              if (clockLevelCard(context, c, id) case final lv?) ...[
+                lv,
+                const SizedBox(height: 12),
+              ],
               // Every bonus with its name and joke (R-ULEP-2), not only
               // the toast when it is reached (playtest 25).
               Flexible(

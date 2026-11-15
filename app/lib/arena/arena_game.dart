@@ -14,6 +14,7 @@ import '../model/grading.dart';
 import '../model/number_format.dart';
 import '../model/showcase.dart';
 import '../ui/game_controller.dart';
+import '../ui/dial_skins.dart';
 import '../ui/seasons_ui.dart';
 import '../ui/theme.dart';
 import '../ui/catalog.dart';
@@ -42,6 +43,7 @@ class ArenaLabels {
     required this.hotHand,
     required this.luckyBump,
     required this.shieldSaved,
+    this.springWound,
   });
   final String perfect;
   final String great;
@@ -61,6 +63,9 @@ class ArenaLabels {
   final String hotHand;
   final String luckyBump;
   final String shieldSaved;
+
+  /// "Mainspring +15 min" after an exact hit (docs/12 R-SPR-3).
+  final String Function(String minutes)? springWound;
 }
 
 /// The stopwatch arena (docs/04 §1, §3). Pure drawing: all game decisions
@@ -499,6 +504,17 @@ class Stage extends Component {
         ),
       );
     }
+    final wound = l.springWound;
+    if (f.springSeconds > 0 && wound != null) {
+      add(
+        PopText(
+          text: wound('${(f.springSeconds / 60).round()}'),
+          style: label(const Color(0xFFFFE9A8), r * 0.13),
+          at: Vector2(c.x, c.y + r * 0.42),
+          life: 1.3,
+        ),
+      );
+    }
     final golden = o.golden;
     if (golden != null) {
       final gs = label(Palette.perfect, r * 0.2);
@@ -599,7 +615,6 @@ class Dial extends Component {
   double _time = 0; // for idle pulsing
   double _zone = 0; // bullet-time overlay strength 0..1
 
-  final _fill = Paint()..color = Palette.dial;
   final _outline = Paint()
     ..color = Palette.outline
     ..style = PaintingStyle.stroke;
@@ -734,6 +749,8 @@ class Dial extends Component {
         engine.econ.level('bulletTime') > 0 &&
         map.inFocusZone(t);
     final golden = engine.goldenRound;
+    // The chosen face (docs/12 §3.3); a golden round keeps its own look.
+    final skin = golden ? dialSkins['classic']! : dialSkin(ctrl.econ.dialId);
 
     // Zimna krew: the arena cools and darkens at the edges (docs/04 §3).
     _zone = inZone ? math.min(1, _zone + 0.12) : math.max(0, _zone - 0.08);
@@ -773,14 +790,24 @@ class Dial extends Component {
     }
 
     canvas.drawCircle(c.translate(0, r * 0.07), r, _shadow);
-    _fill.color = golden
-        ? const Color(0xFFFFF4C2)
-        : Color.lerp(Palette.dial, const Color(0xFFDDE6FF), _zone)!;
-    canvas.drawCircle(c, r, _fill);
+    paintDialFace(
+      canvas,
+      c,
+      r,
+      skin,
+      fill: golden
+          ? const Color(0xFFFFF4C2)
+          : _zone > 0
+          ? skin.zoneTint(_zone)
+          : null,
+      time: _time,
+    );
 
     // Progress arc: blue, turning gold in the last second.
     final innerR = r - ring * 1.2;
-    _track.strokeWidth = ring;
+    _track
+      ..strokeWidth = ring
+      ..color = skin.track;
     canvas.drawCircle(c, innerR, _track);
     final frac = (t / target).clamp(0.0, 1.03);
     // Blind mode: the ring goes with the digits (playtest 22).
@@ -799,7 +826,9 @@ class Dial extends Component {
     }
 
     // Ten ticks, one per second.
-    _tick.strokeWidth = r * 0.02;
+    _tick
+      ..strokeWidth = r * 0.02
+      ..color = skin.tick;
     for (var i = 0; i < 10; i++) {
       final a = -math.pi / 2 + i * math.pi / 5;
       final dir = Offset(math.cos(a), math.sin(a));
@@ -812,7 +841,7 @@ class Dial extends Component {
 
     _outline
       ..strokeWidth = r * 0.045
-      ..color = golden ? Palette.perfectDeep : Palette.outline;
+      ..color = golden ? Palette.perfectDeep : skin.rim;
     canvas.drawCircle(c, r, _outline);
 
     if (_flash > 0) {
@@ -834,13 +863,13 @@ class Dial extends Component {
         ? ctrl.balance.round.target
         : t;
     final digitColor = !inResult
-        ? Palette.outline
-        : switch (grade.tier) {
-            Tier.perfect => Palette.perfectDeep,
-            Tier.great => Palette.great,
-            Tier.good => Palette.good,
-            Tier.miss => Palette.miss,
-          };
+        ? skin.digits
+        : skin.result(switch (grade.tier) {
+            Tier.perfect => 0,
+            Tier.great => 1,
+            Tier.good => 2,
+            Tier.miss => 3,
+          });
     // Zimna krew makes the digits throb near the target.
     final digitSize = r * 0.44;
     final throb = _zone > 0 ? 1 + 0.05 * _zone * math.sin(_time * 14) : 1.0;
@@ -860,7 +889,7 @@ class Dial extends Component {
       final p = 0.5 + 0.5 * math.sin(_time * 6);
       _outline.color = Palette.perfect.withValues(alpha: 0.6 + 0.4 * p);
       canvas.drawCircle(c, r * 1.04, _outline);
-      _outline.color = Palette.outline;
+      _outline.color = skin.rim;
     }
 
     String? line;
@@ -888,7 +917,7 @@ class Dial extends Component {
               fontFamily: Fonts.body,
               fontSize: size,
               fontWeight: FontWeight.w600,
-              color: Palette.outline.withValues(alpha: 0.75 * alpha),
+              color: skin.digits.withValues(alpha: 0.75 * alpha),
             ),
           ),
           textDirection: TextDirection.ltr,

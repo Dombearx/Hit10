@@ -2287,4 +2287,343 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get skill_goldenTouch_info =>
       'A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.';
+
+  @override
+  String get master_grandpa_5 => 'Retired Watchmaker';
+
+  @override
+  String get master_grandpa_5_desc =>
+      'Fixes the neighbours\' watches. Free, with a lecture.';
+
+  @override
+  String get master_grandpa_10 => 'Grandpa Knows Best';
+
+  @override
+  String get master_grandpa_10_desc => 'And he\'s right. Sadly.';
+
+  @override
+  String get master_grandma_5 => 'The Perfect Egg';
+
+  @override
+  String get master_grandma_5_desc => 'Not a second too long. Not one.';
+
+  @override
+  String get master_grandma_10 => 'Turbo Grandma';
+
+  @override
+  String get master_grandma_10_desc => 'The egg timer is scared of her.';
+
+  @override
+  String get master_cuckoo_5 => 'Cuckoo with a Degree';
+
+  @override
+  String get master_cuckoo_5_desc =>
+      'Cuckoos on time. Insists on being called Doctor.';
+
+  @override
+  String get master_cuckoo_10 => 'Celebrity Cuckoo';
+
+  @override
+  String get master_cuckoo_10_desc =>
+      'Leaves the little house only for interviews.';
+
+  @override
+  String get master_metronome_5 => 'Tick Virtuoso';
+
+  @override
+  String get master_metronome_5_desc => 'Tick. Tock. Applause.';
+
+  @override
+  String get master_metronome_10 => 'Philharmonic Metronome';
+
+  @override
+  String get master_metronome_10_desc => 'Conducts the conductor.';
+
+  @override
+  String get master_watchmaker_5 => 'Golden Loupe';
+
+  @override
+  String get master_watchmaker_5_desc => 'Sees atoms. And the dust on them.';
+
+  @override
+  String get master_watchmaker_10 => 'Guild Master';
+
+  @override
+  String get master_watchmaker_10_desc =>
+      'Even sundials come to him for advice.';
+
+  @override
+  String get master_sprintJudge_5 => 'Eagle-eyed Judge';
+
+  @override
+  String get master_sprintJudge_5_desc =>
+      'Spots a false start before the runner thinks of it.';
+
+  @override
+  String get master_sprintJudge_10 => 'Olympic Judge';
+
+  @override
+  String get master_sprintJudge_10_desc =>
+      'Gold-plated whistle. Patience not included.';
+
+  @override
+  String get master_stationClock_5 => 'Train on Time';
+
+  @override
+  String get master_stationClock_5_desc =>
+      'Passengers don\'t believe it. They take photos.';
+
+  @override
+  String get master_stationClock_10 => 'Zero-delay Station';
+
+  @override
+  String get master_stationClock_10_desc =>
+      '\"Subject to change\" is now in a museum.';
+
+  @override
+  String get master_quartz_5 => 'Flawless Crystal';
+
+  @override
+  String get master_quartz_5_desc =>
+      'Vibrates exactly 32,768 times. We checked.';
+
+  @override
+  String get master_quartz_10 => 'Royal Quartz';
+
+  @override
+  String get master_quartz_10_desc => 'Worn at court instead of a crown.';
+
+  @override
+  String get master_atomic_5 => 'Atom of Calm';
+
+  @override
+  String get master_atomic_5_desc => 'Electrons tiptoe around it.';
+
+  @override
+  String get master_atomic_10 => 'The Standard Second';
+
+  @override
+  String get master_atomic_10_desc => 'A second lasts as long as it says.';
+
+  @override
+  String get master_gps_5 => 'Never-lost Satellite';
+
+  @override
+  String get master_gps_5_desc => 'Never says \"make a U-turn when possible\".';
+
+  @override
+  String get master_gps_10 => 'Lord of the Orbit';
+
+  @override
+  String get master_gps_10_desc => 'Other satellites set themselves by it.';
+
+  @override
+  String get master_pulsar_5 => 'Pulsar with Rhythm';
+
+  @override
+  String get master_pulsar_5_desc => 'The universe taps its foot along.';
+
+  @override
+  String get master_pulsar_10 => 'Lighthouse of the Galaxy';
+
+  @override
+  String get master_pulsar_10_desc => 'Alien ships set their watches by it.';
+
+  @override
+  String get master_timeMachine_5 => 'Return Ticket';
+
+  @override
+  String get master_timeMachine_5_desc => 'Back before it leaves. Never late.';
+
+  @override
+  String get master_timeMachine_10 => 'Perfect Loop';
+
+  @override
+  String get master_timeMachine_10_desc => 'Met itself. Both hit 5.00.';
+
+  @override
+  String get master_schrodinger_5 => 'Observed Cat';
+
+  @override
+  String get master_schrodinger_5_desc =>
+      'Hits when you look. When you don\'t, too.';
+
+  @override
+  String get master_schrodinger_10 => 'Cat in Both Boxes';
+
+  @override
+  String get master_schrodinger_10_desc =>
+      'Asleep and on target at once. Purrs in superposition.';
+
+  @override
+  String get master_chronos_5 => 'Chronos on Holiday';
+
+  @override
+  String get master_chronos_5_desc =>
+      'Time flows on its own, and still on the dot.';
+
+  @override
+  String get master_chronos_10 => 'Lord of All Seconds';
+
+  @override
+  String get master_chronos_10_desc =>
+      'Even the second that just passed was his.';
+
+  @override
+  String get dial_classic => 'Classic';
+
+  @override
+  String get dial_classic_desc => 'White, clean, reliable.';
+
+  @override
+  String get dial_wood => 'Woodgrain';
+
+  @override
+  String get dial_wood_desc => 'Smells like Grandpa\'s workshop.';
+
+  @override
+  String get dial_porcelain => 'Grandma\'s Porcelain';
+
+  @override
+  String get dial_porcelain_desc => 'From the good china. Don\'t drop it.';
+
+  @override
+  String get dial_brass => 'Brass';
+
+  @override
+  String get dial_brass_desc => 'Shines like a town hall door handle.';
+
+  @override
+  String get dial_station => 'Station';
+
+  @override
+  String get dial_station_desc =>
+      'Big, so you can see the delay from far away.';
+
+  @override
+  String get dial_swiss => 'Swiss';
+
+  @override
+  String get dial_swiss_desc => 'Red, precise and a little smug.';
+
+  @override
+  String get dial_quartz => 'Quartz LCD';
+
+  @override
+  String get dial_quartz_desc => 'Green digits, like an 80s alarm clock.';
+
+  @override
+  String get dial_atomic => 'Atomic';
+
+  @override
+  String get dial_atomic_desc =>
+      'Glows faintly blue. Apparently that\'s normal.';
+
+  @override
+  String get dial_neon => 'Neon';
+
+  @override
+  String get dial_neon_desc => 'For playing after midnight.';
+
+  @override
+  String get dial_cosmic => 'Cosmic';
+
+  @override
+  String get dial_cosmic_desc => 'Stars behind, seconds in front.';
+
+  @override
+  String get dial_golden => 'Golden';
+
+  @override
+  String get dial_golden_desc => 'Solid gold. Well, almost.';
+
+  @override
+  String get dial_rift => 'Spacetime Rift';
+
+  @override
+  String get dial_rift_desc =>
+      'Through the crack you can see yesterday\'s 5.00.';
+
+  @override
+  String springWound(String minutes) {
+    return 'Mainspring +$minutes min';
+  }
+
+  @override
+  String get springsTitle => 'Mainsprings';
+
+  @override
+  String springsBadge(String count) {
+    return 'Mainsprings: $count';
+  }
+
+  @override
+  String springsIntro(String pct) {
+    return 'A Mainspring winds itself: one a day, even while you\'re away. Every exact 5.00 winds it faster. Spend Mainsprings on clock levels: +$pct% to that clock\'s income per level, for good — levels survive the paradox.';
+  }
+
+  @override
+  String springsNext(String time) {
+    return 'Next one in $time';
+  }
+
+  @override
+  String springsFull(String max) {
+    return 'Storage full ($max). Spend some to keep winding.';
+  }
+
+  @override
+  String springsHitsLeft(String time) {
+    return 'Exact 5.00 hits can wind $time more today.';
+  }
+
+  @override
+  String get springsHitsDone => 'Today\'s winding by hits is used up.';
+
+  @override
+  String get springsNoClocks => 'Buy a clock to raise its level.';
+
+  @override
+  String get clockLevelTitle => 'Clock level';
+
+  @override
+  String clockLevelLine(String level, String max, String pct) {
+    return 'Level $level/$max · +$pct%';
+  }
+
+  @override
+  String clockLevelUp(String cost) {
+    return 'Level up · $cost';
+  }
+
+  @override
+  String get clockLevelMax => 'Max level';
+
+  @override
+  String clockLevelTitleAt(String level, String title) {
+    return 'Level $level: $title';
+  }
+
+  @override
+  String get clockLevelLocked => 'Mainsprings arrive with the first paradox.';
+
+  @override
+  String ach_mastery_desc(String generator, String level) {
+    return '$generator at level $level';
+  }
+
+  @override
+  String get dialTitle => 'Dial face';
+
+  @override
+  String get dialHint =>
+      'New faces unlock as you earn Tiki across all your runs.';
+
+  @override
+  String dialLocked(String amount) {
+    return 'Earn $amount in total';
+  }
+
+  @override
+  String get dialToast => 'New dial face';
 }

@@ -1493,5 +1493,194 @@
   "skill_bulletTime_info": "The PERFECT, GREAT, GOOD and CLOSE windows grow up to ×2.5 at the top level (e.g. GOOD: ±50 → ±125 ms). The 5.00 window stays. Near the target the screen pulses and you hear a heartbeat. Doesn't work on clocks.",
   "skill_luck_info": "At each level 2 hits in 100 jump a tier: GREAT → PERFECT, GOOD → GREAT. A PERFECT never becomes a 5.00.",
   "skill_shield_info": "Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps.",
-  "skill_goldenTouch_info": "A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger."
+  "skill_goldenTouch_info": "A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.",
+  "master_grandpa_5": "Retired Watchmaker",
+  "master_grandpa_5_desc": "Fixes the neighbours' watches. Free, with a lecture.",
+  "master_grandpa_10": "Grandpa Knows Best",
+  "master_grandpa_10_desc": "And he's right. Sadly.",
+  "master_grandma_5": "The Perfect Egg",
+  "master_grandma_5_desc": "Not a second too long. Not one.",
+  "master_grandma_10": "Turbo Grandma",
+  "master_grandma_10_desc": "The egg timer is scared of her.",
+  "master_cuckoo_5": "Cuckoo with a Degree",
+  "master_cuckoo_5_desc": "Cuckoos on time. Insists on being called Doctor.",
+  "master_cuckoo_10": "Celebrity Cuckoo",
+  "master_cuckoo_10_desc": "Leaves the little house only for interviews.",
+  "master_metronome_5": "Tick Virtuoso",
+  "master_metronome_5_desc": "Tick. Tock. Applause.",
+  "master_metronome_10": "Philharmonic Metronome",
+  "master_metronome_10_desc": "Conducts the conductor.",
+  "master_watchmaker_5": "Golden Loupe",
+  "master_watchmaker_5_desc": "Sees atoms. And the dust on them.",
+  "master_watchmaker_10": "Guild Master",
+  "master_watchmaker_10_desc": "Even sundials come to him for advice.",
+  "master_sprintJudge_5": "Eagle-eyed Judge",
+  "master_sprintJudge_5_desc": "Spots a false start before the runner thinks of it.",
+  "master_sprintJudge_10": "Olympic Judge",
+  "master_sprintJudge_10_desc": "Gold-plated whistle. Patience not included.",
+  "master_stationClock_5": "Train on Time",
+  "master_stationClock_5_desc": "Passengers don't believe it. They take photos.",
+  "master_stationClock_10": "Zero-delay Station",
+  "master_stationClock_10_desc": "\"Subject to change\" is now in a museum.",
+  "master_quartz_5": "Flawless Crystal",
+  "master_quartz_5_desc": "Vibrates exactly 32,768 times. We checked.",
+  "master_quartz_10": "Royal Quartz",
+  "master_quartz_10_desc": "Worn at court instead of a crown.",
+  "master_atomic_5": "Atom of Calm",
+  "master_atomic_5_desc": "Electrons tiptoe around it.",
+  "master_atomic_10": "The Standard Second",
+  "master_atomic_10_desc": "A second lasts as long as it says.",
+  "master_gps_5": "Never-lost Satellite",
+  "master_gps_5_desc": "Never says \"make a U-turn when possible\".",
+  "master_gps_10": "Lord of the Orbit",
+  "master_gps_10_desc": "Other satellites set themselves by it.",
+  "master_pulsar_5": "Pulsar with Rhythm",
+  "master_pulsar_5_desc": "The universe taps its foot along.",
+  "master_pulsar_10": "Lighthouse of the Galaxy",
+  "master_pulsar_10_desc": "Alien ships set their watches by it.",
+  "master_timeMachine_5": "Return Ticket",
+  "master_timeMachine_5_desc": "Back before it leaves. Never late.",
+  "master_timeMachine_10": "Perfect Loop",
+  "master_timeMachine_10_desc": "Met itself. Both hit 5.00.",
+  "master_schrodinger_5": "Observed Cat",
+  "master_schrodinger_5_desc": "Hits when you look. When you don't, too.",
+  "master_schrodinger_10": "Cat in Both Boxes",
+  "master_schrodinger_10_desc": "Asleep and on target at once. Purrs in superposition.",
+  "master_chronos_5": "Chronos on Holiday",
+  "master_chronos_5_desc": "Time flows on its own, and still on the dot.",
+  "master_chronos_10": "Lord of All Seconds",
+  "master_chronos_10_desc": "Even the second that just passed was his.",
+  "dial_classic": "Classic",
+  "dial_classic_desc": "White, clean, reliable.",
+  "dial_wood": "Woodgrain",
+  "dial_wood_desc": "Smells like Grandpa's workshop.",
+  "dial_porcelain": "Grandma's Porcelain",
+  "dial_porcelain_desc": "From the good china. Don't drop it.",
+  "dial_brass": "Brass",
+  "dial_brass_desc": "Shines like a town hall door handle.",
+  "dial_station": "Station",
+  "dial_station_desc": "Big, so you can see the delay from far away.",
+  "dial_swiss": "Swiss",
+  "dial_swiss_desc": "Red, precise and a little smug.",
+  "dial_quartz": "Quartz LCD",
+  "dial_quartz_desc": "Green digits, like an 80s alarm clock.",
+  "dial_atomic": "Atomic",
+  "dial_atomic_desc": "Glows faintly blue. Apparently that's normal.",
+  "dial_neon": "Neon",
+  "dial_neon_desc": "For playing after midnight.",
+  "dial_cosmic": "Cosmic",
+  "dial_cosmic_desc": "Stars behind, seconds in front.",
+  "dial_golden": "Golden",
+  "dial_golden_desc": "Solid gold. Well, almost.",
+  "dial_rift": "Spacetime Rift",
+  "dial_rift_desc": "Through the crack you can see yesterday's 5.00.",
+  "springWound": "Mainspring +{minutes} min",
+  "@springWound": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "springsTitle": "Mainsprings",
+  "springsBadge": "Mainsprings: {count}",
+  "@springsBadge": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "springsIntro": "A Mainspring winds itself: one a day, even while you're away. Every exact 5.00 winds it faster. Spend Mainsprings on clock levels: +{pct}% to that clock's income per level, for good — levels survive the paradox.",
+  "springsNext": "Next one in {time}",
+  "@springsNext": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "springsFull": "Storage full ({max}). Spend some to keep winding.",
+  "@springsFull": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "springsHitsLeft": "Exact 5.00 hits can wind {time} more today.",
+  "@springsHitsLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "springsHitsDone": "Today's winding by hits is used up.",
+  "springsNoClocks": "Buy a clock to raise its level.",
+  "clockLevelTitle": "Clock level",
+  "clockLevelLine": "Level {level}/{max} · +{pct}%",
+  "@clockLevelLine": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "clockLevelUp": "Level up · {cost}",
+  "@clockLevelUp": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "clockLevelMax": "Max level",
+  "clockLevelTitleAt": "Level {level}: {title}",
+  "@clockLevelTitleAt": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "clockLevelLocked": "Mainsprings arrive with the first paradox.",
+  "ach_mastery_desc": "{generator} at level {level}",
+  "@ach_mastery_desc": {
+    "placeholders": {
+      "generator": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "dialTitle": "Dial face",
+  "dialHint": "New faces unlock as you earn Tiki across all your runs.",
+  "dialLocked": "Earn {amount} in total",
+  "@dialLocked": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dialToast": "New dial face",
+  "@springsIntro": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  }
 }

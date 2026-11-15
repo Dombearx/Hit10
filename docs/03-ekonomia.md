@@ -10,6 +10,7 @@ przedmiotów i ich liczby są w [02-rozgrywka.md](02-rozgrywka.md).
 | **Tiki** | Tiki / Ticks | trafienia, generatory, Fart, offline | umiejętności, generatory (bonusy za liczbę sztuk i synergie są darmowe) |
 | **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +2% na zawsze każdy |
 | **Okruchy czasu** | Okruchy / Shards | prestiż (tyle, ile nowych Chrononów) | perki |
+| **Sprężyny** | Sprężyny / Mainsprings | czas rzeczywisty (1 na dobę) i „równo 5.00” (02 §15) | poziomy zegarów; nie przepadają przy paradoksie |
 
 Wszystkie kwoty to liczby zmiennoprzecinkowe (`double`), co wystarcza do ok.
 1e308. **E-1:** Ceny i stan konta nigdy nie są zaokrąglane w logice, tylko
@@ -42,7 +43,8 @@ EV(σ) = 10·pP' + 3·pS' + 1·pD'       # wartość oczekiwana jednej próby
 ```
 zysk_okien_i = EV(σ_i, okna obecne) / EV(σ_i, okna bazowe, bez Szczęścia)   # 1 dla σ = 0
 synergia_i   = Π (1 + procent · liczba_partnera)  po aktywnych synergiach z i (obie strony ≥ 25 szt.)
-dochód_i     = n_i · Tiki_bazowo_i · m_i^(progi_i) · synergia_i · zysk_okien_i
+dochód_i     = n_i · Tiki_bazowo_i · m_i^(progi_i) · synergia_i · zysk_okien_i · (1 + 0.1 · poziom_i)
+poziom_i     = poziom zegara za Sprężyny, 0–10 (02 R-SPR-5)
 progi_i      = ile z 8 progów zegara i osiągnięto (n_i ≥ próg), m_i = 2 / 1.7 / 1.4 (02 R-ULEP-1)
 ```
 
@@ -223,6 +225,33 @@ podwaja Chronony, perki kupowane od razu. σ = 50 ms, bez reklam.
 - Brakujące osiągnięcia wymagają gry, nie czekania (100 h gry to przy
   9 min dziennie ponad 600 dni, 100K rund, tryb na ślepo, wydarzenia
   sezonowe, godziny zegarowe).
+
+### 4.3 Sprężyny i tarcze (docs/12)
+
+`idle_sim.dart` liczy też Sprężyny: nakręcanie czasem rzeczywistym,
+„równo 5.00” jako liczba rund × P(|błąd| < 0.010 s), bot wydaje je na
+poziom z najlepszym zyskiem na Sprężynę (odkłada na niego).
+`--no-springs` to porównanie bez poziomów. Gracz jak w §4.2 (3 × 3 min,
+σ = 50 ms), rok gry:
+
+| Dzień | Dochód/s z poziomami | bez poziomów | Poziomy (z 140) | Tytuły (z 28) | Tarcze (z 12) |
+|---|---|---|---|---|---|
+| 30 | 29.5T | 2.53T | 23 | 0 | 7 |
+| 90 | 30.6aa | 9.35aa | 35 | 3 | 9 |
+| 180 | 72.4aa | 21.0aa | 51 | 7 | 11 |
+| 365 | 85.7aa | 41.7aa | 88 | 16 | 12 |
+
+- ok. 1.24 Sprężyny dziennie (452 w rok), z czego ok. 6 h dziennie
+  z trafień: przy 3 krótkich sesjach limit z R-SPR-3 jest prawie zawsze
+  wybrany. Przy limicie 10 przepada 25 h w rok.
+- Wszystkie poziomy to ok. 1.6 roku, tytuły co 2–5 tygodni przez cały rok.
+- Pod koniec roku dochód ok. 2× większy niż bez poziomów. W połowie gry
+  różnica bywa większa (dzień 30: 1926 zamiast 1114 Chrononów), bo
+  wcześniejsze paradoksy się składają. Pierwsze przejście (B-1…B-10) się
+  nie zmienia: Sprężyny są dopiero po paradoksie.
+- Tarcze: dni 1, 1, 2, 7, 14, 22, 30, 36, 50, 86, 157, 259.
+- Gracz przypadkowy (1 sesja × 2 min, σ = 80 ms, 180 dni): 178 Sprężyn
+  (5 z trafień), 6 tytułów, 10 tarcz, 29 h przepadło.
 
 ## 5. Reklamy a balans
 

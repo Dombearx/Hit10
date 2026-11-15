@@ -73,6 +73,13 @@ void main() {
   testWidgets('reset needs the typed word', (tester) async {
     final (c, store, restarts) = await pumpGame(tester, tall: true);
     Future<void> attempt(String word) async {
+      // Below the dial faces (docs/12 §3.3): scroll to it.
+      await tester.dragUntilVisible(
+        find.byKey(const Key('set-reset')),
+        find.byKey(const Key('set-theme')),
+        const Offset(0, -200),
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('set-reset')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('dialog-ok')));

@@ -455,6 +455,7 @@ class GameEngine {
     if (count <= 0 || !econ.generatorUnlocked(id)) return BuyResult.unavailable;
     if (!s.spend(econ.bulkCost(id, count))) return BuyResult.tooExpensive;
     s.owned[id] = econ.owned(id) + count;
+    s.everOwned.add(id);
     return BuyResult.ok;
   }
 
@@ -566,6 +567,11 @@ class GameEngine {
     s.chronons += gain;
     s.shards += gain;
     s.prestiges++;
+    // The first paradox brings the Mainsprings, one ready to try (R-SPR-1).
+    if (s.prestiges == 1) {
+      s.springs += b.springs.firstGift;
+      s.springClockMs = 0;
+    }
     s.rewindPending = true;
     return gain;
   }
@@ -593,6 +599,7 @@ class GameEngine {
     if (s.perks.contains('headStart')) {
       final p = b.perk('headStart').params;
       s.owned['grandpa'] = p['grandpas']!.round();
+      s.everOwned.add('grandpa');
       s.tiki = p['tiki']!;
       s.peakTiki = s.tiki;
     }
@@ -620,6 +627,79 @@ class GameEngine {
     if (s.shards < cost) return BuyResult.tooExpensive;
     s.shards -= cost;
     s.perks.add(id);
+    return BuyResult.ok;
+  }
+
+  // ---------------------------------------- mainsprings (docs/12 §3.1) --
+
+  /// Brings the winding up to [nowMs] (R-SPR-2), offline time included.
+  /// A clock set back winds nothing (like R-OFF-3). Returns the
+  /// Mainsprings that became ready.
+  int windSprings(int nowMs) {
+    if (!econ.springsUnlocked) return 0;
+    final last = s.springClockMs;
+    s.springClockMs = nowMs;
+    if (last <= 0 || nowMs <= last) return 0;
+    return _windSeconds((nowMs - last) / 1000);
+  }
+
+  /// An exact hit (the dial read 5.00) winds [SpringsConfig.hitSeconds],
+  /// at most [SpringsConfig.hitSecondsPerDay] a local day (R-SPR-3).
+  /// Returns the seconds wound (0 when the day's share is used up).
+  double springHit(DateTime local) {
+    if (!econ.springsUnlocked) return 0;
+    final c = b.springs;
+    final key = dateKey(local);
+    if (s.springHitDay != key) {
+      s
+        ..springHitDay = key
+        ..springHitSeconds = 0;
+    }
+    final add = math.min(c.hitSeconds, c.hitSecondsPerDay - s.springHitSeconds);
+    if (add <= 0) return 0;
+    s.springHitSeconds += add;
+    _windSeconds(add);
+    return add;
+  }
+
+  /// Seconds exact hits may still wind on local day [local].
+  double springHitLeft(DateTime local) {
+    final c = b.springs;
+    if (s.springHitDay != dateKey(local)) return c.hitSecondsPerDay;
+    return math.max(0, c.hitSecondsPerDay - s.springHitSeconds);
+  }
+
+  int _windSeconds(double secs) {
+    final c = b.springs;
+    var ready = 0;
+    s.springProgress += secs;
+    while (s.springProgress >= c.secondsPerSpring && s.springs < c.maxStock) {
+      s.springProgress -= c.secondsPerSpring;
+      s.springs++;
+      s.lifetime.springsWound++;
+      ready++;
+    }
+    // Full: the spring stops winding until one is spent (R-SPR-4).
+    if (s.springs >= c.maxStock) {
+      s.lifetime.springSecondsLost += s.springProgress;
+      s.springProgress = 0;
+    }
+    return ready;
+  }
+
+  /// Share of the next Mainspring wound (0..1), 1 when the stock is full.
+  double springFraction() => s.springs >= b.springs.maxStock
+      ? 1
+      : (s.springProgress / b.springs.secondsPerSpring).clamp(0.0, 1.0);
+
+  /// Raises clock [id] one level for Mainsprings (R-SPR-5).
+  BuyResult levelClock(String id) {
+    if (!econ.clockLevelable(id)) return BuyResult.unavailable;
+    final cost = econ.clockLevelCost(id)!;
+    if (s.springs < cost) return BuyResult.tooExpensive;
+    // Spending from a full stock starts the winding again from now.
+    s.springs -= cost;
+    s.clockLevels[id] = econ.clockLevel(id) + 1;
     return BuyResult.ok;
   }
 

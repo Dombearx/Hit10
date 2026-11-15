@@ -7,8 +7,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../ads/rewarded_ads.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../../l10n/master_texts.dart';
 import '../../model/number_format.dart';
 import '../../persistence/save_codec.dart';
+import '../dial_skins.dart';
+import '../format.dart';
 import '../game_controller.dart';
 import '../providers.dart';
 import '../seasons_ui.dart';
@@ -120,6 +123,11 @@ class _Settings extends ConsumerWidget {
                 },
                 onChanged: c.setTheme,
               ),
+            ),
+            // Stopwatch faces (docs/12 §3.3).
+            ListenableBuilder(
+              listenable: c,
+              builder: (context, _) => _DialGallery(controller: c),
             ),
           ],
         ),
@@ -551,4 +559,124 @@ class _Action extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Every stopwatch face: unlocked ones to pick, the rest as "?" with what
+/// it takes (docs/12 §3.3).
+class _DialGallery extends StatelessWidget {
+  const _DialGallery({required this.controller});
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final f = Fmt.of(context, c);
+    final current = c.econ.dialId;
+    final earned = c.state.lifetime.earnedEver;
+    final next = c.econ.nextDial;
+    return Padding(
+      key: const Key('set-dial'),
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.dialTitle,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+          ),
+          Text(
+            l.dialHint,
+            style: TextStyle(
+              fontSize: 13,
+              color: Palette.outline.withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              for (final d in c.balance.dials)
+                if (earned >= d.earned)
+                  _DialTile(
+                    key: Key('dial-${d.id}'),
+                    selected: d.id == current,
+                    onTap: () => c.setDial(d.id),
+                    preview: DialPreview(skin: dialSkin(d.id), size: 58),
+                    label: dialTexts(l, d.id)?.$1 ?? d.id,
+                  )
+                // Only the next locked face says what it takes; the
+                // ones after it stay a mystery.
+                else
+                  _DialTile(
+                    key: Key('dial-${d.id}'),
+                    selected: false,
+                    preview: DialPreview(
+                      skin: dialSkin(d.id),
+                      size: 58,
+                      locked: true,
+                    ),
+                    label: d == next ? l.dialLocked(f.round(d.earned)) : '???',
+                  ),
+            ],
+          ),
+          if (dialTexts(l, current)?.$2 case final line?)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                line,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DialTile extends StatelessWidget {
+  const _DialTile({
+    super.key,
+    required this.selected,
+    required this.preview,
+    required this.label,
+    this.onTap,
+  });
+  final bool selected;
+  final Widget preview;
+  final String label;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: 84,
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFFFFE08A) : Colors.transparent,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: selected ? Palette.outline : Colors.transparent,
+          width: 2,
+        ),
+      ),
+      child: Column(
+        children: [
+          preview,
+          const SizedBox(height: 3),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
+    ),
+  );
 }

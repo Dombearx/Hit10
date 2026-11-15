@@ -76,6 +76,15 @@ Map<String, Object?> encodeSave(SaveData d) {
     'seasonStash': s.seasonStash,
     'theme': s.theme,
     'runTaps': s.runTaps,
+    'springs': s.springs,
+    'springProgress': s.springProgress,
+    'springClockMs': s.springClockMs,
+    'springHitDay': s.springHitDay,
+    'springHitSeconds': s.springHitSeconds,
+    'clockLevels': s.clockLevels,
+    'everOwned': s.everOwned.toList(),
+    'dial': s.dial,
+    'dialsSeen': s.dialsSeen.toList(),
     'stats': {
       'rounds': s.stats.rounds,
       'byTier': {for (final e in s.stats.byTier.entries) e.key.name: e.value},
@@ -102,6 +111,8 @@ Map<String, Object?> encodeSave(SaveData d) {
       'goldenFast': l.goldenFast,
       'goldenInFrenzy': l.goldenInFrenzy,
       'offlineFull': l.offlineFull,
+      'springsWound': l.springsWound,
+      'springSecondsLost': l.springSecondsLost,
     },
     'settings': {
       'sfxVolume': st.sfxVolume,
@@ -177,6 +188,12 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..seasonCatches = _i(j['seasonCatches'])
     ..seasonHits = _i(j['seasonHits'])
     ..theme = j['theme'] is String ? j['theme']! as String : ''
+    ..springs = _i(j['springs'])
+    ..springProgress = _d(j['springProgress'])
+    ..springClockMs = _i(j['springClockMs'])
+    ..springHitDay = _i(j['springHitDay'])
+    ..springHitSeconds = _d(j['springHitSeconds'])
+    ..dial = j['dial'] is String ? j['dial']! as String : ''
     // A save from before the counter: this run's taps are unknown.
     ..runTaps = j.containsKey('runTaps') ? _i(j['runTaps']) : 1 << 30;
   s.seasonsDone.addAll(_sl(j['seasonsDone']));
@@ -191,6 +208,24 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   s.perks.addAll(_sl(j['perks']).map((id) => _renamedPerks[id] ?? id));
   s.habits.addAll(_sl(j['habits']));
   s.achievements.addAll(_sl(j['achievements']));
+  _m(j['clockLevels']).forEach((k, v) => s.clockLevels[k] = _i(v));
+  s.dialsSeen.addAll(_sl(j['dialsSeen']));
+  // Saves from before Mainsprings: clocks owned now or ever (their first
+  // "own 1" badge) count as bought.
+  s.everOwned.addAll(_sl(j['everOwned']));
+  if (!j.containsKey('everOwned')) {
+    s.everOwned
+      ..addAll(s.owned.entries.where((e) => e.value > 0).map((e) => e.key))
+      ..addAll(
+        s.achievements
+            .where((a) => a.startsWith('owned_') && a.endsWith('_1'))
+            .map((a) => a.substring(6, a.length - 2)),
+      );
+  }
+  if (!j.containsKey('dialsSeen')) {
+    // Faces a player already earned are not news: no toast for each.
+    s.dialsSeen.add('*');
+  }
   final stats = _m(j['stats']);
   s.stats.rounds = _i(stats['rounds']);
   _m(stats['byTier']).forEach((k, v) {
@@ -221,7 +256,9 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..shieldSaves = _i(l['shieldSaves'])
     ..goldenFast = _i(l['goldenFast'])
     ..goldenInFrenzy = _i(l['goldenInFrenzy'])
-    ..offlineFull = _i(l['offlineFull']);
+    ..offlineFull = _i(l['offlineFull'])
+    ..springsWound = _i(l['springsWound'])
+    ..springSecondsLost = _d(l['springSecondsLost']);
   final st = _m(j['settings']);
   final settings = Settings()
     ..sfxVolume = _d(st['sfxVolume'], 1)

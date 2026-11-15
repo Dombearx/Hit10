@@ -21,6 +21,6 @@ w tych plikach.
 | [06-testy-i-akceptacja.md](docs/06-testy-i-akceptacja.md) | testy automatyczne i ręczne, kryteria zaliczenia |
 | [07-plan.md](docs/07-plan.md) | etapy M0–M6 z listą zadań, sprawy po twojej stronie, otwarte decyzje |
 | [11-po-premierze.md](docs/11-po-premierze.md) | porównanie z innymi grami idle, braki i pomysły na po premierze, co mierzyć w pierwszym tygodniu |
-| [12-pozna-gra.md](docs/12-pozna-gra.md) | późna gra: jak to robią inne gry, propozycja Sprężyn (poziomy zegarów) i wyzwań paradoksu |
+| [12-pozna-gra.md](docs/12-pozna-gra.md) | późna gra: jak to robią inne gry; Sprężyny (poziomy zegarów) i tarcze — zrobione; wyzwania paradoksu — propozycja |
 
 [`design/`](design/README.md) to symulator balansu użyty do ustalenia liczb w 03.

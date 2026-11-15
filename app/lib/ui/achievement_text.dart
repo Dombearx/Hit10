@@ -1,6 +1,7 @@
 import 'package:flutter/painting.dart';
 
 import '../l10n/gen/app_localizations.dart';
+import '../l10n/master_texts.dart';
 import '../model/achievements.dart';
 import 'catalog.dart';
 import 'format.dart';
@@ -50,6 +51,13 @@ import 'seasons_ui.dart';
       return (l.ach_daily(count), l.ach_daily_desc(count));
     case AchievementCategory.shield:
       return (l.ach_shield(count), l.ach_shield_desc(count));
+    case AchievementCategory.mastery:
+      final g = generatorName(l, a.generator!);
+      final lv = n.round();
+      return (
+        masterTexts(l, a.generator!, lv)?.$1 ?? '$g $lv',
+        l.ach_mastery_desc(g, '$lv'),
+      );
     case AchievementCategory.mode:
     case AchievementCategory.hidden:
     case AchievementCategory.feat:
@@ -65,7 +73,7 @@ EmojiArt achievementArt(AchievementDef a) {
   const bg = EmojiArt('money_bag', _gold);
   return switch (a.category) {
     AchievementCategory.earned => bg,
-    AchievementCategory.owned => EmojiArt(
+    AchievementCategory.owned || AchievementCategory.mastery => EmojiArt(
       generatorArt[a.generator]!.main,
       generatorArt[a.generator]!.background,
     ),
