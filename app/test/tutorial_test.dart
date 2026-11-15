@@ -34,14 +34,70 @@ void main() {
     expect(c.engine.goldenEnabled, isTrue);
   });
 
-  test('the tutorial can be replayed from the help screen', () {
+  test('a replay walks every step, whatever the player owns', () {
     final s = GameState()
       ..tutorialDone = true
+      ..tiki = 1e6
       ..owned['grandpa'] = 3;
     final c = controller(s);
     c.replayTutorial();
-    expect(c.tutorialStep, TutorialStep.grandpaInfo);
+    expect(c.tutorialStep, TutorialStep.aim);
+    expect(c.coachTiming, isTrue);
     expect(c.engine.goldenEnabled, isFalse);
+    // The game goes on as it was: nothing is hidden or saved as undone.
+    expect(s.tutorialDone, isTrue);
+    c.nextTutorialStep();
+    expect(c.tutorialStep, TutorialStep.earned);
+    c.nextTutorialStep();
+    expect(c.tutorialStep, TutorialStep.buyGrandpa);
+    c.buyGenerators('grandpa', 1);
+    expect(c.tutorialStep, TutorialStep.grandpaInfo);
+    c.checkTips();
+    expect(c.pendingTip, isNull);
+    c.nextTutorialStep();
+    expect(c.tutorialStep, TutorialStep.done);
+    expect(c.replaying, isFalse);
+    expect(c.engine.goldenEnabled, isTrue);
+  });
+
+  test('a replay before the first clock is the real first run', () {
+    final s = GameState()..tutorialDone = true;
+    final c = controller(s);
+    c.replayTutorial();
+    expect(c.replaying, isFalse);
+    expect(s.tutorialDone, isFalse);
+    expect(c.tutorialStep, TutorialStep.aim);
+  });
+
+  test("Grandpa's bubble waits for OK or the next purchase", () {
+    final s = GameState()..tiki = 1000;
+    final c = controller(s);
+    c.buyGenerators('grandpa', 1);
+    for (var i = 0; i < 60; i++) {
+      s.playSeconds += 1;
+      c.debugAutoAdvance();
+    }
+    expect(c.tutorialStep, TutorialStep.grandpaInfo);
+    c.buyGenerators('grandpa', 1);
+    expect(s.tutorialDone, isTrue);
+  });
+
+  test('the next goal: first bonus, then each new clock', () {
+    final s = GameState()..owned['grandpa'] = 3;
+    final c = controller(s);
+    expect(c.nextGoal, isNull); // not during the tutorial
+    s.tutorialDone = true;
+    var g = c.nextGoal!;
+    expect(g.kind, GoalKind.bonus);
+    expect(g.generator, 'grandpa');
+    expect(g.have, 3);
+    expect(g.need, c.econ.nextMilestone('grandpa'));
+    s.owned['grandpa'] = g.need.toInt();
+    g = c.nextGoal!;
+    expect(g.kind, GoalKind.newClock);
+    expect(g.generator, balance.generators[1].id);
+    s.prestiges = 1;
+    expect(c.nextGoal, isNull);
   });
 
   test('skills and the bonus bar get a tip wherever the player looks', () {
@@ -184,6 +240,7 @@ void main() {
     await tester.tap(find.byKey(const Key('buy-grandpa')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.byKey(const Key('tutorial-grandpaInfo')), findsOneWidget);
+    expect(find.textContaining('Tiki'), findsWidgets);
     await tester.tap(find.byKey(const Key('tutorial-ok')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.tutorialDone, isTrue);
@@ -198,6 +255,18 @@ void main() {
     // Right above Grandpa's button, not somewhere in the middle.
     expect(bubble.bottom, lessThanOrEqualTo(button.top));
     expect(button.top - bubble.bottom, lessThan(40));
+  });
+
+  testWidgets('the goal bar shows over the shop after the tutorial', (
+    tester,
+  ) async {
+    final s = GameState()
+      ..tutorialDone = true
+      ..owned['grandpa'] = 3;
+    await pump(tester, s);
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.byKey(const Key('next-goal-bonus')), findsOneWidget);
+    expect(find.textContaining('3/10'), findsWidgets);
   });
 
   testWidgets('a red dot marks an affordable skill on the other tab', (

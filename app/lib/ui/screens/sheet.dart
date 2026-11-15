@@ -60,9 +60,14 @@ Future<void> showGameSheet(
               ),
             ),
             Expanded(
-              child: ListenableBuilder(
-                listenable: c,
-                builder: (context, _) => builder(context),
+              // Clear of the system navigation bar: its buttons covered
+              // the last row of a sheet (the help's "replay" button).
+              child: SafeArea(
+                top: false,
+                child: ListenableBuilder(
+                  listenable: c,
+                  builder: (context, _) => builder(context),
+                ),
               ),
             ),
           ],

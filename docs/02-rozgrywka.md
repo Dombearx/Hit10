@@ -495,8 +495,11 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   3. Gdy stać gracza na Dziadka: reszta ekranu przyciemniona, przycisk
      zakupu Dziadka w złotej, pulsującej obwódce, dymek „Kup Dziadka —
      będzie grał za ciebie!”. Sklep sam rozwija się na zakładce Zegary.
-  4. Po zakupie (bez przyciemnienia — gracz dalej gra): dymek przy liczniku „/s”: „Dziadek zarabia 0,1/s za
-     ciebie, nawet offline.” Zamyka się przyciskiem OK albo sam po 7 s gry.
+  4. Po zakupie (bez przyciemnienia — gracz dalej gra): dymek przy
+     liczniku „/s”: „Dziadek sam dorzuca Tiki: +0,1 na sekundę, także gdy
+     nie grasz.” Zamyka się przyciskiem OK albo następnym zakupem — nie
+     sam (testerzy: dymek znikał po 7 s, zanim ktoś go przeczytał, i nie
+     mówił, czego jest „/s”).
 
   Koniec samouczka. W jego trakcie nie ma znaczka wydarzenia, czerwonych
   kropek ani Złotej Sekundy (jedna nowa rzecz naraz).
@@ -529,6 +532,22 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   (cel, Tiki, zegary, ulepszenia, umiejętności, seria, Złota Sekunda,
   przełączniki, wydarzenia, paradoks, ikony nagłówka) — same tytuły,
   dotknięcie rozwija opis — plus „Pokaż samouczek od nowa”.
+- **R-TUT-5a (powtórka):** „Pokaż samouczek od nowa” pokazuje wszystkie
+  cztery kroki także graczowi, który ma już zegary: kroki nie wynikają
+  wtedy ze stanu gry, tylko idą po kolei, każdy z przyciskiem OK (krok 1
+  przechodzi też po dotknięciu, krok 3 po zakupie; krok 2 mówi „To twoje
+  Tiki. Wydajesz je na zegary.”). Gra w tym czasie niczego nie chowa
+  i niczego nie zapisuje. Gracz bez Dziadka dostaje zwykły pierwszy
+  samouczek. Arkusze („Jak grać”, ustawienia…) kończą się nad systemowym
+  paskiem nawigacji, żeby jego przyciski nie zasłaniały ostatniego wiersza.
+- **R-TUT-7 (następny cel):** po samouczku, do pierwszego paradoksu, nad
+  sklepem jest jeden pasek z celem i postępem (wypełnienie paska):
+  najpierw pierwszy bonus Dziadka („Cel: Dziadek z zegarkiem 3/10 → ×2”),
+  potem każdy kolejny zegar, którego gracz jeszcze nie ma („Cel: nowy
+  zegar — Babcia z minutnikiem”, postęp = Tiki do ceny), a gdy paradoks
+  jest dostępny — „Cel: cofnij czas — dotknij wiru u góry”. Dotknięcie
+  otwiera zakładkę Zegary (albo ekran paradoksu). W samouczku i po
+  pierwszym paradoksie paska nie ma.
 - **R-TUT-6:** Karta zegara, którego gracz jeszcze nie ma, mówi najpierw,
   ile zarabia („+0,1/s za sztukę”), dopiero potem żart. Przycisk
   umiejętności mówi, co kupuje („Kup poz. 3”), a nie „Poziom 2/10”.

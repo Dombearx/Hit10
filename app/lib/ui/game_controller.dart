@@ -85,6 +85,23 @@ class ClockSlot {
 /// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does.
 enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, done }
 
+enum GoalKind { bonus, newClock, prestige }
+
+/// What [GameController.nextGoal] points the player at.
+class NextGoal {
+  const NextGoal(this.kind, {this.generator, this.have = 0, this.need = 0});
+  final GoalKind kind;
+
+  /// The clock it is about (not for [GoalKind.prestige]).
+  final String? generator;
+
+  /// Progress: clocks owned of the bonus' threshold, or Tiks of the price.
+  final double have;
+  final double need;
+
+  double get progress => need <= 0 ? 0 : (have / need).clamp(0.0, 1.0);
+}
+
 /// Glue between the pure engine and the screen: owns the monotonic clock
 /// (T-8), turns pointer-downs into grades (T-9), runs the economy tick
 /// (T-14), saves (T-18), offers, achievements and the tutorial, and fires
@@ -498,6 +515,9 @@ class GameController extends ChangeNotifier {
         ads.onRound(o, _wallMs());
         _trackAccuracy();
         _trackTutorial();
+        if (_replayStep == TutorialStep.aim) {
+          _replayStep = TutorialStep.earned;
+        }
         final local = _localNow();
         if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
         // The dial read 5.00: the Mainspring winds faster (R-SPR-3).
@@ -718,6 +738,12 @@ class GameController extends ChangeNotifier {
       sfx.play('buy');
       unawaited(haptics.light());
       _checkAchievements(const AchievementContext());
+      if (_replayStep == TutorialStep.buyGrandpa) {
+        _replayStep = TutorialStep.grandpaInfo;
+      } else if (_shownFor == TutorialStep.grandpaInfo) {
+        // Bought again with Grandpa's bubble up: the point was taken.
+        finishTutorial();
+      }
       _advanceTutorial();
       unawaited(save());
       notifyListeners();
@@ -913,7 +939,15 @@ class GameController extends ChangeNotifier {
 
   // ------------------------------------------------------------ tutorial --
 
+  /// The step of a replay asked for on the help screen by a player who
+  /// already owns a clock: the steps can't be read off the state then, so
+  /// they are walked by hand. Not saved: closing the app ends the replay.
+  TutorialStep? _replayStep;
+  bool get replaying => _replayStep != null;
+
   TutorialStep get tutorialStep {
+    final replay = _replayStep;
+    if (replay != null) return replay;
     if (state.tutorialDone) return TutorialStep.done;
     if (econ.owned('grandpa') == 0) {
       if (state.tiki >= balance.generators.first.baseCost) {
@@ -928,6 +962,7 @@ class GameController extends ChangeNotifier {
   /// the tutorial and the first rounds of a new player.
   bool get coachTiming =>
       !state.tutorialDone ||
+      replaying ||
       (state.prestiges == 0 && state.stats.rounds < coachRounds);
   static const coachRounds = 10;
 
@@ -935,13 +970,59 @@ class GameController extends ChangeNotifier {
     if (!state.tutorialDone) notifyListeners();
   }
 
-  /// "OK" on Grandpa's step (it also closes by itself, [_autoAdvance]).
+  // --------------------------------------------------------- next goal --
+
+  /// The one thing to aim for next, shown over the shop until the first
+  /// paradox (R-TUT-7): the first clock's first bonus, then each new
+  /// clock, then the paradox itself. Null when there is nothing to show.
+  NextGoal? get nextGoal {
+    if (!state.tutorialDone || replaying || state.prestiges > 0) return null;
+    final first = balance.generators.first.id;
+    final bonus = econ.nextMilestone(first);
+    if (econ.milestonesReached(first) == 0 && bonus != null) {
+      return NextGoal(
+        GoalKind.bonus,
+        generator: first,
+        have: econ.owned(first).toDouble(),
+        need: bonus.toDouble(),
+      );
+    }
+    if (engine.canPrestige()) return const NextGoal(GoalKind.prestige);
+    for (final g in balance.generators) {
+      if (econ.owned(g.id) > 0 || !econ.generatorUnlocked(g.id)) continue;
+      return NextGoal(
+        GoalKind.newClock,
+        generator: g.id,
+        have: state.tiki,
+        need: econ.generatorCost(g.id),
+      );
+    }
+    return null;
+  }
+
+  /// "OK" on Grandpa's step, and on every step of a replay (a player far
+  /// into the game can't be asked to earn their first Tiks again).
   void nextTutorialStep() {
-    if (tutorialStep == TutorialStep.grandpaInfo) finishTutorial();
+    final step = tutorialStep;
+    if (step == TutorialStep.grandpaInfo) {
+      finishTutorial();
+    } else if (replaying && step != TutorialStep.done) {
+      _replayStep = TutorialStep.values[step.index + 1];
+      notifyListeners();
+    }
   }
 
   /// Finishes (or skips) the tutorial (R-TUT-1).
   void finishTutorial() {
+    if (replaying) {
+      _replayStep = null;
+      _shownAt = null;
+      _shownFor = null;
+      engine.goldenEnabled = state.tutorialDone;
+      _tipQuietUntil = state.playSeconds + tipGapAfterTutorial;
+      notifyListeners();
+      return;
+    }
     if (!state.tutorialDone) {
       // 'grandpaInfo' = finished; any earlier step = skipped.
       _log('tutorial_complete', {
@@ -955,21 +1036,28 @@ class GameController extends ChangeNotifier {
     // A breather before the first tip (R-TUT-2: tips are spaced out).
     _tipQuietUntil = state.playSeconds + tipGapAfterTutorial;
     _shownAt = null;
+    _shownFor = null;
     notifyListeners();
     unawaited(save());
   }
 
-  /// Shows the tutorial again from where the player is (help screen).
-  /// Tips already seen stay seen.
+  /// Shows the whole tutorial again (help screen), whatever the player
+  /// owns. Tips already seen stay seen.
   void replayTutorial() {
     _log('tutorial_replay');
-    _loggedStep = null;
-    state.tutorialDone = false;
     pendingTip = null;
     _shownAt = null;
+    _shownFor = null;
     engine.goldenEnabled = false;
+    if (econ.owned(balance.generators.first.id) == 0) {
+      // Nothing bought yet: the real first run, read off the state.
+      _loggedStep = null;
+      state.tutorialDone = false;
+      unawaited(save());
+    } else {
+      _replayStep = TutorialStep.aim;
+    }
     notifyListeners();
-    unawaited(save());
   }
 
   // Tips (R-TUT-2): one at a time, spaced out, and gone as soon as the
@@ -986,7 +1074,7 @@ class GameController extends ChangeNotifier {
   Object? _shownFor;
 
   void _tip(String id) {
-    if (!state.tutorialDone || pendingTip != null) return;
+    if (!state.tutorialDone || replaying || pendingTip != null) return;
     if (state.tipsSeen.contains(id)) return;
     if (state.playSeconds < _tipQuietUntil) return;
     pendingTip = id;
@@ -1001,8 +1089,10 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  /// Info-only bubbles (Grandpa's step, the combo tip) close by themselves
-  /// after [infoSeconds] of play; a tip asking for something the player
+  /// The combo tip, which asks for nothing, closes by itself after
+  /// [infoSeconds] of play. Grandpa's step does not (testers never saw it:
+  /// it was gone in 7 s): it waits for "OK" or the next purchase
+  /// ([_afterBuy]). A tip asking for something the player
   /// ignores goes after [tipLife] and comes back once, later (onboarding
   /// playtest: an ignored upgrade tip stayed for minutes and held back
   /// every tip after it).
@@ -1020,14 +1110,13 @@ class GameController extends ChangeNotifier {
       _shownAt = state.playSeconds;
       return;
     }
+    if (key == TutorialStep.grandpaInfo) return;
     final age = state.playSeconds - _shownAt!;
-    final info = key == TutorialStep.grandpaInfo || key == 'combo';
+    final info = key == 'combo';
     if (age < (info ? infoSeconds : tipLife)) return;
     _shownAt = null;
     _shownFor = null;
-    if (key == TutorialStep.grandpaInfo) {
-      nextTutorialStep();
-    } else if (info || state.tipsSeen.contains('$key#1')) {
+    if (info || state.tipsSeen.contains('$key#1')) {
       dismissTip();
     } else {
       // Not now: once more after the usual gap.
@@ -1045,7 +1134,7 @@ class GameController extends ChangeNotifier {
   /// (playtest: the skills tab, the upgrade strip and the toggles went
   /// unnoticed for a long time).
   void checkTips() {
-    if (!state.tutorialDone || pendingTip != null) return;
+    if (!state.tutorialDone || replaying || pendingTip != null) return;
     // The first clock's bonus bar, once it has a few (R-ULEP-1).
     final first = balance.generators.first.id;
     if (econ.owned(first) >= milestoneTipAt &&

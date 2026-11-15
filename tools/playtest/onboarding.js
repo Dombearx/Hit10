@@ -124,8 +124,9 @@ async function play(browser, key) {
     if (s.phase === 'running' && tappedRound !== s.roundStart) {
       tappedRound = s.roundStart;
       let skip = rnd() < P.distract;
-      // Shop looks only after the tutorial (before it, the prompt leads).
-      if (s.tutorial === 'done' && now() - lastShop >= P.shopEvery) {
+      // Shop looks only after the tutorial's prompts (before, they lead).
+      // Grandpa's bubble stays until OK or the next purchase.
+      if ((s.tutorial === 'done' || s.tutorial === 'grandpaInfo') && now() - lastShop >= P.shopEvery) {
         lastShop = now();
         if (rnd() < P.shopMiss) skip = true;
         let tiki = s.tiki;

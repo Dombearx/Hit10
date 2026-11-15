@@ -278,6 +278,7 @@ void registerQaHook(GameController c) {
     }).toJS,
   );
   api.setProperty('tutorialOk'.toJS, (() => c.nextTutorialStep()).toJS);
+  api.setProperty('replayTutorial'.toJS, (() => c.replayTutorial()).toJS);
   api.setProperty('openSkills'.toJS, (() => c.tipActed('skills')).toJS);
   api.setProperty('save'.toJS, (() => c.save().toJS).toJS);
   api.setProperty(

@@ -111,19 +111,29 @@ class _CoachOverlayState extends State<CoachOverlay>
   _Mark? _mark(AppLocalizations l, Fmt f) {
     final c = widget.controller;
     final grandpa = c.balance.generators.first;
+    // A replay moves on with "OK": its steps can't wait for a first Tik.
+    final replay = c.replaying;
+    final ok = replay ? l.tutorialGotIt : null;
+    final onOk = replay ? c.nextTutorialStep : null;
     switch (c.tutorialStep) {
       case TutorialStep.aim:
         return _Mark(
           id: 'tutorial-aim',
           text: l.tutorialAim,
           targets: [CoachTargets.arena],
+          ok: ok,
+          onOk: onOk,
           onSkip: c.finishTutorial,
         );
       case TutorialStep.earned:
         return _Mark(
           id: 'tutorial-earned',
-          text: l.tutorialEarned(f.n(grandpa.baseCost)),
+          text: replay
+              ? l.tutorialEarnedReplay
+              : l.tutorialEarned(f.n(grandpa.baseCost)),
           targets: [CoachTargets.balance],
+          ok: ok,
+          onOk: onOk,
           onSkip: c.finishTutorial,
         );
       case TutorialStep.buyGrandpa:
@@ -132,6 +142,8 @@ class _CoachOverlayState extends State<CoachOverlay>
           text: l.tutorialBuy,
           targets: [CoachTargets.grandpaBuy, CoachTargets.clocksTab],
           dim: true,
+          ok: ok,
+          onOk: onOk,
           onSkip: c.finishTutorial,
         );
       case TutorialStep.grandpaInfo:
