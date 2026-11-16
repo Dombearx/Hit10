@@ -1721,8 +1721,14 @@ abstract class AppLocalizations {
   /// No description provided for @prestigeChronons.
   ///
   /// In en, this message translates to:
-  /// **'Chronons: {count} (+{percent}% forever)'**
-  String prestigeChronons(int count, String percent);
+  /// **'Chronons: {count} · income {mult}'**
+  String prestigeChronons(int count, String mult);
+
+  /// No description provided for @prestigeGainMult.
+  ///
+  /// In en, this message translates to:
+  /// **'Income {from} → {to}'**
+  String prestigeGainMult(String from, String to);
 
   /// No description provided for @prestigeShards.
   ///
@@ -1999,6 +2005,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Goal: turn back time — tap the swirl up top'**
   String get goalPrestige;
+
+  /// No description provided for @goalPrestigeDouble.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: turn back time — it doubles your Chronons'**
+  String get goalPrestigeDouble;
+
+  /// No description provided for @goalPrestigePerk.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: turn back time — enough for {name}'**
+  String goalPrestigePerk(String name);
+
+  /// No description provided for @goalPerk.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: perk {name} — {have}/{need} shards'**
+  String goalPerk(String name, String have, String need);
+
+  /// No description provided for @goalPerkBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: buy the perk — {name}'**
+  String goalPerkBuy(String name);
+
+  /// No description provided for @statMultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Income multipliers'**
+  String get statMultTitle;
+
+  /// No description provided for @statMultChronons.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronons ({count})'**
+  String statMultChronons(int count);
+
+  /// No description provided for @statMultAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements ({count})'**
+  String statMultAchievements(int count);
+
+  /// No description provided for @statMultLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock levels'**
+  String get statMultLevels;
+
+  /// No description provided for @statMultTurbo.
+  ///
+  /// In en, this message translates to:
+  /// **'Turbo'**
+  String get statMultTurbo;
+
+  /// No description provided for @statMultTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Together'**
+  String get statMultTotal;
 
   /// No description provided for @tutorialGotIt.
   ///

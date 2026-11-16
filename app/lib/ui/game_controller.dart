@@ -89,17 +89,28 @@ class ClockSlot {
 /// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does.
 enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, done }
 
-enum GoalKind { bonus, newClock, prestige }
+enum GoalKind { bonus, newClock, prestige, perk }
 
 /// What [GameController.nextGoal] points the player at.
 class NextGoal {
-  const NextGoal(this.kind, {this.generator, this.have = 0, this.need = 0});
+  const NextGoal(
+    this.kind, {
+    this.generator,
+    this.perk,
+    this.have = 0,
+    this.need = 0,
+  });
   final GoalKind kind;
+
+  /// The perk it is about: the one to save Shards for ([GoalKind.perk]) or
+  /// the one a paradox now would pay for ([GoalKind.prestige]).
+  final String? perk;
 
   /// The clock it is about (not for [GoalKind.prestige]).
   final String? generator;
 
-  /// Progress: clocks owned of the bonus' threshold, or Tiks of the price.
+  /// Progress: clocks owned of the bonus' threshold, Tiks of the price, or
+  /// Shards (with those a paradox would add) of the perk's.
   final double have;
   final double need;
 
@@ -993,22 +1004,30 @@ class GameController extends ChangeNotifier {
 
   // --------------------------------------------------------- next goal --
 
-  /// The one thing to aim for next, shown over the shop until the first
-  /// paradox (R-TUT-7): the first clock's first bonus, then each new
-  /// clock, then the paradox itself. Null when there is nothing to show.
+  /// The one thing to aim for next, shown over the shop (R-TUT-7). Until
+  /// the first paradox: the first clock's first bonus, then each new
+  /// clock, then the paradox itself. After it: a paradox that doubles the
+  /// Chronons, the next new clock, the next perk (or the paradox that
+  /// pays for it), then the clock bonus closest to done. Null when there
+  /// is nothing to show.
   NextGoal? get nextGoal {
-    if (!state.tutorialDone || replaying || state.prestiges > 0) return null;
-    final first = balance.generators.first.id;
-    final bonus = econ.nextMilestone(first);
-    if (econ.milestonesReached(first) == 0 && bonus != null) {
-      return NextGoal(
-        GoalKind.bonus,
-        generator: first,
-        have: econ.owned(first).toDouble(),
-        need: bonus.toDouble(),
-      );
+    if (!state.tutorialDone || replaying) return null;
+    final gain = econ.prestigeGain();
+    if (state.prestiges == 0) {
+      final first = balance.generators.first.id;
+      final bonus = econ.nextMilestone(first);
+      if (econ.milestonesReached(first) == 0 && bonus != null) {
+        return NextGoal(
+          GoalKind.bonus,
+          generator: first,
+          have: econ.owned(first).toDouble(),
+          need: bonus.toDouble(),
+        );
+      }
+      if (engine.canPrestige()) return const NextGoal(GoalKind.prestige);
+    } else if (!state.rewindPending && gain >= 5 && gain >= state.chronons) {
+      return const NextGoal(GoalKind.prestige);
     }
-    if (engine.canPrestige()) return const NextGoal(GoalKind.prestige);
     for (final g in balance.generators) {
       if (econ.owned(g.id) > 0 || !econ.generatorUnlocked(g.id)) continue;
       return NextGoal(
@@ -1018,7 +1037,40 @@ class GameController extends ChangeNotifier {
         need: econ.generatorCost(g.id),
       );
     }
-    return null;
+    if (state.prestiges == 0) return null;
+    // The cheapest perk within reach of the tree.
+    PerkConfig? perk;
+    for (final p in balance.prestige.perks) {
+      if (!engine.perkAvailable(p.id)) continue;
+      if (perk == null || p.cost < perk.cost) perk = p;
+    }
+    if (perk != null) {
+      final have = state.shards.toDouble();
+      // Affordable only with what a paradox would add: that is the goal.
+      if (have < perk.cost && have + gain >= perk.cost) {
+        return NextGoal(GoalKind.prestige, perk: perk.id);
+      }
+      return NextGoal(
+        GoalKind.perk,
+        perk: perk.id,
+        have: have + gain,
+        need: perk.cost.toDouble(),
+      );
+    }
+    // Everything is unlocked: the clock bonus closest to done.
+    NextGoal? best;
+    for (final g in balance.generators) {
+      final next = econ.nextMilestone(g.id);
+      if (next == null) continue;
+      final goal = NextGoal(
+        GoalKind.bonus,
+        generator: g.id,
+        have: econ.owned(g.id).toDouble(),
+        need: next.toDouble(),
+      );
+      if (best == null || goal.progress > best.progress) best = goal;
+    }
+    return best;
   }
 
   /// "OK" on Grandpa's step, and on every step of a replay (a player far

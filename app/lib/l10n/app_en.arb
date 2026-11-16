@@ -758,13 +758,24 @@
     }
   },
   "prestigeTitle": "Time paradox",
-  "prestigeChronons": "Chronons: {count} (+{percent}% forever)",
+  "prestigeChronons": "Chronons: {count} · income {mult}",
   "@prestigeChronons": {
     "placeholders": {
       "count": {
         "type": "int"
       },
-      "percent": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "prestigeGainMult": "Income {from} → {to}",
+  "@prestigeGainMult": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
         "type": "String"
       }
     }
@@ -959,6 +970,57 @@
     }
   },
   "goalPrestige": "Goal: turn back time — tap the swirl up top",
+  "goalPrestigeDouble": "Goal: turn back time — it doubles your Chronons",
+  "goalPrestigePerk": "Goal: turn back time — enough for {name}",
+  "@goalPrestigePerk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPerk": "Goal: perk {name} — {have}/{need} shards",
+  "@goalPerk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "have": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPerkBuy": "Goal: buy the perk — {name}",
+  "@goalPerkBuy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "statMultTitle": "Income multipliers",
+  "statMultChronons": "Chronons ({count})",
+  "@statMultChronons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statMultAchievements": "Achievements ({count})",
+  "@statMultAchievements": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statMultLevels": "Clock levels",
+  "statMultTurbo": "Turbo",
+  "statMultTotal": "Together",
   "tutorialGotIt": "OK",
   "tip_skills": "Skills boost your own hits.",
   "tip_modes": "A new mode! Tap to switch it on.",

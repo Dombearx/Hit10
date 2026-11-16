@@ -273,6 +273,27 @@ class Economy {
   double clockLevelFactor(String id, [int? level]) =>
       1 + b.springs.levelBonus * (level ?? clockLevel(id));
 
+  /// What all the clock levels together multiply the income by now
+  /// (1 without clocks or levels).
+  double clockLevelsGain() {
+    var withLevels = 0.0, without = 0.0;
+    for (final g in b.generators) {
+      if (owned(g.id) == 0) continue;
+      final rate = generatorRate(g.id);
+      withLevels += rate;
+      without += rate / clockLevelFactor(g.id);
+    }
+    return without > 0 ? withLevels / without : 1;
+  }
+
+  /// The Chronons' share of the global multiplier (R-PRES-3).
+  double chrononMultiplier([int? chronons]) =>
+      1 + b.prestige.bonusPerChronon * (chronons ?? s.chronons);
+
+  /// The achievements' share of the global multiplier (R-OSIAG-1).
+  double achievementMultiplier() =>
+      1 + b.achievements.bonusEach * s.achievements.length;
+
   /// Mainsprings the next level of [id] costs, or null when maxed.
   int? clockLevelCost(String id) {
     final l = clockLevel(id);
@@ -333,9 +354,7 @@ class Economy {
   // ---------------------------------------------------------- multipliers --
 
   /// G without temporary effects: Chronons and achievements (docs/03 §2).
-  double permanentMultiplier() =>
-      (1 + b.prestige.bonusPerChronon * s.chronons) *
-      (1 + b.achievements.bonusEach * s.achievements.length);
+  double permanentMultiplier() => chrononMultiplier() * achievementMultiplier();
 
   /// Passive Tiki/s. [frenzy] and [turbo] are the temporary multipliers.
   double passive({double frenzy = 1, double turbo = 1}) {

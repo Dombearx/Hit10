@@ -392,7 +392,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         builder: (context, _) => NextGoalBar(
                           controller: controller,
                           onTap: (goal) {
-                            if (goal.kind == GoalKind.prestige) {
+                            if (goal.kind == GoalKind.prestige ||
+                                goal.kind == GoalKind.perk) {
                               controller.tipActed('prestige');
                               showPrestige(context, controller);
                             } else {

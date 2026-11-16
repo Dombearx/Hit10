@@ -422,9 +422,10 @@ powodu do codziennego wejścia.
 
 ## 6. Kolejność
 
-**Stan (16.11.2026):** z etapu 1 zrobione jest dokręcanie (R-SPR-3, 3a)
-i oferta `adSpring` (R-SPR-3b); zasady w 02 §15 i §13. Pasek celu
-i ekran mnożników czekają.
+**Stan (16.11.2026):** etap 1 jest zrobiony: dokręcanie (R-SPR-3, 3a),
+oferta `adSpring` (R-SPR-3b), pasek celu przez całą grę (R-TUT-7a)
+i mnożniki w statystykach i na ekranie paradoksu (R-STAT-2). Zasady
+w 02 §11, §12, §13 i §15. Etapy 2–5 czekają.
 
 | Etap | Co | Wielkość | Po co najpierw |
 |---|---|---|---|

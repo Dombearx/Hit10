@@ -546,8 +546,22 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   potem każdy kolejny zegar, którego gracz jeszcze nie ma („Cel: nowy
   zegar — Babcia z minutnikiem”, postęp = Tiki do ceny), a gdy paradoks
   jest dostępny — „Cel: cofnij czas — dotknij wiru u góry”. Dotknięcie
-  otwiera zakładkę Zegary (albo ekran paradoksu). W samouczku i po
-  pierwszym paradoksie paska nie ma.
+  otwiera zakładkę Zegary (albo ekran paradoksu). W samouczku paska nie
+  ma.
+- **R-TUT-7a (cel po pierwszym paradoksie):** pasek zostaje na całą grę
+  (13 §5.5; wcześniej znikał i gracz po paradoksie nie miał żadnego
+  wskazanego celu). Zawsze jeden cel, w tej kolejności:
+  1. paradoks, gdy co najmniej podwaja Chronony („Cel: cofnij czas —
+     podwoisz Chronony”);
+  2. następny zegar, którego gracz w tym przejściu jeszcze nie ma;
+  3. najtańszy dostępny perk: „Cel: perk Szybki start — 2/5 Okruchów”
+     (liczą się też Okruchy, które dałby paradoks teraz); gdy starczy
+     dopiero z paradoksem — „Cel: cofnij czas — starczy na perk …”, a gdy
+     gracz już ma Okruchy — „Cel: kup perk — …”;
+  4. gdy wszystko jest odblokowane: bonus zegara najbliższy zdobycia.
+
+  Cel z perkiem albo paradoksem otwiera ekran paradoksu. Gdy wszystkie
+  bonusy są zdobyte, paska nie ma.
 - **R-TUT-6:** Karta zegara, którego gracz jeszcze nie ma, mówi najpierw,
   ile zarabia („+0,1/s za sztukę”), dopiero potem żart. Przycisk
   umiejętności mówi, co kupuje („Kup poz. 3”), a nie „Poziom 2/10”.
@@ -573,6 +587,14 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
 
 ## 12. Statystyki
 
+- **R-STAT-2 (mnożniki dochodu):** Na górze ekranu statystyk jest lista
+  wszystkiego, co mnoży dochód, zawsze jako mnożnik, żeby dało się
+  porównać źródła (13 §5.5): Chronony („×9,74”), osiągnięcia, poziomy
+  zegarów (łączny efekt na zegary, które gracz teraz ma; po pierwszym
+  paradoksie), Turbo (gdy działa) i „Razem”. Ekran paradoksu też mówi
+  mnożnikiem: „Chronony: 437 · dochód ×9,74”, a przy możliwym paradoksie
+  „Dochód ×9,74 → ×13”. Wcześniej było „+874% na zawsze”, przy którym
+  „+10%” poziomu zegara wyglądało na nic niewarte.
 - **R-STAT-1:** Ekran statystyk pokazuje:
   - Tiki zarobione w tym runie i łącznie,
   - liczbę rund i rozkład progów (%),

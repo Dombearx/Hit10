@@ -968,8 +968,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prestigeTitle => 'Paradoks czasowy';
 
   @override
-  String prestigeChronons(int count, String percent) {
-    return 'Chronony: $count (+$percent% na zawsze)';
+  String prestigeChronons(int count, String mult) {
+    return 'Chronony: $count · dochód $mult';
+  }
+
+  @override
+  String prestigeGainMult(String from, String to) {
+    return 'Dochód $from → $to';
   }
 
   @override
@@ -1148,6 +1153,46 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get goalPrestige => 'Cel: cofnij czas — dotknij wiru u góry';
+
+  @override
+  String get goalPrestigeDouble => 'Cel: cofnij czas — podwoisz Chronony';
+
+  @override
+  String goalPrestigePerk(String name) {
+    return 'Cel: cofnij czas — starczy na perk $name';
+  }
+
+  @override
+  String goalPerk(String name, String have, String need) {
+    return 'Cel: perk $name — $have/$need Okruchów';
+  }
+
+  @override
+  String goalPerkBuy(String name) {
+    return 'Cel: kup perk — $name';
+  }
+
+  @override
+  String get statMultTitle => 'Mnożniki dochodu';
+
+  @override
+  String statMultChronons(int count) {
+    return 'Chronony ($count)';
+  }
+
+  @override
+  String statMultAchievements(int count) {
+    return 'Osiągnięcia ($count)';
+  }
+
+  @override
+  String get statMultLevels => 'Poziomy zegarów';
+
+  @override
+  String get statMultTurbo => 'Turbo';
+
+  @override
+  String get statMultTotal => 'Razem';
 
   @override
   String get tutorialGotIt => 'OK';

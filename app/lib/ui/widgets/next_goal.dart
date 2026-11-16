@@ -7,7 +7,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 
 /// One line over the shop: what to aim for next, with its progress as the
-/// pill's fill (R-TUT-7). Gone after the first paradox.
+/// pill's fill (R-TUT-7), for the whole game.
 class NextGoalBar extends StatelessWidget {
   const NextGoalBar({super.key, required this.controller, required this.onTap});
   final GameController controller;
@@ -31,7 +31,20 @@ class NextGoalBar extends StatelessWidget {
         f.round(c.econ.milestoneMultiplier(id)),
       ),
       GoalKind.newClock => l.goalNewClock(generatorName(l, id!)),
-      GoalKind.prestige => l.goalPrestige,
+      GoalKind.prestige =>
+        c.state.prestiges == 0
+            ? l.goalPrestige
+            : goal.perk != null
+            ? l.goalPrestigePerk(perkName(l, goal.perk!))
+            : l.goalPrestigeDouble,
+      GoalKind.perk =>
+        goal.have >= goal.need
+            ? l.goalPerkBuy(perkName(l, goal.perk!))
+            : l.goalPerk(
+                perkName(l, goal.perk!),
+                '${goal.have.round()}',
+                '${goal.need.round()}',
+              ),
     };
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),

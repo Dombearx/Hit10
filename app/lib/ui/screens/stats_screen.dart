@@ -52,35 +52,57 @@ class _Stats extends StatelessWidget {
       (l.statPrestiges, '${s.prestiges}'),
       (l.statChronons, '${s.chronons}'),
     ];
+    final e = c.econ;
+    final levels = e.clockLevelsGain();
+    final turbo = c.engine.turbo;
+    // Everything that multiplies the income, as multipliers, so the
+    // sources can be compared (docs/13 §5.5).
+    final mults = <(String, String)>[
+      (l.statMultChronons(s.chronons), f.mult(e.chrononMultiplier())),
+      (
+        l.statMultAchievements(s.achievements.length),
+        f.mult(e.achievementMultiplier()),
+      ),
+      if (e.springsUnlocked) (l.statMultLevels, f.mult(levels)),
+      if (turbo > 1) (l.statMultTurbo, f.mult(turbo)),
+      (l.statMultTotal, f.mult(e.permanentMultiplier() * levels * turbo)),
+    ];
+    Widget row((String, String) r, {Key? key}) => Container(
+      key: key,
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Palette.outline, width: 2),
+      ),
+      child: Row(
+        children: [
+          Expanded(child: Text(r.$1, style: const TextStyle(fontSize: 14))),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              r.$2,
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontFamily: Fonts.display, fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
-        for (final (k, v) in rows)
-          Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Palette.outline, width: 2),
-            ),
-            child: Row(
-              children: [
-                Expanded(child: Text(k, style: const TextStyle(fontSize: 14))),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: Text(
-                    v,
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      fontFamily: Fonts.display,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Text(
+            l.statMultTitle,
+            style: const TextStyle(fontFamily: Fonts.display, fontSize: 17),
           ),
+        ),
+        for (final (i, r) in mults.indexed) row(r, key: Key('stat-mult-$i')),
+        const SizedBox(height: 8),
+        for (final r in rows) row(r),
       ],
     );
   }

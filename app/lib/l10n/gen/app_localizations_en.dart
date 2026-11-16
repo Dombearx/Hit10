@@ -970,8 +970,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prestigeTitle => 'Time paradox';
 
   @override
-  String prestigeChronons(int count, String percent) {
-    return 'Chronons: $count (+$percent% forever)';
+  String prestigeChronons(int count, String mult) {
+    return 'Chronons: $count · income $mult';
+  }
+
+  @override
+  String prestigeGainMult(String from, String to) {
+    return 'Income $from → $to';
   }
 
   @override
@@ -1150,6 +1155,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goalPrestige => 'Goal: turn back time — tap the swirl up top';
+
+  @override
+  String get goalPrestigeDouble =>
+      'Goal: turn back time — it doubles your Chronons';
+
+  @override
+  String goalPrestigePerk(String name) {
+    return 'Goal: turn back time — enough for $name';
+  }
+
+  @override
+  String goalPerk(String name, String have, String need) {
+    return 'Goal: perk $name — $have/$need shards';
+  }
+
+  @override
+  String goalPerkBuy(String name) {
+    return 'Goal: buy the perk — $name';
+  }
+
+  @override
+  String get statMultTitle => 'Income multipliers';
+
+  @override
+  String statMultChronons(int count) {
+    return 'Chronons ($count)';
+  }
+
+  @override
+  String statMultAchievements(int count) {
+    return 'Achievements ($count)';
+  }
+
+  @override
+  String get statMultLevels => 'Clock levels';
+
+  @override
+  String get statMultTurbo => 'Turbo';
+
+  @override
+  String get statMultTotal => 'Together';
 
   @override
   String get tutorialGotIt => 'OK';
