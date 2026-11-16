@@ -6,7 +6,8 @@ Propozycja z 14.11.2026. Rozwija punkt 3.1 z [11-po-premierze.md](11-po-premierz
 **Stan (15.11.2026):** etap 1 (Sprężyny, §3.1) i Kolekcja tarcz (§3.3)
 są zrobione. Zasady w 02 §15, wyniki symulacji w 03 §4.3. Zmiany po
 symulacji: magazyn 10 zamiast 7 (R-SPR-4) i progi tarcz. Etap 2
-(wyzwania) czeka.
+(wyzwania) zastępuje propozycja z [13-petla-gry.md](13-petla-gry.md):
+wyzwania w ramach paradoksu trwałyby kwadrans (13 §2.4).
 
 ## 1. Problem w liczbach
 
