@@ -48,7 +48,10 @@ class AdOffers {
       AdOffer.turbo => s.turboLeft + cfg.turboDuration <= cfg.turboMaxStock,
       AdOffer.bag => e.passive() > 0,
       AdOffer.golden =>
-        e.goldenVisibleLeft == 0 && !e.goldenArmed && !e.goldenRound,
+        !e.goldenBlocked &&
+            e.goldenVisibleLeft == 0 &&
+            !e.goldenArmed &&
+            !e.goldenRound,
       AdOffer.rescue => rescue != null && s.playSeconds < rescue!.expiresAtPlay,
       // Worth an ad only once a hit would wind less than its share.
       AdOffer.spring =>

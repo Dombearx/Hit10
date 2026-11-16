@@ -36,7 +36,7 @@ class _Stats extends StatelessWidget {
     );
     final rows = <(String, String)>[
       (l.statEarnedRun, f.n(s.earnedThisRun.floorToDouble())),
-      (l.statEarnedTotal, f.n(s.earnedTotal.floorToDouble())),
+      (l.statEarnedTotal, f.n(s.lifetime.earnedEver.floorToDouble())),
       (l.statRounds, '${st.rounds}'),
       (l.tierPerfect, pct(Tier.perfect)),
       (l.tierGreat, pct(Tier.great)),
@@ -50,6 +50,7 @@ class _Stats extends StatelessWidget {
       (l.statGolden, '${s.lifetime.goldenCaught}'),
       (l.statPlayTime, f.duration(s.lifetime.secondsPlayed)),
       (l.statPrestiges, '${s.prestiges}'),
+      if (s.loop > 1 || s.loopGoal) (l.statLoop, '${s.loop}'),
       (l.statChronons, '${s.chronons}'),
     ];
     final e = c.econ;

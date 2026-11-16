@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
+import '../catalog.dart';
 import '../game_controller.dart';
+import '../screens/loop_screen.dart';
 import '../theme.dart';
 
 /// Risk modes, second clock and auto buyer, shown once unlocked
@@ -17,7 +19,24 @@ class ModeRow extends StatelessWidget {
     final s = c.state;
     final l = AppLocalizations.of(context);
     final chips = <Widget>[
-      if (e.blindUnlocked())
+      // The loop and its rule: a tap says what it changes (R-PETLA-4).
+      if (s.loop > 1)
+        _Toggle(
+          key: const Key('loop-chip'),
+          label: s.loopRules.isEmpty
+              ? l.loopNumber(s.loop)
+              : '${l.loopNumber(s.loop)} · ${s.loopRules.map((r) => ruleName(l, r)).join(' + ')}',
+          on: false,
+          onTap: () => showChronicle(context, c),
+        ),
+      if (e.blindForced)
+        _Toggle(
+          key: const Key('mode-blind'),
+          label: l.modeBlindForced(e.blindMultiplier().round()),
+          on: true,
+          onTap: () => showChronicle(context, c),
+        )
+      else if (e.blindUnlocked())
         _Toggle(
           key: const Key('mode-blind'),
           label: l.modeBlind(e.blindMultiplier().round()),

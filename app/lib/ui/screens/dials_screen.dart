@@ -79,7 +79,7 @@ class DialGallery extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(l.dialHint, style: dim),
-        if (next != null)
+        if (next != null && next.seal == null)
           Padding(
             padding: const EdgeInsets.only(top: 4),
             child: Text(
@@ -94,7 +94,7 @@ class DialGallery extends StatelessWidget {
           runSpacing: 10,
           children: [
             for (final d in c.balance.dials)
-              if (earned >= d.earned)
+              if (c.econ.dialUnlocked(d))
                 _DialTile(
                   key: Key('dial-${d.id}'),
                   selected: d.id == current,
@@ -112,9 +112,15 @@ class DialGallery extends StatelessWidget {
                     skin: dialSkin(d.id),
                     size: 58,
                     locked: true,
-                    progress: d == next ? c.econ.nextDialProgress : null,
+                    progress: d == next && d.seal == null
+                        ? c.econ.nextDialProgress
+                        : null,
                   ),
-                  label: d == next ? l.dialLocked(f.round(d.earned)) : '???',
+                  label: d.seal != null
+                      ? (d == next ? l.dialLockedSeal : '???')
+                      : d == next
+                      ? l.dialLocked(f.round(d.earned))
+                      : '???',
                 ),
           ],
         ),

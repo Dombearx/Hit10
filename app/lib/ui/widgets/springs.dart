@@ -224,10 +224,46 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
             ),
             const SizedBox(height: 8),
             Text(
-              l.springsIntro('${(sp.levelBonus * 100).round()}'),
+              l.springsIntro(f.mult(sp.levelFactor)),
               style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 4),
+            if (s.springsRefunded > 0) ...[
+              const SizedBox(height: 10),
+              Container(
+                key: const Key('springs-refund'),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFE08A),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Palette.outline, width: 2),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l.springsRefund(s.springsRefunded),
+                        style: const TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      key: const Key('springs-refund-ok'),
+                      onPressed: c.ackSpringsRefund,
+                      child: Text(
+                        l.tutorialGotIt,
+                        style: const TextStyle(
+                          fontFamily: Fonts.display,
+                          color: Palette.outline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: 10),
             SpringReserveCard(controller: c),
             const SizedBox(height: 14),
@@ -286,11 +322,13 @@ class ClockLevelSection extends StatelessWidget {
     final cost = c.econ.clockLevelCost(id);
     final can =
         c.econ.clockLevelable(id) && cost != null && c.state.springs >= cost;
-    final pct = (sp.levelBonus * level * 100).round();
+    final mult = Fmt.of(context, c).mult(c.econ.clockLevelFactor(id));
     // The next title: its name stays a surprise until it is reached.
     final nextTitle = sp.titleLevels.where((t) => t > level).firstOrNull;
     final lastTitle = sp.titleLevels.where((t) => t <= level).lastOrNull;
-    final reached = lastTitle == null ? null : masterTexts(l, id, lastTitle);
+    final reached = lastTitle == null
+        ? null
+        : masterTexts(l, id, sp.titleKeyAt(lastTitle)!);
     final small = TextStyle(
       fontSize: 12.5,
       color: Palette.outline.withValues(alpha: 0.7),
@@ -314,7 +352,7 @@ class ClockLevelSection extends StatelessWidget {
                   ),
                 ),
               Text(
-                l.clockLevelLine('$level', '${sp.maxLevel}', '$pct'),
+                l.clockLevelLine('$level', '${sp.maxLevel}', mult),
                 style: const TextStyle(
                   fontSize: 13.5,
                   fontWeight: FontWeight.w700,

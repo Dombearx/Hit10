@@ -58,17 +58,29 @@ class HitFeedback {
 class MilestoneEvent {
   const MilestoneEvent.generator(String this.generator, this.index)
     : synergy = null,
-      dial = null;
+      dial = null,
+      loopSprings = 0;
   const MilestoneEvent.synergy(String this.synergy)
     : generator = null,
       index = 0,
-      dial = null;
+      dial = null,
+      loopSprings = 0;
 
   /// A new stopwatch face (docs/12 §3.3).
   const MilestoneEvent.dial(String this.dial)
     : generator = null,
       synergy = null,
+      index = 0,
+      loopSprings = 0;
+
+  /// Mainsprings for bonuses of the loop's goal clock (R-PETLA-2a).
+  const MilestoneEvent.loopBonus(this.loopSprings)
+    : generator = null,
+      synergy = null,
+      dial = null,
       index = 0;
+
+  final int loopSprings;
   final String? generator;
   final int index;
   final String? synergy;
@@ -89,7 +101,7 @@ class ClockSlot {
 /// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does.
 enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, done }
 
-enum GoalKind { bonus, newClock, prestige, perk }
+enum GoalKind { bonus, newClock, prestige, perk, loopBonus }
 
 /// What [GameController.nextGoal] points the player at.
 class NextGoal {
@@ -386,6 +398,8 @@ class GameController extends ChangeNotifier {
     ]) {
       if (on != null) _log('mode_toggle', {'mode': mode, 'on': on ? 1 : 0});
     }
+    // "Broken stopwatch" keeps Blind on for the loop (R-PETLA-4).
+    if (blind != null && engine.blindForced) return;
     if (blind != null) state.modeBlind = blind;
     if (blind == false) {
       // Off mid-round: the clock shows again at once, and this round pays
@@ -489,6 +503,7 @@ class GameController extends ChangeNotifier {
       if (engine.autoBuy(_econAcc) != null) {
         sfx.play('buy', gain: 0.4);
         _announceBonuses(bonuses);
+        _checkLoop();
       }
       _econAcc = 0;
       notifyListeners();
@@ -498,6 +513,7 @@ class GameController extends ChangeNotifier {
       _sinceAchievementCheck = 0;
       _checkAchievements(AchievementContext(passive: econ.passive()));
       if (engine.canPrestige()) _tip('prestige');
+      _checkLoop();
       _windSprings();
       _announceDials();
       checkTips();
@@ -788,6 +804,7 @@ class GameController extends ChangeNotifier {
     final bonuses = _bonuses();
     final r = _afterBuy(engine.buyGenerators(id, count));
     if (r == BuyResult.ok) _announceBonuses(bonuses);
+    if (r == BuyResult.ok) _checkLoop();
     if (r == BuyResult.ok && first) {
       _log('generator_first', {'id': id});
       analytics.setUserProperty('top_clock', _topClock);
@@ -850,6 +867,80 @@ class GameController extends ChangeNotifier {
       notifyListeners();
     }
     return r;
+  }
+
+  /// The player read that the levels became mastery tiers (docs/13 §5.3).
+  void ackSpringsRefund() {
+    if (state.springsRefunded == 0) return;
+    state.springsRefunded = 0;
+    unawaited(save());
+    notifyListeners();
+  }
+
+  // ----------------------------------------- time loops (docs/13 §5.2) --
+
+  /// The goal of the loop was reached and its ending not shown yet.
+  bool get loopEndPending =>
+      state.loopGoal && !state.loopEndSeen && state.tutorialDone && !replaying;
+
+  void loopEndShown() {
+    if (state.loopEndSeen) return;
+    state.loopEndSeen = true;
+    unawaited(save());
+  }
+
+  /// The loop's goal and the Mainsprings for its clock's bonuses
+  /// (R-PETLA-1, 2a).
+  void _checkLoop() {
+    final r = engine.checkLoop();
+    if (r.goalReached) {
+      _log('loop_done', {
+        'loop': state.loop,
+        'rule': state.loopRules.join('+'),
+        'play_min': (state.loopPlaySeconds / 60).round(),
+        'paradoxes': state.loopPrestiges,
+      });
+      analytics.setUserProperty('loop', '${state.loop}');
+      sfx.play('fanfare');
+      unawaited(haptics.long());
+      _announceDials();
+    }
+    if (r.springs > 0) {
+      _milestones.add(MilestoneEvent.loopBonus(r.springs));
+      sfx.play('chimes', gain: 0.6);
+    }
+    if (r.goalReached || r.springs > 0) {
+      unawaited(save());
+      notifyListeners();
+    }
+  }
+
+  /// A new Time Loop (R-PETLA-3; the UI confirms first).
+  bool startLoop() {
+    if (!state.loopGoal) return false;
+    pause();
+    _rebuildClocks();
+    if (!engine.startLoop(_wallMs())) return false;
+    // The perks are gone, and the second clock with them.
+    _rebuildClocks();
+    ads.rescue = null;
+    _log('loop_start', {
+      'loop': state.loop,
+      'rule': state.loopRules.join('+'),
+      'springs': state.springs,
+    });
+    analytics.setUserProperty('loop', '${state.loop}');
+    unawaited(save());
+    notifyListeners();
+    return true;
+  }
+
+  /// After the story the player picks the next loop's rules (R-PETLA-8).
+  void toggleNextRule(String id) {
+    if (!econ.storyDone) return;
+    if (!state.nextRules.remove(id)) state.nextRules.add(id);
+    unawaited(save());
+    notifyListeners();
   }
 
   // ------------------------------------------- dials (docs/12 §3.3) --
@@ -1038,6 +1129,21 @@ class GameController extends ChangeNotifier {
       );
     }
     if (state.prestiges == 0) return null;
+    // The goal is reached: each bonus of its clock pays a Mainspring
+    // (R-PETLA-2a).
+    final goalClock = balance.loops.goal;
+    final nextBonus = econ.nextMilestone(goalClock);
+    if (state.loopGoal &&
+        nextBonus != null &&
+        econ.owned(goalClock) > 0 &&
+        econ.milestonesReached(goalClock) >= state.loopBonusPaid) {
+      return NextGoal(
+        GoalKind.loopBonus,
+        generator: goalClock,
+        have: econ.owned(goalClock).toDouble(),
+        need: nextBonus.toDouble(),
+      );
+    }
     // The cheapest perk within reach of the tree.
     PerkConfig? perk;
     for (final p in balance.prestige.perks) {
@@ -1271,6 +1377,10 @@ class GameController extends ChangeNotifier {
         s != null &&
         state.tutorialDone &&
         !state.tipsSeen.contains('season:${s.key}');
+    if (state.lastSeenMs > 0) {
+      engine.onReturn((_wallMs() - state.lastSeenMs) / 1000);
+    }
+    _checkLoop(); // also a save from before the loops
     pendingOffline = engine.offlineSince(_wallMs());
     // Saved until collected: closing the app over the summary loses nothing.
     engine.holdOffline(pendingOffline);

@@ -10,6 +10,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
+import 'loop_screen.dart';
 import 'sheet.dart';
 
 /// Time paradox (docs/02 §9): Chronons, the rewind button, the perk tree.
@@ -117,6 +118,7 @@ class _Prestige extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
+        LoopCard(controller: c),
         Text(
           l.prestigeChronons(s.chronons, mult),
           style: const TextStyle(fontFamily: Fonts.display, fontSize: 18),

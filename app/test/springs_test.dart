@@ -188,7 +188,7 @@ void main() {
       }
       expect(e.econ.clockLevelCost('grandpa'), isNull);
       expect(e.levelClock('grandpa'), BuyResult.unavailable);
-      expect(s.springs, 100 - 55);
+      expect(s.springs, 100 - 15); // 1 + 2 + 3 + 4 + 5
     });
 
     test('too few Mainsprings: refused, nothing spent', () {
@@ -200,7 +200,7 @@ void main() {
       expect(s.springs, 3);
     });
 
-    test('each level adds +10 % to that clock only', () {
+    test('each tier multiplies that clock only by 1.5', () {
       s.owned['grandpa'] = 10;
       s.owned['grandma'] = 10;
       final pa = e.econ.generatorRate('grandpa');
@@ -208,7 +208,7 @@ void main() {
       s.clockLevels['grandpa'] = 4;
       expect(
         e.econ.generatorRate('grandpa'),
-        closeTo(pa * (1 + 4 * sp.levelBonus), pa * 1e-9),
+        closeTo(pa * sp.levelFactor * sp.levelFactor * 1.5 * 1.5, pa * 1e-9),
       );
       expect(e.econ.generatorRate('grandma'), ma);
     });
@@ -226,17 +226,20 @@ void main() {
       expect(s.everOwned, contains('cuckoo'));
     });
 
-    test('levels 5 and 10 are master titles (+1 % each)', () {
+    test('tiers 3 and 5 are master titles (+1 % each), ids as before', () {
       final all = buildAchievements(b);
       final ids = all
           .where((a) => a.category == AchievementCategory.mastery)
           .map((a) => a.id)
           .toSet();
       expect(ids, hasLength(b.generators.length * sp.titleLevels.length));
-      s.clockLevels['quartz'] = 5;
-      final got = unlockAchievements(all, s, const AchievementContext());
+      s.clockLevels['quartz'] = 3;
+      var got = unlockAchievements(all, s, const AchievementContext());
       expect(got.map((a) => a.id), contains('mastery_quartz_5'));
       expect(got.map((a) => a.id), isNot(contains('mastery_quartz_10')));
+      s.clockLevels['quartz'] = 5;
+      got = unlockAchievements(all, s, const AchievementContext());
+      expect(got.map((a) => a.id), ['mastery_quartz_10']);
     });
   });
 
@@ -246,14 +249,23 @@ void main() {
       s.lifetime.earnedEver = b.dials[3].earned;
       expect(e.econ.unlockedDials, hasLength(4));
       expect(e.econ.nextDial, b.dials[4]);
+      // The last six are the seals' trophies (R-PETLA-5), not for Tiki.
       s.lifetime.earnedEver = 1e300;
+      expect(e.econ.nextDial!.seal, 'blindfold');
+      expect(e.econ.nextDialProgress, 0);
+      s.seals.add('blindfold');
+      expect(e.econ.nextDial!.seal, 'inflation');
+      // One unlocked under the old thresholds stays.
+      s.dialsSeen.add('rift');
+      expect(e.econ.unlockedDials.map((d) => d.id), contains('rift'));
+      s.seals.addAll(b.loops.rules.map((r) => r.id));
       expect(e.econ.nextDial, isNull);
     });
 
     test('a locked or unknown choice draws the classic face', () {
       s.dial = 'rift';
       expect(e.econ.dialId, 'classic');
-      s.lifetime.earnedEver = b.dials.last.earned;
+      s.seals.add('insomnia');
       expect(e.econ.dialId, 'rift');
       s.dial = 'nope';
       expect(e.econ.dialId, 'classic');

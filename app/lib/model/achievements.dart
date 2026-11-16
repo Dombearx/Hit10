@@ -62,7 +62,11 @@ class AchievementDef {
     this.check, {
     this.threshold = 0,
     this.generator,
+    this.tier = 0,
   });
+
+  /// The mastery tier a master title is given at.
+  final int tier;
 
   final String id;
   final AchievementCategory category;
@@ -223,14 +227,17 @@ List<AchievementDef> buildAchievements(Balance b) {
   );
   // Master titles: levels bought with Mainsprings (docs/12 R-SPR-6).
   for (final g in b.generators) {
-    for (final lv in b.springs.titleLevels) {
+    // The id and the texts go by the title's key, the check by its tier.
+    for (final (i, lv) in b.springs.titleLevels.indexed) {
+      final key = b.springs.titleKeys[i];
       list.add(
         AchievementDef(
-          'mastery_${g.id}_$lv',
+          'mastery_${g.id}_$key',
           AchievementCategory.mastery,
           (s, _) => (s.clockLevels[g.id] ?? 0) >= lv,
-          threshold: lv.toDouble(),
+          threshold: key.toDouble(),
           generator: g.id,
+          tier: lv,
         ),
       );
     }

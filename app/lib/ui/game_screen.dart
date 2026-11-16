@@ -20,6 +20,7 @@ import 'shop/generator_list.dart';
 import 'shop/skill_list.dart';
 import 'app_updates.dart';
 import 'catalog.dart';
+import 'screens/loop_screen.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/dials_screen.dart';
 import 'screens/help_screen.dart';
@@ -162,7 +163,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final c = controller;
     if (c.pendingOffline == null &&
         c.pendingDaily == null &&
-        !c.seasonIntroPending) {
+        !c.seasonIntroPending &&
+        !c.loopEndPending) {
       return;
     }
     _offlineOpen = true;
@@ -177,6 +179,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       if (mounted && c.seasonIntroPending) {
         c.seasonIntroShown();
         await showSeasonDialog(context, c);
+      }
+      // The loop's goal is reached: its ending (R-PETLA-2).
+      if (mounted && c.loopEndPending) {
+        await showLoopEnd(context, c);
       }
     } finally {
       _offlineOpen = false;

@@ -105,6 +105,14 @@ class _AchievementToastsState extends State<AchievementToasts> {
           dialTexts(l, m.dial!)?.$1 ?? m.dial!,
           '',
         ),
+      (achievement: null, bonus: final MilestoneEvent m)
+          when m.loopSprings > 0 =>
+        (
+          generatorArt[c.balance.loops.goal]!,
+          l.loopBonusToast,
+          l.loopBonusToastBody(m.loopSprings),
+          '',
+        ),
       (achievement: final AchievementDef a, bonus: _) => (
         achievementArt(a),
         _extra > 0 ? l.achievementsUnlocked(_extra + 1) : l.achievementUnlocked,

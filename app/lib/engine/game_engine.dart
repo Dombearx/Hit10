@@ -122,12 +122,31 @@ class GameEngine {
       if (goldenVisibleLeft == 0) _scheduleGolden(); // it flew away
       return false;
     }
-    if (!goldenEnabled || goldenArmed || goldenRound) return false;
+    if (!goldenEnabled || goldenBlocked || goldenArmed || goldenRound) {
+      return false;
+    }
     if (s.playSeconds >= s.goldenNextAt) {
       goldenVisibleLeft = b.golden.visibleFor;
       return true;
     }
     return false;
+  }
+
+  /// "Cloudy day" (R-PETLA-4): no golden second in this loop. A season's
+  /// items still fly: a missed event must cost nothing (R-SEZ-3).
+  bool get goldenBlocked => econ.ruleOn('noGold') && !_seasonRunning;
+
+  /// The player is back after [awaySeconds]: with the seal of "cloudy
+  /// day" a golden second comes within half a minute (R-PETLA-5).
+  void onReturn(double awaySeconds) {
+    if (!econ.sealed('noGold') || goldenBlocked) return;
+    final seal = b.loops.rule('noGold').seal;
+    if (awaySeconds < seal['awaySeconds']!) return;
+    if (goldenVisibleLeft > 0 || goldenArmed || goldenRound) return;
+    s.goldenNextAt = math.min(
+      s.goldenNextAt,
+      s.playSeconds + rng.nextDouble() * seal['goldenWithin']!,
+    );
   }
 
   /// The player tapped the flying golden clock.
@@ -192,6 +211,7 @@ class GameEngine {
 
   /// Ad offer "Golden second now" (R-AD): show the clock immediately.
   void summonGolden() {
+    if (goldenBlocked) return;
     if (goldenVisibleLeft > 0 || goldenArmed || goldenRound) return;
     goldenVisibleLeft = b.golden.visibleFor;
   }
@@ -410,6 +430,7 @@ class GameEngine {
     updateEffects(dt);
     s.earn(passive() * dt);
     s.playSeconds += dt;
+    s.loopPlaySeconds += dt;
     s.lifetime.secondsPlayed += dt;
   }
 
@@ -430,6 +451,8 @@ class GameEngine {
           combo *
           mode;
     }
+    // "Swiss precision" (R-PETLA-4): a GOOD pays the player nothing.
+    if (g.tier == Tier.good && econ.ruleOn('precision')) return 0;
     final t = b.tier(g.tier.name);
     final flat =
         t.reward * econ.strikePower() * globalMultiplier() * econ.beginnerPay();
@@ -479,15 +502,23 @@ class GameEngine {
 
   bool blindUnlocked() => s.lifetime.perfects >= b.blind.unlockPerfects;
 
-  bool get blindActive => s.modeBlind && blindUnlocked();
+  /// "Broken stopwatch" (R-PETLA-4) keeps Blind on for the whole loop.
+  bool get blindForced => econ.ruleOn('blindfold');
+
+  bool get blindActive => blindForced || (s.modeBlind && blindUnlocked());
 
   /// Reward multiplier of the mode switched on (R-TRYB-1).
   double modeMultiplier() => blindActive ? blindMultiplier() : 1;
 
-  /// What Blind pays when on: ×3, ×4 with Daredevil.
-  double blindMultiplier() => s.perks.contains('daredevil')
-      ? b.perk('daredevil').params['blindMultiplier']!
-      : b.blind.rewardMultiplier;
+  /// What Blind pays when on: ×3, ×4 with Daredevil, one more with the
+  /// seal of "broken stopwatch".
+  double blindMultiplier() =>
+      (s.perks.contains('daredevil')
+          ? b.perk('daredevil').params['blindMultiplier']!
+          : b.blind.rewardMultiplier) +
+      (econ.sealed('blindfold')
+          ? b.loops.rule('blindfold').seal['blindBonus']!
+          : 0);
 
   /// "Dziesiątka": counts perfects made on a 10th of the month.
   void recordPerfectDate(DateTime local) {
@@ -567,6 +598,7 @@ class GameEngine {
     s.chronons += gain;
     s.shards += gain;
     s.prestiges++;
+    s.loopPrestiges++;
     // The first paradox brings the Mainsprings, one ready to try (R-SPR-1).
     if (s.prestiges == 1) {
       s.springs += b.springs.firstGift;
@@ -611,6 +643,91 @@ class GameEngine {
     hotHandLeft = 0;
     frenzy = 1;
     _scheduleGolden();
+  }
+
+  // ----------------------------------------- time loops (docs/13 §5.2) --
+
+  /// Checks the loop's goal and its clock's bonuses (R-PETLA-1, 2a). Call
+  /// after purchases and now and then. Returns whether the goal was
+  /// reached just now, and the Mainsprings paid for new bonuses.
+  ({bool goalReached, int springs}) checkLoop() {
+    final goal = b.loops.goal;
+    var reached = false;
+    // In the first loop a Chronos bought before loops existed counts.
+    if (!s.loopGoal &&
+        (econ.owned(goal) > 0 || (s.loop == 1 && s.everOwned.contains(goal)))) {
+      s
+        ..loopGoal = true
+        ..loopGoalSeconds = s.loopPlaySeconds
+        ..loopsDone = math.max(s.loopsDone, s.loop);
+      final keys = s.loopRules.isEmpty ? [''] : s.loopRules;
+      for (final k in keys) {
+        final best = s.loopBest[k];
+        if (best == null || s.loopPlaySeconds < best) {
+          s.loopBest[k] = s.loopPlaySeconds;
+        }
+      }
+      s.seals.addAll(s.loopRules);
+      reached = true;
+    }
+    var springs = 0;
+    if (s.loopGoal) {
+      final have = econ.milestonesReached(goal);
+      if (have > s.loopBonusPaid) {
+        springs = (have - s.loopBonusPaid) * b.loops.goalBonusSprings;
+        s
+          ..loopBonusPaid = have
+          ..springs += springs; // a gift: may go over the stock's cap
+        s.lifetime.springsWound += springs;
+      }
+    }
+    return (goalReached: reached, springs: springs);
+  }
+
+  /// A new Time Loop (R-PETLA-3): everything a paradox resets, and the
+  /// Chronons, Shards and perks too. Mainsprings, mastery, seals,
+  /// achievements and statistics stay. Returns whether it started.
+  bool startLoop(int nowMs) {
+    if (!s.loopGoal) return false;
+    final rules = econ.nextLoopRules();
+    s
+      ..tiki = 0
+      ..earnedThisRun = 0
+      ..earnedTotal = 0
+      ..peakTiki = 0
+      ..chronons = 0
+      ..shards = 0
+      ..comboStreak = 0
+      ..shieldProgress = 0
+      ..runTaps = 0
+      ..rewindPending = false
+      ..secondClockOn = false
+      ..autoBuyerOn = false
+      ..loop = s.loop + 1
+      ..loopGoal = false
+      ..loopEndSeen = false
+      ..loopBonusPaid = 0
+      ..loopPlaySeconds = 0
+      ..loopGoalSeconds = 0
+      ..loopPrestiges = 0
+      ..loopStartMs = nowMs;
+    s.owned.clear();
+    s.skills.clear();
+    s.perks.clear();
+    s.habits.clear();
+    s.nextRules.clear();
+    s.loopRules
+      ..clear()
+      ..addAll(rules);
+    s.shieldCharges = maxShieldCharges();
+    goldenVisibleLeft = 0;
+    goldenArmed = false;
+    goldenRound = false;
+    frenzyLeft = 0;
+    hotHandLeft = 0;
+    frenzy = 1;
+    _scheduleGolden();
+    return true;
   }
 
   /// Perk can be bought now: not owned, prerequisite owned, enough Shards.
@@ -774,6 +891,10 @@ class GameEngine {
         hours = math.max(hours, b.perk(id).params['capHours']!);
       }
     }
+    // The seal of "insomnia" (R-PETLA-5).
+    if (econ.sealed('insomnia')) {
+      hours += b.loops.rule('insomnia').seal['offlineCapHours']!;
+    }
     return hours * 3600;
   }
 
@@ -783,6 +904,10 @@ class GameEngine {
       if (s.perks.contains(id)) {
         e = math.max(e, b.perk(id).params['efficiency']!);
       }
+    }
+    // "Insomnia" (R-PETLA-4): the clocks barely work while away.
+    if (econ.ruleOn('insomnia')) {
+      e = math.min(e, b.loops.rule('insomnia').params['offlineEfficiency']!);
     }
     return e;
   }

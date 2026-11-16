@@ -14,6 +14,35 @@ class Economy {
   final Balance b;
   final GameState s;
 
+  // ----------------------------------------- time loops (docs/13 §5.2) --
+
+  /// The changed rule [id] is on in this loop (R-PETLA-4).
+  bool ruleOn(String id) => s.loopRules.contains(id);
+
+  /// The seal of rule [id] is won: its bonus holds for good (R-PETLA-5).
+  bool sealed(String id) => s.seals.contains(id);
+
+  double _rule(String id, String key) => b.loops.rule(id).params[key]!;
+  double _seal(String id, String key) => b.loops.rule(id).seal[key]!;
+
+  /// The rules of the next loop: in the story the first one not beaten
+  /// yet, after it whatever the player picked (R-PETLA-4, R-PETLA-8).
+  List<String> nextLoopRules() {
+    for (final r in b.loops.rules) {
+      if (!sealed(r.id)) return [r.id];
+    }
+    return [
+      for (final r in b.loops.rules)
+        if (s.nextRules.contains(r.id)) r.id,
+    ];
+  }
+
+  /// Every rule is beaten: the player picks the rules now (R-PETLA-8).
+  bool get storyDone => b.loops.rules.every((r) => sealed(r.id));
+
+  /// Chapters of the Chronicle open (R-PETLA-7).
+  int get chaptersOpen => math.min(s.loopsDone, b.loops.storyChapters);
+
   // ---------------------------------------------------------------- skills --
 
   int level(String skill) => s.skills[skill] ?? 0;
@@ -41,9 +70,20 @@ class Economy {
 
   bool get beginner => beginnerShare > 0;
 
-  /// Windows from skills; generators always use these.
-  Windows windows() =>
-      windowsAt(magnet: level('magnet'), wideEye: level('wideEye'));
+  /// Windows from skills; generators always use these. The seal of
+  /// "precision" widens PERFECT a little, never past GREAT (R-PROG-2).
+  Windows windows() {
+    final w = windowsAt(magnet: level('magnet'), wideEye: level('wideEye'));
+    if (!sealed('precision')) return w;
+    return Windows(
+      perfect: math.min(
+        w.great,
+        w.perfect + _seal('precision', 'perfectWindow'),
+      ),
+      great: w.great,
+      good: w.good,
+    );
+  }
 
   /// The windows for the player's own taps: [windows] plus BLISKO, all
   /// widened by Zimna krew.
@@ -111,14 +151,23 @@ class Economy {
   double coldBlood([int? lvl]) =>
       1 / (1 - _per('bulletTime') * (lvl ?? level('bulletTime')));
 
-  int comboCap([int? lvl]) =>
-      b.combo.baseCap + (_per('combo') * (lvl ?? level('combo'))).round();
+  /// The most the streak counts. "Short fuse" keeps it at its own cap.
+  int comboCap([int? lvl]) => ruleOn('shortFuse')
+      ? _rule('shortFuse', 'comboCap').round()
+      : b.combo.baseCap + (_per('combo') * (lvl ?? level('combo'))).round();
 
   double strikePower() => 1 + _per('power') * level('power');
 
   double echoSeconds() => _per('echo') * level('echo');
 
-  int shieldCharges() => level('shield');
+  /// Shield charges held at most: none under "short fuse", one more with
+  /// its seal.
+  int shieldCharges() => ruleOn('shortFuse')
+      ? 0
+      : level('shield') +
+            (sealed('shortFuse')
+                ? _seal('shortFuse', 'shieldCharges').round()
+                : 0);
 
   /// Golden Touch: interval multiplier (<1 = more often) and strength.
   double goldenIntervalFactor() =>
@@ -180,23 +229,44 @@ class Economy {
     return perk == null || s.perks.contains(perk);
   }
 
+  /// What each unit raises the price of the next by: more under
+  /// "inflation" (R-PETLA-4).
+  double get costGrowth => ruleOn('inflation')
+      ? _rule('inflation', 'costGrowth')
+      : b.generatorCostGrowth;
+
+  /// The first units go at a discount with the seal of "inflation".
+  int get _cheapUnits =>
+      sealed('inflation') ? _seal('inflation', 'halfPriceUnits').round() : 0;
+
   double generatorCost(String id, [int? ownedNow]) {
     final g = b.generator(id);
-    return g.baseCost * math.pow(b.generatorCostGrowth, ownedNow ?? owned(id));
+    final n = ownedNow ?? owned(id);
+    final discount = n < _cheapUnits ? _seal('inflation', 'halfPrice') : 1.0;
+    return g.baseCost * math.pow(costGrowth, n) * discount;
   }
 
-  /// Price of [k] more units (geometric series, docs/03 §2).
+  /// Price of [k] more units (geometric series, docs/03 §2): the
+  /// discounted first units, then the rest.
   double bulkCost(String id, int k) {
     if (k <= 0) return 0;
-    final r = b.generatorCostGrowth;
-    return generatorCost(id) * (math.pow(r, k) - 1) / (r - 1);
+    final r = costGrowth;
+    final n = owned(id);
+    final base = b.generator(id).baseCost;
+    double series(int from, int count) => count <= 0
+        ? 0
+        : base * math.pow(r, from) * (math.pow(r, count) - 1) / (r - 1);
+    final cheap = (_cheapUnits - n).clamp(0, k);
+    return (cheap > 0 ? _seal('inflation', 'halfPrice') : 1.0) *
+            series(n, cheap) +
+        series(n + cheap, k - cheap);
   }
 
   /// Largest k affordable with [money] (0 if none).
   int maxAffordable(String id, double money) {
     final first = generatorCost(id);
     if (money < first) return 0;
-    final r = b.generatorCostGrowth;
+    final r = costGrowth;
     var k = (math.log(money * (r - 1) / first + 1) / math.log(r)).floor();
     // Guard against floating error at the boundary.
     while (k > 0 && bulkCost(id, k) > money) {
@@ -269,9 +339,9 @@ class Economy {
 
   int clockLevel(String id) => s.clockLevels[id] ?? 0;
 
-  /// What the Mainspring levels multiply clock [id] by.
+  /// What the mastery tiers multiply clock [id] by (R-SPR-5).
   double clockLevelFactor(String id, [int? level]) =>
-      1 + b.springs.levelBonus * (level ?? clockLevel(id));
+      math.pow(b.springs.levelFactor, level ?? clockLevel(id)).toDouble();
 
   /// What all the clock levels together multiply the income by now
   /// (1 without clocks or levels).
@@ -309,16 +379,22 @@ class Economy {
 
   // ------------------------------------------------- dials (docs/12 §3.3) --
 
-  /// Faces unlocked by the Tiki earned in all runs.
+  /// A face is unlocked by the Tiki earned in all runs, or by the seal of
+  /// its Time Loop (R-PETLA-5); one unlocked under the old thresholds
+  /// stays.
+  bool dialUnlocked(DialConfig d) => d.seal == null
+      ? s.lifetime.earnedEver >= d.earned
+      : sealed(d.seal!) || s.dialsSeen.contains(d.id);
+
   List<DialConfig> get unlockedDials => [
     for (final d in b.dials)
-      if (s.lifetime.earnedEver >= d.earned) d,
+      if (dialUnlocked(d)) d,
   ];
 
   /// The next face to unlock, or null when all are.
   DialConfig? get nextDial {
     for (final d in b.dials) {
-      if (s.lifetime.earnedEver < d.earned) return d;
+      if (!dialUnlocked(d)) return d;
     }
     return null;
   }
@@ -330,8 +406,10 @@ class Economy {
   double get nextDialProgress {
     final next = nextDial;
     if (next == null) return 1;
+    if (next.seal != null) return 0;
     final have = s.lifetime.earnedEver;
-    final prev = unlockedDials.isEmpty ? 0.0 : unlockedDials.last.earned;
+    final earnedFaces = unlockedDials.where((d) => d.seal == null);
+    final prev = earnedFaces.isEmpty ? 0.0 : earnedFaces.last.earned;
     if (have <= 0) return 0;
     if (prev <= 0) {
       return (math.log(1 + have) / math.log(1 + next.earned)).clamp(0.0, 1.0);

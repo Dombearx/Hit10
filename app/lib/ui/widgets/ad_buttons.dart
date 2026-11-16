@@ -42,7 +42,12 @@ class AdCornerButtons extends ConsumerWidget {
       final cd = c.ads.cooldownLeftMs(o, now);
       final sub = cd > 0
           ? l.adCooldown(clockText(cd / 1000))
-          : (!can && o == AdOffer.turbo ? l.adFull : null);
+          : !can && o == AdOffer.turbo
+          ? l.adFull
+          // "Cloudy day": no golden second in this loop (R-PETLA-4).
+          : o == AdOffer.golden && c.engine.goldenBlocked
+          ? l.adBlockedRule
+          : null;
       return GestureDetector(
         key: key,
         onTap: can

@@ -473,9 +473,10 @@ class SpringsConfig {
       firstHitAfter = _d(j['firstHitAfter']),
       maxStock = _i(j['maxStock']),
       firstGift = _i(j['firstGift']),
-      levelBonus = _d(j['levelBonus']),
+      levelFactor = _d(j['levelFactor']),
       maxLevel = _i(j['maxLevel']),
-      titleLevels = [for (final v in j['titleLevels']! as List) _i(v)];
+      titleLevels = [for (final v in j['titleLevels']! as List) _i(v)],
+      titleKeys = [for (final v in j['titleKeys']! as List) _i(v)];
 
   /// Real seconds that wind one Mainspring (R-SPR-2).
   final double secondsPerSpring;
@@ -503,24 +504,71 @@ class SpringsConfig {
   /// Given with the first paradox, to try a level right away.
   final int firstGift;
 
-  /// Income per clock level, and the most levels (R-SPR-5).
-  final double levelBonus;
+  /// What each mastery tier multiplies the clock by, and the most tiers
+  /// (R-SPR-5).
+  final double levelFactor;
   final int maxLevel;
 
-  /// Levels that give a master title (an achievement, R-SPR-6).
+  /// Tiers that give a master title (an achievement, R-SPR-6), and the key
+  /// each title's texts and achievement id go by (the levels they were at
+  /// when there were ten: saves keep their titles).
   final List<int> titleLevels;
+  final List<int> titleKeys;
+
+  /// The texts' key of the title given at [level], or null.
+  int? titleKeyAt(int level) {
+    final i = titleLevels.indexOf(level);
+    return i < 0 ? null : titleKeys[i];
+  }
 
   /// Mainsprings level [level] (1-based) costs: N for level N.
   int costOf(int level) => level;
 }
 
-/// A stopwatch face unlocked by Tiki earned in total (docs/12 §3.3).
+/// A stopwatch face: unlocked by Tiki earned in total (docs/12 §3.3) or,
+/// with [seal], by finishing the Time Loop of that rule (R-PETLA-5).
 class DialConfig {
   DialConfig(Map<String, Object?> j)
     : id = j['id']! as String,
-      earned = _d(j['earned']);
+      earned = j['earned'] == null ? 0 : _d(j['earned']),
+      seal = j['seal'] as String?;
   final String id;
   final double earned;
+  final String? seal;
+}
+
+/// One changed rule of a Time Loop and the seal finishing it gives
+/// (docs/13 §5.2, R-PETLA-4/5).
+class LoopRuleConfig {
+  LoopRuleConfig(Map<String, Object?> j)
+    : id = j['id']! as String,
+      params = j['params'] == null
+          ? const {}
+          : _m(j['params']).map((k, v) => MapEntry(k, _d(v))),
+      seal = _m(j['seal']).map((k, v) => MapEntry(k, _d(v)));
+  final String id;
+  final Map<String, double> params;
+  final Map<String, double> seal;
+}
+
+/// Time Loops (docs/13 §5.2): the goal that ends one, and the rules of the
+/// next ones in the order Chronos brings them.
+class LoopsConfig {
+  LoopsConfig(Map<String, Object?> j)
+    : goal = j['goal']! as String,
+      goalBonusSprings = _i(j['goalBonusSprings']),
+      storyChapters = _i(j['storyChapters']),
+      rules = _ml(j['rules']).map(LoopRuleConfig.new).toList();
+
+  /// The clock whose first unit ends the loop (R-PETLA-1).
+  final String goal;
+
+  /// Mainsprings each bonus of that clock pays, once a loop (R-PETLA-2a).
+  final int goalBonusSprings;
+  final int storyChapters;
+  final List<LoopRuleConfig> rules;
+
+  LoopRuleConfig rule(String id) => rules.firstWhere((r) => r.id == id);
 }
 
 class UiConfig {
@@ -555,6 +603,7 @@ class Balance {
       seasons = SeasonsConfig(_m(j['seasons'])),
       jackpot = JackpotConfig(_m(j['jackpot'])),
       springs = SpringsConfig(_m(j['springs'])),
+      loops = LoopsConfig(_m(j['loops'])),
       dials = _ml(j['dials']).map(DialConfig.new).toList(growable: false),
       ui = UiConfig(_m(j['ui']));
 
@@ -600,6 +649,7 @@ class Balance {
   final SeasonsConfig seasons;
   final JackpotConfig jackpot;
   final SpringsConfig springs;
+  final LoopsConfig loops;
   final List<DialConfig> dials;
   final UiConfig ui;
 
@@ -777,8 +827,8 @@ class Balance {
     if (sp.secondsPerSpring <= 0 || sp.maxStock < 1 || sp.maxLevel < 1) {
       e.add('springs secondsPerSpring, maxStock and maxLevel must be positive');
     }
-    if (sp.hitSeconds < 0 || sp.hitReserve < 0 || sp.levelBonus < 0) {
-      e.add('springs hitSeconds, hitReserve and levelBonus must be ≥ 0');
+    if (sp.hitSeconds < 0 || sp.hitReserve < 0 || sp.levelFactor < 1) {
+      e.add('springs hitSeconds, hitReserve ≥ 0 and levelFactor ≥ 1');
     }
     if (sp.hitReserveRefill < 0 || sp.firstHitSeconds < sp.hitSeconds) {
       e.add('springs hitReserveRefill ≥ 0, firstHitSeconds ≥ hitSeconds');
@@ -792,13 +842,25 @@ class Balance {
     for (final t in sp.titleLevels) {
       if (t < 1 || t > sp.maxLevel) e.add('springs titleLevels within 1..max');
     }
+    if (sp.titleKeys.length != sp.titleLevels.length) {
+      e.add('springs titleKeys: one for each of titleLevels');
+    }
+    unique('loop rule', loops.rules.map((r) => r.id));
+    if (!generators.any((g) => g.id == loops.goal)) {
+      e.add('loops goal "${loops.goal}" is not a generator');
+    }
     unique('dial', dials.map((d) => d.id));
-    if (dials.isEmpty || dials.first.earned != 0) {
+    if (dials.isEmpty || dials.first.earned != 0 || dials.first.seal != null) {
       e.add('the first dial must be free (earned 0)');
     }
     for (var i = 1; i < dials.length; i++) {
-      if (dials[i].earned <= dials[i - 1].earned) {
-        e.add('dial "${dials[i].id}" must need more than the previous one');
+      final d = dials[i];
+      if (d.seal != null) {
+        if (!loops.rules.any((r) => r.id == d.seal)) {
+          e.add('dial "${d.id}": unknown loop rule "${d.seal}"');
+        }
+      } else if (dials[i - 1].seal != null || d.earned <= dials[i - 1].earned) {
+        e.add('dial "${d.id}" must need more than the previous one');
       }
     }
     if (ads.turboMaxStock < ads.turboDuration) {

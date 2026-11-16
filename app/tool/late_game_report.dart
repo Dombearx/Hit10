@@ -9,8 +9,10 @@
 //      more days, and counts what was new before and after that day;
 //   2. at the end: what each source of bonus is worth in income;
 //   3. how fast Mainsprings wind under the current and other caps;
-//   4. from that state: how long a fresh run ("a challenge") takes under
-//      a few restrictions, with and without offline income.
+//   4. from that state: how long a fresh run with the Chronons kept takes
+//      under a few restrictions (why challenges inside a paradox fail);
+//   5. the Time Loops of docs/13 on the game's own rules: a new game played
+//      through the story's loops, how long each takes.
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
@@ -66,7 +68,65 @@ class Player {
     this.spendSprings = true,
     this.offline = true,
     this.unlock = true,
+    this.loops = false,
+    this.stayDays = 2,
   });
+
+  /// Plays the Time Loops: goes for the goal clock's perks first and
+  /// starts the next loop once every bonus of the goal clock is paid, or
+  /// [stayDays] after the goal.
+  final bool loops;
+  final double stayDays;
+
+  /// One line per finished loop: number, rules, days and hours played to
+  /// the goal and to the exit, paradoxes, mastery tiers at its start.
+  final loopLog = <String>[];
+  var _loopStartDay = 0.0;
+  var _loopStartHours = 0.0;
+  var _loopTiersAtStart = 0;
+  double? _goalDay;
+  double? _goalHours;
+
+  static const _rushPerks = [
+    'headStart',
+    'deepSleep1',
+    'longNap1',
+    'muscleMemory1',
+    'autoBuyer',
+    'deepSleep2',
+    'longNap2',
+    'unlockSchrodinger',
+    'unlockChronos',
+  ];
+
+  int get _tiers => s.clockLevels.values.fold(0, (a, x) => a + x);
+
+  void _loopStep(GameEngine e, double days, int nowMs) {
+    if (e.checkLoop().goalReached) {
+      _goalDay = days;
+      _goalHours = playHours;
+    }
+    if (!loops || !s.loopGoal) return;
+    final all =
+        s.loopBonusPaid >= e.econ.milestoneThresholds(b.loops.goal).length;
+    if (!all && days - (_goalDay ?? days) < stayDays) return;
+    String d(double v) => v.toStringAsFixed(1);
+    loopLog.add(
+      '${'${s.loop}'.padLeft(4)}  ${(s.loopRules.isEmpty ? '—' : s.loopRules.join('+')).padRight(10)}'
+      '${d(_goalDay! - _loopStartDay).padLeft(11)}'
+      '${d(_goalHours! - _loopStartHours).padLeft(8)}'
+      '${d(days - _loopStartDay).padLeft(11)}'
+      '${'${s.loopPrestiges}'.padLeft(11)}'
+      '${'${s.loopBonusPaid}'.padLeft(9)}'
+      '${'$_loopTiersAtStart'.padLeft(14)}',
+    );
+    e.startLoop(nowMs);
+    _loopStartDay = days;
+    _loopStartHours = playHours;
+    _loopTiersAtStart = _tiers;
+    _goalDay = null;
+    _goalHours = null;
+  }
 
   final Balance b;
   final GameState s;
@@ -167,8 +227,16 @@ class Player {
         e.prestige();
         paradoxCount++;
       }
-      for (final id in perkOrder) {
-        if (b.prestige.perks.any((x) => x.id == id)) e.buyPerk(id);
+      if (loops) {
+        // Strictly in order: nothing dearer is bought past the goal's perks.
+        for (final id in [..._rushPerks, ...perkOrder]) {
+          if (s.perks.contains(id)) continue;
+          if (e.buyPerk(id) != BuyResult.ok) break;
+        }
+      } else {
+        for (final id in perkOrder) {
+          if (b.prestige.perks.any((x) => x.id == id)) e.buyPerk(id);
+        }
       }
       if (s.perks.length >= b.prestige.perks.length) {
         allPerksDay ??= day - 1 + k / sessions;
@@ -182,6 +250,11 @@ class Player {
       sim.onStep = (t) => _mark(sim, startHours + t / 3600, startDays);
       sim.run();
       playHours += minutes / 60;
+      _loopStep(
+        e,
+        day - 1 + (k + 0.5) / sessions,
+        wallMs(k * gap + minutes * 60),
+      );
       final rounds = (minutes * 60 / e.econ.roundSeconds()).floor();
       final exact = (rounds * pWithin(b.jackpot.window, sigma)).round();
       for (var i = 0; i < exact; i++) {
@@ -214,6 +287,7 @@ class Player {
         );
         _mark(sim, playHours, day - 1 + (k + 1) / sessions);
       }
+      _loopStep(e, day - 1 + (k + 1) / sessions, wallMs((k + 1) * gap - 1));
     }
   }
 
@@ -482,6 +556,7 @@ void main(List<String> args) {
     (m(v['prestige'])['perks']! as List).removeWhere(
       (x) => '${m(x)['id']}'.startsWith('unlock'),
     );
+    m(v['loops'])['goal'] = m(gens.last)['id'];
     return Balance.fromJsonString(jsonEncode(v));
   }
 
@@ -542,75 +617,36 @@ void main(List<String> args) {
 
   // ---------------------------------------------------------------- 5 --
   if (parts.contains('5')) {
+    final days = int.parse(opt('loop-days', '110'));
     stdout.writeln(
-      '\n== 5. A new timeline: Chronons, Shards and perks start from zero, '
-      'paradoxes as usual — days (hours played) until:',
+      '\n== 5. Time Loops on the game\'s rules: a new game, the player goes '
+      'for Chronos, stays for his bonuses (2 days at most), spends '
+      'Mainsprings on mastery',
     );
-    stdout.writeln(
-      '${'kept'.padRight(34)}${'first Chronos'.padLeft(14)}'
-      '${'all perks'.padLeft(13)}${'Chronos 4/8'.padLeft(13)}'
-      '${'Chronos 8/8'.padLeft(13)}${'all bonuses'.padLeft(13)}'
-      '${'paradoxes'.padLeft(11)}',
+    final st = GameState()..tutorialDone = true;
+    final q = Player(
+      b,
+      st,
+      sessions: sessions,
+      minutes: minutes,
+      sigma: sigma,
+      loops: true,
     );
-    // (name, achievements kept, clock factor for every clock, balance)
-    // The clock factor is set through the level: 1 + 0.1 · level.
-    final variants = <(String, bool, double?, Balance)>[
-      ('nothing (the first timeline)', false, 1, b),
-      ('achievements', true, 1, b),
-      ('achievements + levels as bought', true, null, b),
-      ('achievements + every clock ×2', true, 2, b),
-      ('achievements + every clock ×4', true, 4, b),
-      ('achievements + every clock ×8', true, 8, b),
-      ('… ×4, prices ×1.20', true, 4, prices(1.2)),
-      ('… ×4, prices ×1.25', true, 4, prices(1.25)),
-      ('… ×4, no Golden Second', true, 4, noGolden()),
-      ('… ×4, blind (σ ×1.5)', true, 4, b),
-    ];
-    for (final (name, keepAch, factor, vb) in variants) {
-      final c = clone(s);
-      c
-        ..tiki = 0
-        ..earnedThisRun = 0
-        ..earnedTotal = 0
-        ..peakTiki = 0
-        ..chronons = 0
-        ..shards = 0
-        ..comboStreak = 0
-        ..springs = 0;
-      c.owned.clear();
-      c.skills.clear();
-      c.perks.clear();
-      c.habits.clear();
-      if (!keepAch) c.achievements.clear();
-      if (factor != null) {
-        for (final g in b.generators) {
-          c.clockLevels[g.id] = ((factor - 1) / b.springs.levelBonus).round();
-        }
-      }
-      final q = Player(
-        vb,
-        c,
-        sessions: sessions,
-        minutes: minutes,
-        sigma: name.contains('blind') ? sigma * 1.5 : sigma,
-        spendSprings: false,
-        unlock: false,
-      );
-      while (q.day < 40 && (q.allBonusesAt == null || q.allPerksDay == null)) {
-        q.playDay();
-      }
-      final perksHours = q.allPerksDay == null
-          ? null
-          : (q.allPerksDay! * sessions).floor() * minutes / 60;
-      stdout.writeln(
-        '${name.padRight(34)}'
-        '${dh(q.firstClockDay['chronos'], q.firstClock['chronos']).padLeft(14)}'
-        '${dh(q.allPerksDay, perksHours)}'
-        '${(q.chronosBonusDay[4]?.toStringAsFixed(1) ?? '—').padLeft(13)}'
-        '${(q.chronosBonusDay[8]?.toStringAsFixed(1) ?? '—').padLeft(13)}'
-        '${dh(q.allBonusesDay, q.allBonusesAt)}'
-        '${'${q.paradoxCount}'.padLeft(11)}',
-      );
+    final want = b.loops.rules.length + 2;
+    while (q.day < days && q.loopLog.length < want) {
+      q.playDay();
     }
+    stdout.writeln(
+      'loop  rule       to goal(d)  played  to exit(d)  paradoxes  bonuses'
+      '  tiers before',
+    );
+    q.loopLog.forEach(stdout.writeln);
+    stdout.writeln(
+      'day ${q.day}: loop ${st.loop}, seals ${st.seals.length}/'
+      '${b.loops.rules.length}, Mainsprings wound '
+      '${st.lifetime.springsWound}, mastery tiers '
+      '${st.clockLevels.values.fold(0, (a, x) => a + x)} of '
+      '${b.generators.length * b.springs.maxLevel}',
+    );
   }
 }

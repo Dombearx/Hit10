@@ -31,6 +31,11 @@ class NextGoalBar extends StatelessWidget {
         f.round(c.econ.milestoneMultiplier(id)),
       ),
       GoalKind.newClock => l.goalNewClock(generatorName(l, id!)),
+      GoalKind.loopBonus => l.goalLoopBonus(
+        generatorName(l, id!),
+        '${goal.have.round()}',
+        '${goal.need.round()}',
+      ),
       GoalKind.prestige =>
         c.state.prestiges == 0
             ? l.goalPrestige
