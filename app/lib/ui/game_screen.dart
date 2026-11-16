@@ -127,7 +127,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       // A newer version on Google Play: download in the background, then
       // offer a restart (no-op on web and outside Play installs).
       if (!qaEnabled) {
-        unawaited(checkForAppUpdate(onDownloaded: _offerUpdateRestart));
+        unawaited(checkForAppUpdate(onReady: _offerUpdateRestart));
       }
     });
   }
