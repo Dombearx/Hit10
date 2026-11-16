@@ -1095,7 +1095,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tip_combo => 'A streak! Keep hitting to grow the multiplier.';
 
   @override
-  String get tip_prestige => 'Rewind time: start over with a permanent bonus.';
+  String get tip_prestige =>
+      'A paradox is ready! Rewind time: start over, with a permanent income bonus.';
 
   @override
   String tip_milestone(String need) {
@@ -1199,6 +1200,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tutorialGotIt => 'OK';
+
+  @override
+  String get tutorialAutoStart =>
+      'From now on the stopwatch starts by itself: right after each result, the next round begins.';
+
+  @override
+  String get tip_springs =>
+      'Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever.';
+
+  @override
+  String get tip_loop =>
+      'A new loop: everything from zero, but Mainsprings and mastery stay.';
+
+  @override
+  String tip_loopRule(String rule) {
+    return 'A new loop: everything from zero, but Mainsprings and mastery stay. Chronos\' rule: $rule.';
+  }
 
   @override
   String get tip_skills => 'Skills boost your own hits.';

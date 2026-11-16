@@ -98,8 +98,9 @@ class ClockSlot {
   double lastHeartbeat = -10;
 }
 
-/// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does.
-enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, done }
+/// First-run steps (R-TUT-1): aim, earn, buy Grandpa, what he does, and
+/// that the stopwatch starts by itself from now on.
+enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, autoStart, done }
 
 enum GoalKind { bonus, newClock, prestige, perk, loopBonus }
 
@@ -468,8 +469,12 @@ class GameController extends ChangeNotifier {
     }
     var inZone = false;
     final idle = state.lifetime.missedInARow >= balance.round.idleStopAfter;
+    // During the tutorial each round waits for a tap: the player reads
+    // the bubbles without a new round already running (playtest). The
+    // last step says it starts by itself from then on.
+    final auto = !idle && state.tutorialDone && !replaying;
     for (final c in clocks) {
-      c.round.autoStart = !idle;
+      c.round.autoStart = auto;
       _handle(c, c.round.update(t));
       inZone |= _roundSounds(c, t);
     }
@@ -790,7 +795,7 @@ class GameController extends ChangeNotifier {
         _replayStep = TutorialStep.grandpaInfo;
       } else if (_shownFor == TutorialStep.grandpaInfo) {
         // Bought again with Grandpa's bubble up: the point was taken.
-        finishTutorial();
+        nextTutorialStep();
       }
       _advanceTutorial();
       unawaited(save());
@@ -1079,8 +1084,13 @@ class GameController extends ChangeNotifier {
       }
       return state.tiki > 0 ? TutorialStep.earned : TutorialStep.aim;
     }
-    return TutorialStep.grandpaInfo;
+    return state.tipsSeen.contains(_grandpaInfoSeen)
+        ? TutorialStep.autoStart
+        : TutorialStep.grandpaInfo;
   }
+
+  /// Saved with the tips: Grandpa's step was read (the last step follows).
+  static const _grandpaInfoSeen = 'tutorial:grandpaInfo';
 
   /// The stopwatch shows when to tap (closing gold ring, R-TUT-1): during
   /// the tutorial and the first rounds of a new player.
@@ -1180,12 +1190,20 @@ class GameController extends ChangeNotifier {
     return best;
   }
 
-  /// "OK" on Grandpa's step, and on every step of a replay (a player far
-  /// into the game can't be asked to earn their first Tiks again).
+  /// "OK" on Grandpa's step and the last one, and on every step of a
+  /// replay (a player far into the game can't be asked to earn their first
+  /// Tiks again).
   void nextTutorialStep() {
     final step = tutorialStep;
-    if (step == TutorialStep.grandpaInfo) {
+    if (step == TutorialStep.autoStart) {
       finishTutorial();
+    } else if (step == TutorialStep.grandpaInfo && !replaying) {
+      state.tipsSeen.add(_grandpaInfoSeen);
+      _shownAt = null;
+      _shownFor = null;
+      _trackTutorial();
+      notifyListeners();
+      unawaited(save());
     } else if (replaying && step != TutorialStep.done) {
       _replayStep = TutorialStep.values[step.index + 1];
       notifyListeners();
@@ -1204,7 +1222,7 @@ class GameController extends ChangeNotifier {
       return;
     }
     if (!state.tutorialDone) {
-      // 'grandpaInfo' = finished; any earlier step = skipped.
+      // 'autoStart' = finished; any earlier step = skipped.
       _log('tutorial_complete', {
         'at_step': tutorialStep.name,
         'rounds': state.stats.rounds,
@@ -1233,6 +1251,7 @@ class GameController extends ChangeNotifier {
       // Nothing bought yet: the real first run, read off the state.
       _loggedStep = null;
       state.tutorialDone = false;
+      state.tipsSeen.remove(_grandpaInfoSeen);
       unawaited(save());
     } else {
       _replayStep = TutorialStep.aim;
@@ -1322,6 +1341,10 @@ class GameController extends ChangeNotifier {
       _tip('milestone');
     }
     if (skillAffordable) _tip('skills');
+    // After the first paradox and the first new loop: one line each, on
+    // the thing that appeared (docs/12 §3.1, docs/13 §5.2).
+    if (state.loop > 1) _tip('loop');
+    if (econ.springsUnlocked) _tip('springs');
     if (engine.blindUnlocked() ||
         state.perks.contains('secondClock') ||
         state.perks.contains('autoBuyer')) {

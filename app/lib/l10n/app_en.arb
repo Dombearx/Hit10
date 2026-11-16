@@ -881,7 +881,7 @@
   "adFull": "Full",
   "tip_golden": "Catch the golden clock for a golden round!",
   "tip_combo": "A streak! Keep hitting to grow the multiplier.",
-  "tip_prestige": "Rewind time: start over with a permanent bonus.",
+  "tip_prestige": "A paradox is ready! Rewind time: start over, with a permanent income bonus.",
   "tip_milestone": "The bar under the name: at {need} owned, the clock earns ×2!",
   "@tip_milestone": {
     "placeholders": {
@@ -1022,6 +1022,17 @@
   "statMultTurbo": "Turbo",
   "statMultTotal": "Together",
   "tutorialGotIt": "OK",
+  "tutorialAutoStart": "From now on the stopwatch starts by itself: right after each result, the next round begins.",
+  "tip_springs": "Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever.",
+  "tip_loop": "A new loop: everything from zero, but Mainsprings and mastery stay.",
+  "tip_loopRule": "A new loop: everything from zero, but Mainsprings and mastery stay. Chronos' rule: {rule}.",
+  "@tip_loopRule": {
+    "placeholders": {
+      "rule": {
+        "type": "String"
+      }
+    }
+  },
   "tip_skills": "Skills boost your own hits.",
   "tip_modes": "A new mode! Tap to switch it on.",
   "skillBuyLevel": "Buy Lv {level}",

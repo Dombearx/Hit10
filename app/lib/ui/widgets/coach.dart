@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
+import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
@@ -18,6 +19,7 @@ abstract final class CoachTargets {
   static final modeRow = GlobalKey(debugLabel: 'coach-modes');
   static final combo = GlobalKey(debugLabel: 'coach-combo');
   static final prestige = GlobalKey(debugLabel: 'coach-prestige');
+  static final springs = GlobalKey(debugLabel: 'coach-springs');
 
   /// The bubble itself (QA builds measure where it ended up).
   static final bubble = GlobalKey(debugLabel: 'coach-bubble');
@@ -158,6 +160,14 @@ class _CoachOverlayState extends State<CoachOverlay>
           ok: l.tutorialGotIt,
           onOk: c.nextTutorialStep,
         );
+      case TutorialStep.autoStart:
+        return _Mark(
+          id: 'tutorial-autoStart',
+          text: l.tutorialAutoStart,
+          targets: [CoachTargets.arena],
+          ok: l.tutorialGotIt,
+          onOk: c.nextTutorialStep,
+        );
       case TutorialStep.done:
         final tip = c.pendingTip;
         if (tip == null) return null;
@@ -170,6 +180,15 @@ class _CoachOverlayState extends State<CoachOverlay>
           'modes' => (l.tip_modes, CoachTargets.modeRow),
           'combo' => (l.tip_combo, CoachTargets.combo),
           'prestige' => (l.tip_prestige, CoachTargets.prestige),
+          'springs' => (l.tip_springs, CoachTargets.springs),
+          'loop' => (
+            c.state.loopRules.isEmpty
+                ? l.tip_loop
+                : l.tip_loopRule(
+                    c.state.loopRules.map((r) => ruleName(l, r)).join(' + '),
+                  ),
+            CoachTargets.prestige,
+          ),
           'golden' => (l.tip_golden, CoachTargets.arena),
           _ => ('', CoachTargets.arena),
         };
@@ -289,25 +308,11 @@ class _CoachOverlayState extends State<CoachOverlay>
             child: IgnorePointer(
               child: AnimatedBuilder(
                 animation: _pulse,
-                builder: (context, _) {
-                  final k = Curves.easeInOut.transform(_pulse.value);
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: Palette.perfect,
-                        width: 3 + 2 * k,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Palette.perfect.withValues(alpha: 0.6 * k),
-                          blurRadius: 12 * k,
-                          spreadRadius: 2 * k,
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                builder: (context, _) => CustomPaint(
+                  painter: _RingPainter(
+                    Curves.easeInOut.transform(_pulse.value),
+                  ),
+                ),
               ),
             ),
           ),
@@ -328,6 +333,48 @@ class _CoachOverlayState extends State<CoachOverlay>
       ],
     );
   }
+}
+
+/// The ring around a coach target: a dark line on a white halo, so it
+/// shows on the yellow background (the Tiki counter, playtest) as well as
+/// on white cards. Only the outline is painted: the target stays as it is.
+class _RingPainter extends CustomPainter {
+  _RingPainter(this.k);
+  final double k;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final r = RRect.fromRectAndRadius(
+      Offset.zero & size,
+      const Radius.circular(16),
+    );
+    final w = 3 + 2 * k;
+    canvas.drawRRect(
+      r,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w + 8 * k
+        ..color = Colors.white.withValues(alpha: 0.55 * k)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4),
+    );
+    canvas.drawRRect(
+      r,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w + 4
+        ..color = Colors.white,
+    );
+    canvas.drawRRect(
+      r,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w
+        ..color = Palette.outline,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_RingPainter old) => old.k != k;
 }
 
 class _DimPainter extends CustomPainter {

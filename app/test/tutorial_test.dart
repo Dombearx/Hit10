@@ -17,7 +17,7 @@ void main() {
   GameController controller(GameState s) =>
       GameController(balance: balance, state: s, store: MemorySaveStore());
 
-  test('steps: aim, earned, buy, grandpa info, done', () {
+  test('steps: aim, earned, buy, grandpa info, auto start, done', () {
     final s = GameState();
     final c = controller(s);
     expect(c.tutorialStep, TutorialStep.aim);
@@ -28,6 +28,11 @@ void main() {
     c.buyGenerators('grandpa', 1);
     expect(c.tutorialStep, TutorialStep.grandpaInfo);
     expect(s.tutorialDone, isFalse);
+    c.nextTutorialStep();
+    expect(c.tutorialStep, TutorialStep.autoStart);
+    expect(s.tutorialDone, isFalse);
+    // Read off the save: closing the app here does not go back a step.
+    expect(controller(s).tutorialStep, TutorialStep.autoStart);
     c.nextTutorialStep();
     expect(c.tutorialStep, TutorialStep.done);
     expect(s.tutorialDone, isTrue);
@@ -55,18 +60,26 @@ void main() {
     c.checkTips();
     expect(c.pendingTip, isNull);
     c.nextTutorialStep();
+    expect(c.tutorialStep, TutorialStep.autoStart);
+    c.nextTutorialStep();
     expect(c.tutorialStep, TutorialStep.done);
     expect(c.replaying, isFalse);
     expect(c.engine.goldenEnabled, isTrue);
   });
 
   test('a replay before the first clock is the real first run', () {
-    final s = GameState()..tutorialDone = true;
+    final s = GameState()
+      ..tutorialDone = true
+      ..tipsSeen.add('tutorial:grandpaInfo');
     final c = controller(s);
     c.replayTutorial();
     expect(c.replaying, isFalse);
     expect(s.tutorialDone, isFalse);
     expect(c.tutorialStep, TutorialStep.aim);
+    // Grandpa's step comes again, not straight the last one.
+    s.tiki = 1000;
+    c.buyGenerators('grandpa', 1);
+    expect(c.tutorialStep, TutorialStep.grandpaInfo);
   });
 
   test("Grandpa's bubble waits for OK or the next purchase", () {
@@ -79,7 +92,52 @@ void main() {
     }
     expect(c.tutorialStep, TutorialStep.grandpaInfo);
     c.buyGenerators('grandpa', 1);
+    expect(c.tutorialStep, TutorialStep.autoStart);
+    // The last step waits for OK too.
+    for (var i = 0; i < 60; i++) {
+      s.playSeconds += 1;
+      c.debugAutoAdvance();
+    }
+    expect(c.tutorialStep, TutorialStep.autoStart);
+    c.nextTutorialStep();
     expect(s.tutorialDone, isTrue);
+  });
+
+  test('during the tutorial each round waits for a tap', () {
+    final s = GameState();
+    final c = controller(s);
+    c.tick();
+    expect(c.round.autoStart, isFalse);
+    c.finishTutorial();
+    c.tick();
+    expect(c.round.autoStart, isTrue);
+    // A replay waits again.
+    s.owned['grandpa'] = 1;
+    c.replayTutorial();
+    c.tick();
+    expect(c.round.autoStart, isFalse);
+  });
+
+  test('Mainsprings and a new loop get one tip each', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..prestiges = 1;
+    final c = controller(s);
+    c.checkTips();
+    expect(c.pendingTip, 'springs');
+    c.tipActed('springs');
+    expect(c.pendingTip, isNull);
+    s.playSeconds += GameController.tipGap + 1;
+    c.checkTips();
+    expect(c.pendingTip, isNull); // still the first loop
+    s.loop = 2;
+    c.checkTips();
+    expect(c.pendingTip, 'loop');
+    c.dismissTip();
+    s.playSeconds += GameController.tipGap + 1;
+    s.loop = 3;
+    c.checkTips();
+    expect(c.pendingTip, isNull); // once, not every loop
   });
 
   test('the next goal: first bonus, then each new clock', () {
@@ -304,6 +362,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.byKey(const Key('tutorial-grandpaInfo')), findsOneWidget);
     expect(find.textContaining('Tiki'), findsWidgets);
+    await tester.tap(find.byKey(const Key('tutorial-ok')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.byKey(const Key('tutorial-autoStart')), findsOneWidget);
+    expect(find.textContaining('startuje sam'), findsOneWidget);
     await tester.tap(find.byKey(const Key('tutorial-ok')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.tutorialDone, isTrue);

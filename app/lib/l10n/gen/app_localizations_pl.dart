@@ -1093,7 +1093,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tip_combo => 'Seria! Trafiaj dalej, mnożnik rośnie.';
 
   @override
-  String get tip_prestige => 'Cofnij czas: od nowa, ale ze stałym bonusem.';
+  String get tip_prestige =>
+      'Paradoks gotowy! Cofnij czas: zaczniesz od nowa, ale ze stałym bonusem do dochodu.';
 
   @override
   String tip_milestone(String need) {
@@ -1196,6 +1197,23 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tutorialGotIt => 'OK';
+
+  @override
+  String get tutorialAutoStart =>
+      'Od teraz stoper startuje sam: po każdym wyniku od razu rusza kolejna runda.';
+
+  @override
+  String get tip_springs =>
+      'Sprężyny! Nakręcają się same, jedna na dobę. Wydaj je na mistrzostwo zegarów — zostaje na zawsze.';
+
+  @override
+  String get tip_loop =>
+      'Nowa pętla: wszystko od zera, ale Sprężyny i mistrzostwo zostają.';
+
+  @override
+  String tip_loopRule(String rule) {
+    return 'Nowa pętla: wszystko od zera, ale Sprężyny i mistrzostwo zostają. Zasada Chronosa: $rule.';
+  }
 
   @override
   String get tip_skills => 'Umiejętności wzmacniają twoje trafienia.';

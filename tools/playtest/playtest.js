@@ -109,7 +109,7 @@ async function play(browser, key) {
       }
       bestCombo = Math.max(bestCombo, s.combo); lastCombo = s.combo;
       // Tutorial: the persona reads, then moves on.
-      if (s.tutorial === 'grandpaInfo') {
+      if (s.tutorial === 'grandpaInfo' || s.tutorial === 'autoStart') {
         await sleep(P.tipRead * 1000); await q(() => window.hit10Qa.setup(JSON.stringify({ tutorialDone: true })));
         ev('tutorial finished');
       }

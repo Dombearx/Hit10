@@ -101,7 +101,7 @@ async function play(browser, key) {
       if (cur.id === 'tutorial-buyGrandpa') {
         await sleep(P.react * 1000);
         if ((await q(([k, i]) => window.hit10Qa.buyAny(k, i), ['gen', 'grandpa'])) === 'ok') { acted = true; ev('bought grandpa (prompted)'); }
-      } else if (cur.id === 'tutorial-grandpaInfo') {
+      } else if (cur.id === 'tutorial-grandpaInfo' || cur.id === 'tutorial-autoStart') {
         if (rnd() < P.close) { await q(() => window.hit10Qa.tutorialOk()); cur.how = 'OK'; }
       } else if (cur.id.startsWith('tip-')) {
         const tip = cur.id.slice(4);
@@ -126,7 +126,7 @@ async function play(browser, key) {
       let skip = rnd() < P.distract;
       // Shop looks only after the tutorial's prompts (before, they lead).
       // Grandpa's bubble stays until OK or the next purchase.
-      if ((s.tutorial === 'done' || s.tutorial === 'grandpaInfo') && now() - lastShop >= P.shopEvery) {
+      if ((s.tutorial === 'done' || s.tutorial === 'grandpaInfo' || s.tutorial === 'autoStart') && now() - lastShop >= P.shopEvery) {
         lastShop = now();
         if (rnd() < P.shopMiss) skip = true;
         let tiki = s.tiki;
