@@ -2165,7 +2165,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_icons.
   ///
   /// In en, this message translates to:
-  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).'**
+  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Dial — the stopwatch look. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).'**
   String get help_icons;
 
   /// No description provided for @notificationTitle.
@@ -4727,7 +4727,7 @@ abstract class AppLocalizations {
   /// No description provided for @dialLocked.
   ///
   /// In en, this message translates to:
-  /// **'Earn {amount} in total'**
+  /// **'Earn {amount}'**
   String dialLocked(String amount);
 
   /// No description provided for @dialToast.
@@ -4735,6 +4735,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New dial face'**
   String get dialToast;
+
+  /// No description provided for @dialProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned in total: {have} of {need}'**
+  String dialProgress(String have, String need);
+
+  /// No description provided for @updateReady.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version is ready'**
+  String get updateReady;
+
+  /// No description provided for @updateRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get updateRestart;
 
   /// No description provided for @help_springs_t.
   ///
@@ -4757,7 +4775,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_dials.
   ///
   /// In en, this message translates to:
-  /// **'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one in Settings. They only change the look, not your results.'**
+  /// **'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one with the dial button at the top, next to the stats. They only change the look, not your results.'**
   String get help_dials;
 }
 

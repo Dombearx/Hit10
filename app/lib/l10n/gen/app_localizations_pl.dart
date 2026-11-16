@@ -1244,7 +1244,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_icons =>
-      'Puchar — osiągnięcia (każde daje +1% dochodu). Wykres — statystyki. Zębatka — ustawienia. Wir — paradoks czasowy. Znak zapytania — ta pomoc. Złota spirala — Sprężyny (po pierwszym cofnięciu czasu).';
+      'Puchar — osiągnięcia (każde daje +1% dochodu). Wykres — statystyki. Tarcza — wygląd zegara. Zębatka — ustawienia. Wir — paradoks czasowy. Znak zapytania — ta pomoc. Złota spirala — Sprężyny (po pierwszym cofnięciu czasu).';
 
   @override
   String notificationTitle(String amount) {
@@ -2638,11 +2638,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String dialLocked(String amount) {
-    return 'Zarób łącznie $amount';
+    return 'Zarób $amount';
   }
 
   @override
   String get dialToast => 'Nowa tarcza zegara';
+
+  @override
+  String dialProgress(String have, String need) {
+    return 'Zarobione łącznie: $have z $need';
+  }
+
+  @override
+  String get updateReady => 'Nowa wersja jest gotowa';
+
+  @override
+  String get updateRestart => 'Uruchom ponownie';
 
   @override
   String get help_springs_t => 'Sprężyny i poziomy zegarów';
@@ -2656,5 +2667,5 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_dials =>
-      'Im więcej Tików zarobisz we wszystkich grach razem, tym więcej tarcz odblokujesz — od drewnianej po kosmiczną. Wybierasz je w Ustawieniach. To tylko wygląd, nie zmienia wyników.';
+      'Im więcej Tików zarobisz we wszystkich grach razem, tym więcej tarcz odblokujesz — od drewnianej po kosmiczną. Wybierasz je przyciskiem z tarczą u góry ekranu, obok statystyk. To tylko wygląd, nie zmienia wyników.';
 }

@@ -20,6 +20,7 @@ import 'shop/generator_list.dart';
 import 'shop/skill_list.dart';
 import 'catalog.dart';
 import 'screens/achievements_screen.dart';
+import 'screens/dials_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/prestige_screen.dart';
@@ -122,7 +123,28 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           SnackBar(content: Text(AppLocalizations.of(context).saveCorrupt)),
         );
       }
+      // A newer version on Google Play: download in the background, then
+      // offer a restart (no-op on web and outside Play installs).
+      if (!qaEnabled) {
+        unawaited(checkForAppUpdate(onDownloaded: _offerUpdateRestart));
+      }
     });
+  }
+
+  void _offerUpdateRestart() {
+    if (!mounted) return;
+    final l = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        key: const Key('update-ready'),
+        content: Text(l.updateReady),
+        duration: const Duration(days: 1),
+        action: SnackBarAction(
+          label: l.updateRestart,
+          onPressed: () => unawaited(completeAppUpdate()),
+        ),
+      ),
+    );
   }
 
   void _onShow() {
@@ -525,8 +547,18 @@ class _Header extends StatelessWidget {
                     const Key('open-stats'),
                     onStats,
                   ),
+                  const SizedBox(width: 6),
+                  // Stopwatch faces (docs/12 §3.3): out of the settings,
+                  // where players did not find them.
+                  DialButton(
+                    controller: controller,
+                    onTap: () => showDialsSheet(context, controller),
+                  ),
                   Expanded(
-                    child: Center(
+                    child: Align(
+                      // Next to the records and stats, not floating
+                      // off-centre between the two icon groups (playtest).
+                      alignment: Alignment.centerLeft,
                       // Not during the tutorial: one new thing at a time
                       // (playtest: "what is 0/5 · 0/50?").
                       child: controller.state.tutorialDone
@@ -539,16 +571,16 @@ class _Header extends StatelessWidget {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    // Mainsprings (docs/12 §3.1).
+                                    SpringBadge(controller: controller),
+                                    if (controller.season != null &&
+                                        controller.econ.springsUnlocked)
+                                      const SizedBox(width: 6),
                                     SeasonBadge(
                                       controller: controller,
                                       onTap: () =>
                                           showSeasonDialog(context, controller),
                                     ),
-                                    if (controller.season != null &&
-                                        controller.econ.springsUnlocked)
-                                      const SizedBox(width: 6),
-                                    // Mainsprings (docs/12 §3.1).
-                                    SpringBadge(controller: controller),
                                   ],
                                 ),
                               ),

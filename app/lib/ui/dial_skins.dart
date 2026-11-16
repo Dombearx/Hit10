@@ -348,29 +348,35 @@ void _paintDeco(
 }
 
 /// A still face for previews: fill, decoration, ring, ticks, rim and
-/// "5.00" (the settings gallery, the toast).
+/// "5.00" (the dial gallery, the top-bar button, the toast).
 class DialPreview extends StatelessWidget {
   const DialPreview({
     super.key,
     required this.skin,
     this.size = 64,
     this.locked = false,
+    this.progress,
   });
   final DialSkin skin;
   final double size;
   final bool locked;
 
+  /// For a locked face: how far it has filled up from the bottom, 0..1
+  /// (the next face to unlock). Null draws the plain "?".
+  final double? progress;
+
   @override
   Widget build(BuildContext context) => SizedBox.square(
     dimension: size,
-    child: CustomPaint(painter: _PreviewPainter(skin, locked)),
+    child: CustomPaint(painter: _PreviewPainter(skin, locked, progress)),
   );
 }
 
 class _PreviewPainter extends CustomPainter {
-  _PreviewPainter(this.skin, this.locked);
+  _PreviewPainter(this.skin, this.locked, this.progress);
   final DialSkin skin;
   final bool locked;
+  final double? progress;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -378,6 +384,16 @@ class _PreviewPainter extends CustomPainter {
     final c = size.center(Offset.zero);
     if (locked) {
       canvas.drawCircle(c, r, Paint()..color = const Color(0xFFE4DED3));
+      final p = progress?.clamp(0.0, 1.0) ?? 0;
+      if (p > 0) {
+        // The real face rises from the bottom like water in a glass.
+        canvas.save();
+        canvas.clipRect(
+          Rect.fromLTRB(c.dx - r, c.dy + r - 2 * r * p, c.dx + r, c.dy + r),
+        );
+        paintDialFace(canvas, c, r, skin);
+        canvas.restore();
+      }
       canvas.drawCircle(
         c,
         r,
@@ -441,5 +457,5 @@ class _PreviewPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_PreviewPainter old) =>
-      old.skin != skin || old.locked != locked;
+      old.skin != skin || old.locked != locked || old.progress != progress;
 }

@@ -105,6 +105,12 @@ once:
    repo **variable** `PLAY_TRACK` (Settings → Secrets and variables →
    Actions → Variables).
 
+Once Google approves a release, the game offers it itself at the next
+start (Google Play in-app update, flexible: Play's dialog, download in the
+background, then a "Restart" snackbar), so testers need not wait for the
+Play Store's own auto-update. It works only for installs from Google Play
+and from the first version that has it (1.0.0 build after 183).
+
 The versionCode is the CI run number: an AAB uploaded by hand with a
 higher versionCode blocks the next uploads until the run number passes it.
 
