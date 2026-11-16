@@ -8,9 +8,9 @@ przedmiotów i ich liczby są w [02-rozgrywka.md](02-rozgrywka.md).
 | Waluta | PL / EN | Skąd | Na co |
 |---|---|---|---|
 | **Tiki** | Tiki / Ticks | trafienia, generatory, Fart, offline | umiejętności, generatory (bonusy za liczbę sztuk i synergie są darmowe) |
-| **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +2% na zawsze każdy |
-| **Okruchy czasu** | Okruchy / Shards | prestiż (tyle, ile nowych Chrononów) | perki |
-| **Sprężyny** | Sprężyny / Mainsprings | czas rzeczywisty (1 na dobę) i „równo 5.00” z zapasu dokręcania (02 §15) | poziomy zegarów; nie przepadają przy paradoksie |
+| **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +2% każdy, do końca pętli czasu (02 §16) |
+| **Okruchy czasu** | Okruchy / Shards | prestiż (tyle, ile nowych Chrononów) | perki; zerują się z nową pętlą |
+| **Sprężyny** | Sprężyny / Mainsprings | czas rzeczywisty (1 na dobę), „równo 5.00” z zapasu dokręcania (02 §15), bonusy Chronosa (R-PETLA-2a) | mistrzostwo zegarów; nie przepadają nigdy |
 
 Wszystkie kwoty to liczby zmiennoprzecinkowe (`double`), co wystarcza do ok.
 1e308. **E-1:** Ceny i stan konta nigdy nie są zaokrąglane w logice, tylko
@@ -43,8 +43,8 @@ EV(σ) = 10·pP' + 3·pS' + 1·pD'       # wartość oczekiwana jednej próby
 ```
 zysk_okien_i = EV(σ_i, okna obecne) / EV(σ_i, okna bazowe, bez Szczęścia)   # 1 dla σ = 0
 synergia_i   = Π (1 + procent · liczba_partnera)  po aktywnych synergiach z i (obie strony ≥ 25 szt.)
-dochód_i     = n_i · Tiki_bazowo_i · m_i^(progi_i) · synergia_i · zysk_okien_i · (1 + 0.1 · poziom_i)
-poziom_i     = poziom zegara za Sprężyny, 0–10 (02 R-SPR-5)
+dochód_i     = n_i · Tiki_bazowo_i · m_i^(progi_i) · synergia_i · zysk_okien_i · 1.5^stopień_i
+stopień_i    = mistrzostwo zegara za Sprężyny, 0–5 (02 R-SPR-5)
 progi_i      = ile z 8 progów zegara i osiągnięto (n_i ≥ próg), m_i = 2 / 1.7 / 1.4 (02 R-ULEP-1)
 ```
 
@@ -269,6 +269,37 @@ Od wersji z zapasem dokręcania (R-SPR-3, 3a, 3b; `late_game_report.dart
 Gracz „3 sesje” ma tyle samo co wcześniej, częste krótkie wejścia dają
 do 1.42, jedna długa sesja mniej (1.09). Reklamy liczą się tylko wtedy,
 gdy trafienie zastaje pusty zapas.
+
+### 4.4 Pętle czasu (docs/13)
+
+`late_game_report.dart --part 5`: nowa gra na zasadach z 02 §16. Gracz
+jak w 13 (3 × 11 min dziennie, σ = 40 ms, reklama ×2 offline), kupuje
+perki w kolejności prowadzącej do Chronosa, po celu zostaje po bonusy
+Chronosa (najwyżej 2 dni), Sprężyny wydaje na stopień z najlepszym
+zyskiem.
+
+| Pętla | Zasada | Dni do Chronosa | Godzin gry | Dni do wyjścia | Paradoksy | Stopnie mistrzostwa na starcie |
+|---|---|---|---|---|---|---|
+| 1 | – | 13.2 | 7.3 | 15.2 | 9 | 0 |
+| 2 | Zepsuty stoper | 8.0 | 4.4 | 10.0 | 8 | 15 |
+| 3 | Drożyzna | 8.3 | 4.6 | 10.3 | 9 | 22 |
+| 4 | Pochmurny dzień | 5.3 | 2.9 | 6.7 | 7 | 28 |
+| 5 | Krótki lont | 4.0 | 2.2 | 5.3 | 7 | 31 |
+| 6 | Szwajcarska precyzja | 3.7 | 2.0 | 4.7 | 7 | 34 |
+| 7 | Bezsenność | 4.0 | 2.2 | 5.0 | 6 | 40 |
+| 8 | (dowolna, tu bez zasady) | 3.0 | 1.6 | 3.7 | 5 | 43 |
+
+- Cała historia (7 pętli) to ok. 57 dni. Druga pętla trwa 61% pierwszej,
+  kolejne 4–5 dni, żadna poniżej 3 (R-PETLA-6).
+- W każdej pętli gracz zdobywa wszystkie 8 bonusów Chronosa w 1–2 dni po
+  celu. To 8 Sprężyn na pętlę obok ok. 1.25 dziennie z nakręcania:
+  w 61 dni 139 Sprężyn i 46 z 70 stopni mistrzostwa.
+- Pierwsza pętla jest tu krótsza niż w 13 §2.1 (13.2 zamiast 16.7 dnia),
+  bo gracz idzie prosto po perk Chronosa, a nie kupuje wszystkich.
+- Symulacja nie liczy Turbo ani mnożnika trybu na ślepo, a „Na ślepo”
+  w pętli 2 nie pogarsza w niej celności bota.
+- B-1…B-10, A-1, A-2 bez zmian: pierwsze przejście nie ma ani pętli, ani
+  mistrzostwa.
 
 ## 5. Reklamy a balans
 

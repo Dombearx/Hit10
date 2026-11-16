@@ -422,10 +422,12 @@ powodu do codziennego wejścia.
 
 ## 6. Kolejność
 
-**Stan (16.11.2026):** etap 1 jest zrobiony: dokręcanie (R-SPR-3, 3a),
-oferta `adSpring` (R-SPR-3b), pasek celu przez całą grę (R-TUT-7a)
-i mnożniki w statystykach i na ekranie paradoksu (R-STAT-2). Zasady
-w 02 §11, §12, §13 i §15. Etapy 2–5 czekają.
+**Stan (16.11.2026):** etapy 1–4 są zrobione: dokręcanie, oferta
+`adSpring`, pasek celu, mnożniki; mistrzostwo zegarów (5 stopni, ×1.5,
+zwrot Sprężyn); Pętla czasu z sześcioma zasadami, pieczęciami,
+zakończeniem i Kroniką; tarcze jako trofea. Zasady w 02 §11–§16, pomiar
+tempa na kodzie gry w 03 §4.4 (historia: ok. 57 dni). Zostaje etap 5
+(Próba dnia), tylko jeśli dane pokażą potrzebę.
 
 | Etap | Co | Wielkość | Po co najpierw |
 |---|---|---|---|

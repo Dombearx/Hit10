@@ -560,6 +560,9 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
      gracz już ma Okruchy — „Cel: kup perk — …”;
   4. gdy wszystko jest odblokowane: bonus zegara najbliższy zdobycia.
 
+  Po osiągnięciu celu pętli (§16) przed perkami idzie następny bonus
+  Chronosa: „Cel: Chronos 7/10 → +1 Sprężyna” (R-PETLA-2a).
+
   Cel z perkiem albo paradoksem otwiera ekran paradoksu. Gdy wszystkie
   bonusy są zdobyte, paska nie ma.
 - **R-TUT-6:** Karta zegara, którego gracz jeszcze nie ma, mówi najpierw,
@@ -692,7 +695,7 @@ Daty i cel są w `balance.json` (`seasons`).
 - **R-SEZ-6:** Panel diagnostyczny (T-12) ma podgląd każdego wydarzenia bez
   zmiany daty; postęp innych wydarzeń zostaje zapamiętany.
 
-## 15. Sprężyny, poziomy zegarów i tarcze (późna gra)
+## 15. Sprężyny, mistrzostwo zegarów i tarcze (późna gra)
 
 Skąd i dlaczego: [12-pozna-gra.md](12-pozna-gra.md). Wzór: kostki cukru
 w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
@@ -722,23 +725,93 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   Najwyżej 2 razy na lokalną dobę, tylko gdy zapas jest pusty (mniej niż
   jedno trafienie). Przycisk jest w warsztacie, a plakietka Sprężyn
   w nagłówku pokazuje wtedy mały telewizor.
-- **R-SPR-4:** Gotowe Sprężyny odkładają się do 10 (tyle kosztuje
-  najdroższy poziom). Przy pełnym magazynie sprężyna się nie nakręca.
+- **R-SPR-4:** Gotowe Sprężyny odkładają się do 10 (najdroższy stopień
+  mistrzostwa kosztuje 5). Przy pełnym magazynie sprężyna się nie
+  nakręca. Prezenty (zwrot z R-SPR-5a, bonusy Chronosa z R-PETLA-2a)
+  mogą wyjść ponad limit.
   Wcześniej było 7: symulacja pokazała, że gracz odkładający na poziom 8
   stał miesiącami z pełnym magazynem i nie mógł go kupić.
-- **R-SPR-5:** Poziom N zegara kosztuje N Sprężyn, max 10 poziomów
-  (razem 55 na zegar), każdy +10% dochodu tego zegara. Poziomy nie
-  przepadają przy paradoksie. Podnieść można zegar kupiony choć raz
-  w dowolnym przejściu. Sekcja poziomu jest też na pełnej karcie zegara.
-- **R-SPR-6:** Poziomy 5 i 10 każdego zegara to tytuł mistrzowski: nazwa
-  i żart (PL/EN, `tools/l10n/masters.py`), osiągnięcie +1%. Przed
-  zdobyciem widać tylko „Poziom 5: ???”.
+- **R-SPR-5 (mistrzostwo zegara):** Stopień N zegara kosztuje N Sprężyn,
+  jest 5 stopni (razem 15 na zegar, 210 na wszystkie). Każdy stopień mnoży
+  dochód tego zegara **×1.5** (×7.6 przy pięciu). Mistrzostwo nie
+  przepada ani przy paradoksie, ani w nowej pętli czasu (§16): to jedyna
+  moc, która przechodzi przez pętle. Podnieść można zegar kupiony choć
+  raz. Sekcja mistrzostwa jest też na pełnej karcie zegara. Wcześniej
+  było 10 poziomów po +10% (770 Sprężyn, ok. 1.7 roku, razem ×2): za
+  drogo i za mało (13 §2.2).
+- **R-SPR-5a (zwrot):** Zapis sprzed tej zmiany dostaje z powrotem
+  wszystkie Sprężyny wydane na poziomy (poziom N kosztował N), także
+  ponad limit magazynu, a poziomy wracają do zera. Warsztat mówi to raz
+  („Wydane Sprężyny (39) wróciły do ciebie”). Zdobyte tytuły zostają.
+- **R-SPR-6:** Stopnie 3 i 5 każdego zegara to tytuł mistrzowski: nazwa
+  i żart (PL/EN, `tools/l10n/masters.py`; teksty i identyfikatory
+  osiągnięć mają dawne klucze 5 i 10), osiągnięcie +1%. Przed zdobyciem
+  widać tylko „Stopień 3: ???”.
 - **R-TARCZA-1:** 12 tarcz zegara (wygląd stopera, rysowany kodem:
-  kolory i dekoracja). Odblokowuje je suma Tików zarobionych we wszystkich
-  przejściach (`lifetime.earnedEver`): 0, 1M, 10B, 1T, 100T, 10aa, 1ab,
-  100ab, 5ac, 60ac, 300ac, 1ad. Nowa tarcza: toast „Nowa tarcza zegara”.
-- **R-TARCZA-2:** Wybór w Ustawieniach (pod motywem): odblokowane tarcze
-  z nazwą, następna zablokowana jako „?” z progiem („Zarób łącznie 1T”),
-  dalsze jako „???”. Pod galerią żart wybranej tarczy. Złota runda zawsze
-  wygląda po swojemu (złota tarcza), a ciemne tarcze mają jasne cyfry
-  i jaśniejsze kolory wyników.
+  kolory i dekoracja). Pierwsze sześć odblokowuje suma Tików zarobionych
+  w całej grze (`lifetime.earnedEver`): 0, 1M, 10B, 1T, 100T, 10aa.
+  Ostatnie sześć to trofea pętli czasu (R-PETLA-5): po jednej za pieczęć
+  każdej zasady. Kto odblokował którąś według dawnych progów (1ab …
+  1ad), zachowuje ją. Nowa tarcza: toast „Nowa tarcza zegara”.
+- **R-TARCZA-2:** Wybór przyciskiem z tarczą w nagłówku: odblokowane
+  tarcze z nazwą, następna zablokowana jako „?” z progiem („Zarób łącznie
+  1T”) albo „Trofeum pętli”, dalsze jako „???”. Pod galerią żart wybranej
+  tarczy. Złota runda zawsze wygląda po swojemu (złota tarcza), a ciemne
+  tarcze mają jasne cyfry i jaśniejsze kolory wyników.
+
+## 16. Pętla czasu (cel gry i gra po nim)
+
+Skąd i dlaczego: [13-petla-gry.md](13-petla-gry.md). Liczby w pliku
+balansu (`loops`). Każda waluta ma jeden zasięg: Tiki przejście (do
+paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
+
+- **R-PETLA-1 (cel):** Pętla jest ukończona, gdy gracz kupi pierwszego
+  Chronosa. W pierwszej pętli liczy się też Chronos kupiony kiedykolwiek
+  (zapisy sprzed pętli).
+- **R-PETLA-2 (zakończenie):** Ekran „Czas pokonany!” pokazuje się raz,
+  po oknach offline i dziennej premii: numer pętli, czas gry i liczba
+  paradoksów w niej, nowy rozdział Kroniki, zdobyta pieczęć i tarcza (od
+  drugiej pętli), zapowiedź następnej zasady z pieczęcią jako „???”.
+  Dwa przyciski: „Zostaję jeszcze” i „Nowa pętla”. Nic nie wymusza
+  resetu.
+- **R-PETLA-2a (bonusy Chronosa):** Każdy bonus Chronosa zdobyty w tej
+  pętli (8 progów) daje raz +1 Sprężynę, także ponad limit magazynu.
+  Pasek celu pokazuje wtedy „Cel: Chronos 7/10 → +1 Sprężyna”, a toast
+  „Bonus Chronosa”.
+- **R-PETLA-3 (nowa pętla):** Po potwierdzeniu (okno z listami „wraca do
+  zera” i „zostaje”) zeruje się to, co przy paradoksie, a do tego
+  Chronony, Okruchy, perki, Nawyki i Tiki zarobione łącznie (od nich
+  liczą się Chronony). **Zostają:** Sprężyny, mistrzostwo zegarów,
+  pieczęcie, osiągnięcia, tarcze, motywy, statystyki, licznik paradoksów
+  i Tiki zarobione w całej grze.
+- **R-PETLA-4 (zasada pętli):** Każda pętla od drugiej ma jedną zmienioną
+  zasadę, w stałej kolejności. Ogłasza ją Chronos na ekranie zakończenia.
+  W czasie pętli przypomina o niej znaczek „Pętla 2 · Zepsuty stoper”
+  w rzędzie przełączników (dotknięcie otwiera Kronikę).
+
+  | id | Nazwa PL / EN | Zmieniona zasada | Pieczęć (na zawsze) |
+  |---|---|---|---|
+  | `blindfold` | Zepsuty stoper / Broken Stopwatch | Na ślepo jest zawsze włączone (płaci jak zwykle); przełącznika nie da się wyłączyć | Wyczucie: Na ślepo płaci o 1 więcej (×4, ze Śmiałkiem ×5) |
+  | `inflation` | Drożyzna / Price Hike | cena zegara rośnie ×1.20 za sztukę zamiast ×1.15 | Stały klient: pierwsze 10 sztuk każdego zegara za pół ceny |
+  | `noGold` | Pochmurny dzień / Cloudy Day | Złota Sekunda nie przylatuje, oferta `adGolden` jest wyłączona; przedmioty sezonowe latają dalej (R-SEZ-3) | Promyk: po powrocie po co najmniej 1 h Złota Sekunda przylatuje w 30 s |
+  | `shortFuse` | Krótki lont / Short Fuse | combo najwyżej 5, Tarcza nie działa | Zapasowa Tarcza: +1 ładunek od początku każdego przejścia |
+  | `precision` | Szwajcarska precyzja / Swiss Precision | DOBRZE nic nie płaci graczowi (seria rośnie) | Pewna ręka: okno PERFEKT +0.001 s (nigdy szersze niż ŚWIETNIE) |
+  | `insomnia` | Bezsenność / Insomnia | dochód offline najwyżej 25% | Dobry sen: limit offline +12 h |
+
+- **R-PETLA-5 (co daje ukończenie):** rozdział Kroniki, pieczęć zasady
+  tej pętli, tarcza zegara przypisana do tej pieczęci (R-TARCZA-1)
+  i zapowiedź następnej zasady. Pierwsza pętla nie ma zasady, więc daje
+  rozdział i zapowiedź.
+- **R-PETLA-6 (tempo):** druga pętla 50–65% czasu pierwszej, kolejne
+  ok. 4–6 dni, nie mniej niż ok. 3 (03 §4.4).
+- **R-PETLA-7 (Kronika):** jeden ekran, otwierany z karty na górze ekranu
+  paradoksu (od pierwszego Chronosa) i ze znaczka pętli: bieżąca pętla
+  (zasada, cel, czas), zapowiedź następnej i przycisk „Nowa pętla” (gdy
+  cel osiągnięty), 7 rozdziałów (niezdobyte jako „Rozdział n: ???”,
+  tylko następny mówi „Ukończ pętlę n”), 6 pieczęci (niezdobyte jako
+  „???”, z rekordem czasu po zdobyciu). Fabuła: Chronos obraża się, że
+  kupiono go za Tiki, i w każdej pętli psuje jedną zasadę; opowiada
+  Dziadek; ostatni rozdział mówi, dlaczego akurat 5.00.
+- **R-PETLA-8 (po historii):** po zdobyciu sześciu pieczęci gracz sam
+  wybiera w Kronice zasady następnej pętli: dowolne, kilka naraz albo
+  żadną. Kronika pamięta najkrótszy czas gry każdej zasady.
