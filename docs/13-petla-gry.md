@@ -136,6 +136,10 @@ osiągnięcia i trwały mnożnik zegarów (mistrzostwo). Dni (godziny gry):
   dni, ×4 ok. 5, ×8 ok. 3.
 - Zmieniona zasada wydłuża pętlę o 0–45%. Cel pętli nie może być
   „wszystkie bonusy”, bo przy droższych zegarach to miesiąc.
+- **Bonusy samego Chronosa** (8 progów, ostatni przy 50 sztukach) padają
+  niedługo po pierwszym Chronosie: ostatni 1–2.3 dnia później (14.0 →
+  16.3 dnia z samymi osiągnięciami, 5.3 → 6.3 przy ×4), a przy droższych
+  zegarach 2.4–3.6 dnia później (6.3 → 8.7 i 7.7 → 11.3).
 
 Czego symulacja nie liczy: Turbo (będzie szybciej), mnożnika ×3 trybu na
 ślepo, różnych poziomów na różnych zegarach (mnożnik jest ten sam dla
@@ -219,8 +223,16 @@ do następnej pętli.
   Chronos.
 - **R-PETLA-2 (zakończenie):** Po zakupie Chronosa scena „Czas pokonany”:
   czas pętli, liczba paradoksów, celność, najlepsza seria. Potem przycisk
-  „Nowa pętla”. Gracz może zostać w starej pętli, jak długo chce (dokupić
-  bonusy Chronosa, dozbierać osiągnięcia). Nic nie wymusza resetu.
+  „Nowa pętla”. Gracz może zostać w starej pętli, jak długo chce. Nic nie
+  wymusza resetu.
+- **R-PETLA-2a (bonusy Chronosa):** Każdy bonus Chronosa zdobyty w tej
+  pętli (8 progów: 5, 10 … 50 sztuk) daje **+1 Sprężynę**, najwyżej 8 na
+  pętlę. Bez tego bonusy Chronosa nie miałyby sensu: przyspieszałyby
+  tylko pętlę, którą gracz zaraz opuści. Tak płacą w jedynej walucie,
+  która przechodzi dalej, i dają decyzję „wychodzę teraz czy zostaję po
+  więcej”. W zwykłej pętli komplet to 1–2 dni dłużej, przy droższych
+  zegarach 2–4 dni (§2.5), więc tam warto wyjść wcześniej. Pasek celu po
+  Chronosie pokazuje następny próg („Chronos 7/10 → +1 Sprężyna”).
 - **R-PETLA-3 (reset):** Nowa pętla zeruje Tiki, zegary, umiejętności,
   Chronony, Okruchy i perki. **Zostają:** Sprężyny i mistrzostwo zegarów,
   pieczęcie, osiągnięcia, tarcze, motywy, statystyki. Ekran przed resetem
@@ -230,8 +242,9 @@ do następnej pętli.
   „???”. Druga pętla może być bez zmiany zasady (sama powtórka z bonusami
   jest wyraźnie krótsza), żeby gracz najpierw poznał mechanizm.
 - **R-PETLA-5 (pieczęć):** Ukończona pętla daje pieczęć: trwałą, małą
-  zmianę zasady (nie procent), tarczę zegara i 3 Sprężyny. Pieczęcie
-  działają we wszystkich następnych pętlach.
+  zmianę zasady (nie procent) i tarczę zegara. Pieczęcie działają we
+  wszystkich następnych pętlach. Sprężyny za pętlę są tylko z bonusów
+  Chronosa (R-PETLA-2a).
 - **R-PETLA-6 (tempo):** Druga pętla ma trwać 50–65% czasu pierwszej
   (ok. 9–11 dni), kolejne 5–6 dni, nie mniej niż ok. 3 dni przy pełnym
   mistrzostwie (§2.5). Sprawdza `late_game_report.dart`, potem
@@ -292,8 +305,16 @@ Dlaczego tak:
 
 ### 5.4 Dokręcanie i reklama
 
+- **Jak to działa dziś:** Sprężyna jest gotowa, gdy jej pasek dojdzie do
+  24 h. Pasek rośnie sam z czasem (także gdy gra jest zamknięta), a każde
+  „równo 5.00” dorzuca do niego 15 min. Trafieniami można dorzucić
+  najwyżej 6 h na dobę.
 - **R-SPR-3 (zmiana):** zamiast „6 h na dobę” zapas dokręcania **2 h,
-  który odnawia się 30 min na godzinę** (pełny po 4 h). Trzy sesje
+  który odnawia się 30 min na godzinę** (pełny po 4 h). Zapas to limit
+  tego, ile trafienia mogą dorzucić naraz: każde trafienie zabiera z
+  niego tyle, ile dokręca. Pusty zapas: trafienia nic nie dokręcają,
+  dopóki nie wróci. W grze: mały pasek przy Sprężynie i jedno zdanie
+  „Trafieniami dokręcisz 2 h naraz. Zapas wraca w 4 godziny.” Trzy sesje
   dziennie dają tyle co dziś (6 h), pięć daje 10 h. Jedna długa sesja
   daje 2 h i 30 min za każdą kolejną godzinę gry, czyli mniej niż dziś
   (1.08 zamiast 1.25 Sprężyny dziennie). To celowe: nagradzamy powroty.
@@ -307,6 +328,20 @@ Dlaczego tak:
 - Efekt: 1.25 Sprężyny dziennie dla gracza „3 sesje”, do 1.5 przy
   częstych wejściach, do ok. 1.65 z reklamami. Gracz przypadkowy bez
   zmian (1.03–1.06).
+
+Przykład dnia (zapas pełny rano):
+
+| Godzina | Zapas przed | Co robi gracz | Dokręcone | Zapas po |
+|---|---|---|---|---|
+| 8:00 | 2 h | pierwsze „równo 5.00” po przerwie (+1 h), potem cztery kolejne (4 × 15 min) | 2 h | 0 |
+| 8:05 | 0 | trafia dalej | 0 (albo reklama: zapas znów 2 h) | 0 |
+| 12:00 | 2 h (minęły 4 h) | to samo co rano | 2 h | 0 |
+| 14:00 | 1 h (minęły 2 h) | wchodzi na minutę, jedno „równo 5.00” po przerwie | 1 h | 0 |
+| 20:00 | 2 h | to samo co rano | 2 h | 0 |
+
+Razem 7 h z trafień i 24 h z samego czasu, czyli 31 h paska: jedna
+Sprężyna i 7 h zapasu na następną (1.29 Sprężyny). Bez trafień byłaby
+dokładnie jedna na dobę.
 
 ### 5.5 Porządki (małe, tanie)
 
@@ -356,8 +391,10 @@ blokuje etapów 1–3.
 
 ## 7. Decyzje do podjęcia
 
-1. **Cel pętli:** pierwszy Chronos (rekomendacja), wszystkie perki, czy
-   ostatni bonus Chronosa (o ok. 4 dni dłużej).
+1. **Cel pętli:** pierwszy Chronos, a bonusy Chronosa płacą Sprężynami
+   (rekomendacja, R-PETLA-2a), czy prościej: celem jest ostatni bonus
+   Chronosa (50 sztuk; pętla dłuższa o 1–4 dni, bez decyzji „zostać czy
+   wyjść”).
 2. **Mnożnik stopnia mistrzostwa:** ×1.5 (rekomendacja, pełne ×7.6) czy
    ×2 (pełne ×32, pętle spadną poniżej 2 dni).
 3. **Zwrot kupionych poziomów w Sprężynach:** tak (rekomendacja) czy

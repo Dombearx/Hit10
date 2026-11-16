@@ -89,6 +89,7 @@ class Player {
   double? allBonusesAt;
   double? allPerksDay;
   double? allBonusesDay;
+  final chronosBonusDay = <int, double>{}; // bonuses of Chronos → days
   var paradoxCount = 0;
   var levelsBought = 0;
   var titles = 0;
@@ -127,6 +128,11 @@ class Player {
       }
       for (var i = 0; i < sim.econ.milestonesReached(g.id); i++) {
         seenBonuses.add('${g.id}#$i');
+      }
+    }
+    if (b.generators.any((g) => g.id == 'chronos')) {
+      for (var k = 1; k <= sim.econ.milestonesReached('chronos'); k++) {
+        chronosBonusDay.putIfAbsent(k, () => days);
       }
     }
     for (final t in runTargets) {
@@ -524,7 +530,8 @@ void main(List<String> args) {
     );
     stdout.writeln(
       '${'kept'.padRight(34)}${'first Chronos'.padLeft(14)}'
-      '${'all perks'.padLeft(13)}${'all bonuses'.padLeft(13)}'
+      '${'all perks'.padLeft(13)}${'Chronos 4/8'.padLeft(13)}'
+      '${'Chronos 8/8'.padLeft(13)}${'all bonuses'.padLeft(13)}'
       '${'paradoxes'.padLeft(11)}',
     );
     // (name, achievements kept, clock factor for every clock, balance)
@@ -581,6 +588,8 @@ void main(List<String> args) {
         '${name.padRight(34)}'
         '${dh(q.firstClockDay['chronos'], q.firstClock['chronos']).padLeft(14)}'
         '${dh(q.allPerksDay, perksHours)}'
+        '${(q.chronosBonusDay[4]?.toStringAsFixed(1) ?? '—').padLeft(13)}'
+        '${(q.chronosBonusDay[8]?.toStringAsFixed(1) ?? '—').padLeft(13)}'
         '${dh(q.allBonusesDay, q.allBonusesAt)}'
         '${'${q.paradoxCount}'.padLeft(11)}',
       );
