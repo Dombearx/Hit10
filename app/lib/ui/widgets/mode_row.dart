@@ -32,7 +32,7 @@ class ModeRow extends StatelessWidget {
       if (e.blindForced)
         _Toggle(
           key: const Key('mode-blind'),
-          label: l.modeBlindForced(e.blindMultiplier().round()),
+          label: l.modeBlind(e.blindMultiplier().round()),
           on: true,
           onTap: () => showChronicle(context, c),
         )
@@ -92,7 +92,10 @@ class _Toggle extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        // 36 high: a finger's target without crowding the arena.
+        constraints: const BoxConstraints(minHeight: 36),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
           color: on ? Palette.great : Colors.white.withValues(alpha: 0.65),
           borderRadius: BorderRadius.circular(12),

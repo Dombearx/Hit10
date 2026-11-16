@@ -81,10 +81,11 @@ void main() {
     // What Chronos brings next, its seal still a mystery.
     expect(find.text('Zepsuty stoper'), findsOneWidget);
     expect(find.text('Pieczęć za jej ukończenie: ???'), findsOneWidget);
-    expect(c.state.loopEndSeen, isTrue);
+    expect(c.state.loopEndSeen, isFalse); // closing the app shows it again
     await tester.tap(find.byKey(const Key('loop-stay')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('loop-end')), findsNothing);
+    expect(c.state.loopEndSeen, isTrue);
     expect(c.state.loop, 1);
     // Staying pays: the goal bar points at Chronos' next bonus.
     expect(c.nextGoal!.kind, GoalKind.loopBonus);
@@ -140,7 +141,7 @@ void main() {
     // Back on the game: the loop's chip, and Blind held on by the rule.
     expect(find.byKey(const Key('chronicle')), findsNothing);
     expect(find.byKey(const Key('loop-chip')), findsOneWidget);
-    expect(find.textContaining('zasada pętli'), findsOneWidget);
+    expect(find.byKey(const Key('mode-blind')), findsOneWidget);
     c.setMode(blind: false);
     expect(c.engine.blindActive, isTrue);
   });

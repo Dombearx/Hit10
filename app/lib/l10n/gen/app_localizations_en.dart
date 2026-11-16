@@ -2685,7 +2685,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String clockLevelLine(String level, String max, String mult) {
-    return 'Tier $level/$max · income $mult';
+    return 'Tier $level/$max · $mult';
   }
 
   @override
@@ -2839,7 +2839,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String loopBonusToastBody(int count) {
-    return '+$count Mainspring for the next loops';
+    return 'Mainsprings: +$count for the next loops';
   }
 
   @override
@@ -2886,11 +2886,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String goalLoopBonus(String name, String have, String need) {
     return 'Goal: $name $have/$need → +1 Mainspring';
-  }
-
-  @override
-  String modeBlindForced(int mult) {
-    return 'Blind ×$mult · loop rule';
   }
 
   @override

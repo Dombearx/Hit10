@@ -4793,7 +4793,7 @@ abstract class AppLocalizations {
   /// No description provided for @clockLevelLine.
   ///
   /// In en, this message translates to:
-  /// **'Tier {level}/{max} · income {mult}'**
+  /// **'Tier {level}/{max} · {mult}'**
   String clockLevelLine(String level, String max, String mult);
 
   /// No description provided for @clockLevelUp.
@@ -5045,7 +5045,7 @@ abstract class AppLocalizations {
   /// No description provided for @loopBonusToastBody.
   ///
   /// In en, this message translates to:
-  /// **'+{count} Mainspring for the next loops'**
+  /// **'Mainsprings: +{count} for the next loops'**
   String loopBonusToastBody(int count);
 
   /// No description provided for @chronicleTitle.
@@ -5119,12 +5119,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Goal: {name} {have}/{need} → +1 Mainspring'**
   String goalLoopBonus(String name, String have, String need);
-
-  /// No description provided for @modeBlindForced.
-  ///
-  /// In en, this message translates to:
-  /// **'Blind ×{mult} · loop rule'**
-  String modeBlindForced(int mult);
 
   /// No description provided for @adBlockedRule.
   ///

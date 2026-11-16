@@ -2684,7 +2684,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String clockLevelLine(String level, String max, String mult) {
-    return 'Stopień $level/$max · dochód $mult';
+    return 'Stopień $level/$max · $mult';
   }
 
   @override
@@ -2839,7 +2839,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String loopBonusToastBody(int count) {
-    return '+$count Sprężyna na kolejne pętle';
+    return 'Sprężyny: +$count na kolejne pętle';
   }
 
   @override
@@ -2887,11 +2887,6 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String goalLoopBonus(String name, String have, String need) {
     return 'Cel: $name $have/$need → +1 Sprężyna';
-  }
-
-  @override
-  String modeBlindForced(int mult) {
-    return 'Na ślepo ×$mult · zasada pętli';
   }
 
   @override

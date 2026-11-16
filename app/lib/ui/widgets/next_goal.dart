@@ -57,11 +57,11 @@ class NextGoalBar extends StatelessWidget {
         key: Key('next-goal-${goal.kind.name}'),
         onTap: () => onTap(goal),
         child: Container(
-          height: 24,
+          height: 32,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Palette.outline, width: 2),
           ),
           child: Stack(
@@ -83,7 +83,7 @@ class NextGoalBar extends StatelessWidget {
                       text,
                       maxLines: 1,
                       style: const TextStyle(
-                        fontSize: 12.5,
+                        fontSize: 13.5,
                         fontWeight: FontWeight.w800,
                         color: Palette.outline,
                       ),

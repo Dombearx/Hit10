@@ -344,7 +344,7 @@ class ClockLevelSection extends StatelessWidget {
               if (showName)
                 Text(
                   generatorName(l, id),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontFamily: Fonts.display,
@@ -364,7 +364,7 @@ class ClockLevelSection extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
-                    color: Palette.perfectDeep,
+                    color: Palette.perfectText,
                   ),
                 ),
               if (nextTitle != null)

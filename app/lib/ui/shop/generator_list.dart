@@ -327,7 +327,7 @@ class _MilestoneBar extends StatelessWidget {
             style: const TextStyle(
               fontSize: 11.5,
               fontWeight: FontWeight.w800,
-              color: Palette.perfectDeep,
+              color: Palette.perfectText,
             ),
           ),
         ],
@@ -493,7 +493,7 @@ Future<void> showGeneratorInfo(
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Palette.perfectDeep,
+                  color: Palette.perfectText,
                 ),
               ),
               if (owned > 0)
@@ -563,7 +563,7 @@ class _GeneratorBonuses extends StatelessWidget {
                         ? Icons.check_circle_rounded
                         : Icons.radio_button_unchecked_rounded,
                     size: 18,
-                    color: owned >= need ? Palette.perfectDeep : dim,
+                    color: owned >= need ? Palette.perfectText : dim,
                   ),
                   const SizedBox(width: 8),
                   Expanded(

@@ -125,6 +125,10 @@ Future<bool> confirmNewLoop(BuildContext context, GameController c) async {
     builder: (context) => AlertDialog(
       key: const Key('loop-confirm'),
       backgroundColor: _paper,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(26),
+        side: const BorderSide(color: Palette.outline, width: 3),
+      ),
       title: Text(
         l.loopConfirmTitle,
         style: const TextStyle(fontFamily: Fonts.display, fontSize: 22),
@@ -144,6 +148,7 @@ Future<bool> confirmNewLoop(BuildContext context, GameController c) async {
       actions: [
         TextButton(
           key: const Key('loop-confirm-no'),
+          style: TextButton.styleFrom(minimumSize: const Size(64, 48)),
           onPressed: () => Navigator.pop(context, false),
           child: Text(
             l.loopConfirmNo,
@@ -152,6 +157,7 @@ Future<bool> confirmNewLoop(BuildContext context, GameController c) async {
         ),
         TextButton(
           key: const Key('loop-confirm-yes'),
+          style: TextButton.styleFrom(minimumSize: const Size(64, 48)),
           onPressed: () => Navigator.pop(context, true),
           child: Text(
             l.loopConfirmYes,
@@ -174,12 +180,13 @@ Future<bool> confirmNewLoop(BuildContext context, GameController c) async {
 /// the seal and the dial face, what comes next, and the two ways on.
 Future<void> showLoopEnd(BuildContext context, GameController c) async {
   c.pause();
-  c.loopEndShown();
   await showDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (context) => _LoopEnd(controller: c),
   );
+  // Seen once answered: an app closed over it shows it again.
+  c.loopEndShown();
 }
 
 class _LoopEnd extends StatelessWidget {

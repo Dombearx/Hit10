@@ -184,7 +184,7 @@ class _SkillTile extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
-                            color: Palette.perfectDeep,
+                            color: Palette.perfectText,
                           ),
                         ),
                         Text(
@@ -425,7 +425,7 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Palette.perfectDeep,
+                    color: Palette.perfectText,
                   ),
                 ),
                 if (windowOdds(l, c.econ, id, level) case final line?)

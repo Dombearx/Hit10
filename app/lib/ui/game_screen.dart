@@ -837,7 +837,7 @@ class _PerfectPrice extends StatelessWidget {
       style: TextStyle(
         fontFamily: Fonts.display,
         fontSize: 13,
-        color: Palette.perfectDeep.withValues(alpha: 0.85),
+        color: Palette.perfectText,
       ),
     );
   }

@@ -1763,7 +1763,7 @@
   "adDoneSpring": "The reserve is full — hit 5.00!",
   "springsNoClocks": "Buy a clock to raise its mastery.",
   "clockLevelTitle": "Clock mastery",
-  "clockLevelLine": "Tier {level}/{max} · income {mult}",
+  "clockLevelLine": "Tier {level}/{max} · {mult}",
   "@clockLevelLine": {
     "placeholders": {
       "level": {
@@ -1907,7 +1907,7 @@
   "loopConfirmYes": "Start from zero",
   "loopConfirmNo": "Not yet",
   "loopBonusToast": "Chronos bonus",
-  "loopBonusToastBody": "+{count} Mainspring for the next loops",
+  "loopBonusToastBody": "Mainsprings: +{count} for the next loops",
   "@loopBonusToastBody": {
     "placeholders": {
       "count": {
@@ -1968,14 +1968,6 @@
       },
       "need": {
         "type": "String"
-      }
-    }
-  },
-  "modeBlindForced": "Blind ×{mult} · loop rule",
-  "@modeBlindForced": {
-    "placeholders": {
-      "mult": {
-        "type": "int"
       }
     }
   },
