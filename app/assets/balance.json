@@ -510,6 +510,9 @@
     },
     "golden": {
       "cooldown": 1800
+    },
+    "spring": {
+      "perDay": 2
     }
   },
   "ui": {
@@ -589,12 +592,29 @@
   "springs": {
     "secondsPerSpring": 86400,
     "hitSeconds": 900,
-    "hitSecondsPerDay": 21600,
+    "hitReserve": 7200,
+    "hitReserveRefill": 0.5,
+    "firstHitSeconds": 3600,
+    "firstHitAfter": 3600,
     "maxStock": 10,
     "firstGift": 1,
-    "levelBonus": 0.1,
-    "maxLevel": 10,
-    "titleLevels": [5, 10]
+    "levelFactor": 1.5,
+    "maxLevel": 5,
+    "titleLevels": [3, 5],
+    "titleKeys": [5, 10]
+  },
+  "loops": {
+    "goal": "chronos",
+    "goalBonusSprings": 1,
+    "storyChapters": 7,
+    "rules": [
+      {"id": "blindfold", "seal": {"blindBonus": 1}},
+      {"id": "inflation", "params": {"costGrowth": 1.2}, "seal": {"halfPriceUnits": 10, "halfPrice": 0.5}},
+      {"id": "noGold", "seal": {"awaySeconds": 3600, "goldenWithin": 30}},
+      {"id": "shortFuse", "params": {"comboCap": 5}, "seal": {"shieldCharges": 1}},
+      {"id": "precision", "seal": {"perfectWindow": 0.001}},
+      {"id": "insomnia", "params": {"offlineEfficiency": 0.25}, "seal": {"offlineCapHours": 12}}
+    ]
   },
   "dials": [
     {"id": "classic", "earned": 0},
@@ -603,11 +623,11 @@
     {"id": "brass", "earned": 1e12},
     {"id": "station", "earned": 1e14},
     {"id": "swiss", "earned": 1e16},
-    {"id": "quartz", "earned": 1e18},
-    {"id": "atomic", "earned": 1e20},
-    {"id": "neon", "earned": 5e21},
-    {"id": "cosmic", "earned": 6e22},
-    {"id": "golden", "earned": 3e23},
-    {"id": "rift", "earned": 1e24}
+    {"id": "quartz", "seal": "blindfold"},
+    {"id": "atomic", "seal": "inflation"},
+    {"id": "neon", "seal": "noGold"},
+    {"id": "cosmic", "seal": "shortFuse"},
+    {"id": "golden", "seal": "precision"},
+    {"id": "rift", "seal": "insomnia"}
   ]
 }

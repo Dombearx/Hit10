@@ -226,6 +226,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String durationH(int hours) {
+    return '$hours h';
+  }
+
+  @override
   String durationM(int minutes) {
     return '$minutes min';
   }
@@ -965,8 +970,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prestigeTitle => 'Time paradox';
 
   @override
-  String prestigeChronons(int count, String percent) {
-    return 'Chronons: $count (+$percent% forever)';
+  String prestigeChronons(int count, String mult) {
+    return 'Chronons: $count · income $mult';
+  }
+
+  @override
+  String prestigeGainMult(String from, String to) {
+    return 'Income $from → $to';
   }
 
   @override
@@ -1145,6 +1155,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goalPrestige => 'Goal: turn back time — tap the swirl up top';
+
+  @override
+  String get goalPrestigeDouble =>
+      'Goal: turn back time — it doubles your Chronons';
+
+  @override
+  String goalPrestigePerk(String name) {
+    return 'Goal: turn back time — enough for $name';
+  }
+
+  @override
+  String goalPerk(String name, String have, String need) {
+    return 'Goal: perk $name — $have/$need shards';
+  }
+
+  @override
+  String goalPerkBuy(String name) {
+    return 'Goal: buy the perk — $name';
+  }
+
+  @override
+  String get statMultTitle => 'Income multipliers';
+
+  @override
+  String statMultChronons(int count) {
+    return 'Chronons ($count)';
+  }
+
+  @override
+  String statMultAchievements(int count) {
+    return 'Achievements ($count)';
+  }
+
+  @override
+  String get statMultLevels => 'Clock mastery';
+
+  @override
+  String get statMultTurbo => 'Turbo';
+
+  @override
+  String get statMultTotal => 'Together';
 
   @override
   String get tutorialGotIt => 'OK';
@@ -2575,8 +2626,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String springsIntro(String pct) {
-    return 'A Mainspring winds itself: one a day, even while you\'re away. Every exact 5.00 winds it faster. Spend Mainsprings on clock levels: +$pct% to that clock\'s income per level, for good — levels survive the paradox.';
+  String springsIntro(String mult) {
+    return 'A Mainspring winds itself: one a day, even while you\'re away. Every exact 5.00 winds it faster. Spend Mainsprings on clock mastery: every tier multiplies that clock\'s income by $mult, for good — nothing takes it back.';
   }
 
   @override
@@ -2590,22 +2641,51 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String springsHitsLeft(String time) {
-    return 'Exact 5.00 hits can wind $time more today.';
+  String get springsReserveTitle => 'Winding reserve';
+
+  @override
+  String springsReserve(String left, String max) {
+    return '$left of $max';
   }
 
   @override
-  String get springsHitsDone => 'Today\'s winding by hits is used up.';
+  String springsReserveHow(String time, String refill) {
+    return 'Every exact 5.00 winds $time out of the reserve. The reserve comes back by itself in $refill.';
+  }
 
   @override
-  String get springsNoClocks => 'Buy a clock to raise its level.';
+  String springsReserveFirst(String time, String after) {
+    return 'Your next exact 5.00 winds a whole $time: the first one after a break of $after.';
+  }
 
   @override
-  String get clockLevelTitle => 'Clock level';
+  String springsReserveEmpty(String time) {
+    return 'The reserve is empty: hits wind nothing now. Full again in $time.';
+  }
 
   @override
-  String clockLevelLine(String level, String max, String pct) {
-    return 'Level $level/$max · +$pct%';
+  String get springEmpty => 'Winding reserve empty';
+
+  @override
+  String get adSpring => '▶ Refill for an ad';
+
+  @override
+  String adSpringLeft(int left, int max) {
+    return 'Ads today: $left of $max';
+  }
+
+  @override
+  String get adDoneSpring => 'The reserve is full — hit 5.00!';
+
+  @override
+  String get springsNoClocks => 'Buy a clock to raise its mastery.';
+
+  @override
+  String get clockLevelTitle => 'Clock mastery';
+
+  @override
+  String clockLevelLine(String level, String max, String mult) {
+    return 'Tier $level/$max · $mult';
   }
 
   @override
@@ -2614,11 +2694,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get clockLevelMax => 'Max level';
+  String get clockLevelMax => 'Full mastery';
 
   @override
   String clockLevelTitleAt(String level, String title) {
-    return 'Level $level: $title';
+    return 'Tier $level: $title';
   }
 
   @override
@@ -2626,7 +2706,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String ach_mastery_desc(String generator, String level) {
-    return '$generator at level $level';
+    return '$generator: mastery tier $level';
   }
 
   @override
@@ -2634,7 +2714,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dialHint =>
-      'New faces unlock as you earn Tiki across all your runs.';
+      'The first faces unlock as you earn Ticks. The last six are trophies: one for each Time Loop you finish.';
 
   @override
   String dialLocked(String amount) {
@@ -2656,16 +2736,319 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateRestart => 'Restart';
 
   @override
-  String get help_springs_t => 'Mainsprings and clock levels';
+  String get help_springs_t => 'Mainsprings and clock mastery';
 
   @override
   String get help_springs =>
-      'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.';
+      'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes out of a reserve. The reserve holds 2 hours and comes back by itself in 4, so it pays to return a few times a day. The first exact 5.00 after an hour\'s break winds a whole hour. You can hold up to 10 Mainsprings. Tap the spiral to raise a clock\'s mastery: tier 1 costs 1 Mainspring, tier 2 costs 2, up to tier 5. Each tier multiplies that clock\'s income by 1.5, for good: it survives the rewind and a new Time Loop. At tiers 3 and 5 a clock earns a master title.';
 
   @override
   String get help_dials_t => 'Dial faces';
 
   @override
   String get help_dials =>
-      'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one with the dial button at the top, next to the stats. They only change the look, not your results.';
+      'The more Ticks you earn, the more dial faces you unlock; the last six are trophies for finished Time Loops. Pick one with the dial button at the top, next to the stats. They only change the look, not the results.';
+
+  @override
+  String springsRefund(int count) {
+    return 'Clock levels are now 5 mastery tiers, each worth more. The $count Mainsprings you had spent are back — spend them again.';
+  }
+
+  @override
+  String get dialLockedSeal => 'Loop trophy';
+
+  @override
+  String loopNumber(int n) {
+    return 'Loop $n';
+  }
+
+  @override
+  String get loopTitle => 'Time Loop';
+
+  @override
+  String get loopGoal => 'Loop goal: buy Chronos';
+
+  @override
+  String get loopGoalDone => 'Goal reached: Chronos is yours';
+
+  @override
+  String get loopNoRule => 'No changed rule';
+
+  @override
+  String get loopRuleLabel => 'Chronos\' rule';
+
+  @override
+  String get loopEndTitle => 'Time is beaten!';
+
+  @override
+  String loopEndStats(String time, int count) {
+    return 'Play time: $time · Paradoxes: $count';
+  }
+
+  @override
+  String get loopRewardChapter => 'A new chapter of the Chronicle';
+
+  @override
+  String get loopRewardSeal => 'Seal won — it holds for good';
+
+  @override
+  String loopRewardDial(String name) {
+    return 'Dial face: $name';
+  }
+
+  @override
+  String get loopNextTitle => 'Next loop';
+
+  @override
+  String get loopNextSeal => 'Seal for beating it: ???';
+
+  @override
+  String get loopNextFree =>
+      'The story is told. From now on you pick the rules of every loop yourself — in the Chronicle.';
+
+  @override
+  String get loopStay => 'Stay a while';
+
+  @override
+  String loopStayHint(int left) {
+    return 'Every bonus of Chronos in this loop pays +1 Mainspring ($left left).';
+  }
+
+  @override
+  String get loopStart => 'New loop';
+
+  @override
+  String get loopConfirmTitle => 'Start a new loop?';
+
+  @override
+  String get loopConfirmResets =>
+      'Starts from zero: Ticks, clocks, skills, Chronons, shards and perks.';
+
+  @override
+  String get loopConfirmKeeps =>
+      'Stays: Mainsprings, clock mastery, seals, achievements, dial faces and statistics.';
+
+  @override
+  String get loopConfirmYes => 'Start from zero';
+
+  @override
+  String get loopConfirmNo => 'Not yet';
+
+  @override
+  String get loopBonusToast => 'Chronos bonus';
+
+  @override
+  String loopBonusToastBody(int count) {
+    return 'Mainsprings: +$count for the next loops';
+  }
+
+  @override
+  String get chronicleTitle => 'Chronicle';
+
+  @override
+  String get chronicleOpen => 'Open the Chronicle';
+
+  @override
+  String get chronicleChapters => 'Chapters';
+
+  @override
+  String get chronicleSeals => 'Seals';
+
+  @override
+  String chronicleChapter(int n) {
+    return 'Chapter $n';
+  }
+
+  @override
+  String chronicleChapterLocked(int n) {
+    return 'Finish loop $n';
+  }
+
+  @override
+  String get chronicleSealLocked => 'Beat this rule to win its seal';
+
+  @override
+  String chronicleBest(String time) {
+    return 'Best: $time of play';
+  }
+
+  @override
+  String get chroniclePick => 'Rules of the next loop';
+
+  @override
+  String get chroniclePickHint => 'Pick any, several at once, or none.';
+
+  @override
+  String chronicleLoopTime(String time, int count) {
+    return 'In this loop: $time of play, $count paradoxes';
+  }
+
+  @override
+  String goalLoopBonus(String name, String have, String need) {
+    return 'Goal: $name $have/$need → +1 Mainspring';
+  }
+
+  @override
+  String get adBlockedRule => 'loop rule';
+
+  @override
+  String get statLoop => 'Time Loop';
+
+  @override
+  String get help_loop_t => 'Time Loop and the Chronicle';
+
+  @override
+  String get help_loop =>
+      'The goal of the game is to buy Chronos, the last clock. When you do, the loop is finished: you get a chapter of the story and may start a new loop. A new loop starts everything from zero — Chronons and perks too — and Chronos changes one rule in it. Your Mainsprings, clock mastery, achievements and dial faces stay, so every loop goes faster. Finishing a loop with a changed rule wins its seal: a small bonus that holds for good, and a dial face. Every bonus of Chronos you reach before leaving pays +1 Mainspring. Seven loops tell the whole story; after that you pick the rules yourself. Everything is in the Chronicle, on the Time paradox screen.';
+
+  @override
+  String get rule_blindfold => 'Broken Stopwatch';
+
+  @override
+  String get rule_blindfold_desc =>
+      'Blind mode is always on: the digits vanish for the last second. It pays as usual.';
+
+  @override
+  String get rule_blindfold_quote =>
+      '“I\'m taking your digits. Let\'s see what you can do without peeking.”';
+
+  @override
+  String get seal_blindfold => 'A Feel for It';
+
+  @override
+  String get seal_blindfold_desc =>
+      'Blind mode pays one more (×4, ×5 with Daredevil).';
+
+  @override
+  String get rule_inflation => 'Price Hike';
+
+  @override
+  String get rule_inflation_desc =>
+      'Each clock raises the price of the next one by 20% instead of 15%.';
+
+  @override
+  String get rule_inflation_quote =>
+      '“Time is money. And money just lost its value.”';
+
+  @override
+  String get seal_inflation => 'Regular Customer';
+
+  @override
+  String get seal_inflation_desc => 'The first 10 of every clock cost half.';
+
+  @override
+  String get rule_noGold => 'Cloudy Day';
+
+  @override
+  String get rule_noGold_desc =>
+      'No Golden Second flies in (seasonal events still do).';
+
+  @override
+  String get rule_noGold_quote => '“I\'m covering the sun. No golden seconds.”';
+
+  @override
+  String get seal_noGold => 'Ray of Sun';
+
+  @override
+  String get seal_noGold_desc =>
+      'Back after an hour or more: a Golden Second flies in within 30 seconds.';
+
+  @override
+  String get rule_shortFuse => 'Short Fuse';
+
+  @override
+  String get rule_shortFuse_desc =>
+      'The combo counts up to 5 at most, and there is no Shield.';
+
+  @override
+  String get rule_shortFuse_quote =>
+      '“No more long streaks. And hand over that Shield.”';
+
+  @override
+  String get seal_shortFuse => 'Spare Shield';
+
+  @override
+  String get seal_shortFuse_desc =>
+      '+1 Shield charge from the start of every run.';
+
+  @override
+  String get rule_precision => 'Swiss Precision';
+
+  @override
+  String get rule_precision_desc =>
+      'A GOOD pays you nothing. Only GREAT and PERFECT count.';
+
+  @override
+  String get rule_precision_quote => '“From now on only a proper hit counts.”';
+
+  @override
+  String get seal_precision => 'Steady Hand';
+
+  @override
+  String get seal_precision_desc => 'The PERFECT window is 0.001 s wider.';
+
+  @override
+  String get rule_insomnia => 'Insomnia';
+
+  @override
+  String get rule_insomnia_desc =>
+      'While you\'re away the clocks earn only 25%.';
+
+  @override
+  String get rule_insomnia_quote => '“Those who sleep run late. Clocks too.”';
+
+  @override
+  String get seal_insomnia => 'Sound Sleep';
+
+  @override
+  String get seal_insomnia_desc => 'Offline income counts for 12 more hours.';
+
+  @override
+  String get chapter_1_t => 'Bought';
+
+  @override
+  String get chapter_1 =>
+      '“You bought me? ME? The god of time, for Ticks?” Chronos straightened his toga and counted to five. “Fine. I\'m rewinding everything. And I\'m taking your digits.”\n“Don\'t mind him,” Grandpa muttered. “He\'s always like this before five.”';
+
+  @override
+  String get chapter_2_t => 'Blind';
+
+  @override
+  String get chapter_2 =>
+      'You hit 5.00 without looking. Chronos pretended not to see.\n“Luck,” he grumbled, and handed over a seal. “Let\'s see if you can afford time when time gets expensive.”\nGrandpa only shrugged: in his day a second cost a penny.';
+
+  @override
+  String get chapter_3_t => 'Price Hike';
+
+  @override
+  String get chapter_3 =>
+      '“Everything got dearer and you still bought me,” Chronos sighed.\n“Grandma says it\'s the eggs,” said Grandpa.\nChronos flinched at the word “Grandma” and quickly changed the subject: “I\'m covering the sun. No golden seconds.”';
+
+  @override
+  String get chapter_4_t => 'Overcast';
+
+  @override
+  String get chapter_4 =>
+      'You managed without gold, too. Chronos kept glancing at the watch he doesn\'t wear.\n“In a hurry?” asked Grandpa.\n“Me? Never. I have all the time in the world.” And, more quietly: “Just not after five.”';
+
+  @override
+  String get chapter_5_t => 'Short Fuse';
+
+  @override
+  String get chapter_5 =>
+      '“No streaks, no Shield, and you\'re still here.” For the first time Chronos smiled. “I\'ll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”';
+
+  @override
+  String get chapter_6_t => 'To the Second';
+
+  @override
+  String get chapter_6 =>
+      '“He was late for tea,” Grandpa let slip. “At Grandma\'s. At five. We\'d already eaten the cheesecake.”\nChronos turned red. “One loop. The last one. And no sleeping: those who sleep run late.”';
+
+  @override
+  String get chapter_7_t => 'Five Sharp';
+
+  @override
+  String get chapter_7 =>
+      '5.00 sharp. Chronos stands at Grandma\'s door, on time for the first time in ages.\n“Come in, watchmaker,” he says to you. “The cheesecake is for two, but Grandma always cuts it in five. From today you set the rules. I\'m off to tea.”';
 }

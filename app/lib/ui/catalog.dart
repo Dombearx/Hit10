@@ -280,3 +280,84 @@ String? fixedAchievementDescription(AppLocalizations l, String id) =>
       'hidden_atomic' => l.ach_hidden_atomic_desc,
       _ => null,
     };
+
+// ------------------------------------------- time loops (docs/13 §5.2) --
+
+const _sealGold = Color(0xFFFFD86E);
+const _ruleLilac = Color(0xFFE2D2FF);
+
+const _ruleIcons = <String, String>{
+  'blindfold': 'see_no_evil_monkey',
+  'inflation': 'money_bag',
+  'noGold': 'sun_with_face',
+  'shortFuse': 'fire',
+  'precision': 'bullseye',
+  'insomnia': 'sleeping_face',
+};
+
+/// A loop rule's icon; its seal is the same icon on gold.
+EmojiArt ruleArt(String id, {bool seal = false}) =>
+    EmojiArt(_ruleIcons[id] ?? 'cyclone', seal ? _sealGold : _ruleLilac);
+
+String ruleName(AppLocalizations l, String id) => switch (id) {
+  'blindfold' => l.rule_blindfold,
+  'inflation' => l.rule_inflation,
+  'noGold' => l.rule_noGold,
+  'shortFuse' => l.rule_shortFuse,
+  'precision' => l.rule_precision,
+  'insomnia' => l.rule_insomnia,
+  _ => id,
+};
+
+String ruleDescription(AppLocalizations l, String id) => switch (id) {
+  'blindfold' => l.rule_blindfold_desc,
+  'inflation' => l.rule_inflation_desc,
+  'noGold' => l.rule_noGold_desc,
+  'shortFuse' => l.rule_shortFuse_desc,
+  'precision' => l.rule_precision_desc,
+  'insomnia' => l.rule_insomnia_desc,
+  _ => '',
+};
+
+/// What Chronos says when he brings the rule.
+String ruleQuote(AppLocalizations l, String id) => switch (id) {
+  'blindfold' => l.rule_blindfold_quote,
+  'inflation' => l.rule_inflation_quote,
+  'noGold' => l.rule_noGold_quote,
+  'shortFuse' => l.rule_shortFuse_quote,
+  'precision' => l.rule_precision_quote,
+  'insomnia' => l.rule_insomnia_quote,
+  _ => '',
+};
+
+String sealName(AppLocalizations l, String id) => switch (id) {
+  'blindfold' => l.seal_blindfold,
+  'inflation' => l.seal_inflation,
+  'noGold' => l.seal_noGold,
+  'shortFuse' => l.seal_shortFuse,
+  'precision' => l.seal_precision,
+  'insomnia' => l.seal_insomnia,
+  _ => id,
+};
+
+String sealDescription(AppLocalizations l, String id) => switch (id) {
+  'blindfold' => l.seal_blindfold_desc,
+  'inflation' => l.seal_inflation_desc,
+  'noGold' => l.seal_noGold_desc,
+  'shortFuse' => l.seal_shortFuse_desc,
+  'precision' => l.seal_precision_desc,
+  'insomnia' => l.seal_insomnia_desc,
+  _ => '',
+};
+
+/// Title and text of chapter [n] (1-based) of the Chronicle.
+(String, String)? chapterTexts(AppLocalizations l, int n) => switch (n) {
+  1 => (l.chapter_1_t, l.chapter_1),
+  2 => (l.chapter_2_t, l.chapter_2),
+  3 => (l.chapter_3_t, l.chapter_3),
+  4 => (l.chapter_4_t, l.chapter_4),
+  5 => (l.chapter_5_t, l.chapter_5),
+  6 => (l.chapter_6_t, l.chapter_6),
+  7 => (l.chapter_7_t, l.chapter_7),
+  _ => null,
+};

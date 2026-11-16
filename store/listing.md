@@ -53,13 +53,19 @@ Złap latający złoty zegarek, a dostaniesz Szał (wszystko ×7), Fart albo
 Gorącą rękę.
 
 🌀 Paradoks czasowy
-Cofnij czas, zdobądź Chronony na stały bonus i odkryj 18 perków — od
-szybkiego startu po drugi zegar.
+Cofnij czas, zdobądź Chronony — bonus do wszystkiego — i odkryj 18
+perków, od szybkiego startu po drugi zegar.
 
 🔧 Sprężyny i tarcze
 Po paradoksie Sprężyny nakręcają się codziennie — a każde trafienie
-w równe 5.00 nakręca je szybciej. Podnoś nimi poziomy zegarów na stałe,
-zdobywaj tytuły mistrzów i odblokuj 12 tarcz stopera.
+w równe 5.00 nakręca je szybciej. Kupuj za nie mistrzostwo zegarów,
+które zostaje na zawsze, zdobywaj tytuły mistrzów i odblokuj 12 tarcz
+stopera.
+
+⏳ Pętla czasu
+Kup Chronosa, boga czasu, a obrazi się i cofnie wszystko od zera — za
+każdym razem psując jedną zasadę. Siedem pętli, siedem rozdziałów
+historii i odpowiedź na pytanie, dlaczego akurat 5.00.
 
 🏆 Na długo
 177 osiągnięć, dzienna premia, tryb Na ślepo i 7 wydarzeń sezonowych
@@ -99,13 +105,18 @@ Catch the flying golden clock for a Frenzy (everything ×7), a Lucky
 payout or a Hot Hand.
 
 🌀 Time paradox
-Rewind time, earn Chronons for a permanent bonus and unlock 18 perks —
-from a head start to a second clock.
+Rewind time, earn Chronons — a bonus to everything — and unlock 18
+perks, from a head start to a second clock.
 
 🔧 Mainsprings and dial faces
 After a paradox, Mainsprings wind every day — and every exact 5.00 winds
-them faster. Use them to level up clocks for good, earn master titles
-and unlock 12 stopwatch faces.
+them faster. Spend them on clock mastery that stays for good, earn
+master titles and unlock 12 stopwatch faces.
+
+⏳ Time Loop
+Buy Chronos, the god of time, and he takes offense and rewinds
+everything to zero — spoiling one rule each time. Seven loops, seven
+chapters of the story, and the answer to why it has to be 5.00.
 
 🏆 Plenty to do
 177 achievements, a daily bonus, Blind mode and 7 seasonal events

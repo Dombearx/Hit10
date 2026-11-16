@@ -204,7 +204,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
     expect(c.state.clockLevels['grandpa'], 1);
     expect(c.state.springs, 2);
-    expect(find.text('Poziom 1/10 · +10%'), findsOneWidget);
+    expect(find.text('Stopień 1/5 · ×1,5'), findsOneWidget);
     await tester.pump(const Duration(seconds: 10)); // let the toasts go
   });
 

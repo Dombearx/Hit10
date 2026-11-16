@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:archive/archive.dart';
 
@@ -15,12 +16,52 @@ class SaveFormatException implements Exception {
 }
 
 /// Current save format; bump and add a migration for every change (T-17).
-const saveVersion = 1;
+const saveVersion = 2;
 
 /// One migration per version step: `migrations[n]` turns a vN map into
-/// v(n+1). Empty until the format first changes.
+/// v(n+1).
 final Map<int, Map<String, Object?> Function(Map<String, Object?>)> migrations =
-    {};
+    {1: _toV2};
+
+/// Faces that were unlocked by Tiki earned before they became the seals'
+/// trophies (docs/13 §5.5): whoever had one keeps it.
+const _oldDialThresholds = {
+  'quartz': 1e18,
+  'atomic': 1e20,
+  'neon': 5e21,
+  'cosmic': 6e22,
+  'golden': 3e23,
+  'rift': 1e24,
+};
+
+/// v1 → v2 (docs/13): clock levels became mastery tiers with other prices,
+/// so every Mainspring spent comes back; Time Loops start with what the
+/// game so far holds.
+Map<String, Object?> _toV2(Map<String, Object?> j) {
+  final out = Map<String, Object?>.of(j);
+  var refund = 0;
+  _m(j['clockLevels']).forEach((_, v) {
+    final level = _i(v);
+    refund += level * (level + 1) ~/ 2; // level N cost N
+  });
+  final lifetime = _m(j['lifetime']);
+  final seen = [
+    ..._sl(j['dialsSeen']),
+    // A save from before the faces: they are not news (see _decodeCurrent).
+    if (!j.containsKey('dialsSeen')) '*',
+  ];
+  _oldDialThresholds.forEach((id, need) {
+    if (_d(lifetime['earnedEver']) >= need && !seen.contains(id)) seen.add(id);
+  });
+  return out
+    ..['saveVersion'] = 2
+    ..['clockLevels'] = <String, Object?>{}
+    ..['springs'] = _i(j['springs']) + refund
+    ..['springsRefunded'] = refund
+    ..['dialsSeen'] = seen
+    ..['loopPlaySeconds'] = _d(lifetime['secondsPlayed'])
+    ..['loopPrestiges'] = _i(j['prestiges']);
+}
 
 class SaveData {
   SaveData(this.state, this.settings, {this.balanceVersion = 0});
@@ -79,9 +120,26 @@ Map<String, Object?> encodeSave(SaveData d) {
     'springs': s.springs,
     'springProgress': s.springProgress,
     'springClockMs': s.springClockMs,
-    'springHitDay': s.springHitDay,
-    'springHitSeconds': s.springHitSeconds,
+    'springReserve': s.springReserve,
+    'springReserveMs': s.springReserveMs,
+    'springLastHitMs': s.springLastHitMs,
+    'springAdDay': s.springAdDay,
+    'springAdCount': s.springAdCount,
     'clockLevels': s.clockLevels,
+    'springsRefunded': s.springsRefunded,
+    'loop': s.loop,
+    'loopRules': s.loopRules,
+    'seals': s.seals.toList(),
+    'loopsDone': s.loopsDone,
+    'loopGoal': s.loopGoal,
+    'loopEndSeen': s.loopEndSeen,
+    'loopBonusPaid': s.loopBonusPaid,
+    'loopPlaySeconds': s.loopPlaySeconds,
+    'loopPrestiges': s.loopPrestiges,
+    'loopStartMs': s.loopStartMs,
+    'loopGoalSeconds': s.loopGoalSeconds,
+    'loopBest': s.loopBest,
+    'nextRules': s.nextRules,
     'everOwned': s.everOwned.toList(),
     'dial': s.dial,
     'dialsSeen': s.dialsSeen.toList(),
@@ -191,8 +249,22 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..springs = _i(j['springs'])
     ..springProgress = _d(j['springProgress'])
     ..springClockMs = _i(j['springClockMs'])
-    ..springHitDay = _i(j['springHitDay'])
-    ..springHitSeconds = _d(j['springHitSeconds'])
+    // Saves from before the reserve (R-SPR-3) start with a full one.
+    ..springReserve = _d(j['springReserve'])
+    ..springReserveMs = _i(j['springReserveMs'])
+    ..springLastHitMs = _i(j['springLastHitMs'])
+    ..springAdDay = _i(j['springAdDay'])
+    ..springAdCount = _i(j['springAdCount'])
+    ..springsRefunded = _i(j['springsRefunded'])
+    ..loop = math.max(1, _i(j['loop'], 1))
+    ..loopsDone = _i(j['loopsDone'])
+    ..loopGoal = j['loopGoal'] == true
+    ..loopEndSeen = j['loopEndSeen'] == true
+    ..loopBonusPaid = _i(j['loopBonusPaid'])
+    ..loopPlaySeconds = _d(j['loopPlaySeconds'])
+    ..loopPrestiges = _i(j['loopPrestiges'])
+    ..loopStartMs = _i(j['loopStartMs'])
+    ..loopGoalSeconds = _d(j['loopGoalSeconds'])
     ..dial = j['dial'] is String ? j['dial']! as String : ''
     // A save from before the counter: this run's taps are unknown.
     ..runTaps = j.containsKey('runTaps') ? _i(j['runTaps']) : 1 << 30;
@@ -210,6 +282,10 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   s.achievements.addAll(_sl(j['achievements']));
   _m(j['clockLevels']).forEach((k, v) => s.clockLevels[k] = _i(v));
   s.dialsSeen.addAll(_sl(j['dialsSeen']));
+  s.loopRules.addAll(_sl(j['loopRules']));
+  s.seals.addAll(_sl(j['seals']));
+  s.nextRules.addAll(_sl(j['nextRules']));
+  _m(j['loopBest']).forEach((k, v) => s.loopBest[k] = _d(v));
   // Saves from before Mainsprings: clocks owned now or ever (their first
   // "own 1" badge) count as bought.
   s.everOwned.addAll(_sl(j['everOwned']));

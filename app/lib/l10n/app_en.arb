@@ -134,6 +134,14 @@
       }
     }
   },
+  "durationH": "{hours} h",
+  "@durationH": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "durationM": "{minutes} min",
   "@durationM": {
     "placeholders": {
@@ -750,13 +758,24 @@
     }
   },
   "prestigeTitle": "Time paradox",
-  "prestigeChronons": "Chronons: {count} (+{percent}% forever)",
+  "prestigeChronons": "Chronons: {count} · income {mult}",
   "@prestigeChronons": {
     "placeholders": {
       "count": {
         "type": "int"
       },
-      "percent": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "prestigeGainMult": "Income {from} → {to}",
+  "@prestigeGainMult": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
         "type": "String"
       }
     }
@@ -951,6 +970,57 @@
     }
   },
   "goalPrestige": "Goal: turn back time — tap the swirl up top",
+  "goalPrestigeDouble": "Goal: turn back time — it doubles your Chronons",
+  "goalPrestigePerk": "Goal: turn back time — enough for {name}",
+  "@goalPrestigePerk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPerk": "Goal: perk {name} — {have}/{need} shards",
+  "@goalPerk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "have": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPerkBuy": "Goal: buy the perk — {name}",
+  "@goalPerkBuy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "statMultTitle": "Income multipliers",
+  "statMultChronons": "Chronons ({count})",
+  "@statMultChronons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statMultAchievements": "Achievements ({count})",
+  "@statMultAchievements": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statMultLevels": "Clock mastery",
+  "statMultTurbo": "Turbo",
+  "statMultTotal": "Together",
   "tutorialGotIt": "OK",
   "tip_skills": "Skills boost your own hits.",
   "tip_modes": "A new mode! Tap to switch it on.",
@@ -1618,7 +1688,7 @@
       }
     }
   },
-  "springsIntro": "A Mainspring winds itself: one a day, even while you're away. Every exact 5.00 winds it faster. Spend Mainsprings on clock levels: +{pct}% to that clock's income per level, for good — levels survive the paradox.",
+  "springsIntro": "A Mainspring winds itself: one a day, even while you're away. Every exact 5.00 winds it faster. Spend Mainsprings on clock mastery: every tier multiplies that clock's income by {mult}, for good — nothing takes it back.",
   "springsNext": "Next one in {time}",
   "@springsNext": {
     "placeholders": {
@@ -1635,18 +1705,65 @@
       }
     }
   },
-  "springsHitsLeft": "Exact 5.00 hits can wind {time} more today.",
-  "@springsHitsLeft": {
+  "springsReserveTitle": "Winding reserve",
+  "springsReserve": "{left} of {max}",
+  "@springsReserve": {
+    "placeholders": {
+      "left": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "springsReserveHow": "Every exact 5.00 winds {time} out of the reserve. The reserve comes back by itself in {refill}.",
+  "@springsReserveHow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "refill": {
+        "type": "String"
+      }
+    }
+  },
+  "springsReserveFirst": "Your next exact 5.00 winds a whole {time}: the first one after a break of {after}.",
+  "@springsReserveFirst": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      }
+    }
+  },
+  "springsReserveEmpty": "The reserve is empty: hits wind nothing now. Full again in {time}.",
+  "@springsReserveEmpty": {
     "placeholders": {
       "time": {
         "type": "String"
       }
     }
   },
-  "springsHitsDone": "Today's winding by hits is used up.",
-  "springsNoClocks": "Buy a clock to raise its level.",
-  "clockLevelTitle": "Clock level",
-  "clockLevelLine": "Level {level}/{max} · +{pct}%",
+  "springEmpty": "Winding reserve empty",
+  "adSpring": "▶ Refill for an ad",
+  "adSpringLeft": "Ads today: {left} of {max}",
+  "@adSpringLeft": {
+    "placeholders": {
+      "left": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "adDoneSpring": "The reserve is full — hit 5.00!",
+  "springsNoClocks": "Buy a clock to raise its mastery.",
+  "clockLevelTitle": "Clock mastery",
+  "clockLevelLine": "Tier {level}/{max} · {mult}",
   "@clockLevelLine": {
     "placeholders": {
       "level": {
@@ -1655,7 +1772,7 @@
       "max": {
         "type": "String"
       },
-      "pct": {
+      "mult": {
         "type": "String"
       }
     }
@@ -1668,8 +1785,8 @@
       }
     }
   },
-  "clockLevelMax": "Max level",
-  "clockLevelTitleAt": "Level {level}: {title}",
+  "clockLevelMax": "Full mastery",
+  "clockLevelTitleAt": "Tier {level}: {title}",
   "@clockLevelTitleAt": {
     "placeholders": {
       "level": {
@@ -1681,7 +1798,7 @@
     }
   },
   "clockLevelLocked": "Mainsprings arrive with the first paradox.",
-  "ach_mastery_desc": "{generator} at level {level}",
+  "ach_mastery_desc": "{generator}: mastery tier {level}",
   "@ach_mastery_desc": {
     "placeholders": {
       "generator": {
@@ -1693,7 +1810,7 @@
     }
   },
   "dialTitle": "Dial face",
-  "dialHint": "New faces unlock as you earn Tiki across all your runs.",
+  "dialHint": "The first faces unlock as you earn Ticks. The last six are trophies: one for each Time Loop you finish.",
   "dialLocked": "Earn {amount}",
   "@dialLocked": {
     "placeholders": {
@@ -1718,13 +1835,188 @@
   "updateRestart": "Restart",
   "@springsIntro": {
     "placeholders": {
-      "pct": {
+      "mult": {
         "type": "String"
       }
     }
   },
-  "help_springs_t": "Mainsprings and clock levels",
-  "help_springs": "After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you're away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.",
+  "help_springs_t": "Mainsprings and clock mastery",
+  "help_springs": "After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you're away, and every exact 5.00 winds 15 more minutes out of a reserve. The reserve holds 2 hours and comes back by itself in 4, so it pays to return a few times a day. The first exact 5.00 after an hour's break winds a whole hour. You can hold up to 10 Mainsprings. Tap the spiral to raise a clock's mastery: tier 1 costs 1 Mainspring, tier 2 costs 2, up to tier 5. Each tier multiplies that clock's income by 1.5, for good: it survives the rewind and a new Time Loop. At tiers 3 and 5 a clock earns a master title.",
   "help_dials_t": "Dial faces",
-  "help_dials": "The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one with the dial button at the top, next to the stats. They only change the look, not your results."
+  "help_dials": "The more Ticks you earn, the more dial faces you unlock; the last six are trophies for finished Time Loops. Pick one with the dial button at the top, next to the stats. They only change the look, not the results.",
+  "springsRefund": "Clock levels are now 5 mastery tiers, each worth more. The {count} Mainsprings you had spent are back — spend them again.",
+  "@springsRefund": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dialLockedSeal": "Loop trophy",
+  "loopNumber": "Loop {n}",
+  "@loopNumber": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "loopTitle": "Time Loop",
+  "loopGoal": "Loop goal: buy Chronos",
+  "loopGoalDone": "Goal reached: Chronos is yours",
+  "loopNoRule": "No changed rule",
+  "loopRuleLabel": "Chronos' rule",
+  "loopEndTitle": "Time is beaten!",
+  "loopEndStats": "Play time: {time} · Paradoxes: {count}",
+  "@loopEndStats": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "loopRewardChapter": "A new chapter of the Chronicle",
+  "loopRewardSeal": "Seal won — it holds for good",
+  "loopRewardDial": "Dial face: {name}",
+  "@loopRewardDial": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loopNextTitle": "Next loop",
+  "loopNextSeal": "Seal for beating it: ???",
+  "loopNextFree": "The story is told. From now on you pick the rules of every loop yourself — in the Chronicle.",
+  "loopStay": "Stay a while",
+  "loopStayHint": "Every bonus of Chronos in this loop pays +1 Mainspring ({left} left).",
+  "@loopStayHint": {
+    "placeholders": {
+      "left": {
+        "type": "int"
+      }
+    }
+  },
+  "loopStart": "New loop",
+  "loopConfirmTitle": "Start a new loop?",
+  "loopConfirmResets": "Starts from zero: Ticks, clocks, skills, Chronons, shards and perks.",
+  "loopConfirmKeeps": "Stays: Mainsprings, clock mastery, seals, achievements, dial faces and statistics.",
+  "loopConfirmYes": "Start from zero",
+  "loopConfirmNo": "Not yet",
+  "loopBonusToast": "Chronos bonus",
+  "loopBonusToastBody": "Mainsprings: +{count} for the next loops",
+  "@loopBonusToastBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chronicleTitle": "Chronicle",
+  "chronicleOpen": "Open the Chronicle",
+  "chronicleChapters": "Chapters",
+  "chronicleSeals": "Seals",
+  "chronicleChapter": "Chapter {n}",
+  "@chronicleChapter": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chronicleChapterLocked": "Finish loop {n}",
+  "@chronicleChapterLocked": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chronicleSealLocked": "Beat this rule to win its seal",
+  "chronicleBest": "Best: {time} of play",
+  "@chronicleBest": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chroniclePick": "Rules of the next loop",
+  "chroniclePickHint": "Pick any, several at once, or none.",
+  "chronicleLoopTime": "In this loop: {time} of play, {count} paradoxes",
+  "@chronicleLoopTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "goalLoopBonus": "Goal: {name} {have}/{need} → +1 Mainspring",
+  "@goalLoopBonus": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "have": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "adBlockedRule": "loop rule",
+  "statLoop": "Time Loop",
+  "help_loop_t": "Time Loop and the Chronicle",
+  "help_loop": "The goal of the game is to buy Chronos, the last clock. When you do, the loop is finished: you get a chapter of the story and may start a new loop. A new loop starts everything from zero — Chronons and perks too — and Chronos changes one rule in it. Your Mainsprings, clock mastery, achievements and dial faces stay, so every loop goes faster. Finishing a loop with a changed rule wins its seal: a small bonus that holds for good, and a dial face. Every bonus of Chronos you reach before leaving pays +1 Mainspring. Seven loops tell the whole story; after that you pick the rules yourself. Everything is in the Chronicle, on the Time paradox screen.",
+  "rule_blindfold": "Broken Stopwatch",
+  "rule_blindfold_desc": "Blind mode is always on: the digits vanish for the last second. It pays as usual.",
+  "rule_blindfold_quote": "“I'm taking your digits. Let's see what you can do without peeking.”",
+  "seal_blindfold": "A Feel for It",
+  "seal_blindfold_desc": "Blind mode pays one more (×4, ×5 with Daredevil).",
+  "rule_inflation": "Price Hike",
+  "rule_inflation_desc": "Each clock raises the price of the next one by 20% instead of 15%.",
+  "rule_inflation_quote": "“Time is money. And money just lost its value.”",
+  "seal_inflation": "Regular Customer",
+  "seal_inflation_desc": "The first 10 of every clock cost half.",
+  "rule_noGold": "Cloudy Day",
+  "rule_noGold_desc": "No Golden Second flies in (seasonal events still do).",
+  "rule_noGold_quote": "“I'm covering the sun. No golden seconds.”",
+  "seal_noGold": "Ray of Sun",
+  "seal_noGold_desc": "Back after an hour or more: a Golden Second flies in within 30 seconds.",
+  "rule_shortFuse": "Short Fuse",
+  "rule_shortFuse_desc": "The combo counts up to 5 at most, and there is no Shield.",
+  "rule_shortFuse_quote": "“No more long streaks. And hand over that Shield.”",
+  "seal_shortFuse": "Spare Shield",
+  "seal_shortFuse_desc": "+1 Shield charge from the start of every run.",
+  "rule_precision": "Swiss Precision",
+  "rule_precision_desc": "A GOOD pays you nothing. Only GREAT and PERFECT count.",
+  "rule_precision_quote": "“From now on only a proper hit counts.”",
+  "seal_precision": "Steady Hand",
+  "seal_precision_desc": "The PERFECT window is 0.001 s wider.",
+  "rule_insomnia": "Insomnia",
+  "rule_insomnia_desc": "While you're away the clocks earn only 25%.",
+  "rule_insomnia_quote": "“Those who sleep run late. Clocks too.”",
+  "seal_insomnia": "Sound Sleep",
+  "seal_insomnia_desc": "Offline income counts for 12 more hours.",
+  "chapter_1_t": "Bought",
+  "chapter_1": "“You bought me? ME? The god of time, for Ticks?” Chronos straightened his toga and counted to five. “Fine. I'm rewinding everything. And I'm taking your digits.”\n“Don't mind him,” Grandpa muttered. “He's always like this before five.”",
+  "chapter_2_t": "Blind",
+  "chapter_2": "You hit 5.00 without looking. Chronos pretended not to see.\n“Luck,” he grumbled, and handed over a seal. “Let's see if you can afford time when time gets expensive.”\nGrandpa only shrugged: in his day a second cost a penny.",
+  "chapter_3_t": "Price Hike",
+  "chapter_3": "“Everything got dearer and you still bought me,” Chronos sighed.\n“Grandma says it's the eggs,” said Grandpa.\nChronos flinched at the word “Grandma” and quickly changed the subject: “I'm covering the sun. No golden seconds.”",
+  "chapter_4_t": "Overcast",
+  "chapter_4": "You managed without gold, too. Chronos kept glancing at the watch he doesn't wear.\n“In a hurry?” asked Grandpa.\n“Me? Never. I have all the time in the world.” And, more quietly: “Just not after five.”",
+  "chapter_5_t": "Short Fuse",
+  "chapter_5": "“No streaks, no Shield, and you're still here.” For the first time Chronos smiled. “I'll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”",
+  "chapter_6_t": "To the Second",
+  "chapter_6": "“He was late for tea,” Grandpa let slip. “At Grandma's. At five. We'd already eaten the cheesecake.”\nChronos turned red. “One loop. The last one. And no sleeping: those who sleep run late.”",
+  "chapter_7_t": "Five Sharp",
+  "chapter_7": "5.00 sharp. Chronos stands at Grandma's door, on time for the first time in ages.\n“Come in, watchmaker,” he says to you. “The cheesecake is for two, but Grandma always cuts it in five. From today you set the rules. I'm off to tea.”"
 }

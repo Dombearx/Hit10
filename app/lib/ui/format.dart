@@ -35,9 +35,19 @@ class Fmt {
   /// Prices round up to whole Tiki below 1000 ("18", not "17,3").
   String price(double v) => n(v < 1000 ? v.ceilToDouble() : v);
 
+  /// A multiplier: "×1,4", "×21,4", "×885", "×1,60K".
+  String mult(double v) {
+    if (v >= 100) return '×${n(v.roundToDouble())}';
+    final s = v
+        .toStringAsFixed(v < 10 ? 2 : 1)
+        .replaceFirst(RegExp(r'\.?0+$'), '');
+    return '×${s.replaceAll('.', l.decimalSeparator)}';
+  }
+
   String duration(double seconds) {
     final m = (seconds / 60).floor();
     if (m < 60) return l.durationM(m);
+    if (m % 60 == 0) return l.durationH(m ~/ 60);
     return l.durationHm(m ~/ 60, m % 60);
   }
 }

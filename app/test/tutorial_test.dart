@@ -96,7 +96,70 @@ void main() {
     g = c.nextGoal!;
     expect(g.kind, GoalKind.newClock);
     expect(g.generator, balance.generators[1].id);
-    s.prestiges = 1;
+  });
+
+  test('after the first paradox the goal bar stays (R-TUT-7)', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..prestiges = 1
+      ..chronons = 20
+      ..earnedTotal =
+          8e11 // exactly the 20 Chronons owned
+      ..owned['grandpa'] = 10;
+    final c = controller(s);
+    // The next clock not bought in this run.
+    var g = c.nextGoal!;
+    expect(g.kind, GoalKind.newClock);
+    expect(g.generator, 'grandma');
+    // Every clock within reach bought: the cheapest perk, by Shards.
+    for (final gen in balance.generators) {
+      if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
+    }
+    s.shards = 2;
+    g = c.nextGoal!;
+    expect(g.kind, GoalKind.perk);
+    expect(g.perk, 'headStart');
+    expect(g.have, 2);
+    expect(g.need, 5);
+    // A paradox would pay for it: that is the goal.
+    s.earnedTotal = 1e8 * 23 * 23 * 23; // +3 Chronons and Shards
+    g = c.nextGoal!;
+    expect(g.kind, GoalKind.prestige);
+    expect(g.perk, 'headStart');
+    // Enough Shards already: buy it.
+    s.shards = 5;
+    g = c.nextGoal!;
+    expect(g.kind, GoalKind.perk);
+    expect(g.have, greaterThanOrEqualTo(g.need));
+    // A paradox that doubles the Chronons comes first.
+    s.earnedTotal = 1e8 * 40 * 40 * 40;
+    g = c.nextGoal!;
+    expect(g.kind, GoalKind.prestige);
+    expect(g.perk, isNull);
+  });
+
+  test('everything unlocked: the clock bonus closest to done', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..prestiges = 3
+      ..chronons = 5000
+      ..earnedTotal = 1e8 * 5000.0 * 5000 * 5000;
+    for (final p in balance.prestige.perks) {
+      s.perks.add(p.id);
+    }
+    for (final gen in balance.generators) {
+      s.owned[gen.id] = 1;
+    }
+    s.owned['cuckoo'] = 9; // 9/10
+    final c = controller(s);
+    final g = c.nextGoal!;
+    expect(g.kind, GoalKind.bonus);
+    expect(g.generator, 'cuckoo');
+    expect(g.need, 10);
+    // Every bonus reached: nothing to show.
+    for (final gen in balance.generators) {
+      s.owned[gen.id] = 200;
+    }
     expect(c.nextGoal, isNull);
   });
 

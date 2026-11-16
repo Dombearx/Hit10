@@ -1,14 +1,20 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../engine/ad_offers.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../../l10n/master_texts.dart';
 import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import '../providers.dart';
 import '../screens/sheet.dart';
 import '../theme.dart';
+import 'ad_buttons.dart';
+import 'ad_offer_sheet.dart';
 import 'emoji_card.dart';
 
 const _springGold = Color(0xFFE8A317);
@@ -145,6 +151,16 @@ class SpringBadge extends StatelessWidget {
                 key: const Key('springs-count'),
                 style: const TextStyle(fontFamily: Fonts.display, fontSize: 16),
               ),
+              // The reserve is empty and an ad can fill it (R-SPR-3b).
+              if (c.ads.available(AdOffer.spring, c.wallMs())) ...[
+                const SizedBox(width: 4),
+                Image.asset(
+                  EmojiArt.path('television'),
+                  key: const Key('springs-ad-hint'),
+                  width: 16,
+                  height: 16,
+                ),
+              ],
             ],
           ),
         ),
@@ -168,7 +184,6 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
         final s = c.state;
         final sp = c.balance.springs;
         final full = s.springs >= sp.maxStock;
-        final left = c.engine.springHitLeft(DateTime.now());
         final next = sp.secondsPerSpring - s.springProgress;
         final dim = TextStyle(
           fontSize: 13.5,
@@ -209,16 +224,48 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
             ),
             const SizedBox(height: 8),
             Text(
-              l.springsIntro('${(sp.levelBonus * 100).round()}'),
+              l.springsIntro(f.mult(sp.levelFactor)),
               style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 4),
-            Text(
-              left > 0
-                  ? l.springsHitsLeft(f.duration(left))
-                  : l.springsHitsDone,
-              style: dim,
-            ),
+            if (s.springsRefunded > 0) ...[
+              const SizedBox(height: 10),
+              Container(
+                key: const Key('springs-refund'),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFE08A),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Palette.outline, width: 2),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l.springsRefund(s.springsRefunded),
+                        style: const TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      key: const Key('springs-refund-ok'),
+                      onPressed: c.ackSpringsRefund,
+                      child: Text(
+                        l.tutorialGotIt,
+                        style: const TextStyle(
+                          fontFamily: Fonts.display,
+                          color: Palette.outline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            const SizedBox(height: 10),
+            SpringReserveCard(controller: c),
             const SizedBox(height: 14),
             if (gens.isEmpty) Text(l.springsNoClocks, style: dim),
             for (final id in gens)
@@ -275,11 +322,13 @@ class ClockLevelSection extends StatelessWidget {
     final cost = c.econ.clockLevelCost(id);
     final can =
         c.econ.clockLevelable(id) && cost != null && c.state.springs >= cost;
-    final pct = (sp.levelBonus * level * 100).round();
+    final mult = Fmt.of(context, c).mult(c.econ.clockLevelFactor(id));
     // The next title: its name stays a surprise until it is reached.
     final nextTitle = sp.titleLevels.where((t) => t > level).firstOrNull;
     final lastTitle = sp.titleLevels.where((t) => t <= level).lastOrNull;
-    final reached = lastTitle == null ? null : masterTexts(l, id, lastTitle);
+    final reached = lastTitle == null
+        ? null
+        : masterTexts(l, id, sp.titleKeyAt(lastTitle)!);
     final small = TextStyle(
       fontSize: 12.5,
       color: Palette.outline.withValues(alpha: 0.7),
@@ -295,7 +344,7 @@ class ClockLevelSection extends StatelessWidget {
               if (showName)
                 Text(
                   generatorName(l, id),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontFamily: Fonts.display,
@@ -303,7 +352,7 @@ class ClockLevelSection extends StatelessWidget {
                   ),
                 ),
               Text(
-                l.clockLevelLine('$level', '${sp.maxLevel}', '$pct'),
+                l.clockLevelLine('$level', '${sp.maxLevel}', mult),
                 style: const TextStyle(
                   fontSize: 13.5,
                   fontWeight: FontWeight.w700,
@@ -315,7 +364,7 @@ class ClockLevelSection extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
-                    color: Palette.perfectDeep,
+                    color: Palette.perfectText,
                   ),
                 ),
               if (nextTitle != null)
@@ -381,4 +430,136 @@ Widget? clockLevelCard(BuildContext context, GameController c, String id) {
       ],
     ),
   );
+}
+
+/// The winding reserve (R-SPR-3): how much exact hits can still wind, when
+/// it is back, and the ad that fills it at once (R-SPR-3b).
+class SpringReserveCard extends StatelessWidget {
+  const SpringReserveCard({super.key, required this.controller});
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final f = Fmt.of(context, c);
+    final sp = c.balance.springs;
+    final now = c.wallMs();
+    final left = c.engine.springReserveAt(now);
+    final empty = left < sp.hitSeconds;
+    final first = c.engine.springFirstHitReady(now) && !empty;
+    final adsLeft = c.ads.springAdsLeft(now);
+    return Container(
+      key: const Key('spring-reserve'),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Palette.outline, width: 2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  l.springsReserveTitle,
+                  style: const TextStyle(
+                    fontFamily: Fonts.display,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Text(
+                l.springsReserve(f.duration(left), f.duration(sp.hitReserve)),
+                key: const Key('spring-reserve-left'),
+                style: const TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(
+              value: sp.hitReserve > 0
+                  ? (left / sp.hitReserve).clamp(0.0, 1.0)
+                  : 0,
+              minHeight: 10,
+              backgroundColor: Palette.outline.withValues(alpha: 0.15),
+              valueColor: const AlwaysStoppedAnimation(_springGold),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            empty
+                ? l.springsReserveEmpty(
+                    f.duration(c.engine.springReserveFullIn(now)),
+                  )
+                : first
+                ? l.springsReserveFirst(
+                    f.duration(math.min(sp.firstHitSeconds, left)),
+                    f.duration(sp.firstHitAfter),
+                  )
+                : l.springsReserveHow(
+                    f.duration(sp.hitSeconds),
+                    f.duration(sp.reserveRefillSeconds),
+                  ),
+            style: TextStyle(
+              fontSize: 13,
+              color: Palette.outline.withValues(alpha: 0.8),
+            ),
+          ),
+          if (empty && c.ads.unlocked && adsLeft > 0) ...[
+            const SizedBox(height: 8),
+            Consumer(
+              builder: (context, ref, _) {
+                final ads = ref.watch(rewardedAdsProvider);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AdWatchButton(
+                      key: const Key('ad-spring'),
+                      ads: ads,
+                      price: l.adSpring,
+                      minWidth: 160,
+                      onPressed: () async {
+                        // The button goes with the offer: the result is
+                        // said from the screen.
+                        final messenger = ScaffoldMessenger.of(context);
+                        final ok = await watchAdWithReward(
+                          context,
+                          c,
+                          AdOffer.spring,
+                          ads,
+                        );
+                        confirmAdResultWith(
+                          messenger,
+                          l,
+                          c,
+                          AdOffer.spring,
+                          ok,
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l.adSpringLeft(adsLeft, c.balance.ads.springPerDay),
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        color: Palette.outline.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 }

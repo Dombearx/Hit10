@@ -9,6 +9,10 @@ abstract final class Palette {
   static const outline = Color(0xFF2B2D42);
   static const perfect = Color(0xFFFFC300);
   static const perfectDeep = Color(0xFFFF6F00);
+
+  /// [perfectDeep] for small text: 4.6:1 on the cards (the bright one is
+  /// 2.7:1, fine for large numbers and fills only).
+  static const perfectText = Color(0xFFB84C00);
   static const great = Color(0xFF2EC4B6);
   static const good = Color(0xFF6C9BFF);
   static const miss = Color(0xFF8D99AE);

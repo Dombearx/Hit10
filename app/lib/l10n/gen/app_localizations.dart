@@ -494,6 +494,12 @@ abstract class AppLocalizations {
   /// **'{hours} h {minutes} min'**
   String durationHm(int hours, int minutes);
 
+  /// No description provided for @durationH.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String durationH(int hours);
+
   /// No description provided for @durationM.
   ///
   /// In en, this message translates to:
@@ -1715,8 +1721,14 @@ abstract class AppLocalizations {
   /// No description provided for @prestigeChronons.
   ///
   /// In en, this message translates to:
-  /// **'Chronons: {count} (+{percent}% forever)'**
-  String prestigeChronons(int count, String percent);
+  /// **'Chronons: {count} · income {mult}'**
+  String prestigeChronons(int count, String mult);
+
+  /// No description provided for @prestigeGainMult.
+  ///
+  /// In en, this message translates to:
+  /// **'Income {from} → {to}'**
+  String prestigeGainMult(String from, String to);
 
   /// No description provided for @prestigeShards.
   ///
@@ -1993,6 +2005,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Goal: turn back time — tap the swirl up top'**
   String get goalPrestige;
+
+  /// No description provided for @goalPrestigeDouble.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: turn back time — it doubles your Chronons'**
+  String get goalPrestigeDouble;
+
+  /// No description provided for @goalPrestigePerk.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: turn back time — enough for {name}'**
+  String goalPrestigePerk(String name);
+
+  /// No description provided for @goalPerk.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: perk {name} — {have}/{need} shards'**
+  String goalPerk(String name, String have, String need);
+
+  /// No description provided for @goalPerkBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: buy the perk — {name}'**
+  String goalPerkBuy(String name);
+
+  /// No description provided for @statMultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Income multipliers'**
+  String get statMultTitle;
+
+  /// No description provided for @statMultChronons.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronons ({count})'**
+  String statMultChronons(int count);
+
+  /// No description provided for @statMultAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements ({count})'**
+  String statMultAchievements(int count);
+
+  /// No description provided for @statMultLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock mastery'**
+  String get statMultLevels;
+
+  /// No description provided for @statMultTurbo.
+  ///
+  /// In en, this message translates to:
+  /// **'Turbo'**
+  String get statMultTurbo;
+
+  /// No description provided for @statMultTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Together'**
+  String get statMultTotal;
 
   /// No description provided for @tutorialGotIt.
   ///
@@ -4637,8 +4709,8 @@ abstract class AppLocalizations {
   /// No description provided for @springsIntro.
   ///
   /// In en, this message translates to:
-  /// **'A Mainspring winds itself: one a day, even while you\'re away. Every exact 5.00 winds it faster. Spend Mainsprings on clock levels: +{pct}% to that clock\'s income per level, for good — levels survive the paradox.'**
-  String springsIntro(String pct);
+  /// **'A Mainspring winds itself: one a day, even while you\'re away. Every exact 5.00 winds it faster. Spend Mainsprings on clock mastery: every tier multiplies that clock\'s income by {mult}, for good — nothing takes it back.'**
+  String springsIntro(String mult);
 
   /// No description provided for @springsNext.
   ///
@@ -4652,35 +4724,77 @@ abstract class AppLocalizations {
   /// **'Storage full ({max}). Spend some to keep winding.'**
   String springsFull(String max);
 
-  /// No description provided for @springsHitsLeft.
+  /// No description provided for @springsReserveTitle.
   ///
   /// In en, this message translates to:
-  /// **'Exact 5.00 hits can wind {time} more today.'**
-  String springsHitsLeft(String time);
+  /// **'Winding reserve'**
+  String get springsReserveTitle;
 
-  /// No description provided for @springsHitsDone.
+  /// No description provided for @springsReserve.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s winding by hits is used up.'**
-  String get springsHitsDone;
+  /// **'{left} of {max}'**
+  String springsReserve(String left, String max);
+
+  /// No description provided for @springsReserveHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Every exact 5.00 winds {time} out of the reserve. The reserve comes back by itself in {refill}.'**
+  String springsReserveHow(String time, String refill);
+
+  /// No description provided for @springsReserveFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next exact 5.00 winds a whole {time}: the first one after a break of {after}.'**
+  String springsReserveFirst(String time, String after);
+
+  /// No description provided for @springsReserveEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The reserve is empty: hits wind nothing now. Full again in {time}.'**
+  String springsReserveEmpty(String time);
+
+  /// No description provided for @springEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Winding reserve empty'**
+  String get springEmpty;
+
+  /// No description provided for @adSpring.
+  ///
+  /// In en, this message translates to:
+  /// **'▶ Refill for an ad'**
+  String get adSpring;
+
+  /// No description provided for @adSpringLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Ads today: {left} of {max}'**
+  String adSpringLeft(int left, int max);
+
+  /// No description provided for @adDoneSpring.
+  ///
+  /// In en, this message translates to:
+  /// **'The reserve is full — hit 5.00!'**
+  String get adDoneSpring;
 
   /// No description provided for @springsNoClocks.
   ///
   /// In en, this message translates to:
-  /// **'Buy a clock to raise its level.'**
+  /// **'Buy a clock to raise its mastery.'**
   String get springsNoClocks;
 
   /// No description provided for @clockLevelTitle.
   ///
   /// In en, this message translates to:
-  /// **'Clock level'**
+  /// **'Clock mastery'**
   String get clockLevelTitle;
 
   /// No description provided for @clockLevelLine.
   ///
   /// In en, this message translates to:
-  /// **'Level {level}/{max} · +{pct}%'**
-  String clockLevelLine(String level, String max, String pct);
+  /// **'Tier {level}/{max} · {mult}'**
+  String clockLevelLine(String level, String max, String mult);
 
   /// No description provided for @clockLevelUp.
   ///
@@ -4691,13 +4805,13 @@ abstract class AppLocalizations {
   /// No description provided for @clockLevelMax.
   ///
   /// In en, this message translates to:
-  /// **'Max level'**
+  /// **'Full mastery'**
   String get clockLevelMax;
 
   /// No description provided for @clockLevelTitleAt.
   ///
   /// In en, this message translates to:
-  /// **'Level {level}: {title}'**
+  /// **'Tier {level}: {title}'**
   String clockLevelTitleAt(String level, String title);
 
   /// No description provided for @clockLevelLocked.
@@ -4709,7 +4823,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_mastery_desc.
   ///
   /// In en, this message translates to:
-  /// **'{generator} at level {level}'**
+  /// **'{generator}: mastery tier {level}'**
   String ach_mastery_desc(String generator, String level);
 
   /// No description provided for @dialTitle.
@@ -4721,7 +4835,7 @@ abstract class AppLocalizations {
   /// No description provided for @dialHint.
   ///
   /// In en, this message translates to:
-  /// **'New faces unlock as you earn Tiki across all your runs.'**
+  /// **'The first faces unlock as you earn Ticks. The last six are trophies: one for each Time Loop you finish.'**
   String get dialHint;
 
   /// No description provided for @dialLocked.
@@ -4757,13 +4871,13 @@ abstract class AppLocalizations {
   /// No description provided for @help_springs_t.
   ///
   /// In en, this message translates to:
-  /// **'Mainsprings and clock levels'**
+  /// **'Mainsprings and clock mastery'**
   String get help_springs_t;
 
   /// No description provided for @help_springs.
   ///
   /// In en, this message translates to:
-  /// **'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.'**
+  /// **'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes out of a reserve. The reserve holds 2 hours and comes back by itself in 4, so it pays to return a few times a day. The first exact 5.00 after an hour\'s break winds a whole hour. You can hold up to 10 Mainsprings. Tap the spiral to raise a clock\'s mastery: tier 1 costs 1 Mainspring, tier 2 costs 2, up to tier 5. Each tier multiplies that clock\'s income by 1.5, for good: it survives the rewind and a new Time Loop. At tiers 3 and 5 a clock earns a master title.'**
   String get help_springs;
 
   /// No description provided for @help_dials_t.
@@ -4775,8 +4889,524 @@ abstract class AppLocalizations {
   /// No description provided for @help_dials.
   ///
   /// In en, this message translates to:
-  /// **'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one with the dial button at the top, next to the stats. They only change the look, not your results.'**
+  /// **'The more Ticks you earn, the more dial faces you unlock; the last six are trophies for finished Time Loops. Pick one with the dial button at the top, next to the stats. They only change the look, not the results.'**
   String get help_dials;
+
+  /// No description provided for @springsRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock levels are now 5 mastery tiers, each worth more. The {count} Mainsprings you had spent are back — spend them again.'**
+  String springsRefund(int count);
+
+  /// No description provided for @dialLockedSeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Loop trophy'**
+  String get dialLockedSeal;
+
+  /// No description provided for @loopNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Loop {n}'**
+  String loopNumber(int n);
+
+  /// No description provided for @loopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Loop'**
+  String get loopTitle;
+
+  /// No description provided for @loopGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Loop goal: buy Chronos'**
+  String get loopGoal;
+
+  /// No description provided for @loopGoalDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal reached: Chronos is yours'**
+  String get loopGoalDone;
+
+  /// No description provided for @loopNoRule.
+  ///
+  /// In en, this message translates to:
+  /// **'No changed rule'**
+  String get loopNoRule;
+
+  /// No description provided for @loopRuleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronos\' rule'**
+  String get loopRuleLabel;
+
+  /// No description provided for @loopEndTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time is beaten!'**
+  String get loopEndTitle;
+
+  /// No description provided for @loopEndStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Play time: {time} · Paradoxes: {count}'**
+  String loopEndStats(String time, int count);
+
+  /// No description provided for @loopRewardChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'A new chapter of the Chronicle'**
+  String get loopRewardChapter;
+
+  /// No description provided for @loopRewardSeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Seal won — it holds for good'**
+  String get loopRewardSeal;
+
+  /// No description provided for @loopRewardDial.
+  ///
+  /// In en, this message translates to:
+  /// **'Dial face: {name}'**
+  String loopRewardDial(String name);
+
+  /// No description provided for @loopNextTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Next loop'**
+  String get loopNextTitle;
+
+  /// No description provided for @loopNextSeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Seal for beating it: ???'**
+  String get loopNextSeal;
+
+  /// No description provided for @loopNextFree.
+  ///
+  /// In en, this message translates to:
+  /// **'The story is told. From now on you pick the rules of every loop yourself — in the Chronicle.'**
+  String get loopNextFree;
+
+  /// No description provided for @loopStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay a while'**
+  String get loopStay;
+
+  /// No description provided for @loopStayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Every bonus of Chronos in this loop pays +1 Mainspring ({left} left).'**
+  String loopStayHint(int left);
+
+  /// No description provided for @loopStart.
+  ///
+  /// In en, this message translates to:
+  /// **'New loop'**
+  String get loopStart;
+
+  /// No description provided for @loopConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a new loop?'**
+  String get loopConfirmTitle;
+
+  /// No description provided for @loopConfirmResets.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts from zero: Ticks, clocks, skills, Chronons, shards and perks.'**
+  String get loopConfirmResets;
+
+  /// No description provided for @loopConfirmKeeps.
+  ///
+  /// In en, this message translates to:
+  /// **'Stays: Mainsprings, clock mastery, seals, achievements, dial faces and statistics.'**
+  String get loopConfirmKeeps;
+
+  /// No description provided for @loopConfirmYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Start from zero'**
+  String get loopConfirmYes;
+
+  /// No description provided for @loopConfirmNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get loopConfirmNo;
+
+  /// No description provided for @loopBonusToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronos bonus'**
+  String get loopBonusToast;
+
+  /// No description provided for @loopBonusToastBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings: +{count} for the next loops'**
+  String loopBonusToastBody(int count);
+
+  /// No description provided for @chronicleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronicle'**
+  String get chronicleTitle;
+
+  /// No description provided for @chronicleOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Chronicle'**
+  String get chronicleOpen;
+
+  /// No description provided for @chronicleChapters.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapters'**
+  String get chronicleChapters;
+
+  /// No description provided for @chronicleSeals.
+  ///
+  /// In en, this message translates to:
+  /// **'Seals'**
+  String get chronicleSeals;
+
+  /// No description provided for @chronicleChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapter {n}'**
+  String chronicleChapter(int n);
+
+  /// No description provided for @chronicleChapterLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish loop {n}'**
+  String chronicleChapterLocked(int n);
+
+  /// No description provided for @chronicleSealLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat this rule to win its seal'**
+  String get chronicleSealLocked;
+
+  /// No description provided for @chronicleBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Best: {time} of play'**
+  String chronicleBest(String time);
+
+  /// No description provided for @chroniclePick.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules of the next loop'**
+  String get chroniclePick;
+
+  /// No description provided for @chroniclePickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick any, several at once, or none.'**
+  String get chroniclePickHint;
+
+  /// No description provided for @chronicleLoopTime.
+  ///
+  /// In en, this message translates to:
+  /// **'In this loop: {time} of play, {count} paradoxes'**
+  String chronicleLoopTime(String time, int count);
+
+  /// No description provided for @goalLoopBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: {name} {have}/{need} → +1 Mainspring'**
+  String goalLoopBonus(String name, String have, String need);
+
+  /// No description provided for @adBlockedRule.
+  ///
+  /// In en, this message translates to:
+  /// **'loop rule'**
+  String get adBlockedRule;
+
+  /// No description provided for @statLoop.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Loop'**
+  String get statLoop;
+
+  /// No description provided for @help_loop_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Loop and the Chronicle'**
+  String get help_loop_t;
+
+  /// No description provided for @help_loop.
+  ///
+  /// In en, this message translates to:
+  /// **'The goal of the game is to buy Chronos, the last clock. When you do, the loop is finished: you get a chapter of the story and may start a new loop. A new loop starts everything from zero — Chronons and perks too — and Chronos changes one rule in it. Your Mainsprings, clock mastery, achievements and dial faces stay, so every loop goes faster. Finishing a loop with a changed rule wins its seal: a small bonus that holds for good, and a dial face. Every bonus of Chronos you reach before leaving pays +1 Mainspring. Seven loops tell the whole story; after that you pick the rules yourself. Everything is in the Chronicle, on the Time paradox screen.'**
+  String get help_loop;
+
+  /// No description provided for @rule_blindfold.
+  ///
+  /// In en, this message translates to:
+  /// **'Broken Stopwatch'**
+  String get rule_blindfold;
+
+  /// No description provided for @rule_blindfold_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Blind mode is always on: the digits vanish for the last second. It pays as usual.'**
+  String get rule_blindfold_desc;
+
+  /// No description provided for @rule_blindfold_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'“I\'m taking your digits. Let\'s see what you can do without peeking.”'**
+  String get rule_blindfold_quote;
+
+  /// No description provided for @seal_blindfold.
+  ///
+  /// In en, this message translates to:
+  /// **'A Feel for It'**
+  String get seal_blindfold;
+
+  /// No description provided for @seal_blindfold_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Blind mode pays one more (×4, ×5 with Daredevil).'**
+  String get seal_blindfold_desc;
+
+  /// No description provided for @rule_inflation.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Hike'**
+  String get rule_inflation;
+
+  /// No description provided for @rule_inflation_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Each clock raises the price of the next one by 20% instead of 15%.'**
+  String get rule_inflation_desc;
+
+  /// No description provided for @rule_inflation_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'“Time is money. And money just lost its value.”'**
+  String get rule_inflation_quote;
+
+  /// No description provided for @seal_inflation.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular Customer'**
+  String get seal_inflation;
+
+  /// No description provided for @seal_inflation_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The first 10 of every clock cost half.'**
+  String get seal_inflation_desc;
+
+  /// No description provided for @rule_noGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloudy Day'**
+  String get rule_noGold;
+
+  /// No description provided for @rule_noGold_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'No Golden Second flies in (seasonal events still do).'**
+  String get rule_noGold_desc;
+
+  /// No description provided for @rule_noGold_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'“I\'m covering the sun. No golden seconds.”'**
+  String get rule_noGold_quote;
+
+  /// No description provided for @seal_noGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Ray of Sun'**
+  String get seal_noGold;
+
+  /// No description provided for @seal_noGold_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Back after an hour or more: a Golden Second flies in within 30 seconds.'**
+  String get seal_noGold_desc;
+
+  /// No description provided for @rule_shortFuse.
+  ///
+  /// In en, this message translates to:
+  /// **'Short Fuse'**
+  String get rule_shortFuse;
+
+  /// No description provided for @rule_shortFuse_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The combo counts up to 5 at most, and there is no Shield.'**
+  String get rule_shortFuse_desc;
+
+  /// No description provided for @rule_shortFuse_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'“No more long streaks. And hand over that Shield.”'**
+  String get rule_shortFuse_quote;
+
+  /// No description provided for @seal_shortFuse.
+  ///
+  /// In en, this message translates to:
+  /// **'Spare Shield'**
+  String get seal_shortFuse;
+
+  /// No description provided for @seal_shortFuse_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'+1 Shield charge from the start of every run.'**
+  String get seal_shortFuse_desc;
+
+  /// No description provided for @rule_precision.
+  ///
+  /// In en, this message translates to:
+  /// **'Swiss Precision'**
+  String get rule_precision;
+
+  /// No description provided for @rule_precision_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A GOOD pays you nothing. Only GREAT and PERFECT count.'**
+  String get rule_precision_desc;
+
+  /// No description provided for @rule_precision_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'“From now on only a proper hit counts.”'**
+  String get rule_precision_quote;
+
+  /// No description provided for @seal_precision.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady Hand'**
+  String get seal_precision;
+
+  /// No description provided for @seal_precision_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The PERFECT window is 0.001 s wider.'**
+  String get seal_precision_desc;
+
+  /// No description provided for @rule_insomnia.
+  ///
+  /// In en, this message translates to:
+  /// **'Insomnia'**
+  String get rule_insomnia;
+
+  /// No description provided for @rule_insomnia_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'While you\'re away the clocks earn only 25%.'**
+  String get rule_insomnia_desc;
+
+  /// No description provided for @rule_insomnia_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'“Those who sleep run late. Clocks too.”'**
+  String get rule_insomnia_quote;
+
+  /// No description provided for @seal_insomnia.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound Sleep'**
+  String get seal_insomnia;
+
+  /// No description provided for @seal_insomnia_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline income counts for 12 more hours.'**
+  String get seal_insomnia_desc;
+
+  /// No description provided for @chapter_1_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Bought'**
+  String get chapter_1_t;
+
+  /// No description provided for @chapter_1.
+  ///
+  /// In en, this message translates to:
+  /// **'“You bought me? ME? The god of time, for Ticks?” Chronos straightened his toga and counted to five. “Fine. I\'m rewinding everything. And I\'m taking your digits.”\n“Don\'t mind him,” Grandpa muttered. “He\'s always like this before five.”'**
+  String get chapter_1;
+
+  /// No description provided for @chapter_2_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Blind'**
+  String get chapter_2_t;
+
+  /// No description provided for @chapter_2.
+  ///
+  /// In en, this message translates to:
+  /// **'You hit 5.00 without looking. Chronos pretended not to see.\n“Luck,” he grumbled, and handed over a seal. “Let\'s see if you can afford time when time gets expensive.”\nGrandpa only shrugged: in his day a second cost a penny.'**
+  String get chapter_2;
+
+  /// No description provided for @chapter_3_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Hike'**
+  String get chapter_3_t;
+
+  /// No description provided for @chapter_3.
+  ///
+  /// In en, this message translates to:
+  /// **'“Everything got dearer and you still bought me,” Chronos sighed.\n“Grandma says it\'s the eggs,” said Grandpa.\nChronos flinched at the word “Grandma” and quickly changed the subject: “I\'m covering the sun. No golden seconds.”'**
+  String get chapter_3;
+
+  /// No description provided for @chapter_4_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Overcast'**
+  String get chapter_4_t;
+
+  /// No description provided for @chapter_4.
+  ///
+  /// In en, this message translates to:
+  /// **'You managed without gold, too. Chronos kept glancing at the watch he doesn\'t wear.\n“In a hurry?” asked Grandpa.\n“Me? Never. I have all the time in the world.” And, more quietly: “Just not after five.”'**
+  String get chapter_4;
+
+  /// No description provided for @chapter_5_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Short Fuse'**
+  String get chapter_5_t;
+
+  /// No description provided for @chapter_5.
+  ///
+  /// In en, this message translates to:
+  /// **'“No streaks, no Shield, and you\'re still here.” For the first time Chronos smiled. “I\'ll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”'**
+  String get chapter_5;
+
+  /// No description provided for @chapter_6_t.
+  ///
+  /// In en, this message translates to:
+  /// **'To the Second'**
+  String get chapter_6_t;
+
+  /// No description provided for @chapter_6.
+  ///
+  /// In en, this message translates to:
+  /// **'“He was late for tea,” Grandpa let slip. “At Grandma\'s. At five. We\'d already eaten the cheesecake.”\nChronos turned red. “One loop. The last one. And no sleeping: those who sleep run late.”'**
+  String get chapter_6;
+
+  /// No description provided for @chapter_7_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Five Sharp'**
+  String get chapter_7_t;
+
+  /// No description provided for @chapter_7.
+  ///
+  /// In en, this message translates to:
+  /// **'5.00 sharp. Chronos stands at Grandma\'s door, on time for the first time in ages.\n“Come in, watchmaker,” he says to you. “The cheesecake is for two, but Grandma always cuts it in five. From today you set the rules. I\'m off to tea.”'**
+  String get chapter_7;
 }
 
 class _AppLocalizationsDelegate

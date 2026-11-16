@@ -4,7 +4,7 @@ import '../balance/balance.dart';
 import '../model/game_state.dart';
 import 'game_engine.dart';
 
-enum AdOffer { offline, turbo, bag, rescue, golden }
+enum AdOffer { offline, turbo, bag, rescue, golden, spring }
 
 /// A combo-rescue offer waiting for the player (R-AD, `adRescue`).
 class RescueOffer {
@@ -13,7 +13,7 @@ class RescueOffer {
   final double expiresAtPlay;
 }
 
-/// Rules of the five rewarded offers (docs/02 §13). Showing the ad is the
+/// Rules of the six rewarded offers (docs/02 §13). Showing the ad is the
 /// UI's job (RewardedAds); this decides when an offer exists and grants it.
 class AdOffers {
   AdOffers(this.e);
@@ -48,9 +48,24 @@ class AdOffers {
       AdOffer.turbo => s.turboLeft + cfg.turboDuration <= cfg.turboMaxStock,
       AdOffer.bag => e.passive() > 0,
       AdOffer.golden =>
-        e.goldenVisibleLeft == 0 && !e.goldenArmed && !e.goldenRound,
+        !e.goldenBlocked &&
+            e.goldenVisibleLeft == 0 &&
+            !e.goldenArmed &&
+            !e.goldenRound,
       AdOffer.rescue => rescue != null && s.playSeconds < rescue!.expiresAtPlay,
+      // Worth an ad only once a hit would wind less than its share.
+      AdOffer.spring =>
+        e.econ.springsUnlocked &&
+            springAdsLeft(nowMs) > 0 &&
+            e.springReserveAt(nowMs) < e.b.springs.hitSeconds,
     };
+  }
+
+  /// "Wind it" ads left on the local day of [nowMs] (R-SPR-3b).
+  int springAdsLeft(int nowMs) {
+    final today = dateKey(DateTime.fromMillisecondsSinceEpoch(nowMs));
+    final used = s.springAdDay == today ? s.springAdCount : 0;
+    return math.max(0, cfg.springPerDay - used);
   }
 
   /// After a graded round: offer a rescue for a big lost streak.
@@ -119,6 +134,16 @@ class AdOffers {
         return 0;
       case AdOffer.golden:
         e.summonGolden();
+        return 0;
+      case AdOffer.spring:
+        final today = dateKey(DateTime.fromMillisecondsSinceEpoch(nowMs));
+        if (s.springAdDay != today) {
+          s
+            ..springAdDay = today
+            ..springAdCount = 0;
+        }
+        s.springAdCount++;
+        e.refillSpringReserve(nowMs);
         return 0;
     }
   }

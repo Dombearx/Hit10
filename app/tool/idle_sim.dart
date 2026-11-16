@@ -145,12 +145,14 @@ void main(List<String> args) {
       };
       sim.run();
       dayPlayed += s.lifetime.earnedEver - before;
-      // Exact hits of the session wind the Mainspring (R-SPR-3).
-      final date = day0.add(Duration(days: day, seconds: (k * gap).round()));
+      // Exact hits of the session wind the Mainspring (R-SPR-3), spread
+      // evenly over it.
       final rounds = (minutes * 60 / e.econ.roundSeconds()).floor();
       final exact = (rounds * pWithin(b.jackpot.window, sigma)).round();
       for (var i = 0; i < exact; i++) {
-        hitSpringSecs += e.springHit(date);
+        hitSpringSecs += e.springHit(
+          wallMs(day, k * gap + minutes * 60 * i / exact),
+        );
       }
       e.windSprings(wallMs(day, k * gap + minutes * 60));
       if (springsOn) {

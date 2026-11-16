@@ -229,6 +229,11 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String durationH(int hours) {
+    return '$hours h';
+  }
+
+  @override
   String durationM(int minutes) {
     return '$minutes min';
   }
@@ -963,8 +968,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prestigeTitle => 'Paradoks czasowy';
 
   @override
-  String prestigeChronons(int count, String percent) {
-    return 'Chronony: $count (+$percent% na zawsze)';
+  String prestigeChronons(int count, String mult) {
+    return 'Chronony: $count · dochód $mult';
+  }
+
+  @override
+  String prestigeGainMult(String from, String to) {
+    return 'Dochód $from → $to';
   }
 
   @override
@@ -1143,6 +1153,46 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get goalPrestige => 'Cel: cofnij czas — dotknij wiru u góry';
+
+  @override
+  String get goalPrestigeDouble => 'Cel: cofnij czas — podwoisz Chronony';
+
+  @override
+  String goalPrestigePerk(String name) {
+    return 'Cel: cofnij czas — starczy na perk $name';
+  }
+
+  @override
+  String goalPerk(String name, String have, String need) {
+    return 'Cel: perk $name — $have/$need Okruchów';
+  }
+
+  @override
+  String goalPerkBuy(String name) {
+    return 'Cel: kup perk — $name';
+  }
+
+  @override
+  String get statMultTitle => 'Mnożniki dochodu';
+
+  @override
+  String statMultChronons(int count) {
+    return 'Chronony ($count)';
+  }
+
+  @override
+  String statMultAchievements(int count) {
+    return 'Osiągnięcia ($count)';
+  }
+
+  @override
+  String get statMultLevels => 'Mistrzostwo zegarów';
+
+  @override
+  String get statMultTurbo => 'Turbo';
+
+  @override
+  String get statMultTotal => 'Razem';
 
   @override
   String get tutorialGotIt => 'OK';
@@ -2574,8 +2624,8 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String springsIntro(String pct) {
-    return 'Sprężyna nakręca się sama: jedna na dobę, także gdy nie grasz. Każde „równo 5.00” dokręca ją szybciej. Za Sprężyny podnosisz poziom zegarów: +$pct% dochodu zegara za poziom, na zawsze — poziomy zostają po paradoksie.';
+  String springsIntro(String mult) {
+    return 'Sprężyna nakręca się sama: jedna na dobę, także gdy nie grasz. Każde „równo 5.00” dokręca ją szybciej. Za Sprężyny kupujesz mistrzostwo zegarów: każdy stopień mnoży dochód tego zegara $mult, na zawsze — nic go nie cofa.';
   }
 
   @override
@@ -2589,22 +2639,52 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String springsHitsLeft(String time) {
-    return '„Równo 5.00” może dziś jeszcze dokręcić $time.';
+  String get springsReserveTitle => 'Zapas dokręcania';
+
+  @override
+  String springsReserve(String left, String max) {
+    return '$left z $max';
   }
 
   @override
-  String get springsHitsDone => 'Na dziś dokręcanie trafieniami wykorzystane.';
+  String springsReserveHow(String time, String refill) {
+    return 'Każde „równo 5.00” dokręca $time z zapasu. Zapas wraca sam w $refill.';
+  }
 
   @override
-  String get springsNoClocks => 'Kup zegar, żeby móc podnieść jego poziom.';
+  String springsReserveFirst(String time, String after) {
+    return 'Najbliższe „równo 5.00” dokręci aż $time: pierwsze po przerwie $after.';
+  }
 
   @override
-  String get clockLevelTitle => 'Poziom zegara';
+  String springsReserveEmpty(String time) {
+    return 'Zapas pusty: trafienia teraz nic nie dokręcają. Pełny za $time.';
+  }
 
   @override
-  String clockLevelLine(String level, String max, String pct) {
-    return 'Poziom $level/$max · +$pct%';
+  String get springEmpty => 'Zapas dokręcania pusty';
+
+  @override
+  String get adSpring => '▶ Napełnij za reklamę';
+
+  @override
+  String adSpringLeft(int left, int max) {
+    return 'Reklamy na dziś: $left z $max';
+  }
+
+  @override
+  String get adDoneSpring => 'Zapas pełny — traf 5.00!';
+
+  @override
+  String get springsNoClocks =>
+      'Kup zegar, żeby móc podnieść jego mistrzostwo.';
+
+  @override
+  String get clockLevelTitle => 'Mistrzostwo zegara';
+
+  @override
+  String clockLevelLine(String level, String max, String mult) {
+    return 'Stopień $level/$max · $mult';
   }
 
   @override
@@ -2613,11 +2693,11 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get clockLevelMax => 'Najwyższy poziom';
+  String get clockLevelMax => 'Pełne mistrzostwo';
 
   @override
   String clockLevelTitleAt(String level, String title) {
-    return 'Poziom $level: $title';
+    return 'Stopień $level: $title';
   }
 
   @override
@@ -2626,7 +2706,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String ach_mastery_desc(String generator, String level) {
-    return '$generator na poziomie $level';
+    return '$generator: $level. stopień mistrzostwa';
   }
 
   @override
@@ -2634,7 +2714,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get dialHint =>
-      'Nowe tarcze odblokowujesz, zarabiając Tiki we wszystkich grach razem.';
+      'Pierwsze tarcze odblokowujesz, zarabiając Tiki. Ostatnie sześć to trofea: po jednej za każdą ukończoną pętlę czasu.';
 
   @override
   String dialLocked(String amount) {
@@ -2656,16 +2736,323 @@ class AppLocalizationsPl extends AppLocalizations {
   String get updateRestart => 'Uruchom ponownie';
 
   @override
-  String get help_springs_t => 'Sprężyny i poziomy zegarów';
+  String get help_springs_t => 'Sprężyny i mistrzostwo zegarów';
 
   @override
   String get help_springs =>
-      'Po pierwszym cofnięciu czasu u góry pojawia się spirala — to Sprężyny. Nakręcają się same: jedna na dobę, także gdy nie grasz, a każde trafienie „równo 5.00” dokręca 15 minut (do 6 godzin dziennie). Zbierzesz najwyżej 10. Dotknij spirali i podnieś poziom zegara: poziom 1 kosztuje 1 Sprężynę, poziom 2 — 2 i tak dalej. Każdy poziom to +10% dla tego zegara, na zawsze — poziomy zostają po cofnięciu czasu. Na poziomie 5 i 10 zegar dostaje tytuł mistrza.';
+      'Po pierwszym cofnięciu czasu u góry pojawia się spirala — to Sprężyny. Nakręcają się same: jedna na dobę, także gdy nie grasz, a każde trafienie „równo 5.00” dokręca 15 minut z zapasu. Zapas mieści 2 godziny i wraca sam w 4 godziny, więc opłaca się wracać kilka razy dziennie. Pierwsze „równo 5.00” po godzinie przerwy dokręca całą godzinę. Zbierzesz najwyżej 10 Sprężyn. Dotknij spirali i podnieś mistrzostwo zegara: stopień 1 kosztuje 1 Sprężynę, stopień 2 — 2 i tak do stopnia 5. Każdy stopień mnoży dochód tego zegara ×1,5, na zawsze: zostaje po cofnięciu czasu i w nowej pętli czasu. Na stopniu 3 i 5 zegar dostaje tytuł mistrza.';
 
   @override
   String get help_dials_t => 'Tarcze zegara';
 
   @override
   String get help_dials =>
-      'Im więcej Tików zarobisz we wszystkich grach razem, tym więcej tarcz odblokujesz — od drewnianej po kosmiczną. Wybierasz je przyciskiem z tarczą u góry ekranu, obok statystyk. To tylko wygląd, nie zmienia wyników.';
+      'Im więcej Tików zarobisz, tym więcej tarcz odblokujesz; ostatnie sześć to trofea za ukończone pętle czasu. Wybierasz je przyciskiem z tarczą u góry ekranu, obok statystyk. To tylko wygląd, nie zmienia wyników.';
+
+  @override
+  String springsRefund(int count) {
+    return 'Poziomy zegarów to teraz 5 stopni mistrzostwa, każdy wart więcej. Wydane Sprężyny ($count) wróciły do ciebie — wydaj je od nowa.';
+  }
+
+  @override
+  String get dialLockedSeal => 'Trofeum pętli';
+
+  @override
+  String loopNumber(int n) {
+    return 'Pętla $n';
+  }
+
+  @override
+  String get loopTitle => 'Pętla czasu';
+
+  @override
+  String get loopGoal => 'Cel pętli: kup Chronosa';
+
+  @override
+  String get loopGoalDone => 'Cel osiągnięty: Chronos jest twój';
+
+  @override
+  String get loopNoRule => 'Bez zmienionej zasady';
+
+  @override
+  String get loopRuleLabel => 'Zasada Chronosa';
+
+  @override
+  String get loopEndTitle => 'Czas pokonany!';
+
+  @override
+  String loopEndStats(String time, int count) {
+    return 'Czas gry: $time · Paradoksy: $count';
+  }
+
+  @override
+  String get loopRewardChapter => 'Nowy rozdział Kroniki';
+
+  @override
+  String get loopRewardSeal => 'Zdobyta pieczęć — działa na zawsze';
+
+  @override
+  String loopRewardDial(String name) {
+    return 'Tarcza zegara: $name';
+  }
+
+  @override
+  String get loopNextTitle => 'Następna pętla';
+
+  @override
+  String get loopNextSeal => 'Pieczęć za jej ukończenie: ???';
+
+  @override
+  String get loopNextFree =>
+      'Historia opowiedziana. Od teraz zasady każdej pętli wybierasz sam — w Kronice.';
+
+  @override
+  String get loopStay => 'Zostaję jeszcze';
+
+  @override
+  String loopStayHint(int left) {
+    return 'Każdy bonus Chronosa w tej pętli daje +1 Sprężynę (zostało $left).';
+  }
+
+  @override
+  String get loopStart => 'Nowa pętla';
+
+  @override
+  String get loopConfirmTitle => 'Zacząć nową pętlę?';
+
+  @override
+  String get loopConfirmResets =>
+      'Wraca do zera: Tiki, zegary, umiejętności, Chronony, Okruchy i perki.';
+
+  @override
+  String get loopConfirmKeeps =>
+      'Zostaje: Sprężyny, mistrzostwo zegarów, pieczęcie, osiągnięcia, tarcze i statystyki.';
+
+  @override
+  String get loopConfirmYes => 'Zaczynam od zera';
+
+  @override
+  String get loopConfirmNo => 'Jeszcze nie';
+
+  @override
+  String get loopBonusToast => 'Bonus Chronosa';
+
+  @override
+  String loopBonusToastBody(int count) {
+    return 'Sprężyny: +$count na kolejne pętle';
+  }
+
+  @override
+  String get chronicleTitle => 'Kronika';
+
+  @override
+  String get chronicleOpen => 'Otwórz Kronikę';
+
+  @override
+  String get chronicleChapters => 'Rozdziały';
+
+  @override
+  String get chronicleSeals => 'Pieczęcie';
+
+  @override
+  String chronicleChapter(int n) {
+    return 'Rozdział $n';
+  }
+
+  @override
+  String chronicleChapterLocked(int n) {
+    return 'Ukończ pętlę $n';
+  }
+
+  @override
+  String get chronicleSealLocked =>
+      'Ukończ pętlę z tą zasadą, żeby zdobyć pieczęć';
+
+  @override
+  String chronicleBest(String time) {
+    return 'Rekord: $time gry';
+  }
+
+  @override
+  String get chroniclePick => 'Zasady następnej pętli';
+
+  @override
+  String get chroniclePickHint => 'Wybierz dowolne, kilka naraz albo żadną.';
+
+  @override
+  String chronicleLoopTime(String time, int count) {
+    return 'W tej pętli: $time gry, paradoksy: $count';
+  }
+
+  @override
+  String goalLoopBonus(String name, String have, String need) {
+    return 'Cel: $name $have/$need → +1 Sprężyna';
+  }
+
+  @override
+  String get adBlockedRule => 'zasada pętli';
+
+  @override
+  String get statLoop => 'Pętla czasu';
+
+  @override
+  String get help_loop_t => 'Pętla czasu i Kronika';
+
+  @override
+  String get help_loop =>
+      'Celem gry jest kupić Chronosa, ostatni zegar. Wtedy pętla jest ukończona: dostajesz rozdział historii i możesz zacząć nową pętlę. Nowa pętla zaczyna wszystko od zera — także Chronony i perki — a Chronos zmienia w niej jedną zasadę. Zostają Sprężyny, mistrzostwo zegarów, osiągnięcia i tarcze, więc każda pętla idzie szybciej. Ukończenie pętli ze zmienioną zasadą daje pieczęć: mały bonus na zawsze i tarczę zegara. Każdy bonus Chronosa zdobyty przed wyjściem daje +1 Sprężynę. Siedem pętli to cała historia; potem zasady wybierasz sam. Wszystko jest w Kronice, na ekranie paradoksu.';
+
+  @override
+  String get rule_blindfold => 'Zepsuty stoper';
+
+  @override
+  String get rule_blindfold_desc =>
+      'Na ślepo jest zawsze włączone: cyfry znikają na ostatnią sekundę. Płaci jak zwykle.';
+
+  @override
+  String get rule_blindfold_quote =>
+      '„Zabieram ci cyferki. Zobaczymy, co umiesz bez podglądania.”';
+
+  @override
+  String get seal_blindfold => 'Wyczucie';
+
+  @override
+  String get seal_blindfold_desc =>
+      'Na ślepo płaci o 1 więcej (×4, ze Śmiałkiem ×5).';
+
+  @override
+  String get rule_inflation => 'Drożyzna';
+
+  @override
+  String get rule_inflation_desc =>
+      'Każdy kupiony zegar podnosi cenę następnego o 20% zamiast o 15%.';
+
+  @override
+  String get rule_inflation_quote =>
+      '„Czas to pieniądz. A pieniądz właśnie stracił na wartości.”';
+
+  @override
+  String get seal_inflation => 'Stały klient';
+
+  @override
+  String get seal_inflation_desc =>
+      'Pierwsze 10 sztuk każdego zegara za pół ceny.';
+
+  @override
+  String get rule_noGold => 'Pochmurny dzień';
+
+  @override
+  String get rule_noGold_desc =>
+      'Złota Sekunda nie przylatuje (wydarzenia sezonowe działają dalej).';
+
+  @override
+  String get rule_noGold_quote => '„Zasłaniam słońce. Żadnych złotych sekund.”';
+
+  @override
+  String get seal_noGold => 'Promyk';
+
+  @override
+  String get seal_noGold_desc =>
+      'Po powrocie po co najmniej godzinie Złota Sekunda przylatuje w 30 sekund.';
+
+  @override
+  String get rule_shortFuse => 'Krótki lont';
+
+  @override
+  String get rule_shortFuse_desc =>
+      'Combo liczy się najwyżej do 5 i nie ma Tarczy.';
+
+  @override
+  String get rule_shortFuse_quote =>
+      '„Koniec z długimi seriami. I oddaj tę Tarczę.”';
+
+  @override
+  String get seal_shortFuse => 'Zapasowa Tarcza';
+
+  @override
+  String get seal_shortFuse_desc =>
+      '+1 ładunek Tarczy od początku każdego przejścia.';
+
+  @override
+  String get rule_precision => 'Szwajcarska precyzja';
+
+  @override
+  String get rule_precision_desc =>
+      'DOBRZE nic ci nie płaci. Liczy się tylko ŚWIETNIE i PERFEKT.';
+
+  @override
+  String get rule_precision_quote =>
+      '„Od teraz liczy się tylko porządne trafienie.”';
+
+  @override
+  String get seal_precision => 'Pewna ręka';
+
+  @override
+  String get seal_precision_desc => 'Okno PERFEKT szersze o 0,001 s.';
+
+  @override
+  String get rule_insomnia => 'Bezsenność';
+
+  @override
+  String get rule_insomnia_desc =>
+      'Pod twoją nieobecność zegary zarabiają tylko 25%.';
+
+  @override
+  String get rule_insomnia_quote => '„Kto śpi, ten się spóźnia. Zegary też.”';
+
+  @override
+  String get seal_insomnia => 'Dobry sen';
+
+  @override
+  String get seal_insomnia_desc =>
+      'Dochód offline liczy się o 12 godzin dłużej.';
+
+  @override
+  String get chapter_1_t => 'Kupiony';
+
+  @override
+  String get chapter_1 =>
+      '— Kupiłeś mnie? MNIE? Boga czasu, za Tiki? — Chronos poprawił togę i policzył do pięciu. — Dobrze. Cofam wszystko. I zabieram ci cyferki.\n— Nie przejmuj się — mruknął Dziadek. — On tak zawsze przed piątą.';
+
+  @override
+  String get chapter_2_t => 'Na ślepo';
+
+  @override
+  String get chapter_2 =>
+      'Trafiłeś 5.00 bez patrzenia. Chronos udawał, że nie widzi.\n— Fart — burknął i oddał pieczęć. — Zobaczymy, czy stać cię na czas, kiedy czas drożeje.\nDziadek tylko wzruszył ramionami: za jego czasów sekunda była po złotówce.';
+
+  @override
+  String get chapter_3_t => 'Drożyzna';
+
+  @override
+  String get chapter_3 =>
+      '— Wszystko podrożało, a ty i tak mnie kupiłeś — westchnął Chronos.\n— Babcia mówi, że to przez jajka — wtrącił Dziadek.\nNa słowo „Babcia” Chronos drgnął i szybko zmienił temat: — Zasłaniam słońce. Żadnych złotych sekund.';
+
+  @override
+  String get chapter_4_t => 'Pochmurno';
+
+  @override
+  String get chapter_4 =>
+      'Bez złota też się dało. Chronos zerkał na zegarek, którego nie nosi.\n— Spieszysz się gdzieś? — zapytał Dziadek.\n— Ja? Nigdzie. Mam cały czas świata. — I dodał ciszej: — Byle nie po piątej.';
+
+  @override
+  String get chapter_5_t => 'Krótki lont';
+
+  @override
+  String get chapter_5 =>
+      '— Bez serii, bez Tarczy, a ty dalej tu jesteś. — Chronos pierwszy raz się uśmiechnął. — Coś ci powiem. Raz w życiu się spóźniłem. Raz!\n— Na co?\n— Nie twoja sprawa. Od teraz liczy się tylko idealnie.';
+
+  @override
+  String get chapter_6_t => 'Co do sekundy';
+
+  @override
+  String get chapter_6 =>
+      '— Spóźnił się na podwieczorek — zdradził Dziadek. — Do Babci. O piątej. Sernik już zjedliśmy.\nChronos poczerwieniał. — Jedna pętla. Ostatnia. I bez spania: kto śpi, ten się spóźnia.';
+
+  @override
+  String get chapter_7_t => 'Punkt piąta';
+
+  @override
+  String get chapter_7 =>
+      'Punkt 5.00. Chronos stoi pod drzwiami Babci, pierwszy raz od wieków o czasie.\n— Wejdź, zegarmistrzu — mówi do ciebie. — Sernik jest dla dwojga, ale Babcia zawsze kroi na pięć. Od dziś sam ustawiasz zasady. Ja idę na podwieczorek.';
 }

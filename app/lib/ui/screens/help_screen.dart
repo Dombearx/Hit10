@@ -36,6 +36,7 @@ class _Help extends StatelessWidget {
       ('wrapped_gift', l.help_season_t, l.help_season),
       ('cyclone', l.help_prestige_t, l.help_prestige),
       ('gear', l.help_springs_t, l.help_springs),
+      ('classical_building', l.help_loop_t, l.help_loop),
       ('sun_with_face', l.help_dials_t, l.help_dials),
       ('red_question_mark', l.help_icons_t, l.help_icons),
     ];

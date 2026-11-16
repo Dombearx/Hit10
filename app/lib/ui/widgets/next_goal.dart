@@ -7,7 +7,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 
 /// One line over the shop: what to aim for next, with its progress as the
-/// pill's fill (R-TUT-7). Gone after the first paradox.
+/// pill's fill (R-TUT-7), for the whole game.
 class NextGoalBar extends StatelessWidget {
   const NextGoalBar({super.key, required this.controller, required this.onTap});
   final GameController controller;
@@ -31,7 +31,25 @@ class NextGoalBar extends StatelessWidget {
         f.round(c.econ.milestoneMultiplier(id)),
       ),
       GoalKind.newClock => l.goalNewClock(generatorName(l, id!)),
-      GoalKind.prestige => l.goalPrestige,
+      GoalKind.loopBonus => l.goalLoopBonus(
+        generatorName(l, id!),
+        '${goal.have.round()}',
+        '${goal.need.round()}',
+      ),
+      GoalKind.prestige =>
+        c.state.prestiges == 0
+            ? l.goalPrestige
+            : goal.perk != null
+            ? l.goalPrestigePerk(perkName(l, goal.perk!))
+            : l.goalPrestigeDouble,
+      GoalKind.perk =>
+        goal.have >= goal.need
+            ? l.goalPerkBuy(perkName(l, goal.perk!))
+            : l.goalPerk(
+                perkName(l, goal.perk!),
+                '${goal.have.round()}',
+                '${goal.need.round()}',
+              ),
     };
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
@@ -39,11 +57,11 @@ class NextGoalBar extends StatelessWidget {
         key: Key('next-goal-${goal.kind.name}'),
         onTap: () => onTap(goal),
         child: Container(
-          height: 24,
+          height: 32,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Palette.outline, width: 2),
           ),
           child: Stack(
@@ -65,7 +83,7 @@ class NextGoalBar extends StatelessWidget {
                       text,
                       maxLines: 1,
                       style: const TextStyle(
-                        fontSize: 12.5,
+                        fontSize: 13.5,
                         fontWeight: FontWeight.w800,
                         color: Palette.outline,
                       ),

@@ -67,6 +67,7 @@ void confirmAdResultWith(
           AdOffer.bag => l.adDoneBag,
           AdOffer.rescue => l.adDoneRescue,
           AdOffer.offline => l.adDoneOffline,
+          AdOffer.spring => l.adDoneSpring,
         };
   messenger
     ..hideCurrentSnackBar()

@@ -56,7 +56,7 @@ import 'seasons_ui.dart';
       final lv = n.round();
       return (
         masterTexts(l, a.generator!, lv)?.$1 ?? '$g $lv',
-        l.ach_mastery_desc(g, '$lv'),
+        l.ach_mastery_desc(g, '${a.tier}'),
       );
     case AchievementCategory.mode:
     case AchievementCategory.hidden:

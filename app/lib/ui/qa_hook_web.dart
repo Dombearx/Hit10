@@ -217,6 +217,25 @@ void registerQaHook(GameController c) {
       }
       // Mainsprings and dial faces (docs/12).
       if (m['prestiges'] case final num v) c.state.prestiges = v.toInt();
+      // The winding reserve as left by hits just now (R-SPR-3).
+      if (m['springReserve'] case final num v) {
+        c.state
+          ..springReserve = v.toDouble()
+          ..springReserveMs = c.wallMs()
+          ..springLastHitMs = c.wallMs();
+      }
+      if (m['chronons'] case final num v) c.state.chronons = v.toInt();
+      // Time Loops (docs/13).
+      if (m['loop'] case final num v) c.state.loop = v.toInt();
+      if (m['loopsDone'] case final num v) c.state.loopsDone = v.toInt();
+      if (m['loopRules'] case final List<dynamic> r) {
+        c.state.loopRules
+          ..clear()
+          ..addAll(r.cast<String>());
+      }
+      if (m['seals'] case final List<dynamic> r) {
+        c.state.seals.addAll(r.cast<String>());
+      }
       if (m['springs'] case final num v) c.state.springs = v.toInt();
       if (m['clockLevels'] case final Map<String, dynamic> o) {
         for (final e in o.entries) {

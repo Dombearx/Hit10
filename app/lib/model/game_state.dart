@@ -8,8 +8,9 @@ class GameState {
   // -------------------------------------------------------------- money --
   double tiki = 0;
 
-  /// Earned this run (reset by prestige) and across all runs (never reset;
-  /// drives Chronons, R-PRES-2).
+  /// Earned this run (reset by prestige) and across all runs of this Time
+  /// Loop (drives Chronons, R-PRES-2; a new loop starts it from 0). The
+  /// all-time total is [LifetimeStats.earnedEver].
   double earnedThisRun = 0;
   double earnedTotal = 0;
 
@@ -40,12 +41,25 @@ class GameState {
   /// Wall-clock ms the winding was last brought up to date; 0 = not yet.
   int springClockMs = 0;
 
-  /// Local date (yyyymmdd) and seconds exact hits wound that day (R-SPR-3).
-  int springHitDay = 0;
-  double springHitSeconds = 0;
+  /// The winding reserve (R-SPR-3): seconds exact hits may still wind,
+  /// and the wall-clock ms it was last brought up to date (0 = never:
+  /// the reserve is full).
+  double springReserve = 0;
+  int springReserveMs = 0;
+
+  /// Wall-clock ms of the last exact hit (R-SPR-3a); 0 = none yet.
+  int springLastHitMs = 0;
+
+  /// Local date (yyyymmdd) and "wind it" ads watched that day (R-SPR-3b).
+  int springAdDay = 0;
+  int springAdCount = 0;
 
   /// Clock levels bought with Mainsprings; never reset (R-SPR-5).
   final Map<String, int> clockLevels = {};
+
+  /// Mainsprings given back when the ten levels became five mastery tiers
+  /// (docs/13 §5.3); the UI says so once and clears it.
+  int springsRefunded = 0;
 
   /// Clocks bought at least once in any run: only those can be levelled.
   final Set<String> everOwned = {};
@@ -54,6 +68,41 @@ class GameState {
   /// announced (docs/12 §3.3).
   String dial = '';
   final Set<String> dialsSeen = {};
+
+  // -------------------------------------- time loops (docs/13 §5.2) --
+  /// The Time Loop being played, from 1, and its changed rules (R-PETLA-4).
+  int loop = 1;
+  final List<String> loopRules = [];
+
+  /// Rules of loops finished: each seal changes a rule for good (R-PETLA-5).
+  final Set<String> seals = {};
+
+  /// Loops finished; as many chapters of the Chronicle are open.
+  int loopsDone = 0;
+
+  /// The loop's goal is reached (the first Chronos): a new loop may start.
+  bool loopGoal = false;
+
+  /// The ending of this loop was shown.
+  bool loopEndSeen = false;
+
+  /// Bonuses of the goal clock already paid in Mainsprings (R-PETLA-2a).
+  int loopBonusPaid = 0;
+
+  /// Seconds played and paradoxes made in this loop (the ending's figures).
+  double loopPlaySeconds = 0;
+  int loopPrestiges = 0;
+
+  /// Wall-clock ms the loop started at; 0 = unknown (the first one).
+  int loopStartMs = 0;
+
+  /// Seconds played when the goal was reached: this loop's, and the best
+  /// by rule ('' = no rule).
+  double loopGoalSeconds = 0;
+  final Map<String, double> loopBest = {};
+
+  /// After the story: the rules chosen for the next loop (R-PETLA-8).
+  final List<String> nextRules = [];
 
   /// Paradox paid out, run not reset yet: the player is spending Shards
   /// before the new run starts (R-PRES-6a).
@@ -138,7 +187,8 @@ class GameState {
     earnedThisRun += amount;
     earnedTotal += amount;
     peakTiki = math.max(peakTiki, tiki);
-    lifetime.earnedEver = math.max(lifetime.earnedEver, earnedTotal);
+    // Not a running maximum: a new Time Loop starts [earnedTotal] from 0.
+    lifetime.earnedEver += amount;
   }
 
   /// Spends [amount] if affordable; returns whether it did.
