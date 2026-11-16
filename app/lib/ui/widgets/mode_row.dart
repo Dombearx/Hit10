@@ -19,16 +19,6 @@ class ModeRow extends StatelessWidget {
     final s = c.state;
     final l = AppLocalizations.of(context);
     final chips = <Widget>[
-      // The loop and its rule: a tap says what it changes (R-PETLA-4).
-      if (s.loop > 1)
-        _Toggle(
-          key: const Key('loop-chip'),
-          label: s.loopRules.isEmpty
-              ? l.loopNumber(s.loop)
-              : '${l.loopNumber(s.loop)} · ${s.loopRules.map((r) => ruleName(l, r)).join(' + ')}',
-          on: false,
-          onTap: () => showChronicle(context, c),
-        ),
       if (e.blindForced)
         _Toggle(
           key: const Key('mode-blind'),
@@ -56,6 +46,17 @@ class ModeRow extends StatelessWidget {
           label: l.modeAuto,
           on: s.autoBuyerOn,
           onTap: () => c.setMode(autoBuyer: !s.autoBuyerOn),
+        ),
+      // The loop and its rule, after the switches: a tap says what it
+      // changes (R-PETLA-4).
+      if (s.loop > 1)
+        _Toggle(
+          key: const Key('loop-chip'),
+          label: s.loopRules.isEmpty
+              ? l.loopNumber(s.loop)
+              : '${l.loopNumber(s.loop)} · ${s.loopRules.map((r) => ruleName(l, r)).join(' + ')}',
+          on: false,
+          onTap: () => showChronicle(context, c),
         ),
     ];
     if (chips.isEmpty) return const SizedBox.shrink();
@@ -95,7 +96,7 @@ class _Toggle extends StatelessWidget {
         // 36 high: a finger's target without crowding the arena.
         constraints: const BoxConstraints(minHeight: 36),
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
           color: on ? Palette.great : Colors.white.withValues(alpha: 0.65),
           borderRadius: BorderRadius.circular(12),

@@ -146,6 +146,22 @@ void main() {
     expect(c.engine.blindActive, isTrue);
   });
 
+  testWidgets('a new loop straight from the ending; its own ending comes '
+      'later', (tester) async {
+    final c = await pumpGame(tester, late());
+    c.buyGenerators('chronos', 1);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('loop-new')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('loop-confirm-yes')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('loop-end')), findsNothing);
+    expect(c.state.loop, 2);
+    expect(c.state.loopGoal, isFalse);
+    expect(c.state.loopEndSeen, isFalse);
+    expect(c.loopEndPending, isFalse);
+  });
+
   testWidgets('a rule loop ends with its seal and dial face', (tester) async {
     final s = late()
       ..loop = 2

@@ -884,7 +884,8 @@ class GameController extends ChangeNotifier {
       state.loopGoal && !state.loopEndSeen && state.tutorialDone && !replaying;
 
   void loopEndShown() {
-    if (state.loopEndSeen) return;
+    // A new loop started from the ending has no ending to mark yet.
+    if (!state.loopGoal || state.loopEndSeen) return;
     state.loopEndSeen = true;
     unawaited(save());
   }
