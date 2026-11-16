@@ -302,6 +302,25 @@ class Economy {
     return null;
   }
 
+  /// How far the way to [nextDial] is done, 0..1, from the last unlocked
+  /// face. The thresholds are ×100 apart and lifetime Tiki grow
+  /// exponentially, so the scale is logarithmic: a straight share would sit
+  /// near 0 for most of the way and jump at the end.
+  double get nextDialProgress {
+    final next = nextDial;
+    if (next == null) return 1;
+    final have = s.lifetime.earnedEver;
+    final prev = unlockedDials.isEmpty ? 0.0 : unlockedDials.last.earned;
+    if (have <= 0) return 0;
+    if (prev <= 0) {
+      return (math.log(1 + have) / math.log(1 + next.earned)).clamp(0.0, 1.0);
+    }
+    return (math.log(have / prev) / math.log(next.earned / prev)).clamp(
+      0.0,
+      1.0,
+    );
+  }
+
   /// The face to draw: the chosen one if unlocked, else the classic.
   String get dialId {
     final id = s.dial;

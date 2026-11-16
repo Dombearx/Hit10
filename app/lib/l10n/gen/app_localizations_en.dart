@@ -1246,7 +1246,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_icons =>
-      'Trophy — achievements (each gives +1% income). Chart — statistics. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).';
+      'Trophy — achievements (each gives +1% income). Chart — statistics. Dial — the stopwatch look. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).';
 
   @override
   String notificationTitle(String amount) {
@@ -2638,11 +2638,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dialLocked(String amount) {
-    return 'Earn $amount in total';
+    return 'Earn $amount';
   }
 
   @override
   String get dialToast => 'New dial face';
+
+  @override
+  String dialProgress(String have, String need) {
+    return 'Earned in total: $have of $need';
+  }
+
+  @override
+  String get updateReady => 'A new version is ready';
+
+  @override
+  String get updateRestart => 'Restart';
 
   @override
   String get help_springs_t => 'Mainsprings and clock levels';
@@ -2656,5 +2667,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_dials =>
-      'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one in Settings. They only change the look, not your results.';
+      'The more Ticks you earn across all your runs, the more dial faces you unlock — from wood to outer space. Pick one with the dial button at the top, next to the stats. They only change the look, not your results.';
 }
