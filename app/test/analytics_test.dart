@@ -39,8 +39,11 @@ void main() {
     expect(a.names, contains('generator_first'));
     expect(a.last('tutorial_step'), containsPair('step', 'grandpaInfo'));
     c.nextTutorialStep();
+    expect(a.last('tutorial_step'), containsPair('step', 'autoStart'));
+    expect(a.last('tutorial_complete'), isNull);
+    c.nextTutorialStep();
     final done = a.last('tutorial_complete')!;
-    expect(done['at_step'], 'grandpaInfo');
+    expect(done['at_step'], 'autoStart');
     expect(done['run'], 0);
     expect(done.containsKey('play_min'), isTrue);
     expect(a.userProperties['tutorial_done'], 'true');

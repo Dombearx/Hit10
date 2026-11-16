@@ -284,6 +284,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         onStats: () => showStats(context, controller),
                         onPrestige: () {
                           controller.tipActed('prestige');
+                          // Only when up: opening it earlier must not
+                          // use up the new-loop tip.
+                          if (controller.pendingTip == 'loop') {
+                            controller.tipActed('loop');
+                          }
                           showPrestige(context, controller);
                         },
                         onSettings: () => showSettings(context, controller),

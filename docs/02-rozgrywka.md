@@ -500,6 +500,15 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
      nie grasz.” Zamyka się przyciskiem OK albo następnym zakupem — nie
      sam (testerzy: dymek znikał po 7 s, zanim ktoś go przeczytał, i nie
      mówił, czego jest „/s”).
+  5. Po OK: dymek na arenie „Od teraz stoper startuje sam: po każdym
+     wyniku od razu rusza kolejna runda.” (OK).
+
+  Przez cały samouczek runda **nie startuje sama** (wyjątek od
+  R-RUNDA-6): po wyniku zegar czeka na dotknięcie, żeby gracz mógł
+  przeczytać dymek, zanim poleci następna runda (playtest: nowa runda
+  startowała razem z przyciemnieniem i dymkiem). To samo przy powtórce
+  samouczka z pomocy. Obwódka celu: ciemna linia na białej poświacie,
+  widoczna na żółtym tle (licznik Tików) i na białych kartach.
 
   Koniec samouczka. W jego trakcie nie ma znaczka wydarzenia, czerwonych
   kropek ani Złotej Sekundy (jedna nowa rzecz naraz).
@@ -507,7 +516,10 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   rzeczy: pasek bonusu na karcie Dziadka (gdy gracz ma 3 Dziadki, przed
   pierwszym ×2), pierwsza umiejętność,
   na którą stać gracza (zakładka), pierwszy przełącznik trybu, Złota
-  Sekunda (gdy leci), seria (licznik combo), prestiż (wir).
+  Sekunda (gdy leci), seria (licznik combo), prestiż (wir), Sprężyny
+  (plakietka w nagłówku, po pierwszym paradoksie; znika po otwarciu
+  Sprężyn), nowa pętla (wir, raz — w pierwszej pętli po Chronosie, z nazwą
+  zasady Chronosa; znika po otwarciu paradoksu).
   - Najwyżej jedna naraz; pierwsza po 20 s gry od końca samouczka,
     kolejne co najmniej 45 s gry po poprzedniej.
   - Znika, gdy gracz zrobi to, o czym mówi (otworzy zakładkę, dotknie

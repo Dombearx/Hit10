@@ -198,7 +198,7 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | Zdarzenie | Parametry | Po co |
   |---|---|---|
   | `tutorial_step` | `step` | lejek samouczka: gdzie odpadają nowi |
-  | `tutorial_complete` | `at_step`, `rounds` | ukończony (`grandpaInfo`) czy pominięty |
+  | `tutorial_complete` | `at_step`, `rounds` | ukończony (`autoStart`) czy pominięty |
   | `tutorial_replay` | – | czy samouczek jest niejasny |
   | `accuracy` | `rounds`, `typical_ms`, `mean_ms`, `perfect_pct`, `miss_pct` | jak szybko gracze uczą się trafiać (po 10, 50, 200, 1000, 5000 rundach) |
   | `generator_first` | `id` | tempo progresji: minuta pierwszego zegara każdego rodzaju (cele B-x z 03) |

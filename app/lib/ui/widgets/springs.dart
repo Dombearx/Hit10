@@ -15,6 +15,7 @@ import '../screens/sheet.dart';
 import '../theme.dart';
 import 'ad_buttons.dart';
 import 'ad_offer_sheet.dart';
+import 'coach.dart';
 import 'emoji_card.dart';
 
 const _springGold = Color(0xFFE8A317);
@@ -124,44 +125,50 @@ class SpringBadge extends StatelessWidget {
     if (!c.econ.springsUnlocked) return const SizedBox.shrink();
     final l = AppLocalizations.of(context);
     final glow = anyClockLevelAffordable(c);
-    return Semantics(
-      button: true,
-      label: l.springsBadge('${c.state.springs}'),
-      excludeSemantics: true,
-      child: GestureDetector(
-        key: const Key('open-springs'),
-        onTap: () => showSpringsSheet(context, c),
-        child: Container(
-          height: 40,
-          padding: const EdgeInsets.fromLTRB(4, 3, 10, 3),
-          decoration: BoxDecoration(
-            color: glow
-                ? const Color(0xFFFFE08A)
-                : Colors.white.withValues(alpha: 0.75),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Palette.outline, width: 2),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SpringIcon(size: 30, fraction: c.engine.springFraction()),
-              const SizedBox(width: 4),
-              Text(
-                '${c.state.springs}',
-                key: const Key('springs-count'),
-                style: const TextStyle(fontFamily: Fonts.display, fontSize: 16),
-              ),
-              // The reserve is empty and an ad can fill it (R-SPR-3b).
-              if (c.ads.available(AdOffer.spring, c.wallMs())) ...[
+    return KeyedSubtree(
+      key: CoachTargets.springs,
+      child: Semantics(
+        button: true,
+        label: l.springsBadge('${c.state.springs}'),
+        excludeSemantics: true,
+        child: GestureDetector(
+          key: const Key('open-springs'),
+          onTap: () => showSpringsSheet(context, c),
+          child: Container(
+            height: 40,
+            padding: const EdgeInsets.fromLTRB(4, 3, 10, 3),
+            decoration: BoxDecoration(
+              color: glow
+                  ? const Color(0xFFFFE08A)
+                  : Colors.white.withValues(alpha: 0.75),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Palette.outline, width: 2),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SpringIcon(size: 30, fraction: c.engine.springFraction()),
                 const SizedBox(width: 4),
-                Image.asset(
-                  EmojiArt.path('television'),
-                  key: const Key('springs-ad-hint'),
-                  width: 16,
-                  height: 16,
+                Text(
+                  '${c.state.springs}',
+                  key: const Key('springs-count'),
+                  style: const TextStyle(
+                    fontFamily: Fonts.display,
+                    fontSize: 16,
+                  ),
                 ),
+                // The reserve is empty and an ad can fill it (R-SPR-3b).
+                if (c.ads.available(AdOffer.spring, c.wallMs())) ...[
+                  const SizedBox(width: 4),
+                  Image.asset(
+                    EmojiArt.path('television'),
+                    key: const Key('springs-ad-hint'),
+                    width: 16,
+                    height: 16,
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -172,6 +179,7 @@ class SpringBadge extends StatelessWidget {
 /// The Mainspring workshop: what they are, when the next one is ready, and
 /// every clock's level.
 Future<void> showSpringsSheet(BuildContext context, GameController c) {
+  c.tipActed('springs');
   return showGameSheet(
     context,
     c,

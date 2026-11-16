@@ -1919,7 +1919,7 @@ abstract class AppLocalizations {
   /// No description provided for @tip_prestige.
   ///
   /// In en, this message translates to:
-  /// **'Rewind time: start over with a permanent bonus.'**
+  /// **'A paradox is ready! Rewind time: start over, with a permanent income bonus.'**
   String get tip_prestige;
 
   /// No description provided for @tip_milestone.
@@ -2071,6 +2071,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get tutorialGotIt;
+
+  /// No description provided for @tutorialAutoStart.
+  ///
+  /// In en, this message translates to:
+  /// **'From now on the stopwatch starts by itself: right after each result, the next round begins.'**
+  String get tutorialAutoStart;
+
+  /// No description provided for @tip_springs.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever.'**
+  String get tip_springs;
+
+  /// No description provided for @tip_loop.
+  ///
+  /// In en, this message translates to:
+  /// **'A new loop: everything from zero, but Mainsprings and mastery stay.'**
+  String get tip_loop;
+
+  /// No description provided for @tip_loopRule.
+  ///
+  /// In en, this message translates to:
+  /// **'A new loop: everything from zero, but Mainsprings and mastery stay. Chronos\' rule: {rule}.'**
+  String tip_loopRule(String rule);
 
   /// No description provided for @tip_skills.
   ///
