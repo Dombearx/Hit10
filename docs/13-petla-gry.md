@@ -238,13 +238,36 @@ do następnej pętli.
   pieczęcie, osiągnięcia, tarcze, motywy, statystyki. Ekran przed resetem
   pokazuje obie listy.
 - **R-PETLA-4 (zasada pętli):** Każda pętla od drugiej ma jedną zmienioną
-  zasadę. Gracz wybiera ją z 2–3 odkrytych, kolejne są widoczne jako
-  „???”. Druga pętla może być bez zmiany zasady (sama powtórka z bonusami
-  jest wyraźnie krótsza), żeby gracz najpierw poznał mechanizm.
-- **R-PETLA-5 (pieczęć):** Ukończona pętla daje pieczęć: trwałą, małą
-  zmianę zasady (nie procent) i tarczę zegara. Pieczęcie działają we
-  wszystkich następnych pętlach. Sprężyny za pętlę są tylko z bonusów
-  Chronosa (R-PETLA-2a).
+  zasadę, w stałej kolejności (tabela niżej, od najłagodniejszej). Gracz
+  jej nie wybiera: ogłasza ją Chronos na ekranie zakończenia poprzedniej
+  pętli. Dalsze zasady są w Kronice widoczne jako „???”. Stała kolejność
+  jest prostsza, pozwala stroić każdą pętlę, wiedząc, jakie pieczęcie
+  gracz już ma, i daje co pętlę jedno „co będzie dalej?”. Wybór pojawia
+  się po ostatniej pętli (R-PETLA-8).
+- **R-PETLA-5 (co daje ukończenie):** Każda ukończona pętla daje cztery
+  rzeczy, pokazane po kolei na ekranie „Czas pokonany”:
+  1. **rozdział Kroniki** (R-PETLA-7): kilka zdań historii z żartem;
+  2. **pieczęć**: trwałą, małą zmianę zasady (nie procent), która działa
+     we wszystkich następnych pętlach;
+  3. **tarczę zegara** w motywie tej pętli;
+  4. **zapowiedź następnej zasady**: nazwa, co zmienia i jaką pieczęć
+     daje (nazwa pieczęci jako „???” do zdobycia).
+
+  Sprężyny za pętlę są tylko z bonusów Chronosa (R-PETLA-2a).
+- **R-PETLA-7 (fabuła i Kronika):** Ramą jest Chronos. Gracz kupuje boga
+  czasu za Tiki, a ten się obraża i cofa wszystko do zera, za każdym
+  razem psując jedną zasadę („Zabieram ci cyferki”). Każda ukończona
+  pętla to chwila, w której Chronos musi coś oddać (pieczęć). Opowiada
+  Dziadek, który prowadzi już samouczek. Wątek na całość: dlaczego akurat
+  5.00, z odpowiedzią w ostatnim rozdziale. Kronika to jeden ekran
+  (ikona w nagłówku od pierwszego Chronosa): 7 rozdziałów, pieczęcie
+  i tarcze, niezdobyte jako „???”. Zastępuje osobne listy, więc nie
+  dochodzi kolejne miejsce do sprawdzania. Teksty PL/EN, po 3–5 zdań,
+  ton jak w opisach zegarów.
+- **R-PETLA-8 (po ostatniej pętli):** Siódma pętla kończy historię:
+  ostatni rozdział, tytuł „Zegarmistrz czasu” i tryb dowolny. W nim
+  gracz sam wybiera zasadę następnej pętli albo kilka naraz, a Kronika
+  zapisuje najkrótszy czas każdej (wzór: Challenge² w Trimps).
 - **R-PETLA-6 (tempo):** Druga pętla ma trwać 50–65% czasu pierwszej
   (ok. 9–11 dni), kolejne 5–6 dni, nie mniej niż ok. 3 dni przy pełnym
   mistrzostwie (§2.5). Sprawdza `late_game_report.dart`, potem
@@ -263,13 +286,34 @@ z 12 §3.2 po przesianiu symulacją):
 | `insomnia` | Bezsenność | dochód offline 25% | limit offline +12 h |
 
 Sześć zasad to razem z pierwszą pętlą siedem pętli, czyli według §2.5
-ok. 2 miesięcy celów. `insomnia` jest jedyną zasadą, która wymusza
+ok. 2 miesięcy celów. Kolejność jak w tabeli: `blindfold` jest pierwszy,
+bo nie wydłuża pętli (§2.5), dotyczy celowania i płaci ×3, więc jest
+bardziej odmianą niż karą. `insomnia` jest jedyną zasadą, która wymusza
 granie zamiast czekania, więc idzie na koniec i ma łagodną wersję (25%,
 nie 0). Bez wariantu „bez dochodu pasywnego”.
 
+Jak wygląda koniec pętli:
+
+1. Zakup Chronosa: animacja jak przy paradoksie, potem ekran „Czas
+   pokonany” z wynikiem pętli (dni, godziny gry, paradoksy, celność).
+2. Rozdział Kroniki, np. po pierwszej pętli: „— Kupiłeś mnie? MNIE? Za
+   Tiki? — Chronos poprawił togę. — Dobrze. Zobaczymy, jak ci pójdzie bez
+   cyferek. — Nie przejmuj się — mruknął Dziadek. — On tak zawsze przed
+   piątą.”
+3. Pieczęć i tarcza z fanfarą (od drugiej pętli; pierwsza nie miała
+   zasady, więc daje tylko rozdział i zapowiedź).
+4. Zapowiedź: „Następna pętla: Zepsuty stoper. Cyfry znikają na ostatnią
+   sekundę. Pieczęć: ???”.
+5. Dwa przyciski: „Zostaję jeszcze” (pasek celu pokazuje „Chronos 1/5 →
+   +1 Sprężyna”) i „Nowa pętla” (ekran z listami „zeruje się” i „zostaje”,
+   potwierdzenie jak przy paradoksie).
+
+W nagłówku jest numer pętli i ikona jej zasady. Dotknięcie przypomina,
+co zasada zmienia.
+
 **Dlaczego to nie komplikuje gry.** Gracz zna już wszystko, czego pętla
-używa: zegary, paradoks, perki. Dochodzi jeden ekran wyboru i jedna lista
-pieczęci. Pojawia się dopiero po Chronosie, czyli wtedy, gdy stara treść
+używa: zegary, paradoks, perki. Dochodzi jeden ekran zakończenia i jedna
+Kronika. Pojawia się dopiero po Chronosie, czyli wtedy, gdy stara treść
 się kończy.
 
 **Ryzyko.** Utrata Chrononów może boleć. Dlatego reset jest dobrowolny,
@@ -400,7 +444,9 @@ blokuje etapów 1–3.
 3. **Zwrot kupionych poziomów w Sprężynach:** tak (rekomendacja) czy
    przeliczenie 2 poziomy → 1 stopień.
 4. **Reklama:** reset zapasu dokręcania (rekomendacja) czy gotowe +2 h.
-5. **Druga pętla:** bez zmiany zasady (rekomendacja) czy od razu z wyborem.
+5. **Kolejność zasad:** stała, ogłaszana przez Chronosa, druga pętla od
+   razu z „Zepsutym stoperem” (rekomendacja po rozmowie o fabule;
+   wcześniej: druga pętla bez zasady) czy wybór z kilku odkrytych.
 
 ## 8. Jak sprawdzić
 
