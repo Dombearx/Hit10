@@ -18,6 +18,7 @@ import 'providers.dart';
 import 'qa_hook.dart';
 import 'shop/generator_list.dart';
 import 'shop/skill_list.dart';
+import 'app_updates.dart';
 import 'catalog.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/dials_screen.dart';
