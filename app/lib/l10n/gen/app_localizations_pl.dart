@@ -229,6 +229,11 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String durationH(int hours) {
+    return '$hours h';
+  }
+
+  @override
   String durationM(int minutes) {
     return '$minutes min';
   }
@@ -2589,12 +2594,41 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String springsHitsLeft(String time) {
-    return '„Równo 5.00” może dziś jeszcze dokręcić $time.';
+  String get springsReserveTitle => 'Zapas dokręcania';
+
+  @override
+  String springsReserve(String left, String max) {
+    return '$left z $max';
   }
 
   @override
-  String get springsHitsDone => 'Na dziś dokręcanie trafieniami wykorzystane.';
+  String springsReserveHow(String time, String refill) {
+    return 'Każde „równo 5.00” dokręca $time z zapasu. Zapas wraca sam w $refill.';
+  }
+
+  @override
+  String springsReserveFirst(String time, String after) {
+    return 'Najbliższe „równo 5.00” dokręci aż $time: pierwsze po przerwie $after.';
+  }
+
+  @override
+  String springsReserveEmpty(String time) {
+    return 'Zapas pusty: trafienia teraz nic nie dokręcają. Pełny za $time.';
+  }
+
+  @override
+  String get springEmpty => 'Zapas dokręcania pusty';
+
+  @override
+  String get adSpring => '▶ Napełnij za reklamę';
+
+  @override
+  String adSpringLeft(int left, int max) {
+    return 'Reklamy na dziś: $left z $max';
+  }
+
+  @override
+  String get adDoneSpring => 'Zapas pełny — traf 5.00!';
 
   @override
   String get springsNoClocks => 'Kup zegar, żeby móc podnieść jego poziom.';
@@ -2660,7 +2694,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_springs =>
-      'Po pierwszym cofnięciu czasu u góry pojawia się spirala — to Sprężyny. Nakręcają się same: jedna na dobę, także gdy nie grasz, a każde trafienie „równo 5.00” dokręca 15 minut (do 6 godzin dziennie). Zbierzesz najwyżej 10. Dotknij spirali i podnieś poziom zegara: poziom 1 kosztuje 1 Sprężynę, poziom 2 — 2 i tak dalej. Każdy poziom to +10% dla tego zegara, na zawsze — poziomy zostają po cofnięciu czasu. Na poziomie 5 i 10 zegar dostaje tytuł mistrza.';
+      'Po pierwszym cofnięciu czasu u góry pojawia się spirala — to Sprężyny. Nakręcają się same: jedna na dobę, także gdy nie grasz, a każde trafienie „równo 5.00” dokręca 15 minut z zapasu. Zapas mieści 2 godziny i wraca sam w 4 godziny, więc opłaca się wracać kilka razy dziennie. Pierwsze „równo 5.00” po godzinie przerwy dokręca całą godzinę. Zbierzesz najwyżej 10 Sprężyn. Dotknij spirali i podnieś poziom zegara: poziom 1 kosztuje 1 Sprężynę, poziom 2 — 2 i tak dalej. Każdy poziom to +10% dla tego zegara, na zawsze — poziomy zostają po cofnięciu czasu. Na poziomie 5 i 10 zegar dostaje tytuł mistrza.';
 
   @override
   String get help_dials_t => 'Tarcze zegara';

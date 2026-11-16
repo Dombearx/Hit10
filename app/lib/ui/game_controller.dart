@@ -30,12 +30,16 @@ class HitFeedback {
     this.gameTime, {
     this.clock = 0,
     this.springSeconds = 0,
+    this.springEmpty = false,
   });
   final RoundOutcome outcome;
   final double gameTime;
 
   /// Seconds an exact hit wound the Mainspring (docs/12 R-SPR-3).
   final double springSeconds;
+
+  /// The exact hit found the winding reserve empty (told once, R-SPR-3).
+  final bool springEmpty;
 
   /// Which stopwatch (0, or 1 for the second clock).
   final int clock;
@@ -521,12 +525,27 @@ class GameController extends ChangeNotifier {
         final local = _localNow();
         if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
         // The dial read 5.00: the Mainspring winds faster (R-SPR-3).
-        final wound = o.jackpot > 0 ? engine.springHit(local) : 0.0;
+        final wound = o.jackpot > 0 ? engine.springHit(_wallMs()) : 0.0;
+        // An empty reserve is said once, until a hit winds again.
+        var reserveEmpty = false;
+        if (o.jackpot > 0 && econ.springsUnlocked) {
+          if (wound > 0) {
+            _reserveEmptyTold = false;
+          } else if (!_reserveEmptyTold) {
+            reserveEmpty = _reserveEmptyTold = true;
+          }
+        }
         _countForAchievements(slot, o.tier);
         if (state.comboStreak >= 3) _tip('combo');
         _playFeedback(o);
         _feedback.add(
-          HitFeedback(o, gameTime, clock: slot.index, springSeconds: wound),
+          HitFeedback(
+            o,
+            gameTime,
+            clock: slot.index,
+            springSeconds: wound,
+            springEmpty: reserveEmpty,
+          ),
         );
         _afterSeasonProgress();
         _checkAchievements(
@@ -540,6 +559,8 @@ class GameController extends ChangeNotifier {
         notifyListeners();
     }
   }
+
+  bool _reserveEmptyTold = false;
 
   /// The clock of the last graded round if it was a PERFEKT.
   int? _lastPerfectClock;

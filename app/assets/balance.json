@@ -510,6 +510,9 @@
     },
     "golden": {
       "cooldown": 1800
+    },
+    "spring": {
+      "perDay": 2
     }
   },
   "ui": {
@@ -589,7 +592,10 @@
   "springs": {
     "secondsPerSpring": 86400,
     "hitSeconds": 900,
-    "hitSecondsPerDay": 21600,
+    "hitReserve": 7200,
+    "hitReserveRefill": 0.5,
+    "firstHitSeconds": 3600,
+    "firstHitAfter": 3600,
     "maxStock": 10,
     "firstGift": 1,
     "levelBonus": 0.1,

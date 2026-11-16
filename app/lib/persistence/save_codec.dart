@@ -79,8 +79,11 @@ Map<String, Object?> encodeSave(SaveData d) {
     'springs': s.springs,
     'springProgress': s.springProgress,
     'springClockMs': s.springClockMs,
-    'springHitDay': s.springHitDay,
-    'springHitSeconds': s.springHitSeconds,
+    'springReserve': s.springReserve,
+    'springReserveMs': s.springReserveMs,
+    'springLastHitMs': s.springLastHitMs,
+    'springAdDay': s.springAdDay,
+    'springAdCount': s.springAdCount,
     'clockLevels': s.clockLevels,
     'everOwned': s.everOwned.toList(),
     'dial': s.dial,
@@ -191,8 +194,12 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..springs = _i(j['springs'])
     ..springProgress = _d(j['springProgress'])
     ..springClockMs = _i(j['springClockMs'])
-    ..springHitDay = _i(j['springHitDay'])
-    ..springHitSeconds = _d(j['springHitSeconds'])
+    // Saves from before the reserve (R-SPR-3) start with a full one.
+    ..springReserve = _d(j['springReserve'])
+    ..springReserveMs = _i(j['springReserveMs'])
+    ..springLastHitMs = _i(j['springLastHitMs'])
+    ..springAdDay = _i(j['springAdDay'])
+    ..springAdCount = _i(j['springAdCount'])
     ..dial = j['dial'] is String ? j['dial']! as String : ''
     // A save from before the counter: this run's taps are unknown.
     ..runTaps = j.containsKey('runTaps') ? _i(j['runTaps']) : 1 << 30;

@@ -10,7 +10,7 @@ przedmiotów i ich liczby są w [02-rozgrywka.md](02-rozgrywka.md).
 | **Tiki** | Tiki / Ticks | trafienia, generatory, Fart, offline | umiejętności, generatory (bonusy za liczbę sztuk i synergie są darmowe) |
 | **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +2% na zawsze każdy |
 | **Okruchy czasu** | Okruchy / Shards | prestiż (tyle, ile nowych Chrononów) | perki |
-| **Sprężyny** | Sprężyny / Mainsprings | czas rzeczywisty (1 na dobę) i „równo 5.00” (02 §15) | poziomy zegarów; nie przepadają przy paradoksie |
+| **Sprężyny** | Sprężyny / Mainsprings | czas rzeczywisty (1 na dobę) i „równo 5.00” z zapasu dokręcania (02 §15) | poziomy zegarów; nie przepadają przy paradoksie |
 
 Wszystkie kwoty to liczby zmiennoprzecinkowe (`double`), co wystarcza do ok.
 1e308. **E-1:** Ceny i stan konta nigdy nie są zaokrąglane w logice, tylko
@@ -252,6 +252,23 @@ poziom z najlepszym zyskiem na Sprężynę (odkłada na niego).
 - Tarcze: dni 1, 1, 2, 7, 14, 22, 30, 36, 50, 86, 157, 259.
 - Gracz przypadkowy (1 sesja × 2 min, σ = 80 ms, 180 dni): 178 Sprężyn
   (5 z trafień), 6 tytułów, 10 tarcz, 29 h przepadło.
+
+Tabela wyżej jest z dziennego limitu 6 h (pierwsza wersja R-SPR-3).
+Od wersji z zapasem dokręcania (R-SPR-3, 3a, 3b; `late_game_report.dart
+--part 3`, na kodzie gry) Sprężyn dziennie jest:
+
+| Gracz | Limit 6 h na dobę | Zapas 2 h | Zapas i 2 reklamy |
+|---|---|---|---|
+| 1 × 2 min, σ = 80 ms | 1.03 | 1.06 | 1.06 |
+| 3 × 3 min, σ = 50 ms | 1.24 | 1.25 | 1.30 |
+| 6 × 2 min, σ = 50 ms | 1.25 | 1.42 | 1.48 |
+| 1 × 30 min, σ = 40 ms | 1.25 | 1.09 | 1.26 |
+| 3 × 11 min, σ = 40 ms | 1.25 | 1.26 | 1.43 |
+| 5 × 5 min, σ = 40 ms | 1.25 | 1.42 | 1.52 |
+
+Gracz „3 sesje” ma tyle samo co wcześniej, częste krótkie wejścia dają
+do 1.42, jedna długa sesja mniej (1.09). Reklamy liczą się tylko wtedy,
+gdy trafienie zastaje pusty zapas.
 
 ## 5. Reklamy a balans
 

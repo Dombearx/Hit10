@@ -40,9 +40,18 @@ class GameState {
   /// Wall-clock ms the winding was last brought up to date; 0 = not yet.
   int springClockMs = 0;
 
-  /// Local date (yyyymmdd) and seconds exact hits wound that day (R-SPR-3).
-  int springHitDay = 0;
-  double springHitSeconds = 0;
+  /// The winding reserve (R-SPR-3): seconds exact hits may still wind,
+  /// and the wall-clock ms it was last brought up to date (0 = never:
+  /// the reserve is full).
+  double springReserve = 0;
+  int springReserveMs = 0;
+
+  /// Wall-clock ms of the last exact hit (R-SPR-3a); 0 = none yet.
+  int springLastHitMs = 0;
+
+  /// Local date (yyyymmdd) and "wind it" ads watched that day (R-SPR-3b).
+  int springAdDay = 0;
+  int springAdCount = 0;
 
   /// Clock levels bought with Mainsprings; never reset (R-SPR-5).
   final Map<String, int> clockLevels = {};

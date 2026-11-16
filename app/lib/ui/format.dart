@@ -38,6 +38,7 @@ class Fmt {
   String duration(double seconds) {
     final m = (seconds / 60).floor();
     if (m < 60) return l.durationM(m);
+    if (m % 60 == 0) return l.durationH(m ~/ 60);
     return l.durationHm(m ~/ 60, m % 60);
   }
 }

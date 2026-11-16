@@ -438,7 +438,8 @@ class AdsConfig {
       rescueMinStreak = _i(_m(j['rescue'])['minStreak']),
       rescueCooldown = _d(_m(j['rescue'])['cooldown']),
       rescueOfferSeconds = _d(_m(j['rescue'])['offerSeconds']),
-      goldenCooldown = _d(_m(j['golden'])['cooldown']);
+      goldenCooldown = _d(_m(j['golden'])['cooldown']),
+      springPerDay = _i(_m(j['spring'])['perDay']);
   final double unlockAfterSeconds;
   final double offlineMultiplier;
   final double offlineMinAwaySeconds;
@@ -454,6 +455,9 @@ class AdsConfig {
   final double rescueCooldown;
   final double rescueOfferSeconds;
   final double goldenCooldown;
+
+  /// "Wind it" ads a local day: each refills the winding reserve (R-SPR-3b).
+  final int springPerDay;
 }
 
 /// Mainsprings and clock levels (docs/12 §3.1, R-SPR): a currency that
@@ -463,7 +467,10 @@ class SpringsConfig {
   SpringsConfig(Map<String, Object?> j)
     : secondsPerSpring = _d(j['secondsPerSpring']),
       hitSeconds = _d(j['hitSeconds']),
-      hitSecondsPerDay = _d(j['hitSecondsPerDay']),
+      hitReserve = _d(j['hitReserve']),
+      hitReserveRefill = _d(j['hitReserveRefill']),
+      firstHitSeconds = _d(j['firstHitSeconds']),
+      firstHitAfter = _d(j['firstHitAfter']),
       maxStock = _i(j['maxStock']),
       firstGift = _i(j['firstGift']),
       levelBonus = _d(j['levelBonus']),
@@ -473,9 +480,22 @@ class SpringsConfig {
   /// Real seconds that wind one Mainspring (R-SPR-2).
   final double secondsPerSpring;
 
-  /// Seconds one exact hit winds, and at most this many a day (R-SPR-3).
+  /// Seconds one exact hit winds (R-SPR-3).
   final double hitSeconds;
-  final double hitSecondsPerDay;
+
+  /// The winding reserve: the most the hits can wind at once, and the
+  /// seconds of it that come back per real second (R-SPR-3).
+  final double hitReserve;
+  final double hitReserveRefill;
+
+  /// The first exact hit after [firstHitAfter] seconds without one winds
+  /// this much (R-SPR-3a).
+  final double firstHitSeconds;
+  final double firstHitAfter;
+
+  /// Real seconds an empty reserve takes to fill up.
+  double get reserveRefillSeconds =>
+      hitReserveRefill > 0 ? hitReserve / hitReserveRefill : double.infinity;
 
   /// Ready Mainsprings kept; winding stops while full (R-SPR-4).
   final int maxStock;
@@ -757,9 +777,13 @@ class Balance {
     if (sp.secondsPerSpring <= 0 || sp.maxStock < 1 || sp.maxLevel < 1) {
       e.add('springs secondsPerSpring, maxStock and maxLevel must be positive');
     }
-    if (sp.hitSeconds < 0 || sp.hitSecondsPerDay < 0 || sp.levelBonus < 0) {
-      e.add('springs hitSeconds, hitSecondsPerDay and levelBonus must be ≥ 0');
+    if (sp.hitSeconds < 0 || sp.hitReserve < 0 || sp.levelBonus < 0) {
+      e.add('springs hitSeconds, hitReserve and levelBonus must be ≥ 0');
     }
+    if (sp.hitReserveRefill < 0 || sp.firstHitSeconds < sp.hitSeconds) {
+      e.add('springs hitReserveRefill ≥ 0, firstHitSeconds ≥ hitSeconds');
+    }
+    if (ads.springPerDay < 0) e.add('ads spring perDay must be ≥ 0');
     // Otherwise the dearest levels could never be afforded (idle_sim:
     // a bot saving for level 8 sat on a full stock of 7 for months).
     if (sp.maxStock < sp.costOf(sp.maxLevel)) {

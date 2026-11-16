@@ -226,6 +226,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String durationH(int hours) {
+    return '$hours h';
+  }
+
+  @override
   String durationM(int minutes) {
     return '$minutes min';
   }
@@ -2590,12 +2595,41 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String springsHitsLeft(String time) {
-    return 'Exact 5.00 hits can wind $time more today.';
+  String get springsReserveTitle => 'Winding reserve';
+
+  @override
+  String springsReserve(String left, String max) {
+    return '$left of $max';
   }
 
   @override
-  String get springsHitsDone => 'Today\'s winding by hits is used up.';
+  String springsReserveHow(String time, String refill) {
+    return 'Every exact 5.00 winds $time out of the reserve. The reserve comes back by itself in $refill.';
+  }
+
+  @override
+  String springsReserveFirst(String time, String after) {
+    return 'Your next exact 5.00 winds a whole $time: the first one after a break of $after.';
+  }
+
+  @override
+  String springsReserveEmpty(String time) {
+    return 'The reserve is empty: hits wind nothing now. Full again in $time.';
+  }
+
+  @override
+  String get springEmpty => 'Winding reserve empty';
+
+  @override
+  String get adSpring => '▶ Refill for an ad';
+
+  @override
+  String adSpringLeft(int left, int max) {
+    return 'Ads today: $left of $max';
+  }
+
+  @override
+  String get adDoneSpring => 'The reserve is full — hit 5.00!';
 
   @override
   String get springsNoClocks => 'Buy a clock to raise its level.';
@@ -2660,7 +2694,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_springs =>
-      'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.';
+      'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes out of a reserve. The reserve holds 2 hours and comes back by itself in 4, so it pays to return a few times a day. The first exact 5.00 after an hour\'s break winds a whole hour. You can hold up to 10 Mainsprings. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.';
 
   @override
   String get help_dials_t => 'Dial faces';

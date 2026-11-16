@@ -106,6 +106,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       luckyBump: l.luckyBump,
       shieldSaved: l.shieldSaved,
       springWound: l.springWound,
+      springEmpty: l.springEmpty,
     );
   }
 

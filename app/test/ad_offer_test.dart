@@ -80,6 +80,47 @@ void main() {
     expect(find.textContaining('Turbo włączone'), findsOneWidget);
   });
 
+  testWidgets('an empty winding reserve: the workshop offers an ad that '
+      'fills it (R-SPR-3b)', (tester) async {
+    final s = played()
+      ..prestiges = 1
+      ..springClockMs = now
+      ..springReserve = 0
+      ..springReserveMs = now
+      ..springLastHitMs = now;
+    final ads = FakeRewardedAds(delay: Duration.zero);
+    final c = await pumpGame(tester, s, ads);
+    expect(find.byKey(const Key('springs-ad-hint')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('open-springs')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Zapas pusty'), findsOneWidget);
+    expect(find.text('0 min z 2 h'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('ad-spring')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(ads.shown, 1);
+    expect(c.engine.springReserveAt(now), balance.springs.hitReserve);
+    expect(c.state.springAdCount, 1);
+    expect(find.text('2 h z 2 h'), findsOneWidget);
+    expect(find.byKey(const Key('ad-spring')), findsNothing);
+    expect(find.textContaining('Zapas pełny'), findsOneWidget);
+  });
+
+  testWidgets('a full reserve: no ad, the first exact hit is announced', (
+    tester,
+  ) async {
+    final s = played()
+      ..prestiges = 1
+      ..springClockMs = now;
+    final c = await pumpGame(tester, s, FakeRewardedAds(delay: Duration.zero));
+    expect(find.byKey(const Key('springs-ad-hint')), findsNothing);
+    await tester.tap(find.byKey(const Key('open-springs')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('ad-spring')), findsNothing);
+    expect(find.textContaining('dokręci aż 1 h'), findsOneWidget);
+    expect(c.engine.springFirstHitReady(now), isTrue);
+  });
+
   testWidgets('an interrupted ad gives nothing and says so', (tester) async {
     final ads = FakeRewardedAds(delay: Duration.zero, grant: false);
     final c = await pumpGame(tester, played(), ads);

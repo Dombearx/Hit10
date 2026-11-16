@@ -182,11 +182,10 @@ class Player {
       sim.onStep = (t) => _mark(sim, startHours + t / 3600, startDays);
       sim.run();
       playHours += minutes / 60;
-      final date = day0.add(Duration(days: day, seconds: (k * gap).round()));
       final rounds = (minutes * 60 / e.econ.roundSeconds()).floor();
       final exact = (rounds * pWithin(b.jackpot.window, sigma)).round();
       for (var i = 0; i < exact; i++) {
-        e.springHit(date);
+        e.springHit(wallMs(k * gap + minutes * 60 * i / exact));
       }
       e.windSprings(wallMs(k * gap + minutes * 60));
       if (spendSprings) {
@@ -383,7 +382,10 @@ void main(List<String> args) {
 
   // ---------------------------------------------------------------- 3 --
   if (parts.contains('3')) {
-    stdout.writeln('\n== 3. Mainsprings a day by player and cap rule');
+    stdout.writeln(
+      '\n== 3. Mainsprings a day by player: the daily cap of docs/12 '
+      '(15 min a hit, 6 h a day) and the reserve (R-SPR-3)',
+    );
     final sp = b.springs;
     final round = b.round.target - b.round.latestStart + b.round.resultPause;
     final profiles = [
@@ -392,40 +394,56 @@ void main(List<String> args) {
       ('6 × 2 min, 50 ms', 6, 2.0, 0.05),
       ('1 × 30 min, 40 ms', 1, 30.0, 0.04),
       ('3 × 11 min, 40 ms', 3, 11.0, 0.04),
+      ('5 × 5 min, 40 ms', 5, 5.0, 0.04),
     ];
-    // (name, seconds per hit, cap seconds, cap window in hours)
-    final rules = [
-      ('now: 15 min, 6 h a day', sp.hitSeconds, sp.hitSecondsPerDay, 24.0),
-      ('15 min, 2 h per 4 h', 900.0, 7200.0, 4.0),
-      ('15 min, 3 h per 8 h', 900.0, 10800.0, 8.0),
-      ('20 min, 2 h per 4 h', 1200.0, 7200.0, 4.0),
-    ];
+    // Hours wound by hits a day under the reserve, the engine's own rules;
+    // sessions spread over 16 waking hours, [ads] refills a day.
+    double reserveHours(int ses, double mins, double sg, {int ads = 0}) {
+      final st = GameState()..prestiges = 1;
+      final e = GameEngine(b, st);
+      final hits = (mins * 60 / round * pWithin(b.jackpot.window, sg));
+      final gap = ses > 1 ? 16 * 3600 / (ses - 1) : 0.0;
+      var wound = 0.0;
+      const days = 20;
+      var carry = 0.0;
+      for (var d = 1; d <= days; d++) {
+        var adsLeft = ads;
+        for (var k = 0; k < ses; k++) {
+          carry += hits;
+          final n = carry.floor();
+          carry -= n;
+          for (var i = 0; i < n; i++) {
+            final ms =
+                ((d * 86400 + 8 * 3600 + k * gap + mins * 60 * i / n) * 1000)
+                    .round();
+            var got = e.springHit(ms);
+            if (got == 0 && adsLeft > 0) {
+              adsLeft--;
+              e.refillSpringReserve(ms);
+              got = e.springHit(ms);
+            }
+            wound += got;
+            st.springs = 0; // never full
+          }
+        }
+      }
+      return wound / days / 3600;
+    }
+
     stdout.writeln(
-      '${'player'.padRight(20)}hits/session  min to fill 6 h'
-      '${rules.map((r) => r.$1.padLeft(24)).join()}',
+      '${'player'.padRight(20)}${'hits/session'.padLeft(13)}'
+      '${'daily cap'.padLeft(11)}${'reserve'.padLeft(9)}'
+      '${'reserve, 2 ads'.padLeft(16)}   (Mainsprings a day)',
     );
     for (final (name, ses, mins, sg) in profiles) {
       final hits = mins * 60 / round * pWithin(b.jackpot.window, sg);
-      final fill = sp.hitSecondsPerDay / sp.hitSeconds / hits * mins;
-      final cells = <String>[];
-      for (final (_, per, cap, window) in rules) {
-        // Sessions are spread evenly: each falls in its own window when
-        // the gap is at least the window.
-        final gapH = 24 / ses;
-        final windows = math.min(24 / window, ses.toDouble());
-        final perWindow = window >= 24
-            ? math.min(cap, ses * hits * per)
-            : math.min(cap, hits * per * math.max(1, window / gapH));
-        final wound = window >= 24 ? perWindow : perWindow * windows;
-        cells.add(
-          ((sp.secondsPerSpring + wound) / sp.secondsPerSpring)
-              .toStringAsFixed(2)
-              .padLeft(24),
-        );
-      }
+      final old = math.min(21600.0, ses * hits * 900) / 3600;
+      String perDay(double hours) => (1 + hours / 24).toStringAsFixed(2);
       stdout.writeln(
-        '${name.padRight(20)}${hits.toStringAsFixed(1).padLeft(12)}'
-        '${fill.toStringAsFixed(0).padLeft(16)}${cells.join()}',
+        '${name.padRight(20)}${hits.toStringAsFixed(1).padLeft(13)}'
+        '${perDay(old).padLeft(11)}'
+        '${perDay(reserveHours(ses, mins, sg)).padLeft(9)}'
+        '${perDay(reserveHours(ses, mins, sg, ads: sp.hitReserve > 0 ? 2 : 0)).padLeft(16)}',
       );
     }
   }

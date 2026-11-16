@@ -601,6 +601,7 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 | `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu, bez Turbo i Szału; okno oferty pokazuje dokładnie tę kwotę | raz na 30 min |
 | `adRescue` | Ratunek combo / Combo Rescue | wyskakuje od razu po utracie serii ≥ 15 | przywraca serię sprzed pudła | raz na 15 min; okno znika po 5 s albo przy następnym dotknięciu |
 | `adGolden` | Złota Sekunda / Golden Second | przycisk przy zegarze | Złota Sekunda pojawia się od razu | raz na 30 min |
+| `adSpring` | Napełnij / Refill | warsztat Sprężyn, gdy zapas dokręcania jest pusty | zapas dokręcania znów pełny (2 h, R-SPR-3b); po reklamie trzeba jeszcze trafić „równo 5.00” | 2 razy na lokalną dobę; po pierwszym paradoksie |
 
 - **R-AD-1:** Czasy odnowienia liczone są w czasie rzeczywistym (także gdy
   gra jest zamknięta), z wyjątkiem Turbo, którego zapas maleje tylko podczas
@@ -682,8 +683,23 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
 - **R-SPR-2:** 1 Sprężyna na 24 h czasu rzeczywistego, także offline.
   Cofnięty zegar telefonu nic nie nakręca (jak R-OFF-3).
 - **R-SPR-3:** Każde „równo 5.00” (okno jackpotu, |błąd| < 0.010 s)
-  dokręca 15 min, najwyżej 6 h na lokalną dobę. Pod tarczą wyskakuje
-  „Sprężyna +15 min”.
+  dokręca 15 min z **zapasu dokręcania**. Zapas mieści 2 h i wraca sam,
+  30 min na godzinę czasu rzeczywistego (pełny po 4 h, także offline;
+  cofnięty zegar telefonu nic nie oddaje). Trafienie zabiera z zapasu
+  tyle, ile dokręca; gdy zostało mniej niż minuta, nie dokręca nic. Pod
+  tarczą wyskakuje „Sprężyna +15 min”, a przy pierwszym trafieniu na
+  pustym zapasie „Zapas dokręcania pusty” (raz, do następnego
+  dokręcenia). Warsztat pokazuje zapas paskiem („1 h 15 min z 2 h”)
+  i mówi, kiedy będzie pełny. Wcześniej limit był dzienny (6 h na dobę):
+  symulacja pokazała, że wybija się w 7–9 minut jednej sesji i nie
+  zachęca do powrotu w ciągu dnia (13 §2.3).
+- **R-SPR-3a:** Pierwsze „równo 5.00” po co najmniej 1 h bez takiego
+  trafienia dokręca **1 h** zamiast 15 min (albo tyle, ile jest
+  w zapasie). Powód, żeby wejść na minutę.
+- **R-SPR-3b:** Oferta `adSpring` (§13): reklama napełnia zapas od razu.
+  Najwyżej 2 razy na lokalną dobę, tylko gdy zapas jest pusty (mniej niż
+  jedno trafienie). Przycisk jest w warsztacie, a plakietka Sprężyn
+  w nagłówku pokazuje wtedy mały telewizor.
 - **R-SPR-4:** Gotowe Sprężyny odkładają się do 10 (tyle kosztuje
   najdroższy poziom). Przy pełnym magazynie sprężyna się nie nakręca.
   Wcześniej było 7: symulacja pokazała, że gracz odkładający na poziom 8

@@ -44,6 +44,7 @@ class ArenaLabels {
     required this.luckyBump,
     required this.shieldSaved,
     this.springWound,
+    this.springEmpty,
   });
   final String perfect;
   final String great;
@@ -66,6 +67,9 @@ class ArenaLabels {
 
   /// "Mainspring +15 min" after an exact hit (docs/12 R-SPR-3).
   final String Function(String minutes)? springWound;
+
+  /// "Winding reserve empty": the exact hit wound nothing (R-SPR-3).
+  final String? springEmpty;
 }
 
 /// The stopwatch arena (docs/04 §1, §3). Pure drawing: all game decisions
@@ -505,10 +509,13 @@ class Stage extends Component {
       );
     }
     final wound = l.springWound;
-    if (f.springSeconds > 0 && wound != null) {
+    final springText = f.springSeconds > 0 && wound != null
+        ? wound('${(f.springSeconds / 60).round()}')
+        : (f.springEmpty ? l.springEmpty : null);
+    if (springText != null) {
       add(
         PopText(
-          text: wound('${(f.springSeconds / 60).round()}'),
+          text: springText,
           style: label(const Color(0xFFFFE9A8), r * 0.13),
           at: Vector2(c.x, c.y + r * 0.42),
           life: 1.3,

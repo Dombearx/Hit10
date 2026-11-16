@@ -643,30 +643,63 @@ class GameEngine {
     return _windSeconds((nowMs - last) / 1000);
   }
 
-  /// An exact hit (the dial read 5.00) winds [SpringsConfig.hitSeconds],
-  /// at most [SpringsConfig.hitSecondsPerDay] a local day (R-SPR-3).
-  /// Returns the seconds wound (0 when the day's share is used up).
-  double springHit(DateTime local) {
+  /// The winding reserve at [nowMs] (R-SPR-3): what exact hits may still
+  /// wind. It refills by itself; a clock set back refills nothing.
+  double springReserveAt(int nowMs) {
+    final c = b.springs;
+    if (s.springReserveMs <= 0) return c.hitReserve;
+    final away = math.max(0, nowMs - s.springReserveMs) / 1000;
+    return math.min(c.hitReserve, s.springReserve + away * c.hitReserveRefill);
+  }
+
+  void _syncReserve(int nowMs) {
+    s
+      ..springReserve = springReserveAt(nowMs)
+      ..springReserveMs = nowMs;
+  }
+
+  /// Seconds until the reserve is full again (0 when it is).
+  double springReserveFullIn(int nowMs) {
+    final c = b.springs;
+    final missing = c.hitReserve - springReserveAt(nowMs);
+    if (missing <= 0) return 0;
+    return c.hitReserveRefill > 0
+        ? missing / c.hitReserveRefill
+        : double.infinity;
+  }
+
+  /// The next exact hit is the first after a break and winds more
+  /// (R-SPR-3a).
+  bool springFirstHitReady(int nowMs) =>
+      s.springLastHitMs <= 0 ||
+      nowMs - s.springLastHitMs >= b.springs.firstHitAfter * 1000;
+
+  /// An exact hit (the dial read 5.00) winds [SpringsConfig.hitSeconds]
+  /// out of the reserve — the first one after a break
+  /// [SpringsConfig.firstHitSeconds] (R-SPR-3, 3a). Returns the seconds
+  /// wound (0 when the reserve is empty).
+  double springHit(int nowMs) {
     if (!econ.springsUnlocked) return 0;
     final c = b.springs;
-    final key = dateKey(local);
-    if (s.springHitDay != key) {
-      s
-        ..springHitDay = key
-        ..springHitSeconds = 0;
-    }
-    final add = math.min(c.hitSeconds, c.hitSecondsPerDay - s.springHitSeconds);
-    if (add <= 0) return 0;
-    s.springHitSeconds += add;
+    _syncReserve(nowMs);
+    final first = springFirstHitReady(nowMs);
+    s.springLastHitMs = nowMs;
+    final add = math.min(
+      first ? c.firstHitSeconds : c.hitSeconds,
+      s.springReserve,
+    );
+    // Less than a minute is not worth a "+0 min" on the dial.
+    if (add < 60) return 0;
+    s.springReserve -= add;
     _windSeconds(add);
     return add;
   }
 
-  /// Seconds exact hits may still wind on local day [local].
-  double springHitLeft(DateTime local) {
-    final c = b.springs;
-    if (s.springHitDay != dateKey(local)) return c.hitSecondsPerDay;
-    return math.max(0, c.hitSecondsPerDay - s.springHitSeconds);
+  /// Fills the reserve up at once (the "wind it" ad, R-SPR-3b).
+  void refillSpringReserve(int nowMs) {
+    s
+      ..springReserve = b.springs.hitReserve
+      ..springReserveMs = nowMs;
   }
 
   int _windSeconds(double secs) {

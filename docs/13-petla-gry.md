@@ -361,7 +361,7 @@ Dlaczego tak:
   „Trafieniami dokręcisz 2 h naraz. Zapas wraca w 4 godziny.” Trzy sesje
   dziennie dają tyle co dziś (6 h), pięć daje 10 h. Jedna długa sesja
   daje 2 h i 30 min za każdą kolejną godzinę gry, czyli mniej niż dziś
-  (1.08 zamiast 1.25 Sprężyny dziennie). To celowe: nagradzamy powroty.
+  (1.09 zamiast 1.25 Sprężyny dziennie). To celowe: nagradzamy powroty.
 - **R-SPR-3a (nowe):** **pierwsze „równo 5.00” po przerwie co najmniej
   1 h dokręca 1 h**, kolejne po 15 min. Powód do wejścia na minutę:
   jedno dobre trafienie i godzina Sprężyny. Wzmacnia rdzeń gry.
@@ -369,9 +369,10 @@ Dlaczego tak:
   2 razy na dobę. Rekomenduję reset zapasu, a nie gotowe +2 h: po
   reklamie gracz musi jeszcze trafić, więc reklama prowadzi do gry, a nie
   ją zastępuje. Oferta pojawia się pod tarczą, gdy zapas jest pusty.
-- Efekt: 1.25 Sprężyny dziennie dla gracza „3 sesje”, do 1.5 przy
-  częstych wejściach, do ok. 1.65 z reklamami. Gracz przypadkowy bez
-  zmian (1.03–1.06).
+- Efekt (zrobione, policzone na kodzie gry, 03 §4.3): 1.25 Sprężyny
+  dziennie dla gracza „3 sesje”, 1.42 przy 5–6 krótkich wejściach, do
+  1.52 z reklamami. Gracz przypadkowy 1.06. Wcześniejszy szacunek „do
+  1.5 i 1.65” był liczony ręcznie i za wysoki.
 
 Przykład dnia (zapas pełny rano):
 
@@ -420,6 +421,10 @@ powodu do codziennego wejścia.
   ×885 dalej byłby tylko procentem.
 
 ## 6. Kolejność
+
+**Stan (16.11.2026):** z etapu 1 zrobione jest dokręcanie (R-SPR-3, 3a)
+i oferta `adSpring` (R-SPR-3b); zasady w 02 §15 i §13. Pasek celu
+i ekran mnożników czekają.
 
 | Etap | Co | Wielkość | Po co najpierw |
 |---|---|---|---|

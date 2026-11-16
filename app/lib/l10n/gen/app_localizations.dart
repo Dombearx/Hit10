@@ -494,6 +494,12 @@ abstract class AppLocalizations {
   /// **'{hours} h {minutes} min'**
   String durationHm(int hours, int minutes);
 
+  /// No description provided for @durationH.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String durationH(int hours);
+
   /// No description provided for @durationM.
   ///
   /// In en, this message translates to:
@@ -4652,17 +4658,59 @@ abstract class AppLocalizations {
   /// **'Storage full ({max}). Spend some to keep winding.'**
   String springsFull(String max);
 
-  /// No description provided for @springsHitsLeft.
+  /// No description provided for @springsReserveTitle.
   ///
   /// In en, this message translates to:
-  /// **'Exact 5.00 hits can wind {time} more today.'**
-  String springsHitsLeft(String time);
+  /// **'Winding reserve'**
+  String get springsReserveTitle;
 
-  /// No description provided for @springsHitsDone.
+  /// No description provided for @springsReserve.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s winding by hits is used up.'**
-  String get springsHitsDone;
+  /// **'{left} of {max}'**
+  String springsReserve(String left, String max);
+
+  /// No description provided for @springsReserveHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Every exact 5.00 winds {time} out of the reserve. The reserve comes back by itself in {refill}.'**
+  String springsReserveHow(String time, String refill);
+
+  /// No description provided for @springsReserveFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next exact 5.00 winds a whole {time}: the first one after a break of {after}.'**
+  String springsReserveFirst(String time, String after);
+
+  /// No description provided for @springsReserveEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The reserve is empty: hits wind nothing now. Full again in {time}.'**
+  String springsReserveEmpty(String time);
+
+  /// No description provided for @springEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Winding reserve empty'**
+  String get springEmpty;
+
+  /// No description provided for @adSpring.
+  ///
+  /// In en, this message translates to:
+  /// **'▶ Refill for an ad'**
+  String get adSpring;
+
+  /// No description provided for @adSpringLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Ads today: {left} of {max}'**
+  String adSpringLeft(int left, int max);
+
+  /// No description provided for @adDoneSpring.
+  ///
+  /// In en, this message translates to:
+  /// **'The reserve is full — hit 5.00!'**
+  String get adDoneSpring;
 
   /// No description provided for @springsNoClocks.
   ///
@@ -4763,7 +4811,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_springs.
   ///
   /// In en, this message translates to:
-  /// **'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes (up to 6 hours a day). You can hold up to 10. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.'**
+  /// **'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes out of a reserve. The reserve holds 2 hours and comes back by itself in 4, so it pays to return a few times a day. The first exact 5.00 after an hour\'s break winds a whole hour. You can hold up to 10 Mainsprings. Tap the spiral to level up a clock: level 1 costs 1 Mainspring, level 2 costs 2, and so on. Each level gives that clock +10%, for good — levels survive the rewind. At levels 5 and 10 a clock earns a master title.'**
   String get help_springs;
 
   /// No description provided for @help_dials_t.
