@@ -9,7 +9,9 @@ import 'package:in_app_update/in_app_update.dart';
 ///
 /// Silent everywhere it cannot work: not Android, an APK installed outside
 /// Google Play (CI builds), no network.
-Future<void> checkForAppUpdate({required void Function() onDownloaded}) async {
+Future<void> checkForAppUpdate({
+  required void Function() onDownloaded,
+}) async {
   if (!Platform.isAndroid) return;
   try {
     final info = await InAppUpdate.checkForUpdate();
