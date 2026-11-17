@@ -1094,7 +1094,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tip_prestige =>
-      'Paradoks gotowy! Cofnij czas: zaczniesz od nowa, ale ze stałym bonusem do dochodu.';
+      'Możesz cofnąć czas! Zaczniesz od nowa, ale z Chrononami, które na stałe przyspieszają dochód. Za Okruchy ✦ kupisz perki — zostają po każdym resecie. Wir u góry: ty decydujesz kiedy.';
 
   @override
   String tip_milestone(String need) {
@@ -1151,9 +1151,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String goalNewClock(String name) {
     return 'Cel: nowy zegar — $name';
   }
-
-  @override
-  String get goalPrestige => 'Cel: cofnij czas — dotknij wiru u góry';
 
   @override
   String get goalPrestigeDouble => 'Cel: cofnij czas — podwoisz Chronony';

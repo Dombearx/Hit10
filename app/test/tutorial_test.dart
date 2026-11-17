@@ -156,6 +156,16 @@ void main() {
     expect(g.generator, balance.generators[1].id);
   });
 
+  test('the first paradox is a tip, not a goal (R-TUT-7)', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..earnedTotal = 1e8 // exactly 1 Chronon
+      ..owned['grandpa'] = 10;
+    final c = controller(s);
+    expect(c.engine.canPrestige(), isTrue);
+    expect(c.nextGoal?.kind, isNot(GoalKind.prestige));
+  });
+
   test('after the first paradox the goal bar stays (R-TUT-7)', () {
     final s = GameState()
       ..tutorialDone = true

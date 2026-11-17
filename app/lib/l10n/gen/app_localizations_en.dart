@@ -1096,7 +1096,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tip_prestige =>
-      'A paradox is ready! Rewind time: start over, with a permanent income bonus.';
+      'You can turn back time! You start over, but with Chronons that permanently speed up your income. Shards ✦ buy perks that stay through every reset. The swirl up top: you choose when.';
 
   @override
   String tip_milestone(String need) {
@@ -1153,9 +1153,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String goalNewClock(String name) {
     return 'Goal: a new clock — $name';
   }
-
-  @override
-  String get goalPrestige => 'Goal: turn back time — tap the swirl up top';
 
   @override
   String get goalPrestigeDouble =>

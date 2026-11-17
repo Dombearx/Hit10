@@ -271,7 +271,19 @@ void main() {
     });
 
     test('hidden: almost, punctual, tenth day', () {
-      s.stats.recentErrors.addAll([-0.0101, 0.0098]); // 4.99 then 5.01
+      // A jackpot hit (|error| < 0.01) reads 5.00 on the dial, so 4.992
+      // then 5.012 is 5.00 then 5.01: not "almost".
+      s.stats.recentErrors.addAll([-0.008, 0.012]);
+      expect(
+        unlockAchievements(all, s, const AchievementContext()).map((a) => a.id),
+        isNot(contains('hidden_almost')),
+      );
+      s.stats.recentErrors.addAll([-0.0101, 0.0098]); // 4.99 then 5.00
+      expect(
+        unlockAchievements(all, s, const AchievementContext()).map((a) => a.id),
+        isNot(contains('hidden_almost')),
+      );
+      s.stats.recentErrors.addAll([-0.0101, 0.0102]); // 4.99 then 5.01
       expect(
         unlockAchievements(all, s, const AchievementContext()).map((a) => a.id),
         contains('hidden_almost'),

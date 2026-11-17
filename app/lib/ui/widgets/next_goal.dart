@@ -37,9 +37,7 @@ class NextGoalBar extends StatelessWidget {
         '${goal.need.round()}',
       ),
       GoalKind.prestige =>
-        c.state.prestiges == 0
-            ? l.goalPrestige
-            : goal.perk != null
+        goal.perk != null
             ? l.goalPrestigePerk(perkName(l, goal.perk!))
             : l.goalPrestigeDouble,
       GoalKind.perk =>
