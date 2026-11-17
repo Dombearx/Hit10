@@ -294,10 +294,13 @@ List<AchievementDef> buildAchievements(Balance b) {
       // Just under, then just over the target (4.99, 5.01 on the dial).
       final e = s.stats.recentErrors;
       if (e.length < 2) return false;
+      // Compare what the dial showed: a hit inside the jackpot window
+      // reads exactly 5.00 (R-RUNDA-9), so -0.008 s is 5.00, not 4.99.
       final t = (b.round.target * 100).round();
-      final prev = ((b.round.target + e[e.length - 2]) * 100).round();
-      final last = ((b.round.target + e.last) * 100).round();
-      return prev == t - 1 && last == t + 1;
+      int shown(double err) => err.abs() < b.jackpot.window
+          ? t
+          : ((b.round.target + err) * 100).round();
+      return shown(e[e.length - 2]) == t - 1 && shown(e.last) == t + 1;
     }),
     AchievementDef(
       'hidden_punctual',
