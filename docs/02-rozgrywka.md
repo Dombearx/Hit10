@@ -556,10 +556,13 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   sklepem jest jeden pasek z celem i postępem (wypełnienie paska):
   najpierw pierwszy bonus Dziadka („Cel: Dziadek z zegarkiem 3/10 → ×2”),
   potem każdy kolejny zegar, którego gracz jeszcze nie ma („Cel: nowy
-  zegar — Babcia z minutnikiem”, postęp = Tiki do ceny), a gdy paradoks
-  jest dostępny — „Cel: cofnij czas — dotknij wiru u góry”. Dotknięcie
-  otwiera zakładkę Zegary (albo ekran paradoksu). W samouczku paska nie
-  ma.
+  zegar — Babcia z minutnikiem”, postęp = Tiki do ceny). Dotknięcie
+  otwiera zakładkę Zegary. W samouczku paska nie ma. Pierwszy paradoks
+  nie jest celem (1 Chronon niewiele daje, gracz sam wybiera moment):
+  gdy staje się dostępny, dymek przy wirze mówi, że można cofnąć czas,
+  że Chronony na stałe przyspieszają dochód, a perki za Okruchy zostają
+  po każdym resecie. Ten dymek nie znika sam — czeka na zamknięcie albo
+  otwarcie ekranu paradoksu.
 - **R-TUT-7a (cel po pierwszym paradoksie):** pasek zostaje na całą grę
   (13 §5.5; wcześniej znikał i gracz po paradoksie nie miał żadnego
   wskazanego celu). Zawsze jeden cel, w tej kolejności:

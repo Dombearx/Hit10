@@ -881,7 +881,7 @@
   "adFull": "Full",
   "tip_golden": "Catch the golden clock for a golden round!",
   "tip_combo": "A streak! Keep hitting to grow the multiplier.",
-  "tip_prestige": "A paradox is ready! Rewind time: start over, with a permanent income bonus.",
+  "tip_prestige": "You can turn back time! You start over, but with Chronons that permanently speed up your income. Shards ✦ buy perks that stay through every reset. The swirl up top: you choose when.",
   "tip_milestone": "The bar under the name: at {need} owned, the clock earns ×2!",
   "@tip_milestone": {
     "placeholders": {
@@ -969,7 +969,6 @@
       }
     }
   },
-  "goalPrestige": "Goal: turn back time — tap the swirl up top",
   "goalPrestigeDouble": "Goal: turn back time — it doubles your Chronons",
   "goalPrestigePerk": "Goal: turn back time — enough for {name}",
   "@goalPrestigePerk": {

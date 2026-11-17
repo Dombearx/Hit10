@@ -1108,7 +1108,8 @@ class GameController extends ChangeNotifier {
 
   /// The one thing to aim for next, shown over the shop (R-TUT-7). Until
   /// the first paradox: the first clock's first bonus, then each new
-  /// clock, then the paradox itself. After it: a paradox that doubles the
+  /// clock (the first paradox is the player's call: a coach tip says it
+  /// is ready, the bar does not push it). After it: a paradox that doubles the
   /// Chronons, the next new clock, the next perk (or the paradox that
   /// pays for it), then the clock bonus closest to done. Null when there
   /// is nothing to show.
@@ -1126,7 +1127,6 @@ class GameController extends ChangeNotifier {
           need: bonus.toDouble(),
         );
       }
-      if (engine.canPrestige()) return const NextGoal(GoalKind.prestige);
     } else if (!state.rewindPending && gain >= 5 && gain >= state.chronons) {
       return const NextGoal(GoalKind.prestige);
     }
@@ -1299,7 +1299,9 @@ class GameController extends ChangeNotifier {
     final Object? key = tutorialStep == TutorialStep.grandpaInfo
         ? TutorialStep.grandpaInfo
         : pendingTip;
-    if (key == null || key == 'golden') {
+    // The paradox tip is a tutorial step: it stays until closed or acted
+    // on (the goal bar no longer points at the first paradox).
+    if (key == null || key == 'golden' || key == 'prestige') {
       _shownAt = null;
       _shownFor = null;
       return;

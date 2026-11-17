@@ -1919,7 +1919,7 @@ abstract class AppLocalizations {
   /// No description provided for @tip_prestige.
   ///
   /// In en, this message translates to:
-  /// **'A paradox is ready! Rewind time: start over, with a permanent income bonus.'**
+  /// **'You can turn back time! You start over, but with Chronons that permanently speed up your income. Shards ✦ buy perks that stay through every reset. The swirl up top: you choose when.'**
   String get tip_prestige;
 
   /// No description provided for @tip_milestone.
@@ -1999,12 +1999,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Goal: a new clock — {name}'**
   String goalNewClock(String name);
-
-  /// No description provided for @goalPrestige.
-  ///
-  /// In en, this message translates to:
-  /// **'Goal: turn back time — tap the swirl up top'**
-  String get goalPrestige;
 
   /// No description provided for @goalPrestigeDouble.
   ///
