@@ -361,7 +361,7 @@ class DialPreview extends StatelessWidget {
   final double size;
   final bool locked;
 
-  /// For a locked face: how far it has filled up from the bottom, 0..1
+  /// For a locked face: how far it has filled up (clockwise from 12), 0..1
   /// (the next face to unlock). Null draws the plain "?".
   final double? progress;
 
@@ -386,10 +386,18 @@ class _PreviewPainter extends CustomPainter {
       canvas.drawCircle(c, r, Paint()..color = const Color(0xFFE4DED3));
       final p = progress?.clamp(0.0, 1.0) ?? 0;
       if (p > 0) {
-        // The real face rises from the bottom like water in a glass.
+        // The real face sweeps in clockwise from 12, like a clock hand.
         canvas.save();
-        canvas.clipRect(
-          Rect.fromLTRB(c.dx - r, c.dy + r - 2 * r * p, c.dx + r, c.dy + r),
+        canvas.clipPath(
+          Path()
+            ..moveTo(c.dx, c.dy)
+            ..arcTo(
+              Rect.fromCircle(center: c, radius: r),
+              -math.pi / 2,
+              2 * math.pi * p,
+              false,
+            )
+            ..close(),
         );
         paintDialFace(canvas, c, r, skin);
         canvas.restore();

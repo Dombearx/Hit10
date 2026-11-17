@@ -262,6 +262,24 @@ void main() {
       expect(e.econ.nextDial, isNull);
     });
 
+    test('the next face fills linearly between the two thresholds', () {
+      final wood = b.dials[1].earned;
+      final porcelain = b.dials[2].earned;
+      s.lifetime.earnedEver = wood / 1000;
+      expect(e.econ.nextDialProgress, closeTo(0.001, 1e-9));
+      s.lifetime.earnedEver = wood + (porcelain - wood) / 4;
+      expect(e.econ.nextDialProgress, closeTo(0.25, 1e-9));
+    });
+
+    test('an earned face stays after its threshold moved up', () {
+      s.lifetime.earnedEver = b.dials[3].earned;
+      s.dialsSeen.add(b.dials[5].id);
+      expect(e.econ.dialUnlocked(b.dials[5]), isTrue);
+      // The next one is still the first locked face, from the last below it.
+      expect(e.econ.nextDial, b.dials[4]);
+      expect(e.econ.nextDialProgress, 0);
+    });
+
     test('a locked or unknown choice draws the classic face', () {
       s.dial = 'rift';
       expect(e.econ.dialId, 'classic');

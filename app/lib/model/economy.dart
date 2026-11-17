@@ -381,10 +381,10 @@ class Economy {
 
   /// A face is unlocked by the Tiki earned in all runs, or by the seal of
   /// its Time Loop (R-PETLA-5); one unlocked under the old thresholds
-  /// stays.
-  bool dialUnlocked(DialConfig d) => d.seal == null
-      ? s.lifetime.earnedEver >= d.earned
-      : sealed(d.seal!) || s.dialsSeen.contains(d.id);
+  /// stays, also when its threshold moved up (R-TARCZA-1).
+  bool dialUnlocked(DialConfig d) =>
+      s.dialsSeen.contains(d.id) ||
+      (d.seal == null ? s.lifetime.earnedEver >= d.earned : sealed(d.seal!));
 
   List<DialConfig> get unlockedDials => [
     for (final d in b.dials)
@@ -400,24 +400,21 @@ class Economy {
   }
 
   /// How far the way to [nextDial] is done, 0..1, from the last unlocked
-  /// face. The thresholds are ×100 apart and lifetime Tiki grow
-  /// exponentially, so the scale is logarithmic: a straight share would sit
-  /// near 0 for most of the way and jump at the end.
+  /// face below it: a straight share of the lifetime Tiki between the two
+  /// thresholds, so the fill agrees with "1K / 1M" under it (a log scale
+  /// showed half full at 1K of 1M).
   double get nextDialProgress {
     final next = nextDial;
     if (next == null) return 1;
     if (next.seal != null) return 0;
-    final have = s.lifetime.earnedEver;
-    final earnedFaces = unlockedDials.where((d) => d.seal == null);
-    final prev = earnedFaces.isEmpty ? 0.0 : earnedFaces.last.earned;
-    if (have <= 0) return 0;
-    if (prev <= 0) {
-      return (math.log(1 + have) / math.log(1 + next.earned)).clamp(0.0, 1.0);
+    var prev = 0.0;
+    for (final d in unlockedDials) {
+      if (d.seal == null && d.earned < next.earned && d.earned > prev) {
+        prev = d.earned;
+      }
     }
-    return (math.log(have / prev) / math.log(next.earned / prev)).clamp(
-      0.0,
-      1.0,
-    );
+    final have = s.lifetime.earnedEver;
+    return ((have - prev) / (next.earned - prev)).clamp(0.0, 1.0);
   }
 
   /// The face to draw: the chosen one if unlocked, else the classic.
