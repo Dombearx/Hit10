@@ -179,7 +179,8 @@ w Cookie Clickerze. Zasada: każdy duży próg zarobków coś pokazuje.
 Rozwiązanie: 12 tarcz stopera (wygląd zegara, środek ekranu), odblokowanych
 łącznymi zarobkami, czysto kosmetycznych. Następna widoczna jako „?”
 z progiem, dalsze jako „???”. Progi tak, żeby odstępy rosły: pierwsze
-tarcze w pierwszych dniach, ostatnia po ok. 9 miesiącach (03 §4.3).
+tarcze w pierwszych dniach, ostatnia za zarobki ok. 45. dnia, potem
+trofea pętli (03 §4.3).
 Zasady: 02 R-TARCZA-1/2.
 
 ### 3.4 Czego teraz nie robimy

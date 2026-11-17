@@ -62,6 +62,11 @@ class NextGoalBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(16),
+          ),
+          // The outline over the fill: under it, the fill's square end
+          // covered the rounded border at the start.
+          foregroundDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Palette.outline, width: 2),
           ),
           child: Stack(

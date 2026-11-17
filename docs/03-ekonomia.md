@@ -249,7 +249,27 @@ poziom z najlepszym zyskiem na Sprężynę (odkłada na niego).
   różnica bywa większa (dzień 30: 1926 zamiast 1114 Chrononów), bo
   wcześniejsze paradoksy się składają. Pierwsze przejście (B-1…B-10) się
   nie zmienia: Sprężyny są dopiero po paradoksie.
-- Tarcze: dni 1, 1, 2, 7, 14, 22, 30, 36, 50, 86, 157, 259.
+- Tarcze: dni 1, 1, 2, 7, 14, 22, 30, 36, 50, 86, 157, 259 (dawne
+  progi i 12 tarcz za zarobki; dziś 6 za zarobki i 6 za pieczęcie pętli,
+  progi niżej).
+
+**Progi tarcz za zarobki (17.11.2026, `idle_sim.dart`).** Przy progach
+0, 1M, 10B, 1T, 100T, 10aa szósta tarcza wypadała 18. dnia (gracz
+3 × 3 min), a zaangażowany zbierał wszystkie w 2 tygodnie. Cel: tarcze
+w punktach kontrolnych retencji (D1 sprawdza wejście w grę, D7 czy gra
+się podoba, D30 głębię progresji) i rosnące odstępy; pierwsza nagroda
+kolekcji w pierwszej sesji. Łączne zarobki rosną wykładniczo tylko przez
+ok. miesiąc (D1 546M, D7 3.03T, D14 348T, D21 440aa, D30 4.07ac, D60
+316ac, D90 1.13ad, D365 20.2ad), więc progi nie mają stałego ilorazu.
+Nowe progi 0, 1M, 10B, 1T, 100aa, 100ac:
+
+| Gracz | wood | porcelain | brass | station | swiss |
+|---|---|---|---|---|---|
+| 1 × 2 min, σ = 80 ms | 3 | 6 | 17 | 46 (było 30) | 77 (41) |
+| 3 × 3 min, σ = 50 ms | 1 | 2 | 7 | 21 (12) | 45 (18) |
+| 5 × 5 min, σ = 40 ms | 1 | 2 | 4 | 16 (9) | 38 (14) |
+
+Dalej tarcze dają pieczęcie pętli (R-PETLA-5), co kilka dni każda.
 - Gracz przypadkowy (1 sesja × 2 min, σ = 80 ms, 180 dni): 178 Sprężyn
   (5 z trafień), 6 tytułów, 10 tarcz, 29 h przepadło.
 

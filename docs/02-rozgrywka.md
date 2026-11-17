@@ -761,13 +761,19 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   widać tylko „Stopień 3: ???”.
 - **R-TARCZA-1:** 12 tarcz zegara (wygląd stopera, rysowany kodem:
   kolory i dekoracja). Pierwsze sześć odblokowuje suma Tików zarobionych
-  w całej grze (`lifetime.earnedEver`): 0, 1M, 10B, 1T, 100T, 10aa.
-  Ostatnie sześć to trofea pętli czasu (R-PETLA-5): po jednej za pieczęć
-  każdej zasady. Kto odblokował którąś według dawnych progów (1ab …
-  1ad), zachowuje ją. Nowa tarcza: toast „Nowa tarcza zegara”.
+  w całej grze (`lifetime.earnedEver`): 0, 1M, 10B, 1T, 100aa, 100ac.
+  Progi tak, żeby tarcze wypadały w punktach kontrolnych retencji (D1,
+  D2, D7, ok. D21, ok. D45 dla gracza 3 × 3 min; 03 §4.3), z rosnącymi
+  odstępami. Ostatnie sześć to trofea pętli czasu (R-PETLA-5): po jednej
+  za pieczęć każdej zasady. Odblokowana tarcza zostaje na zawsze, także
+  gdy jej próg później wzrósł (dawne 100T i 10aa, a wcześniej 1ab …
+  1ad). Nowa tarcza: toast „Nowa tarcza zegara”.
 - **R-TARCZA-2:** Wybór przyciskiem z tarczą w nagłówku: odblokowane
   tarcze z nazwą, następna zablokowana jako „?” z progiem („Zarób łącznie
-  1T”) albo „Trofeum pętli”, dalsze jako „???”. Pod galerią żart wybranej
+  1T”) albo „Trofeum pętli”, dalsze jako „???”. Następna wypełnia się jak
+  wskazówka zegara (od godziny 12, zgodnie z ruchem wskazówek), liniowo:
+  udział zarobków między progiem poprzedniej tarczy a jej progiem, tak
+  samo jak napis „1K / 1M” nad galerią. Pod galerią żart wybranej
   tarczy. Złota runda zawsze wygląda po swojemu (złota tarcza), a ciemne
   tarcze mają jasne cyfry i jaśniejsze kolory wyników.
 
