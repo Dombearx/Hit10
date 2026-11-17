@@ -159,7 +159,8 @@ void main() {
   test('the first paradox is a tip, not a goal (R-TUT-7)', () {
     final s = GameState()
       ..tutorialDone = true
-      ..earnedTotal = 1e8 // exactly 1 Chronon
+      // exactly 1 Chronon
+      ..earnedTotal = 1e8
       ..owned['grandpa'] = 10;
     final c = controller(s);
     expect(c.engine.canPrestige(), isTrue);
