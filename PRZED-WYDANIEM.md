@@ -51,6 +51,19 @@ Kolejność ma znaczenie. **B1–B3 blokują wydanie**, reszta jest zalecana alb
 opcjonalna. Przy każdym kroku: gdzie, co kliknąć, jakie wartości, jak
 sprawdzić.
 
+### Stan na 18.11.2026 (wieczór)
+
+| Krok | Stan |
+|---|---|
+| B1 | ✅ Polityka opublikowana, data 2026-11-18, obie nowe sekcje są |
+| B2 | ✅ Formularz zgodny z tabelą, zapisany (usuwanie: „automatycznie w ciągu 90 dni”). **Czeka w Przeglądzie publikowanych zmian na „Prześlij 1 zmianę do sprawdzenia”** — klika człowiek |
+| B3 | ✅ Nic do kliknięcia: obecna konsola Firebase nie ma przycisku „Włącz”, tylko „Add SDK” (link do dokumentacji); panel Crashlytics włączy się sam przy pierwszym raporcie |
+| B4 | ✅ Już było: dane o zdarzeniach i użytkownikach 2 mies., Sygnały Google wyłączone |
+| B4a | ✅ 6 wymiarów i 4 wskaźniki utworzone (nazwy bez dwukropka — GA go nie przyjmuje: „Chmura wczytano”, „Chmura wyprzedzenie min”, „Kalibracja przesuniecie”, „Kalibracja rozrzut”, „Cel wyzwania”) |
+| B5 | ⏸ Nie ruszane (opcjonalne, tworzy dane logowania OAuth i sekret) |
+| B6 | ✅ `version: 1.1.0+1` |
+| B7, B8 | ⏸ Czekają na decyzję człowieka |
+
 ### Zasady dla agenta wykonującego kroki
 
 - Nie wpisuj nigdzie haseł ani kluczy, których nie masz. Gdy krok wymaga
