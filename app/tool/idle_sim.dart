@@ -4,10 +4,13 @@
 //
 //   dart run tool/idle_sim.dart [--days 30] [--sessions 3] [--minutes 3]
 //       [--sigma 0.05] [--paradox 1.0] [--ads] [--no-springs]
+//       [--challenges]
 //
 // --paradox: rewind when it at least multiplies the Chronons by 1 + this.
 // --ads: the offline income doubled by an ad every time.
 // --no-springs: Mainsprings never spent (docs/12 §3.1, for comparison).
+// --challenges: every daily challenge, the day's bonus and the weekly one
+// done (docs/02 §18) — the upper bound of what they add.
 // Mainsprings: wound by real time and by exact hits (deterministic: rounds
 // × P(|error| < jackpot window)); spent on the level with the best gain
 // per Mainspring, saving up for it.
@@ -17,6 +20,7 @@ import 'dart:math' as math;
 import 'package:hit10/balance/balance.dart';
 import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/model/achievements.dart';
+import 'package:hit10/model/challenges.dart';
 import 'package:hit10/model/economy.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/model/number_format.dart';
@@ -56,6 +60,7 @@ void main(List<String> args) {
   final paradoxAt = double.parse(opt('paradox', '1.0'));
   final ads = args.contains('--ads');
   final springsOn = !args.contains('--no-springs');
+  final challengesOn = args.contains('--challenges');
   final b = Balance.fromJsonString(
     File('assets/balance.json').readAsStringSync(),
   );
@@ -166,6 +171,17 @@ void main(List<String> args) {
       }
       for (final d in e.econ.unlockedDials) {
         dialDay.putIfAbsent(d.id, () => day);
+      }
+      // All three daily challenges and the bonus at the day's last
+      // session, the weekly one every seventh day (once unlocked).
+      if (challengesOn && k == sessions - 1 && e.challengesUnlocked) {
+        final daily = Challenge(ChallengeKind.great, 1);
+        s.earn(3 * e.challengeTiki(daily) + e.challengeBonusTiki());
+        if (day % 7 == 0) {
+          final weekly = Challenge(ChallengeKind.greatWeek, 1);
+          s.springs += e.challengeSprings(weekly);
+          s.earn(e.challengeTiki(weekly));
+        }
       }
       unlockAchievements(
         all,

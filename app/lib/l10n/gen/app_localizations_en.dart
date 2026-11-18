@@ -3278,4 +3278,175 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsCloudNothing =>
       'The cloud has no save with more progress than this phone.';
+
+  @override
+  String get challengesTitle => 'Challenges';
+
+  @override
+  String get challengesToday => 'Today';
+
+  @override
+  String get challengesWeek => 'This week';
+
+  @override
+  String get challengesRerollHint =>
+      'Sized to your aim. Don\'t like one? ↻ swaps it — once a day.';
+
+  @override
+  String get challengesNewTomorrow => 'New ones at midnight.';
+
+  @override
+  String challengesDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days left',
+      one: 'Last day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chGreat(int n) {
+    return 'Hit GREAT or better $n times';
+  }
+
+  @override
+  String chStreak(int n) {
+    return 'Reach a streak of $n';
+  }
+
+  @override
+  String chJackpot(int n) {
+    return 'Stop the watch at exactly 5.00 ($n×)';
+  }
+
+  @override
+  String chPerfectWindow(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n PERFECTs',
+      one: '1 PERFECT',
+    );
+    return '$_temp0 within 10 rounds in a row';
+  }
+
+  @override
+  String chBothSides(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n GREAT+ hits',
+      one: '1 GREAT+ hit',
+    );
+    return 'From both sides: $_temp0 just before 5.00 and as many just after';
+  }
+
+  @override
+  String chBothSidesProgress(String early, String late, String total) {
+    return 'before $early/$total · after $late/$total';
+  }
+
+  @override
+  String chHitEarnings(String amount) {
+    return 'Earn $amount Ticks from hits';
+  }
+
+  @override
+  String chBuyClocks(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n clocks',
+      one: '1 clock',
+    );
+    return 'Buy $_temp0';
+  }
+
+  @override
+  String chMilestones(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n clock bonuses',
+      one: 'a clock bonus',
+    );
+    return 'Earn $_temp0';
+  }
+
+  @override
+  String chSkillLevels(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n skill levels',
+      one: '1 skill level',
+    );
+    return 'Buy $_temp0';
+  }
+
+  @override
+  String chGolden(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n Golden Seconds',
+      one: 'a Golden Second',
+    );
+    return 'Catch $_temp0';
+  }
+
+  @override
+  String chSpring(String hours) {
+    return 'Wind the Mainspring $hours h with exact 5.00s';
+  }
+
+  @override
+  String get challengeClaimed => 'Claimed';
+
+  @override
+  String get challengeReroll => 'Swap for another (once a day)';
+
+  @override
+  String challengeBonus(int done, int total) {
+    return 'All three today: $done/$total';
+  }
+
+  @override
+  String get challengeBonusDone => 'All three done today — well played!';
+
+  @override
+  String challengeBonusPaid(String amount) {
+    return 'All three today! Bonus +$amount Ticks';
+  }
+
+  @override
+  String challengeDone(String what) {
+    return 'Challenge done: $what';
+  }
+
+  @override
+  String get challengeOpen => 'Claim';
+
+  @override
+  String challengeCarry(String what) {
+    return 'Yesterday\'s finished challenges paid out: $what';
+  }
+
+  @override
+  String challengeCarrySprings(int n) {
+    return '+$n Mainspring';
+  }
+
+  @override
+  String get tip_challenges =>
+      'New: three challenges a day, sized to your aim. Tap to see them!';
+
+  @override
+  String get help_challenges_t => 'Challenges';
+
+  @override
+  String get help_challenges =>
+      'Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks\' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don\'t like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.';
 }

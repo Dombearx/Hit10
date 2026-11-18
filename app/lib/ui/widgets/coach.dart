@@ -21,6 +21,7 @@ abstract final class CoachTargets {
   static final combo = GlobalKey(debugLabel: 'coach-combo');
   static final prestige = GlobalKey(debugLabel: 'coach-prestige');
   static final springs = GlobalKey(debugLabel: 'coach-springs');
+  static final challenges = GlobalKey(debugLabel: 'coach-challenges');
 
   /// The bubble itself (QA builds measure where it ended up).
   static final bubble = GlobalKey(debugLabel: 'coach-bubble');
@@ -182,6 +183,7 @@ class _CoachOverlayState extends State<CoachOverlay>
           'combo' => (l.tip_combo, CoachTargets.combo),
           'prestige' => (l.tip_prestige, CoachTargets.prestige),
           'springs' => (l.tip_springs, CoachTargets.springs),
+          'challenges' => (l.tip_challenges, CoachTargets.challenges),
           'loop' => (
             c.state.loopRules.isEmpty
                 ? l.tip_loop

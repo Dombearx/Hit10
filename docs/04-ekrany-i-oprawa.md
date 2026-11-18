@@ -230,6 +230,13 @@ zostały te same (`trophy`, `fire`…).
   (05 T-35), prolog, „Witaj z powrotem”, wydarzenie (gdy nie było linijki),
   koniec pętli, pytanie o statystyki i zgoda na reklamy (05 T-33, T-26),
   prośba o ocenę (02 R-OCENA-1).
+- **U-36:** **Wyzwania** (02 §18): plakietka z tarczą strzelniczą w rzędzie
+  plakietek nagłówka (przed Sprężynami i wydarzeniem) z „1/3”; złota z „!”,
+  gdy nagroda czeka. Arkusz „Wyzwania”: „Dzisiaj” — trzy karty (ikona,
+  zadanie z liczbą, pasek postępu „7/12”, nagroda z ikoną zasobu,
+  przycisk „Odbierz” albo ↻), wiersz premii za wszystkie trzy; „Ten
+  tydzień” — karta tygodniowa z liczbą dni do końca. Ukończenie:
+  komunikat z przyciskiem „Odbierz” otwierającym arkusz.
 - **U-35:** **Duża czcionka systemowa:** tekst rośnie razem z ustawieniem
   Androida, ale najwyżej ×1.3 (`maxTextScale`): ekran gry jest ułożony co
   do piksela, a większe liczby nie mieszczą się na telefonie. Saldo

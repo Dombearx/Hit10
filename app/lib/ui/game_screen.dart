@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ads/rewarded_ads.dart';
 import '../arena/arena_game.dart';
 import '../l10n/gen/app_localizations.dart';
+import '../model/challenges.dart';
 import '../model/grading.dart';
 import 'diagnostics_panel.dart';
 import 'format.dart';
@@ -24,6 +25,7 @@ import 'shop/generator_list.dart';
 import 'shop/skill_list.dart';
 import 'app_updates.dart';
 import 'catalog.dart';
+import 'challenges_ui.dart';
 import 'screens/loop_screen.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/dials_screen.dart';
@@ -135,6 +137,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     _lastStep = controller.tutorialStep;
     controller.addListener(_followTutorial);
     _seasonSub = controller.seasonCompleted.listen(_onSeasonCompleted);
+    _challengeSub = controller.challengeDone.listen(_onChallengeDone);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _maybeShowOffline();
       if (controller.saveWasCorrupt && mounted) {
@@ -203,6 +206,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         !c.statsQuestionPending &&
         !askConsent &&
         !askReview) {
+      _showChallengeCarry();
       return;
     }
     _offlineOpen = true;
@@ -267,6 +271,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     } finally {
       _offlineOpen = false;
     }
+    _showChallengeCarry();
   }
 
   /// "May we send game statistics?" where the law asks (T-33).
@@ -315,6 +320,48 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   StreamSubscription<double>? _seasonSub;
+  StreamSubscription<Challenge>? _challengeSub;
+
+  /// A challenge got done: say so, with the way to its reward.
+  void _onChallengeDone(Challenge ch) {
+    if (!mounted) return;
+    final l = AppLocalizations.of(context);
+    final f = Fmt.of(context, controller);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          key: const Key('challenge-done'),
+          content: Text(l.challengeDone(challengeText(l, f, ch))),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 4),
+          action: SnackBarAction(
+            label: l.challengeOpen,
+            onPressed: () => showChallenges(context, controller),
+          ),
+        ),
+      );
+  }
+
+  /// Rewards for challenges finished but not claimed before a new day.
+  void _showChallengeCarry() {
+    final paid = controller.challengeCarry;
+    if (paid == null || !mounted) return;
+    controller.challengeCarry = null;
+    final l = AppLocalizations.of(context);
+    final f = Fmt.of(context, controller);
+    final parts = [
+      if (paid.tiki + paid.bonus > 0)
+        '+${f.n(paid.tiki + paid.bonus)} ${l.tikiLabel}',
+      if (paid.springs > 0) l.challengeCarrySprings(paid.springs),
+    ];
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l.challengeCarry(parts.join(' · '))),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
 
   void _onSeasonCompleted(double amount) {
     final s = controller.season;
@@ -336,6 +383,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   void dispose() {
     unawaited(_seasonSub?.cancel());
+    unawaited(_challengeSub?.cancel());
     controller.removeListener(_maybeShowOffline);
     controller.removeListener(_followTutorial);
     _slow.dispose();
@@ -688,6 +736,17 @@ class _Header extends StatelessWidget {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    // Challenges (docs/02 §18).
+                                    KeyedSubtree(
+                                      key: CoachTargets.challenges,
+                                      child: ChallengeBadge(
+                                        controller: controller,
+                                        onTap: () =>
+                                            showChallenges(context, controller),
+                                      ),
+                                    ),
+                                    if (controller.state.challenges.isNotEmpty)
+                                      const SizedBox(width: 6),
                                     // Mainsprings (docs/12 §3.1).
                                     SpringBadge(controller: controller),
                                     if (controller.season != null &&

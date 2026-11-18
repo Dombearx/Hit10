@@ -3281,4 +3281,182 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get settingsCloudNothing =>
       'W chmurze nie ma zapisu z większym postępem niż na tym telefonie.';
+
+  @override
+  String get challengesTitle => 'Wyzwania';
+
+  @override
+  String get challengesToday => 'Dzisiaj';
+
+  @override
+  String get challengesWeek => 'Ten tydzień';
+
+  @override
+  String get challengesRerollHint =>
+      'Dopasowane do twojej celności. Któreś nie pasuje? ↻ wymienia je — raz dziennie.';
+
+  @override
+  String get challengesNewTomorrow => 'Nowe o północy.';
+
+  @override
+  String challengesDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Zostało $days dni',
+      few: 'Zostały $days dni',
+      one: 'Ostatni dzień',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chGreat(int n) {
+    return 'Traf ŚWIETNIE lub lepiej $n razy';
+  }
+
+  @override
+  String chStreak(int n) {
+    return 'Dojdź do serii $n';
+  }
+
+  @override
+  String chJackpot(int n) {
+    return 'Zatrzymaj stoper równo na 5.00 ($n×)';
+  }
+
+  @override
+  String chPerfectWindow(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n PERFEKTÓW',
+      few: '$n PERFEKTY',
+      one: '1 PERFEKT',
+    );
+    return '$_temp0 w 10 kolejnych rundach';
+  }
+
+  @override
+  String chBothSides(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n trafień',
+      few: '$n trafienia',
+      one: '1 trafienie',
+    );
+    return 'Z obu stron: $_temp0 ŚWIETNIE+ tuż przed 5.00 i tyle samo tuż po';
+  }
+
+  @override
+  String chBothSidesProgress(String early, String late, String total) {
+    return 'przed $early/$total · po $late/$total';
+  }
+
+  @override
+  String chHitEarnings(String amount) {
+    return 'Zarób trafieniami $amount Tików';
+  }
+
+  @override
+  String chBuyClocks(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n zegarów',
+      few: '$n zegary',
+      one: '1 zegar',
+    );
+    return 'Kup $_temp0';
+  }
+
+  @override
+  String chMilestones(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n bonusów zegarów',
+      few: '$n bonusy zegarów',
+      one: 'bonus zegara',
+    );
+    return 'Zdobądź $_temp0';
+  }
+
+  @override
+  String chSkillLevels(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n poziomów',
+      few: '$n poziomy',
+      one: '1 poziom',
+    );
+    return 'Kup $_temp0 umiejętności';
+  }
+
+  @override
+  String chGolden(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n Złotych Sekund',
+      few: '$n Złote Sekundy',
+      one: 'Złotą Sekundę',
+    );
+    return 'Złap $_temp0';
+  }
+
+  @override
+  String chSpring(String hours) {
+    return 'Nakręć Sprężynę o $hours h trafieniami równo w 5.00';
+  }
+
+  @override
+  String get challengeClaimed => 'Odebrane';
+
+  @override
+  String get challengeReroll => 'Wylosuj inne (raz dziennie)';
+
+  @override
+  String challengeBonus(int done, int total) {
+    return 'Wszystkie trzy dzisiaj: $done/$total';
+  }
+
+  @override
+  String get challengeBonusDone => 'Dziś wszystkie trzy — brawo!';
+
+  @override
+  String challengeBonusPaid(String amount) {
+    return 'Wszystkie trzy dzisiaj! Premia +$amount Tików';
+  }
+
+  @override
+  String challengeDone(String what) {
+    return 'Wyzwanie ukończone: $what';
+  }
+
+  @override
+  String get challengeOpen => 'Odbierz';
+
+  @override
+  String challengeCarry(String what) {
+    return 'Nagrody za wczorajsze ukończone wyzwania: $what';
+  }
+
+  @override
+  String challengeCarrySprings(int n) {
+    return '+$n Sprężyna';
+  }
+
+  @override
+  String get tip_challenges =>
+      'Nowość: trzy wyzwania dziennie, dopasowane do twojej celności. Dotknij, by zobaczyć!';
+
+  @override
+  String get help_challenges_t => 'Wyzwania';
+
+  @override
+  String get help_challenges =>
+      'Codziennie trzy wyzwania, co tydzień jeszcze jedno — postęp widać na plakietce u góry. Liczby biorą się z twoich ostatnich dotknięć, więc są wyzwaniem przy każdej celności, a zwykle wystarczy kilka minut gry.\n• Każde dzienne płaci 10 minut dochodu zegarów, wszystkie trzy razem jeszcze 30.\n• Tygodniowe daje 1 Sprężynę (przed pierwszym paradoksem: godzinę dochodu).\n• Któreś nie pasuje? ↻ wymienia dzienne wyzwanie, raz dziennie.\n• Ukończone, ale nieodebrane? Wypłaca się samo, gdy przychodzą nowe — nic nie przepada.';
 }

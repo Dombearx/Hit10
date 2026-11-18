@@ -117,76 +117,89 @@ class _Welcome extends StatelessWidget {
           borderRadius: BorderRadius.circular(26),
           border: Border.all(color: Palette.outline, width: 3),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              EmojiCard(
-                art: offline != null
-                    ? const EmojiArt('sleeping_face', Color(0xFFB4D8FF))
-                    : const EmojiArt('glowing_star', Color(0xFFFFE6A7)),
-                size: 64,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontFamily: Fonts.display, fontSize: 24),
-              ),
-              if (offline != null) _OfflinePart(controller: c, report: offline),
-              if (both) const Divider(height: 22, thickness: 1.5),
-              if (daily != null)
-                _DailyPart(controller: c, bonus: daily, showTitle: both),
-              if (withSeason && season != null) ...[
-                const SizedBox(height: 10),
-                Text(
-                  l.welcomeSeason(seasonName(l, season.id)),
-                  key: const Key('welcome-season'),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.w800),
-                ),
-              ],
-              const SizedBox(height: 16),
-              Wrap(
-                spacing: 10,
-                runSpacing: 8,
-                alignment: WrapAlignment.center,
-                children: [
-                  BuyButton(
-                    key: const Key('welcome-collect'),
-                    price: both ? l.collectAll : l.collect,
-                    enabled: true,
-                    minWidth: 130,
-                    onPressed: () => _collectAll(context),
-                  ),
-                  // R-OFF-2 / adOffline: ×2 for an ad after ≥ 30 min away.
-                  if (offline != null &&
-                      offline.awaySeconds >=
-                          c.balance.ads.offlineMinAwaySeconds &&
-                      c.ads.unlocked)
-                    // After a cold start the ad is often still loading when
-                    // this opens: the button lights up once it is ready.
-                    AdWatchButton(
-                      key: const Key('offline-double'),
-                      ads: ads,
-                      price: l.adDouble,
-                      onPressed: () async {
-                        final ok = await watchAdWithReward(
-                          context,
-                          c,
-                          AdOffer.offline,
-                          ads,
-                        );
-                        if (!context.mounted) return;
-                        confirmAdResult(context, c, AdOffer.offline, ok);
-                        // No reward: the plain "Collect" stays available.
-                        if (ok) _collectAll(context);
-                      },
+        // The buttons stay on screen; what is above them scrolls if a
+        // small phone with large text cannot show it all (U-35).
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    EmojiCard(
+                      art: offline != null
+                          ? const EmojiArt('sleeping_face', Color(0xFFB4D8FF))
+                          : const EmojiArt('glowing_star', Color(0xFFFFE6A7)),
+                      size: 52,
                     ),
-                ],
+                    const SizedBox(height: 10),
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: Fonts.display,
+                        fontSize: 24,
+                      ),
+                    ),
+                    if (offline != null)
+                      _OfflinePart(controller: c, report: offline),
+                    if (both) const Divider(height: 22, thickness: 1.5),
+                    if (daily != null)
+                      _DailyPart(controller: c, bonus: daily, showTitle: both),
+                    if (withSeason && season != null) ...[
+                      const SizedBox(height: 10),
+                      Text(
+                        l.welcomeSeason(seasonName(l, season.id)),
+                        key: const Key('welcome-season'),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.w800),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 14),
+            Wrap(
+              spacing: 10,
+              runSpacing: 8,
+              alignment: WrapAlignment.center,
+              children: [
+                BuyButton(
+                  key: const Key('welcome-collect'),
+                  price: both ? l.collectAll : l.collect,
+                  enabled: true,
+                  minWidth: 130,
+                  onPressed: () => _collectAll(context),
+                ),
+                // R-OFF-2 / adOffline: ×2 for an ad after ≥ 30 min away.
+                if (offline != null &&
+                    offline.awaySeconds >=
+                        c.balance.ads.offlineMinAwaySeconds &&
+                    c.ads.unlocked)
+                  // After a cold start the ad is often still loading when
+                  // this opens: the button lights up once it is ready.
+                  AdWatchButton(
+                    key: const Key('offline-double'),
+                    ads: ads,
+                    price: l.adDouble,
+                    onPressed: () async {
+                      final ok = await watchAdWithReward(
+                        context,
+                        c,
+                        AdOffer.offline,
+                        ads,
+                      );
+                      if (!context.mounted) return;
+                      confirmAdResult(context, c, AdOffer.offline, ok);
+                      // No reward: the plain "Collect" stays available.
+                      if (ok) _collectAll(context);
+                    },
+                  ),
+              ],
+            ),
+          ],
         ),
       ),
     );

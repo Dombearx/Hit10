@@ -541,6 +541,19 @@
     ],
     "floorPerDay": 25
   },
+  "challenges": {
+    "unlockPlaySeconds": 600,
+    "dailySeconds": 240,
+    "weeklySeconds": 2100,
+    "reachShare": 0.6,
+    "dailyMinutes": 10,
+    "dailyFloor": 200,
+    "bonusMinutes": 30,
+    "bonusFloor": 600,
+    "weeklyMinutes": 60,
+    "weeklyFloor": 1000,
+    "weeklySprings": 1
+  },
   "seasons": {
     "catches": 5,
     "hits": 50,

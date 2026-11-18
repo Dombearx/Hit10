@@ -13,6 +13,7 @@ import '../engine/notification_plan.dart';
 import '../engine/round_engine.dart';
 import '../engine/tap_clock.dart';
 import '../model/achievements.dart';
+import '../model/challenges.dart';
 import '../model/economy.dart';
 import '../model/features.dart';
 import '../model/game_state.dart';
@@ -239,12 +240,15 @@ class GameController extends ChangeNotifier {
   /// Celebrates every bonus a purchase switched on.
   void _announceBonuses((Map<String, int>, Set<String>) before) {
     var any = false;
+    var gained = 0;
     for (final g in balance.generators) {
       for (var k = before.$1[g.id]!; k < econ.milestonesReached(g.id); k++) {
         _milestones.add(MilestoneEvent.generator(g.id, k));
         any = true;
+        gained++;
       }
     }
+    if (gained > 0) _challengeAdd(ChallengeKind.milestones, gained.toDouble());
     for (final syn in balance.synergies) {
       if (!before.$2.contains(syn.id) && econ.synergyActive(syn)) {
         _milestones.add(MilestoneEvent.synergy(syn.id));
@@ -684,6 +688,7 @@ class GameController extends ChangeNotifier {
       _autoAdvance();
       final bonuses = _bonuses();
       if (engine.autoBuy(_econAcc) != null) {
+        _challengeAdd(ChallengeKind.buyClocks, 1);
         sfx.play('buy', gain: 0.4);
         _announceBonuses(bonuses);
         _checkLoop();
@@ -715,7 +720,10 @@ class GameController extends ChangeNotifier {
         notifyListeners();
       case RoundStarted():
         paused = false;
-        if (slot.index == 0) syncSeason(); // a session can cross midnight
+        if (slot.index == 0) {
+          syncSeason(); // a session can cross midnight
+          syncChallenges();
+        }
         engine.onRoundStart();
         slot
           ..mode = engine.modeMultiplier()
@@ -736,6 +744,10 @@ class GameController extends ChangeNotifier {
         if (o.tier == Tier.perfect) engine.recordPerfectDate(local);
         // The dial read 5.00: the Mainspring winds faster (R-SPR-3).
         final wound = o.jackpot > 0 ? engine.springHit(_wallMs()) : 0.0;
+        if (grade.missKind != MissKind.noTap) {
+          _challengeRound(o, grade.error);
+          if (wound > 0) _challengeAdd(ChallengeKind.springWeek, wound);
+        }
         // An empty reserve is said once, until a hit winds again.
         var reserveEmpty = false;
         if (o.jackpot > 0 && econ.springsUnlocked) {
@@ -871,11 +883,137 @@ class GameController extends ChangeNotifier {
   void claimGolden() {
     if (!engine.claimGolden()) return;
     _log('golden_catch');
+    _challengeAdd(ChallengeKind.goldenWeek, 1);
     tipActed('golden');
     sfx.play('coins');
     if (settings.haptics) unawaited(HapticFeedback.mediumImpact());
     _afterSeasonProgress();
     notifyListeners();
+  }
+
+  // ------------------------------------------- challenges (02 §18) --
+
+  /// A challenge got done: the UI toasts it (with its reward to claim).
+  final _challengeDone = StreamController<Challenge>.broadcast();
+  Stream<Challenge> get challengeDone => _challengeDone.stream;
+
+  final _challengeRng = math.Random();
+
+  /// What the planner knows about this player now (docs/14 §1).
+  ChallengePlayer challengePlayer() {
+    final cfg = balance.challenges;
+    final mode = engine.modeMultiplier();
+    return ChallengePlayer(
+      recentErrors: List.of(state.stats.recentErrors),
+      windows: econ.playerWindows(),
+      jackpotWindow: balance.jackpot.window,
+      roundSeconds:
+          balance.round.target -
+          econ.timeMap().start +
+          balance.round.resultPause,
+      payout: {
+        for (final t in [Tier.perfect, Tier.great, Tier.good])
+          t: engine.hitPayout(Grade(t, 0), mode: mode),
+      },
+      jackpotPayout: engine.jackpotAmount() * mode,
+      comboStep: balance.combo.multiplierPerStep,
+      comboCap: econ.comboCap(),
+      ownedClocks: state.owned.values.fold(0, (a, b) => a + b),
+      bonusesInReach: [
+        for (final g in balance.generators)
+          if (econ.owned(g.id) > 0 &&
+              (econ.nextMilestone(g.id) ?? 1 << 30) - econ.owned(g.id) <= 10)
+            g,
+      ].length,
+      skillLevelsLeft: [
+        for (final k in balance.skills)
+          math.max(0, k.maxLevel - econ.level(k.id)),
+      ].fold(0, (a, b) => a + b),
+      springsUnlocked: econ.springsUnlocked,
+      goldenEnabled: !engine.goldenBlocked,
+      dailySeconds: cfg.dailySeconds,
+      weeklySeconds: cfg.weeklySeconds,
+      reachShare: cfg.reachShare,
+    );
+  }
+
+  /// What a rollover paid for challenges finished but not claimed (the UI
+  /// says so once), or null.
+  ChallengePay? challengeCarry;
+
+  /// A new day or week: new challenges (R-WYZ-1). Called at start-up, on
+  /// return and when a round starts (a session can cross midnight).
+  void syncChallenges() {
+    final paid = engine.refreshChallenges(
+      _localNow(),
+      challengePlayer,
+      _challengeRng,
+    );
+    if (paid.tiki + paid.bonus > 0 || paid.springs > 0) challengeCarry = paid;
+  }
+
+  void _challengeRound(RoundOutcome o, double error) {
+    if (!engine.challengesUnlocked || state.challenges.isEmpty) return;
+    _challengesDone(
+      ChallengeProgress.round(
+        state.challenges,
+        ChallengeRound(
+          tier: o.tier,
+          error: error,
+          jackpot: o.jackpot > 0,
+          payout: o.payout,
+          streak: state.comboStreak,
+        ),
+      ),
+    );
+  }
+
+  void _challengeAdd(ChallengeKind kind, double amount) {
+    if (!engine.challengesUnlocked || state.challenges.isEmpty) return;
+    _challengesDone(ChallengeProgress.add(state.challenges, kind, amount));
+  }
+
+  void _challengesDone(List<Challenge> done) {
+    for (final c in done) {
+      _log('challenge_done', {
+        'kind': c.kind.name,
+        'weekly': c.weekly ? 1 : 0,
+        'target': c.target.round(),
+      });
+      sfx.play('fanfare', gain: 0.7);
+      unawaited(haptics.medium());
+      _challengeDone.add(c);
+    }
+  }
+
+  /// Challenges ready to claim (the header badge glows).
+  int get challengesToClaim =>
+      state.challenges.where((c) => c.done && !c.claimed).length;
+
+  ChallengePay claimChallenge(Challenge c) {
+    final pay = engine.claimChallenge(c);
+    if (pay.tiki + pay.bonus > 0 || pay.springs > 0) {
+      sfx.play('coins');
+      unawaited(haptics.medium());
+      unawaited(save());
+      notifyListeners();
+    }
+    return pay;
+  }
+
+  /// Today's free re-roll of the daily challenge in [slot].
+  bool rerollChallenge(int slot) {
+    final fresh = engine.rerollChallenge(
+      slot,
+      challengePlayer(),
+      _challengeRng,
+    );
+    if (fresh == null) return false;
+    _log('challenge_reroll', {'kind': fresh.kind.name});
+    sfx.play('tick');
+    unawaited(save());
+    notifyListeners();
+    return true;
   }
 
   // ------------------------------------------------------------- seasons --
@@ -1001,7 +1139,10 @@ class GameController extends ChangeNotifier {
     final first = econ.owned(id) == 0;
     final bonuses = _bonuses();
     final r = _afterBuy(engine.buyGenerators(id, count));
-    if (r == BuyResult.ok) _announceBonuses(bonuses);
+    if (r == BuyResult.ok) {
+      _challengeAdd(ChallengeKind.buyClocks, count.toDouble());
+      _announceBonuses(bonuses);
+    }
     if (r == BuyResult.ok) _checkLoop();
     if (r == BuyResult.ok && first) {
       _log('generator_first', {'id': id});
@@ -1020,6 +1161,7 @@ class GameController extends ChangeNotifier {
     final r = _afterBuy(engine.buySkill(id));
     if (r == BuyResult.ok) {
       _log('skill_buy', {'id': id, 'level': state.skills[id] ?? 0});
+      _challengeAdd(ChallengeKind.skillLevels, 1);
     }
     return r;
   }
@@ -1593,6 +1735,7 @@ class GameController extends ChangeNotifier {
     // the thing that appeared (docs/12 §3.1, docs/13 §5.2).
     if (state.loop > 1) _tip('loop');
     if (econ.springsUnlocked) _tip('springs');
+    if (state.challenges.isNotEmpty) _tip('challenges');
     if (engine.blindUnlocked() ||
         state.perks.contains('secondClock') ||
         state.perks.contains('autoBuyer')) {
@@ -1658,6 +1801,7 @@ class GameController extends ChangeNotifier {
     engine.holdOffline(pendingOffline);
     if (pendingOffline != null) unawaited(save());
     pendingDaily = engine.dailyFor(_localNow());
+    syncChallenges();
     state.lastSeenMs = _wallMs();
     engine.windSprings(_wallMs());
     if (pendingOffline != null || pendingDaily != null || seasonIntroPending) {
@@ -1871,6 +2015,7 @@ class GameController extends ChangeNotifier {
     _roundStarts.close();
     _unlocked.close();
     _milestones.close();
+    _challengeDone.close();
     super.dispose();
   }
 }

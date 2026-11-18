@@ -68,8 +68,8 @@ każdym razem psując jedną zasadę. Siedem pętli, siedem rozdziałów
 historii i odpowiedź na pytanie, dlaczego akurat 5.00.
 
 🏆 Na długo
-177 osiągnięć, dzienna premia, tryb Na ślepo i 7 wydarzeń sezonowych
-w ciągu roku.
+177 osiągnięć, wyzwania dnia i tygodnia dopasowane do Twojej celności,
+dzienna premia, tryb Na ślepo i 7 wydarzeń sezonowych w ciągu roku.
 
 📴 Bez internetu i bez konta
 Gra działa offline, a postęp zostaje na telefonie (a jeśli chcesz, także
@@ -120,8 +120,8 @@ everything to zero — spoiling one rule each time. Seven loops, seven
 chapters of the story, and the answer to why it has to be 5.00.
 
 🏆 Plenty to do
-177 achievements, a daily bonus, Blind mode and 7 seasonal events
-through the year.
+177 achievements, daily and weekly challenges sized to your aim, a daily
+bonus, Blind mode and 7 seasonal events through the year.
 
 📴 Offline, no account
 Plays without internet and your progress stays on your phone (and, if you

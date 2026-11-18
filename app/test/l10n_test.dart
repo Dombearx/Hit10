@@ -10,8 +10,13 @@ Map<String, dynamic> arb(String locale) =>
 Set<String> keys(Map<String, dynamic> m) =>
     m.keys.where((k) => !k.startsWith('@')).toSet();
 
+/// Argument names: `{amount}`, `{n, plural, …}`, and `{n}` inside a plural
+/// branch — but not the branch texts (`=1{once}`, `few{Zostały …}`).
 Set<String> placeholders(String s) =>
-    RegExp(r'\{(\w+)').allMatches(s).map((m) => m.group(1)!).toSet();
+    RegExp(r'(?<![=\w])\{(\w+)(?=[,}])')
+        .allMatches(s)
+        .map((m) => m.group(1)!)
+        .toSet();
 
 /// docs/06 §1.4: both languages carry the same keys and placeholders.
 void main() {

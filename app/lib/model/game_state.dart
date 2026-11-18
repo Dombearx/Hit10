@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'challenges.dart';
 import 'grading.dart';
 
 /// Everything that is saved (docs/05 T-17). Mutable on purpose: the engine
@@ -168,6 +169,17 @@ class GameState {
   /// the streak once per seven claims.
   bool dailyGraceUsed = false;
 
+  /// Challenges (docs/02 §18): the day (yyyymmdd) the daily ones belong to,
+  /// the Monday of the weekly one, the day the free re-roll was used and
+  /// the day the all-three bonus was paid.
+  int challengeDay = 0;
+  int challengeWeek = 0;
+  int challengeRerollDay = 0;
+  int challengeBonusDay = 0;
+
+  /// The three daily challenges (slots 0–2) and the weekly one (slot 3).
+  final List<Challenge> challenges = [];
+
   // ---------------------------------------------------------- seasons --
   /// The season run being counted ("halloween-2026", docs/02 §14); the
   /// counters below reset when it changes.
@@ -284,6 +296,9 @@ class LifetimeStats {
   /// PERFEKT on one clock right after a PERFEKT on the other one.
   int bothClocksPerfects = 0;
   int dailyClaims = 0;
+
+  /// Challenges claimed, all time (docs/02 §18).
+  int challengesDone = 0;
 
   /// Misses a Shield charge took instead of the combo.
   int shieldSaves = 0;

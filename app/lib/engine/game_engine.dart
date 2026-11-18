@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../balance/balance.dart';
+import '../model/challenges.dart';
 import '../model/economy.dart';
 import '../model/game_state.dart';
 import '../model/grading.dart';
@@ -977,6 +978,137 @@ class GameEngine {
     return DailyBonus(key, day, amount, grace: grace);
   }
 
+  // --------------------------------------------- challenges (02 §18) --
+
+  /// Challenges start after the tutorial and a little play.
+  bool get challengesUnlocked =>
+      s.tutorialDone &&
+      s.lifetime.secondsPlayed >= b.challenges.unlockPlaySeconds;
+
+  /// The daily challenges (slots 0–2, in order) and the weekly one.
+  List<Challenge> get dailyChallenges =>
+      [...s.challenges.where((c) => !c.weekly)]
+        ..sort((a, b) => a.slot.compareTo(b.slot));
+  Challenge? get weeklyChallenge =>
+      s.challenges.where((c) => c.weekly).firstOrNull;
+
+  /// Brings the board to [now]: a new day hands out three new daily
+  /// challenges, a new week a new weekly one. Done but unclaimed ones are
+  /// paid first — nothing earned is lost (R-WYZ-5). Returns what that paid.
+  ChallengePay refreshChallenges(
+    DateTime now,
+    ChallengePlayer Function() player,
+    math.Random rng,
+  ) {
+    if (!challengesUnlocked) return const ChallengePay();
+    var tiki = 0.0;
+    var springs = 0;
+    var bonus = 0.0;
+    void payOut(Iterable<Challenge> list) {
+      for (final c in list) {
+        if (c.done && !c.claimed) {
+          final p = claimChallenge(c);
+          tiki += p.tiki;
+          springs += p.springs;
+          bonus += p.bonus;
+        }
+      }
+    }
+
+    final day = dateKey(now);
+    if (s.challengeDay != day) {
+      payOut(dailyChallenges);
+      // Not the same kind two days running in a slot.
+      final yesterday = {for (final c in dailyChallenges) c.slot: c.kind};
+      s.challenges.removeWhere((c) => !c.weekly);
+      final p = player();
+      for (var slot = 0; slot < weeklySlot; slot++) {
+        s.challenges.add(
+          ChallengePlanner.pick(slot, p, rng, avoid: yesterday[slot]),
+        );
+      }
+      s.challengeDay = day;
+    }
+    final week = weekKey(now);
+    if (s.challengeWeek != week) {
+      final last = weeklyChallenge;
+      if (last != null) payOut([last]);
+      s.challenges.removeWhere((c) => c.weekly);
+      s.challenges.add(
+        ChallengePlanner.pick(weeklySlot, player(), rng, avoid: last?.kind),
+      );
+      s.challengeWeek = week;
+    }
+    return ChallengePay(tiki: tiki, springs: springs, bonus: bonus);
+  }
+
+  /// What a challenge pays: minutes of passive income (at least a floor),
+  /// or Mainsprings for the weekly one once they are unlocked.
+  double challengeTiki(Challenge c) {
+    if (challengeSprings(c) > 0) return 0;
+    final cfg = b.challenges;
+    return c.weekly
+        ? math.max(cfg.weeklyFloor, passive() * 60 * cfg.weeklyMinutes)
+        : math.max(cfg.dailyFloor, passive() * 60 * cfg.dailyMinutes);
+  }
+
+  int challengeSprings(Challenge c) =>
+      c.weekly && econ.springsUnlocked ? b.challenges.weeklySprings : 0;
+
+  /// The bonus for all three daily challenges in one day.
+  double challengeBonusTiki() {
+    final cfg = b.challenges;
+    return math.max(cfg.bonusFloor, passive() * 60 * cfg.bonusMinutes);
+  }
+
+  /// Whether today's all-three bonus is still to come.
+  bool get challengeBonusOpen => s.challengeBonusDay != s.challengeDay;
+
+  /// Pays a finished challenge (and the day's bonus when it was the last of
+  /// the three). Nothing for one not done or already paid.
+  ChallengePay claimChallenge(Challenge c) {
+    if (!c.done || c.claimed) return const ChallengePay();
+    c.claimed = true;
+    s.lifetime.challengesDone++;
+    final tiki = challengeTiki(c);
+    final springs = challengeSprings(c);
+    // Gifts may go past the stock limit (R-SPR-4).
+    s.springs += springs;
+    if (tiki > 0) s.earn(tiki);
+    var bonus = 0.0;
+    final daily = dailyChallenges;
+    if (!c.weekly &&
+        challengeBonusOpen &&
+        daily.length == weeklySlot &&
+        daily.every((d) => d.claimed)) {
+      bonus = challengeBonusTiki();
+      s.earn(bonus);
+      s.challengeBonusDay = s.challengeDay;
+    }
+    return ChallengePay(tiki: tiki, springs: springs, bonus: bonus);
+  }
+
+  /// Today's free re-roll is still there.
+  bool get challengeRerollOpen => s.challengeRerollDay != s.challengeDay;
+
+  /// Swaps the daily challenge in [slot] for another kind, once a day,
+  /// before it is done. Returns the new one, or null.
+  Challenge? rerollChallenge(
+    int slot,
+    ChallengePlayer player,
+    math.Random rng,
+  ) {
+    if (slot == weeklySlot || !challengeRerollOpen) return null;
+    final i = s.challenges.indexWhere((c) => c.slot == slot);
+    if (i < 0) return null;
+    final old = s.challenges[i];
+    if (old.done || old.claimed) return null;
+    final fresh = ChallengePlanner.pick(slot, player, rng, avoid: old.kind);
+    s.challenges[i] = fresh;
+    s.challengeRerollDay = s.challengeDay;
+    return fresh;
+  }
+
   void claimDaily(DailyBonus d) {
     s.earn(d.amount);
     s.dailyKey = d.key;
@@ -998,6 +1130,20 @@ class GameEngine {
 
 /// yyyymmdd of a local date.
 int dateKey(DateTime d) => d.year * 10000 + d.month * 100 + d.day;
+
+/// yyyymmdd of the Monday of [d]'s week (local calendar).
+int weekKey(DateTime d) =>
+    dateKey(DateTime(d.year, d.month, d.day - (d.weekday - 1)));
+
+/// What claiming a challenge paid (docs/02 §18).
+class ChallengePay {
+  const ChallengePay({this.tiki = 0, this.springs = 0, this.bonus = 0});
+  final double tiki;
+  final int springs;
+
+  /// The all-three bonus, when this claim completed the day.
+  final double bonus;
+}
 
 /// The daily bonus on offer: streak [day] (1–7) pays [amount]. [grace]:
 /// yesterday was missed and this week's grace day kept the streak.

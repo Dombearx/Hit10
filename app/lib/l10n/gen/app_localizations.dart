@@ -5772,6 +5772,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The cloud has no save with more progress than this phone.'**
   String get settingsCloudNothing;
+
+  /// No description provided for @challengesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get challengesTitle;
+
+  /// No description provided for @challengesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get challengesToday;
+
+  /// No description provided for @challengesWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get challengesWeek;
+
+  /// No description provided for @challengesRerollHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sized to your aim. Don\'t like one? ↻ swaps it — once a day.'**
+  String get challengesRerollHint;
+
+  /// No description provided for @challengesNewTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'New ones at midnight.'**
+  String get challengesNewTomorrow;
+
+  /// No description provided for @challengesDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{Last day} other{{days} days left}}'**
+  String challengesDaysLeft(int days);
+
+  /// No description provided for @chGreat.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit GREAT or better {n} times'**
+  String chGreat(int n);
+
+  /// No description provided for @chStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach a streak of {n}'**
+  String chStreak(int n);
+
+  /// No description provided for @chJackpot.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop the watch at exactly 5.00 ({n}×)'**
+  String chJackpot(int n);
+
+  /// No description provided for @chPerfectWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 PERFECT} other{{n} PERFECTs}} within 10 rounds in a row'**
+  String chPerfectWindow(int n);
+
+  /// No description provided for @chBothSides.
+  ///
+  /// In en, this message translates to:
+  /// **'From both sides: {n, plural, =1{1 GREAT+ hit} other{{n} GREAT+ hits}} just before 5.00 and as many just after'**
+  String chBothSides(int n);
+
+  /// No description provided for @chBothSidesProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'before {early}/{total} · after {late}/{total}'**
+  String chBothSidesProgress(String early, String late, String total);
+
+  /// No description provided for @chHitEarnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn {amount} Ticks from hits'**
+  String chHitEarnings(String amount);
+
+  /// No description provided for @chBuyClocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {n, plural, =1{1 clock} other{{n} clocks}}'**
+  String chBuyClocks(int n);
+
+  /// No description provided for @chMilestones.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn {n, plural, =1{a clock bonus} other{{n} clock bonuses}}'**
+  String chMilestones(int n);
+
+  /// No description provided for @chSkillLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {n, plural, =1{1 skill level} other{{n} skill levels}}'**
+  String chSkillLevels(int n);
+
+  /// No description provided for @chGolden.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch {n, plural, =1{a Golden Second} other{{n} Golden Seconds}}'**
+  String chGolden(int n);
+
+  /// No description provided for @chSpring.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind the Mainspring {hours} h with exact 5.00s'**
+  String chSpring(String hours);
+
+  /// No description provided for @challengeClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed'**
+  String get challengeClaimed;
+
+  /// No description provided for @challengeReroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap for another (once a day)'**
+  String get challengeReroll;
+
+  /// No description provided for @challengeBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'All three today: {done}/{total}'**
+  String challengeBonus(int done, int total);
+
+  /// No description provided for @challengeBonusDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All three done today — well played!'**
+  String get challengeBonusDone;
+
+  /// No description provided for @challengeBonusPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'All three today! Bonus +{amount} Ticks'**
+  String challengeBonusPaid(String amount);
+
+  /// No description provided for @challengeDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge done: {what}'**
+  String challengeDone(String what);
+
+  /// No description provided for @challengeOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim'**
+  String get challengeOpen;
+
+  /// No description provided for @challengeCarry.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday\'s finished challenges paid out: {what}'**
+  String challengeCarry(String what);
+
+  /// No description provided for @challengeCarrySprings.
+  ///
+  /// In en, this message translates to:
+  /// **'+{n} Mainspring'**
+  String challengeCarrySprings(int n);
+
+  /// No description provided for @tip_challenges.
+  ///
+  /// In en, this message translates to:
+  /// **'New: three challenges a day, sized to your aim. Tap to see them!'**
+  String get tip_challenges;
+
+  /// No description provided for @help_challenges_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get help_challenges_t;
+
+  /// No description provided for @help_challenges.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks\' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don\'t like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.'**
+  String get help_challenges;
 }
 
 class _AppLocalizationsDelegate

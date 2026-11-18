@@ -1,8 +1,8 @@
-# 14 — Wyzwania dzienne i tygodniowe (propozycja do wyboru)
+# 14 — Wyzwania dzienne i tygodniowe
 
-Stan: **lista do wyboru, nic nie jest jeszcze zrobione.** Wybierz pozycje
-(numery), a ja dopiszę zasady do 02, przeliczę nagrody w symulatorach
-i zrobię implementację.
+Stan: **zrobione** (11.2026), zasady w [02 §18](02-rozgrywka.md). Poniżej
+pula pomysłów, z której wybraliśmy zestaw (§4), i wyniki symulacji
+trudności (§5).
 
 Skąd: przegląd dobrych praktyk (11.2026) i 11 §3.2. Między sezonami gra
 ma tylko dzienną premię i dochód offline. Brakuje powodu, żeby w krótkiej
@@ -96,7 +96,57 @@ sesji), ⭐ — rekomendowane na start.
 - Każda nagroda przechodzi przez `idle_sim.dart` i `simulate.dart`
   (cele B-x, A-1/A-2) przed wejściem do 02.
 
-## 4. Moja rekomendacja na pierwszą wersję
+## 4. Wybrany zestaw (zrobione)
+
+Rekomendacja niżej została przyjęta z dwiema zmianami po rozmowie:
+
+- **Bez „pokonaj siebie” (A8).** Porównanie z zeszłym tygodniem bywa
+  niemożliwe: kto w zeszłym tygodniu zagrał jedną rundę w 5.00, nie może
+  jej poprawić, a kto osiągnął swój szczyt, nie poprawi się co tydzień.
+  Zamiast tego **„precyzyjny tydzień”** — N trafień ŚWIETNIE+ w tygodniu,
+  z N liczonym z własnej celności (zawsze do zrobienia samym graniem).
+- **Bez zadania „na ślepo” (B1).** Tryb i tak płaci ×3, więc zachęta już
+  jest. W jego miejsce **„z obu stron”**: N× ŚWIETNIE+ tuż przed 5.00
+  i N tuż po — uczy wyczucia, czy klika się za wcześnie, czy za późno.
+
+Zestaw: celność (A1, A2, A3), wyczyn (A5, „z obu stron”, D4), rozwój
+(D1, D2, D3), tydzień (ŚWIETNIE+, równe 5.00, seria, Złote Sekundy,
+Sprężyny). Nagrody jak w §3.
+
+## 5. Trudność — symulacja (`tool/challenge_report.dart`)
+
+Cele liczy się z własnych dotknięć gracza (02 R-WYZ-2). Narzędzie gra za
+200 graczy na każdym poziomie celności: z ich 100 dotknięć planuje cel,
+a potem gra nowymi dotknięciami tej samej celności, aż wyzwanie jest
+zrobione. Minuty gry (mediana / 80% graczy), runda 5.7 s:
+
+| Rodzaj | σ 20 ms | σ 50 ms | σ 100 ms | σ 150 ms |
+|---|---|---|---|---|
+| ŚWIETNIE+ ×N | cel 35 · 3.7 / 4.0 | 15 · 3.2 / 4.0 | 9 · 3.5 / 4.6 | 6 · 3.3 / 4.8 |
+| seria N | 90 · 3.7 / 5.2 | 11 · 2.1 / 4.5 | 6 · 2.3 / 5.6 | 4 · 2.1 / 4.8 |
+| równe 5.00 ×N | 15 · 3.2 / 4.1 | 6 · 3.4 / 4.7 | 3 · 3.0 / 5.0 | 2 · 2.8 / 5.0 |
+| PERFEKTY w 10 rundach | 8 · 2.2 / 5.3 | 4 · 2.3 / 5.3 | 2 · 1.9 / 5.2 | 2 · 1.8 / 5.3 |
+| z obu stron | 15 · 3.4 / 3.9 | 7 · 3.4 / 4.2 | 3 · 2.9 / 4.2 | 2 · 3.2 / 4.9 |
+| zarób trafieniami | 3.9 / 4.5 | 3.6 / 4.7 | 3.4 / 5.1 | 3.5 / 5.1 |
+| tydzień: ŚWIETNIE+ | 310 · 34 / 36 | 160 · 33 / 37 | 80 · 32 / 37 | 50 · 32 / 39 |
+| tydzień: równe 5.00 | 130 · 33 / 36 | 50 · 31 / 37 | 25 · 31 / 41 | 15 · 27 / 40 |
+| tydzień: seria | 250 · 13 / 26 | 20 · 9 / 25 | 9 · 11 / 29 | 7 · 9 / 24 |
+
+(σ 50/100/150 ms z przesunięciem +10/+20/+30 ms, jak u prawdziwych
+graczy.) Każde dzienne wyzwanie jest więc na kilka minut niezależnie od
+celności, a liczby rosną z umiejętnością — trafiać trzeba zawsze. Seria
+tygodniowa najbardziej zależy od szczęścia, dlatego jest liczona dla
+połowy tygodniowego czasu gry (wcześniej 80% graczy potrzebowało do
+56 min).
+
+**Wpływ na tempo** (`idle_sim.dart --challenges`, górna granica: gracz
+robi wszystkie wyzwania codziennie, 3 × 3 min dziennie, σ = 50 ms):
+perki i wszystkie bonusy zegarów w tych samych dniach co bez wyzwań
+(ok. 21. i 30.), Chronony w dniach 30–60 o 15–35% wyżej, Tiki zarobione
+po 60 dniach +17%, 3 stopnie mistrzostwa więcej (tygodniowe Sprężyny).
+Mieści się w zwykłym rozrzucie symulacji.
+
+## 6. Rekomendacja, od której zaczęliśmy
 
 **3 dzienne + 1 tygodniowe**, bez kategorii E:
 

@@ -21,7 +21,9 @@ void main() {
       ) async {
         final s = GameState()
           ..tutorialDone = true
-          ..tipsSeen.addAll(['prologue', 'notifyAsked'])
+          ..lifetime.secondsPlayed =
+              3600 // challenges on
+          ..tipsSeen.addAll(['prologue', 'notifyAsked', 'challenges'])
           ..dailyKey = dateKey(DateTime.now())
           ..dailyStreak = 1
           ..tiki = 5e6
@@ -32,7 +34,7 @@ void main() {
           balance: balance,
           state: s,
           store: MemorySaveStore(),
-        );
+        )..checkOffline();
         // A small phone: 360 × 740 logical pixels.
         tester.view.physicalSize = const Size(1080, 2220);
         tester.view.devicePixelRatio = 3;
@@ -57,11 +59,14 @@ void main() {
           'open-stats',
           'open-achievements',
           'open-prestige',
+          'open-challenges',
         ]) {
           await tester.tap(find.byKey(Key(sheet)));
+          await tester.pump(); // the sheet's route starts
           await tester.pump(const Duration(milliseconds: 600));
           expect(find.byKey(const Key('sheet-close')), findsOneWidget);
           await tester.tap(find.byKey(const Key('sheet-close')));
+          await tester.pump();
           await tester.pump(const Duration(milliseconds: 600));
         }
       });
@@ -97,7 +102,11 @@ void main() {
           ),
         );
         await tester.pump(const Duration(seconds: 1));
+        await tester.pump(const Duration(milliseconds: 600)); // fully open
         expect(find.byKey(const Key('welcome')), findsOneWidget);
+        // The button is on screen, not scrolled away.
+        final button = tester.getRect(find.byKey(const Key('welcome-collect')));
+        expect(button.bottom, lessThanOrEqualTo(740));
         await tester.tap(find.byKey(const Key('welcome-collect')));
         await tester.pump(const Duration(milliseconds: 600));
       });

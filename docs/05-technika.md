@@ -328,6 +328,8 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | `dial_unlock` | `id` | tarcze (12 §3.3): kiedy padają w porównaniu z `idle_sim.dart` |
   | `mode_toggle` | `mode`, `on` | czy tryby są używane |
   | `review_prompt` | – | ile razy gra poprosiła o ocenę (02 R-OCENA-1) |
+  | `challenge_done` | `kind`, `weekly`, `target` | które wyzwania gracze kończą i przy jakich liczbach (02 §18) |
+  | `challenge_reroll` | `kind` | które rodzaje gracze wymieniają (za trudne albo nudne) |
   | `cloud_offer` | `load`, `lead_min` | zapis z chmury: wczytany czy nie, ile minut gry przewagi (T-35) |
   | `cloud_connect` | `ok` | połączenie z Play Gry z ustawień |
   | `calibration` | `offset_ms`, `spread_ms`, `used`, `applied` | opóźnienie prawdziwych telefonów (Firebase dodaje model); tylko z flagą T-13 |

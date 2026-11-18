@@ -23,6 +23,6 @@ w tych plikach.
 | [11-po-premierze.md](docs/11-po-premierze.md) | porównanie z innymi grami idle, braki i pomysły na po premierze, co mierzyć w pierwszym tygodniu |
 | [12-pozna-gra.md](docs/12-pozna-gra.md) | późna gra: jak to robią inne gry; Sprężyny (poziomy zegarów) i tarcze — zrobione; wyzwania paradoksu — propozycja |
 | [13-petla-gry.md](docs/13-petla-gry.md) | gra po końcu treści: symulacje, porównanie z innymi grami, skąd wzięły się Pętla czasu i mistrzostwo zegarów (zrobione; zasady w 02 §15–§16) |
-| [14-wyzwania.md](docs/14-wyzwania.md) | wyzwania dzienne i tygodniowe: lista pomysłów i rekomendacja (propozycja do wyboru) |
+| [14-wyzwania.md](docs/14-wyzwania.md) | wyzwania dzienne i tygodniowe: pula pomysłów, wybrany zestaw, symulacja trudności (zrobione; zasady w 02 §18) |
 
 [`design/`](design/README.md) to symulator balansu użyty do ustalenia liczb w 03.

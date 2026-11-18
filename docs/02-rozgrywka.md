@@ -545,7 +545,8 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   Sekunda (gdy leci), seria (licznik combo), prestiż (wir), Sprężyny
   (plakietka w nagłówku, po pierwszym paradoksie; znika po otwarciu
   Sprężyn), nowa pętla (wir, raz — w pierwszej pętli po Chronosie, z nazwą
-  zasady Chronosa; znika po otwarciu paradoksu).
+  zasady Chronosa; znika po otwarciu paradoksu), wyzwania (plakietka,
+  gdy pojawią się pierwszy raz, §18; znika po otwarciu wyzwań).
   - Najwyżej jedna naraz; pierwsza po 20 s gry od końca samouczka,
     kolejne co najmniej 45 s gry po poprzedniej.
   - Znika, gdy gracz zrobi to, o czym mówi (otworzy zakładkę, dotknie
@@ -580,7 +581,7 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   nic nie mówiło, do czego gra prowadzi.
 - **R-TUT-5:** Przycisk „?” w nagłówku otwiera „Jak grać”: zwijana lista
   (cel gry, runda, Tiki, zasoby, zegary, seria, bonusy zegarów,
-  umiejętności, Złota Sekunda, przełączniki, wydarzenia, paradoks,
+  umiejętności, Złota Sekunda, wyzwania, przełączniki, wydarzenia, paradoks,
   Sprężyny, pętla czasu, tarcze, ikony nagłówka) — same tytuły,
   dotknięcie rozwija opis — plus „Pokaż samouczek od nowa”. Opisy krótko
   tłumaczą, jak działa system, nie doradzają strategii. Sekcje o rzeczach,
@@ -904,3 +905,52 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   w tej samej przerwie co formularz zgody i nigdy po pudle. Google samo
   decyduje, czy okno się pokaże; gra nie zna odpowiedzi i o nią nie pyta.
   Opis w sklepie dalej nie prosi o oceny.
+
+## 18. Wyzwania dzienne i tygodniowe
+
+Skąd i dlaczego: [14-wyzwania.md](14-wyzwania.md). Liczby w pliku balansu
+(`challenges`), wyniki symulacji trudności w 14 §5.
+
+- **R-WYZ-1 (zestaw):** codziennie trzy wyzwania, po jednym z każdej
+  grupy, i jedno tygodniowe (od poniedziałku, czas lokalny), bez serwera.
+  W tym samym miejscu nie wypada ten sam rodzaj dwa dni (tygodnie) z rzędu.
+  Pojawiają się po samouczku i 10 min gry (`unlockPlaySeconds`), żeby
+  pierwsza sesja była prosta; pierwszy raz ze wskazówką przy plakietce.
+
+  | Grupa | Rodzaje |
+  |---|---|
+  | celność | N× ŚWIETNIE lub lepiej; seria N; N× równe 5.00 |
+  | wyczyn | N PERFEKTÓW w 10 kolejnych rundach; „z obu stron”: N× ŚWIETNIE+ tuż przed 5.00 i N tuż po; zarób trafieniami N Tików |
+  | rozwój | kup N zegarów; zdobądź N bonusów zegarów (tylko gdy któryś jest w zasięgu 10 sztuk); kup N poziomów umiejętności (gdy jeszcze są) |
+  | tydzień | N× ŚWIETNIE+; N× równe 5.00; seria N; złap N Złotych Sekund (nie w pętli „Pochmurny dzień”); nakręć trafieniami N h Sprężyny (po pierwszym paradoksie) |
+
+- **R-WYZ-2 (trudność z własnej gry):** liczby nie są stałe. Gra bierze
+  100 ostatnich dotknięć gracza, odtwarza z nich 160 symulowanych sesji
+  i ustawia cel na tyle, ile gracz osiąga w 60% z nich (`reachShare`) —
+  dzienne w sesji ok. 4 min gry (`dailySeconds`), tygodniowe ok. 35 min
+  (`weeklySeconds`; seria tygodniowa: połowa, bo zależy od szczęścia).
+  Liczą się okna z umiejętności i długość rundy (Start później). Nowy
+  gracz bez dotknięć jest liczony jak gracz o rozrzucie 75 ms. Cel jest
+  ustalany raz, przy wydaniu wyzwania, i zaokrąglany do „ładnych” liczb.
+  Symulacja (14 §5): dzienne zajmują 2–4 min (mediana) i do 5–6 min
+  (80% graczy) przy każdej celności od 20 do 150 ms.
+- **R-WYZ-3 (postęp):** liczą się dotknięcia gracza na obu zegarach (runda
+  bez dotknięcia nie), także w Gorącej ręce i na ślepo. „Seria” to
+  najwyższa seria osiągnięta od wydania wyzwania. Zakupy automatycznego
+  kupca też są zakupami.
+- **R-WYZ-4 (nagrody):** dzienne — 10 min dochodu pasywnego (co najmniej
+  200 Tików); wszystkie trzy jednego dnia — dodatkowo 30 min (co najmniej
+  600); tygodniowe — 1 Sprężyna po pierwszym paradoksie (może wyjść ponad
+  limit magazynu, R-SPR-4), wcześniej 60 min dochodu (co najmniej 1000).
+  Gracz odbiera nagrodę przyciskiem „Odbierz” w arkuszu wyzwań.
+- **R-WYZ-5 (bez straty):** ukończone, a nieodebrane wyzwanie wypłaca się
+  samo, gdy przychodzą nowe (komunikat „Nagrody za wczorajsze ukończone
+  wyzwania”). Nieukończone po prostu znika — bez kary, bez serii dni.
+- **R-WYZ-6 (wymiana):** raz dziennie można wylosować inne wyzwanie
+  dzienne w miejsce jednego nieukończonego (przycisk ↻); tygodniowego się
+  nie wymienia.
+- **R-WYZ-7 (widoczność):** plakietka z tarczą strzelniczą w nagłówku
+  pokazuje „1/3” ukończonych dziś, a „!” na złotym tle, gdy coś czeka na
+  odbiór. Ukończenie: fanfara, wibracja i komunikat z przyciskiem
+  „Odbierz”. Nic nie wyskakuje w trakcie rundy ponad ten komunikat.
+
