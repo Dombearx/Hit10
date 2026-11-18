@@ -75,22 +75,34 @@ Free (Spark plan, no card needed).
 Free. Needed only for the cloud save; without it the game simply has no
 "Cloud save" row.
 
+Done 18.11.2026 (steps 1–6); the console no longer matches the older
+description, so this is what it took:
+
 1. Play Console → Hit5 → **Grow users → Play Games Services → Setup and
-   management → Configuration** → *No, my game doesn't use Google APIs* →
-   name "Hit5" → Create.
-2. **Credentials → Add credential → Android**: package
-   `io.github.dombearx.hit10`; create the OAuth client it asks for with
-   the **SHA-1 of the app signing key** (Play Console → Test and release →
-   App integrity → App signing). Add a second credential with the SHA-1 of
-   the **upload key** (`keytool -list -v -keystore hit5-upload.jks`), so
-   the test APKs from CI that use it can sign in too.
-3. **Properties → Saved Games: On.**
-4. **Testers**: add the testers' Google accounts (until the configuration
-   is published only they can sign in).
-5. Copy the **Project ID** (a long number at the top of Configuration)
-   into the secret `PLAY_GAMES_APP_ID` (step 3).
-6. When the closed test is happy: **Review and publish** the Play Games
-   configuration (separate from the app release).
+   management → Configuration** → *Create a new Play Games Services
+   project* → Cloud project **hit5-8d33e** (the Firebase project; Spark
+   plan, no billing) → Use.
+2. **OAuth consent screen** (Google Cloud → Google Auth Platform → Get
+   started): app name Hit5, support and contact e-mail = the account,
+   audience External. It stays in *Testing*; if testers cannot sign in,
+   Audience → *Publish app* (the games scope needs no verification).
+3. Google Cloud → Google Auth Platform → **Clients → Create client →
+   Android**, package `io.github.dombearx.hit10`, twice: with the SHA-1 of
+   the **app signing key** and of the **upload key** (Play Console → App
+   integrity → App signing, copy buttons only; the upload key one also
+   via `keytool -printcert -jarfile <signed>.aab`). Then Play Console
+   **Credentials → Add credential → Android** for each, anti-piracy off:
+   "Hit5 Android (Play signing)" and "Hit5 Android (upload key)".
+4. **Properties → Saved Games: On** (cannot be turned off once published).
+5. **Testers → Release tracks → Add tracks → Testerzy**: the closed-test
+   testers can sign in while the configuration is a draft.
+6. **Project ID** 895817652558 → secret `PLAY_GAMES_APP_ID` (step 3).
+   Only the Play upload (`aab` job) gets it; the test APK from CI has no
+   cloud save, so test M-12 on the closed-test build.
+7. When the closed test is happy (M-12): **Review and publish** the Play
+   Games configuration (separate from the app release) and update Data
+   safety (App activity → Other actions; sign-in with outside accounts:
+   Yes).
 
 ## 3. GitHub secrets (Hit5 repo → Settings → Secrets and variables → Actions)
 

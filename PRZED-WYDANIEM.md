@@ -60,7 +60,7 @@ sprawdzić.
 | B3 | ✅ Nic do kliknięcia: obecna konsola Firebase nie ma przycisku „Włącz”, tylko „Add SDK” (link do dokumentacji); panel Crashlytics włączy się sam przy pierwszym raporcie |
 | B4 | ✅ Już było: dane o zdarzeniach i użytkownikach 2 mies., Sygnały Google wyłączone |
 | B4a | ✅ 6 wymiarów i 4 wskaźniki utworzone (nazwy bez dwukropka — GA go nie przyjmuje: „Chmura wczytano”, „Chmura wyprzedzenie min”, „Kalibracja przesuniecie”, „Kalibracja rozrzut”, „Cel wyzwania”) |
-| B5 | ⏸ Nie ruszane (opcjonalne, tworzy dane logowania OAuth i sekret) |
+| B5 | ✅ Kroki 1–7 (projekt Play Games, OAuth, Zapisane gry, testerzy, sekret `PLAY_GAMES_APP_ID`); 8–9 po teście M-12 — szczegóły w B5 |
 | B6 | ✅ `version: 1.1.0+1` |
 | B7, B8 | ⏸ Czekają na decyzję człowieka |
 
@@ -183,6 +183,28 @@ Parametr już zarejestrowany pomiń.
 
 Bez tego gra działa normalnie, tylko nie ma wiersza „Zapis w chmurze”.
 Pełny opis: `store/PLAY_CONSOLE.md` §2b.
+
+**Stan 18.11.2026: kroki 1–7 zrobione** (różnice względem opisu niżej):
+
+- Konsola nie pyta już o „Google API”, tylko o projekt Google Cloud —
+  wybrany projekt Firebase **hit5-8d33e** (plan Spark, bez rozliczeń).
+- Doszedł krok: **ekran zgody OAuth** w Google Cloud (Google Auth Platform):
+  nazwa Hit5, odbiorcy External, stan **Testing**.
+- Klienty OAuth (Google Cloud → Clients): „Hit5 Android (Play signing)”
+  SHA-1 `48:04:60:90:AE:B4:71:A3:8C:98:F9:4D:26:90:AE:88:29:01:2E:73`
+  i „Hit5 Android (upload key)” SHA-1
+  `04:12:B2:7B:93:FF:76:58:AB:5C:1A:C1:6C:C8:59:7E:C6:D7:DA:CD`; oba jako
+  dane logowania Android, zabezpieczenia antypirackie wył.
+- Testerzy: zamiast adresów dodana ścieżka **Testerzy** (ci sami ludzie
+  co w teście zamkniętym).
+- Identyfikator projektu: **895817652558** = sekret `PLAY_GAMES_APP_ID`.
+- **Uwaga:** testowe APK z CI (`hit5-apk`) nie dostaje identyfikatora
+  ani klucza przesyłania, więc zapisu w chmurze **nie** ma; test M-12
+  tylko na wersji z testu zamkniętego (po B8).
+- Jeśli przy M-12 logowanie nie działa: Google Cloud → Google Auth
+  Platform → Audience → **Publish app** (zakres gier nie wymaga
+  weryfikacji).
+- Kroki 8 i 9 (publikacja konfiguracji, zmiana B2) — po teście M-12.
 
 1. Play Console → aplikacja Hit5 → lewe menu **Zwiększaj liczbę
    użytkowników** (Grow users) → **Usługi gier Play** (Play Games Services)
