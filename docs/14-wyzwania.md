@@ -106,10 +106,14 @@ Rekomendacja niżej została przyjęta z dwiema zmianami po rozmowie:
   Zamiast tego **„precyzyjny tydzień”** — N trafień ŚWIETNIE+ w tygodniu,
   z N liczonym z własnej celności (zawsze do zrobienia samym graniem).
 - **Bez zadania „na ślepo” (B1).** Tryb i tak płaci ×3, więc zachęta już
-  jest. W jego miejsce **„z obu stron”**: N× ŚWIETNIE+ tuż przed 5.00
-  i N tuż po — uczy wyczucia, czy klika się za wcześnie, czy za późno.
+  jest. W jego miejsce **N× PERFEKT**.
+- **Każde zadanie to celowanie w 5.00.** Przez chwilę było „z obu stron”
+  (trafienia tuż przed i tuż po 5.00), ale kazało klikać celowo za późno
+  — odpadło.
+- **Nie od razu:** pierwsze wyzwania przychodzą przy powrocie do gry po
+  co najmniej 10 min gry, nigdy w trakcie pierwszej sesji (jak reklamy).
 
-Zestaw: celność (A1, A2, A3), wyczyn (A5, „z obu stron”, D4), rozwój
+Zestaw: celność (A1, A2, A3), wyczyn (A5, N× PERFEKT, D4), rozwój
 (D1, D2, D3), tydzień (ŚWIETNIE+, równe 5.00, seria, Złote Sekundy,
 Sprężyny). Nagrody jak w §3.
 
@@ -126,7 +130,7 @@ zrobione. Minuty gry (mediana / 80% graczy), runda 5.7 s:
 | seria N | 90 · 3.7 / 5.2 | 11 · 2.1 / 4.5 | 6 · 2.3 / 5.6 | 4 · 2.1 / 4.8 |
 | równe 5.00 ×N | 15 · 3.2 / 4.1 | 6 · 3.4 / 4.7 | 3 · 3.0 / 5.0 | 2 · 2.8 / 5.0 |
 | PERFEKTY w 10 rundach | 8 · 2.2 / 5.3 | 4 · 2.3 / 5.3 | 2 · 1.9 / 5.2 | 2 · 1.8 / 5.3 |
-| z obu stron | 15 · 3.4 / 3.9 | 7 · 3.4 / 4.2 | 3 · 2.9 / 4.2 | 2 · 3.2 / 4.9 |
+| PERFEKT ×N | 20 · 3.4 / 3.9 | 9 · 3.5 / 4.6 | 4 · 3.1 / 4.8 | 3 · 2.9 / 4.9 |
 | zarób trafieniami | 3.9 / 4.5 | 3.6 / 4.7 | 3.4 / 5.1 | 3.5 / 5.1 |
 | tydzień: ŚWIETNIE+ | 310 · 34 / 36 | 160 · 33 / 37 | 80 · 32 / 37 | 50 · 32 / 39 |
 | tydzień: równe 5.00 | 130 · 33 / 36 | 50 · 31 / 37 | 25 · 31 / 41 | 15 · 27 / 40 |

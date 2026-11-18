@@ -5833,18 +5833,6 @@ abstract class AppLocalizations {
   /// **'{n, plural, =1{1 PERFECT} other{{n} PERFECTs}} within 10 rounds in a row'**
   String chPerfectWindow(int n);
 
-  /// No description provided for @chBothSides.
-  ///
-  /// In en, this message translates to:
-  /// **'From both sides: {n, plural, =1{1 GREAT+ hit} other{{n} GREAT+ hits}} just before 5.00 and as many just after'**
-  String chBothSides(int n);
-
-  /// No description provided for @chBothSidesProgress.
-  ///
-  /// In en, this message translates to:
-  /// **'before {early}/{total} · after {late}/{total}'**
-  String chBothSidesProgress(String early, String late, String total);
-
   /// No description provided for @chHitEarnings.
   ///
   /// In en, this message translates to:
@@ -5952,6 +5940,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks\' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don\'t like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.'**
   String get help_challenges;
+
+  /// No description provided for @chPerfect.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit PERFECT {n} times'**
+  String chPerfect(int n);
 }
 
 class _AppLocalizationsDelegate

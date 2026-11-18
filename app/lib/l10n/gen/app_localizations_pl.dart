@@ -3338,23 +3338,6 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String chBothSides(int n) {
-    String _temp0 = intl.Intl.pluralLogic(
-      n,
-      locale: localeName,
-      other: '$n trafień',
-      few: '$n trafienia',
-      one: '1 trafienie',
-    );
-    return 'Z obu stron: $_temp0 ŚWIETNIE+ tuż przed 5.00 i tyle samo tuż po';
-  }
-
-  @override
-  String chBothSidesProgress(String early, String late, String total) {
-    return 'przed $early/$total · po $late/$total';
-  }
-
-  @override
   String chHitEarnings(String amount) {
     return 'Zarób trafieniami $amount Tików';
   }
@@ -3459,4 +3442,9 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get help_challenges =>
       'Codziennie trzy wyzwania, co tydzień jeszcze jedno — postęp widać na plakietce u góry. Liczby biorą się z twoich ostatnich dotknięć, więc są wyzwaniem przy każdej celności, a zwykle wystarczy kilka minut gry.\n• Każde dzienne płaci 10 minut dochodu zegarów, wszystkie trzy razem jeszcze 30.\n• Tygodniowe daje 1 Sprężynę (przed pierwszym paradoksem: godzinę dochodu).\n• Któreś nie pasuje? ↻ wymienia dzienne wyzwanie, raz dziennie.\n• Ukończone, ale nieodebrane? Wypłaca się samo, gdy przychodzą nowe — nic nie przepada.';
+
+  @override
+  String chPerfect(int n) {
+    return 'Traf PERFEKT $n razy';
+  }
 }

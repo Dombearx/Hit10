@@ -15,7 +15,7 @@ enum ChallengeKind {
   jackpot, // N exact 5.00s
   // Daily, slot 1: a feat.
   perfectWindow, // N PERFECTs within 10 rounds in a row
-  bothSides, // N GREAT+ hits before 5.00 and N after
+  perfect, // N PERFECTs
   hitEarnings, // earn N Tiki from hits
   // Daily, slot 2: building.
   buyClocks, // buy N clocks
@@ -33,7 +33,7 @@ enum ChallengeKind {
 int slotOf(ChallengeKind k) => switch (k) {
   ChallengeKind.great || ChallengeKind.streak || ChallengeKind.jackpot => 0,
   ChallengeKind.perfectWindow ||
-  ChallengeKind.bothSides ||
+  ChallengeKind.perfect ||
   ChallengeKind.hitEarnings => 1,
   ChallengeKind.buyClocks ||
   ChallengeKind.milestones ||
@@ -46,17 +46,14 @@ const weeklySlot = 3;
 
 /// One challenge on offer and how far the player got.
 class Challenge {
-  Challenge(this.kind, this.target, {this.progress = 0, this.progress2 = 0});
+  Challenge(this.kind, this.target, {this.progress = 0});
 
   final ChallengeKind kind;
 
   /// Fixed when the challenge is handed out (the player's skill then).
   final double target;
 
-  /// Progress; for [ChallengeKind.bothSides] the early hits, with
-  /// [progress2] the late ones.
   double progress;
-  double progress2;
 
   /// The last tiers, for [ChallengeKind.perfectWindow] (1 = PERFECT).
   final List<int> recent = [];
@@ -66,20 +63,14 @@ class Challenge {
   int get slot => slotOf(kind);
   bool get weekly => slot == weeklySlot;
 
-  /// What the progress bar shows (both sides count by the weaker one).
-  double get shown => kind == ChallengeKind.bothSides
-      ? math.min(progress, progress2)
-      : progress;
+  bool get done => progress >= target;
 
-  bool get done => shown >= target;
-
-  double get fraction => target <= 0 ? 1 : (shown / target).clamp(0.0, 1.0);
+  double get fraction => target <= 0 ? 1 : (progress / target).clamp(0.0, 1.0);
 
   Map<String, Object?> toJson() => {
     'kind': kind.name,
     'target': target,
     'progress': progress,
-    'progress2': progress2,
     'recent': recent,
     'claimed': claimed,
   };
@@ -90,12 +81,8 @@ class Challenge {
     final kind = ChallengeKind.values.where((k) => k.name == name);
     if (kind.isEmpty) return null;
     double d(Object? v) => v is num && v.isFinite ? v.toDouble() : 0;
-    final c = Challenge(
-      kind.first,
-      d(j['target']),
-      progress: d(j['progress']),
-      progress2: d(j['progress2']),
-    )..claimed = j['claimed'] == true;
+    final c = Challenge(kind.first, d(j['target']), progress: d(j['progress']))
+      ..claimed = j['claimed'] == true;
     final r = j['recent'];
     if (r is List) c.recent.addAll(r.whereType<num>().map((e) => e.toInt()));
     return c;
@@ -141,9 +128,8 @@ abstract final class ChallengeProgress {
           if (c.recent.length > window) c.recent.removeAt(0);
           final n = c.recent.fold<int>(0, (a, b) => a + b);
           c.progress = math.max(c.progress, n.toDouble());
-        case ChallengeKind.bothSides:
-          if (greatPlus && r.error < 0) c.progress++;
-          if (greatPlus && r.error >= 0) c.progress2++;
+        case ChallengeKind.perfect:
+          if (r.tier == Tier.perfect) c.progress++;
         case ChallengeKind.hitEarnings:
           c.progress += r.payout;
         default:
@@ -244,7 +230,7 @@ abstract final class ChallengePlanner {
     [ChallengeKind.great, ChallengeKind.streak, ChallengeKind.jackpot],
     [
       ChallengeKind.perfectWindow,
-      ChallengeKind.bothSides,
+      ChallengeKind.perfect,
       ChallengeKind.hitEarnings,
     ],
     [
@@ -320,10 +306,7 @@ abstract final class ChallengePlanner {
       ChallengeKind.perfectWindow => sim(
         (s) => s.bestWindow,
       ).clamp(1, 8).floorToDouble(),
-      ChallengeKind.bothSides => _nice(
-        sim((s) => math.min(s.early, s.late), min: 2),
-        max: 15,
-      ),
+      ChallengeKind.perfect => _nice(sim((s) => s.perfects, min: 2), max: 30),
       ChallengeKind.hitEarnings => _round3(sim((s) => s.earned, min: 10)),
       ChallengeKind.buyClocks =>
         p.ownedClocks < 30
@@ -375,11 +358,10 @@ abstract final class ChallengePlanner {
 /// One simulated session of the player's own taps.
 class _Session {
   double great = 0;
+  double perfects = 0;
   double jackpots = 0;
   double bestStreak = 0;
   double bestWindow = 0;
-  double early = 0;
-  double late = 0;
   double earned = 0;
 
   static _Session play(ChallengePlayer p, int rounds, math.Random rng) {
@@ -397,8 +379,7 @@ class _Session {
       final jackpot = e.abs() < p.jackpotWindow;
       final greatPlus = g.tier == Tier.perfect || g.tier == Tier.great;
       if (greatPlus) s.great++;
-      if (greatPlus && e < 0) s.early++;
-      if (greatPlus && e >= 0) s.late++;
+      if (g.tier == Tier.perfect) s.perfects++;
       if (jackpot) s.jackpots++;
       streak = switch (g.tier) {
         Tier.perfect => streak + 3,

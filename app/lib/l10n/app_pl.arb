@@ -988,8 +988,6 @@
   "chStreak": "Dojdź do serii {n}",
   "chJackpot": "Zatrzymaj stoper równo na 5.00 ({n}×)",
   "chPerfectWindow": "{n, plural, =1{1 PERFEKT} few{{n} PERFEKTY} other{{n} PERFEKTÓW}} w 10 kolejnych rundach",
-  "chBothSides": "Z obu stron: {n, plural, =1{1 trafienie} few{{n} trafienia} other{{n} trafień}} ŚWIETNIE+ tuż przed 5.00 i tyle samo tuż po",
-  "chBothSidesProgress": "przed {early}/{total} · po {late}/{total}",
   "chHitEarnings": "Zarób trafieniami {amount} Tików",
   "chBuyClocks": "Kup {n, plural, =1{1 zegar} few{{n} zegary} other{{n} zegarów}}",
   "chMilestones": "Zdobądź {n, plural, =1{bonus zegara} few{{n} bonusy zegarów} other{{n} bonusów zegarów}}",
@@ -1007,5 +1005,6 @@
   "challengeCarrySprings": "+{n} Sprężyna",
   "tip_challenges": "Nowość: trzy wyzwania dziennie, dopasowane do twojej celności. Dotknij, by zobaczyć!",
   "help_challenges_t": "Wyzwania",
-  "help_challenges": "Codziennie trzy wyzwania, co tydzień jeszcze jedno — postęp widać na plakietce u góry. Liczby biorą się z twoich ostatnich dotknięć, więc są wyzwaniem przy każdej celności, a zwykle wystarczy kilka minut gry.\n• Każde dzienne płaci 10 minut dochodu zegarów, wszystkie trzy razem jeszcze 30.\n• Tygodniowe daje 1 Sprężynę (przed pierwszym paradoksem: godzinę dochodu).\n• Któreś nie pasuje? ↻ wymienia dzienne wyzwanie, raz dziennie.\n• Ukończone, ale nieodebrane? Wypłaca się samo, gdy przychodzą nowe — nic nie przepada."
+  "help_challenges": "Codziennie trzy wyzwania, co tydzień jeszcze jedno — postęp widać na plakietce u góry. Liczby biorą się z twoich ostatnich dotknięć, więc są wyzwaniem przy każdej celności, a zwykle wystarczy kilka minut gry.\n• Każde dzienne płaci 10 minut dochodu zegarów, wszystkie trzy razem jeszcze 30.\n• Tygodniowe daje 1 Sprężynę (przed pierwszym paradoksem: godzinę dochodu).\n• Któreś nie pasuje? ↻ wymienia dzienne wyzwanie, raz dziennie.\n• Ukończone, ale nieodebrane? Wypłaca się samo, gdy przychodzą nowe — nic nie przepada.",
+  "chPerfect": "Traf PERFEKT {n} razy"
 }

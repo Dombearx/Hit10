@@ -112,19 +112,19 @@ void main() {
     test('each kind counts what it says', () {
       final great = Challenge(ChallengeKind.great, 2);
       final streak = Challenge(ChallengeKind.streak, 5);
-      final both = Challenge(ChallengeKind.bothSides, 1);
+      final perfect = Challenge(ChallengeKind.perfect, 1);
       final window = Challenge(ChallengeKind.perfectWindow, 2);
       final money = Challenge(ChallengeKind.hitEarnings, 25);
-      final all = [great, streak, both, window, money];
+      final all = [great, streak, perfect, window, money];
       ChallengeProgress.round(all, r(Tier.great, e: -0.02, streak: 2));
       ChallengeProgress.round(all, r(Tier.good, e: 0.04, streak: 3));
       expect(great.progress, 1);
-      expect(both.done, isFalse); // early only
+      expect(perfect.done, isFalse);
       final done = ChallengeProgress.round(
         all,
         r(Tier.perfect, e: 0.012, streak: 6),
       );
-      expect(done, containsAll([great, streak, both, money]));
+      expect(done, containsAll([great, streak, perfect, money]));
       expect(window.progress, 1);
       for (var i = 0; i < 9; i++) {
         ChallengeProgress.round([window], r(Tier.good));
@@ -181,7 +181,6 @@ void main() {
       final daily = e.dailyChallenges;
       for (final c in daily) {
         c.progress = c.target;
-        c.progress2 = c.target;
       }
       final first = e.claimChallenge(daily[0]);
       expect(first.tiki, greaterThanOrEqualTo(b.challenges.dailyFloor));
@@ -196,9 +195,7 @@ void main() {
 
     test('a new day pays what was done but not claimed', () {
       e.refreshChallenges(monday, player, rng);
-      final c = e.dailyChallenges.first
-        ..progress = 1e9
-        ..progress2 = 1e9;
+      final c = e.dailyChallenges.first..progress = 1e9;
       final tiki = s.tiki;
       final paid = e.refreshChallenges(
         monday.add(const Duration(days: 1)),
@@ -234,8 +231,7 @@ void main() {
       expect(fresh!.kind, isNot(old.kind));
       expect(e.rerollChallenge(0, player(), rng), isNull);
       e.refreshChallenges(monday.add(const Duration(days: 1)), player, rng);
-      final done = e.dailyChallenges[0]..progress = 1e9;
-      done.progress2 = 1e9;
+      e.dailyChallenges[0].progress = 1e9;
       expect(e.rerollChallenge(0, player(), rng), isNull);
       expect(e.rerollChallenge(weeklySlot, player(), rng), isNull);
     });
@@ -250,18 +246,49 @@ void main() {
       Challenge(ChallengeKind.perfectWindow, 3, progress: 2)
         ..recent.addAll([1, 0, 1]),
     );
-    s.challenges.add(Challenge(ChallengeKind.bothSides, 4, progress2: 3));
+    s.challenges.add(Challenge(ChallengeKind.perfect, 4, progress: 3));
     s.challenges.add(Challenge(ChallengeKind.greatWeek, 90)..claimed = true);
     final back = importSave(exportSave(SaveData(s, Settings()))).state;
     expect(back.challengeDay, 20261116);
     expect(back.challenges.map((c) => c.kind), [
       ChallengeKind.perfectWindow,
-      ChallengeKind.bothSides,
+      ChallengeKind.perfect,
       ChallengeKind.greatWeek,
     ]);
     expect(back.challenges[0].recent, [1, 0, 1]);
-    expect(back.challenges[1].progress2, 3);
+    expect(back.challenges[1].progress, 3);
     expect(back.challenges[2].claimed, isTrue);
+  });
+
+  test('a retired kind in an old save: its slot is filled', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..lifetime.secondsPlayed = 3600;
+    final e = GameEngine(b, s);
+    final day = DateTime(2026, 11, 18, 9);
+    e.refreshChallenges(day, player, math.Random(5));
+    final back = importSave(exportSave(SaveData(s, Settings()))).state;
+    // Pretend slot 1 held a kind this version no longer knows.
+    back.challenges.removeWhere((c) => c.slot == 1);
+    final e2 = GameEngine(b, back)
+      ..refreshChallenges(day, player, math.Random(6));
+    expect(e2.dailyChallenges.map((c) => c.slot), [0, 1, 2]);
+  });
+
+  test('the first ones come at a return, never mid-session (R-WYZ-1)', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..lifetime.secondsPlayed = 3600;
+    final c = GameController(
+      balance: b,
+      state: s,
+      store: MemorySaveStore(),
+      localNow: () => DateTime(2026, 11, 18, 12),
+    );
+    c.syncChallenges(); // a round starts: not now
+    expect(s.challenges, isEmpty);
+    c.checkOffline(); // back in the game
+    expect(s.challenges, hasLength(4));
   });
 
   test('the controller hands them out and counts purchases', () async {
@@ -275,7 +302,7 @@ void main() {
       store: MemorySaveStore(),
       localNow: () => DateTime(2026, 11, 18, 12),
     );
-    c.syncChallenges();
+    c.syncChallenges(atReturn: true);
     expect(s.challenges, hasLength(4));
     // Make the building slot "buy 5 clocks" and play it.
     s.challenges.removeWhere((x) => x.slot == 2);

@@ -32,7 +32,7 @@ const _art = {
   ChallengeKind.jackpot: EmojiArt('keycap_5', Color(0xFFFFE29A)),
   ChallengeKind.jackpotWeek: EmojiArt('keycap_5', Color(0xFFFFE29A)),
   ChallengeKind.perfectWindow: EmojiArt('high_voltage', Color(0xFFFFF0A0)),
-  ChallengeKind.bothSides: EmojiArt('stopwatch', Color(0xFFB9A7FF)),
+  ChallengeKind.perfect: EmojiArt('magnet', Color(0xFFB9A7FF)),
   ChallengeKind.hitEarnings: EmojiArt('money_bag', Color(0xFFB8F0C0)),
   ChallengeKind.buyClocks: EmojiArt('shopping_cart', Color(0xFFFFD36E)),
   ChallengeKind.milestones: EmojiArt('glowing_star', Color(0xFFFFE6A7)),
@@ -49,7 +49,7 @@ String challengeText(AppLocalizations l, Fmt f, Challenge c) {
     ChallengeKind.streak || ChallengeKind.streakWeek => l.chStreak(n),
     ChallengeKind.jackpot || ChallengeKind.jackpotWeek => l.chJackpot(n),
     ChallengeKind.perfectWindow => l.chPerfectWindow(n),
-    ChallengeKind.bothSides => l.chBothSides(n),
+    ChallengeKind.perfect => l.chPerfect(n),
     ChallengeKind.hitEarnings => l.chHitEarnings(f.n(c.target)),
     ChallengeKind.buyClocks => l.chBuyClocks(n),
     ChallengeKind.milestones => l.chMilestones(n),
@@ -61,7 +61,7 @@ String challengeText(AppLocalizations l, Fmt f, Challenge c) {
   };
 }
 
-/// "7/12", or both sides' counts.
+/// "7/12".
 String challengeProgress(AppLocalizations l, Fmt f, Challenge c) {
   final t = c.target;
   String count(double v) => c.kind == ChallengeKind.hitEarnings
@@ -74,9 +74,7 @@ String challengeProgress(AppLocalizations l, Fmt f, Challenge c) {
       : c.kind == ChallengeKind.springWeek
       ? f.duration(t)
       : '${t.round()}';
-  return c.kind == ChallengeKind.bothSides
-      ? l.chBothSidesProgress(count(c.progress), count(c.progress2), total)
-      : '${count(c.progress)}/$total';
+  return '${count(c.progress)}/$total';
 }
 
 class ChallengesPanel extends StatelessWidget {

@@ -1029,6 +1029,13 @@ class GameEngine {
       }
       s.challengeDay = day;
     }
+    // A slot can be empty: a kind retired in an update drops out of the
+    // save. Fill it rather than leave the day without its bonus.
+    for (var slot = 0; slot < weeklySlot; slot++) {
+      if (!s.challenges.any((c) => c.slot == slot)) {
+        s.challenges.add(ChallengePlanner.pick(slot, player(), rng));
+      }
+    }
     final week = weekKey(now);
     if (s.challengeWeek != week) {
       final last = weeklyChallenge;

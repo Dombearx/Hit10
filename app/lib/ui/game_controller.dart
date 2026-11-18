@@ -942,8 +942,12 @@ class GameController extends ChangeNotifier {
   ChallengePay? challengeCarry;
 
   /// A new day or week: new challenges (R-WYZ-1). Called at start-up, on
-  /// return and when a round starts (a session can cross midnight).
-  void syncChallenges() {
+  /// return ([atReturn]) and when a round starts (a session can cross
+  /// midnight). The very first ones come only at a return to the game,
+  /// never in the middle of a session: the first one stays simple, and
+  /// coming back finds something new.
+  void syncChallenges({bool atReturn = false}) {
+    if (state.challenges.isEmpty && !atReturn) return;
     final paid = engine.refreshChallenges(
       _localNow(),
       challengePlayer,
@@ -1801,7 +1805,7 @@ class GameController extends ChangeNotifier {
     engine.holdOffline(pendingOffline);
     if (pendingOffline != null) unawaited(save());
     pendingDaily = engine.dailyFor(_localNow());
-    syncChallenges();
+    syncChallenges(atReturn: true);
     state.lastSeenMs = _wallMs();
     engine.windSprings(_wallMs());
     if (pendingOffline != null || pendingDaily != null || seasonIntroPending) {

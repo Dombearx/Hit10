@@ -3333,22 +3333,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String chBothSides(int n) {
-    String _temp0 = intl.Intl.pluralLogic(
-      n,
-      locale: localeName,
-      other: '$n GREAT+ hits',
-      one: '1 GREAT+ hit',
-    );
-    return 'From both sides: $_temp0 just before 5.00 and as many just after';
-  }
-
-  @override
-  String chBothSidesProgress(String early, String late, String total) {
-    return 'before $early/$total · after $late/$total';
-  }
-
-  @override
   String chHitEarnings(String amount) {
     return 'Earn $amount Ticks from hits';
   }
@@ -3449,4 +3433,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get help_challenges =>
       'Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks\' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don\'t like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.';
+
+  @override
+  String chPerfect(int n) {
+    return 'Hit PERFECT $n times';
+  }
 }

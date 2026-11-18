@@ -2213,28 +2213,6 @@
       }
     }
   },
-  "chBothSides": "From both sides: {n, plural, =1{1 GREAT+ hit} other{{n} GREAT+ hits}} just before 5.00 and as many just after",
-  "@chBothSides": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "chBothSidesProgress": "before {early}/{total} · after {late}/{total}",
-  "@chBothSidesProgress": {
-    "placeholders": {
-      "early": {
-        "type": "String"
-      },
-      "late": {
-        "type": "String"
-      },
-      "total": {
-        "type": "String"
-      }
-    }
-  },
   "chHitEarnings": "Earn {amount} Ticks from hits",
   "@chHitEarnings": {
     "placeholders": {
@@ -2332,5 +2310,13 @@
   },
   "tip_challenges": "New: three challenges a day, sized to your aim. Tap to see them!",
   "help_challenges_t": "Challenges",
-  "help_challenges": "Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don't like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost."
+  "help_challenges": "Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don't like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.",
+  "chPerfect": "Hit PERFECT {n} times",
+  "@chPerfect": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }

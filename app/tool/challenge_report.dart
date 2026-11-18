@@ -28,7 +28,7 @@ void main() {
     ChallengeKind.streak,
     ChallengeKind.jackpot,
     ChallengeKind.perfectWindow,
-    ChallengeKind.bothSides,
+    ChallengeKind.perfect,
     ChallengeKind.hitEarnings,
     ChallengeKind.greatWeek,
     ChallengeKind.jackpotWeek,

@@ -914,13 +914,17 @@ Skąd i dlaczego: [14-wyzwania.md](14-wyzwania.md). Liczby w pliku balansu
 - **R-WYZ-1 (zestaw):** codziennie trzy wyzwania, po jednym z każdej
   grupy, i jedno tygodniowe (od poniedziałku, czas lokalny), bez serwera.
   W tym samym miejscu nie wypada ten sam rodzaj dwa dni (tygodnie) z rzędu.
-  Pojawiają się po samouczku i 10 min gry (`unlockPlaySeconds`), żeby
-  pierwsza sesja była prosta; pierwszy raz ze wskazówką przy plakietce.
+  Pierwsze wyzwania przychodzą przy **powrocie do gry** (start albo
+  powrót z tła) po samouczku i co najmniej 10 min gry
+  (`unlockPlaySeconds`) — nigdy w trakcie sesji, jak reklamy (R-AD-5):
+  pierwsza sesja zostaje prosta, a powrót coś przynosi. Pierwszy raz ze
+  wskazówką przy plakietce. Każde zadanie to celowanie w 5.00 albo
+  zwykła gra — żadne nie każe klikać celowo obok.
 
   | Grupa | Rodzaje |
   |---|---|
   | celność | N× ŚWIETNIE lub lepiej; seria N; N× równe 5.00 |
-  | wyczyn | N PERFEKTÓW w 10 kolejnych rundach; „z obu stron”: N× ŚWIETNIE+ tuż przed 5.00 i N tuż po; zarób trafieniami N Tików |
+  | wyczyn | N PERFEKTÓW w 10 kolejnych rundach; N× PERFEKT; zarób trafieniami N Tików |
   | rozwój | kup N zegarów; zdobądź N bonusów zegarów (tylko gdy któryś jest w zasięgu 10 sztuk); kup N poziomów umiejętności (gdy jeszcze są) |
   | tydzień | N× ŚWIETNIE+; N× równe 5.00; seria N; złap N Złotych Sekund (nie w pętli „Pochmurny dzień”); nakręć trafieniami N h Sprężyny (po pierwszym paradoksie) |
 
