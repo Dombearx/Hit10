@@ -1346,7 +1346,7 @@
   "settingsAdPrivacy": "Ad privacy choices",
   "dailyTitle": "Daily bonus",
   "dailyDay": "Day {day} of {total}",
-  "dailyHint": "Come back every day — the bonus grows for {total} days. Missing one starts over.",
+  "dailyHint": "Come back every day — the bonus grows for {total} days. One missed day a week is forgiven.",
   "@dailyDay": {
     "placeholders": {
       "day": {

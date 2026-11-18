@@ -2105,7 +2105,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dailyHint(int total) {
-    return 'Come back every day — the bonus grows for $total days. Missing one starts over.';
+    return 'Come back every day — the bonus grows for $total days. One missed day a week is forgiven.';
   }
 
   @override

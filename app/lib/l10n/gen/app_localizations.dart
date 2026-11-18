@@ -3809,7 +3809,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyHint.
   ///
   /// In en, this message translates to:
-  /// **'Come back every day — the bonus grows for {total} days. Missing one starts over.'**
+  /// **'Come back every day — the bonus grows for {total} days. One missed day a week is forgiven.'**
   String dailyHint(int total);
 
   /// No description provided for @adOfferHow.

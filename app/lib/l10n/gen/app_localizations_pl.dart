@@ -2103,7 +2103,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String dailyHint(int total) {
-    return 'Wracaj codziennie — przez $total dni premia rośnie. Przerwa zaczyna od nowa.';
+    return 'Wracaj codziennie — przez $total dni premia rośnie. Jeden dzień przerwy w tygodniu seria wybacza.';
   }
 
   @override
