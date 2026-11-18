@@ -314,4 +314,25 @@ Pełna lista testów ręcznych: `docs/06` (M-1…M-13).
 | Włączyć kalibrację wszystkim (`FEATURE_CALIBRATION`) | po teście M-1 z kalibracją na ≥ 2 telefonach (`docs/05` T-13) |
 | Bonus za trafienie przy powrocie do gry (punkt 5 z przeglądu: celowanie a dochód offline) | odłożone — do dokładniejszej analizy |
 | Kolejne zdarzenia Analytics: `session_summary`, `notification_open`, otwieranie arkuszy, wskazówki | do decyzji |
-| Opublikowanie konfiguracji Play Games | po teście M-12 (B5) |
+| Opublikowanie konfiguracji Play Games | po teście M-12 (B5) — lista w C4 |
+
+### C4. Po teście M-12 (zapis w chmurze) — do zrobienia
+
+Test M-12 (`docs/06`) robić na wersji z testu zamkniętego (Play), nie na
+`hit5-apk` z CI — testowe APK nie ma zapisu w chmurze. Na GitHubie to samo
+jest jako issue „Po teście M-12”.
+
+- [ ] **M-12 zaliczony** na 2 telefonach (A: logowanie, gra, wyjście; B:
+      pytanie „Zapis w chmurze”, „Wczytaj” i „Zostaw”).
+- [ ] Jeśli testerzy nie mogą się zalogować do Play Gry: Google Cloud
+      (projekt hit5-8d33e) → Google Auth Platform → Audience → **Publish
+      app**, potem powtórzyć M-12.
+- [ ] Play Console → Usługi gier Play → Konfiguracja → **Sprawdź
+      i opublikuj** (dopiero wtedy zapis w chmurze mają wszyscy, nie tylko
+      ścieżka „Testerzy”). Zapisanych gier potem nie da się wyłączyć.
+- [ ] Play Console → Treść aplikacji → **Bezpieczeństwo danych**: dodać
+      typ **Aktywność w aplikacji → Inne działania** (zbierane,
+      nieudostępniane, nie tymczasowo, opcjonalne, cel: Funkcje aplikacji);
+      „Logowanie kontami utworzonymi poza aplikacją” → **Tak** → Zapisz →
+      Przegląd publikowanych zmian → Prześlij do sprawdzenia.
+- [ ] Odhaczyć B5 kroki 8–9 i zamknąć issue.
