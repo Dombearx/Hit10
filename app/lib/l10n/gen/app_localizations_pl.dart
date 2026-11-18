@@ -1235,81 +1235,81 @@ class AppLocalizationsPl extends AppLocalizations {
   String get helpReplay => 'Pokaż samouczek od nowa';
 
   @override
-  String get help_goal_t => 'Cel';
+  String get help_goal_t => 'Cel gry';
 
   @override
   String get help_goal =>
-      'Stoper liczy sekundy. Dotknij ekranu, gdy pokaże 5.00 — im bliżej, tym lepiej:\n• 5.00 (±0,010 s): PERFEKT i premia — kilka sekund pracy zegarów\n• PERFEKT (±0,015 s): 6 Tików, seria +3\n• ŚWIETNIE (±0,030 s): 3 Tiki, seria +2\n• DOBRZE (±0,050 s): 1 Tik, seria +1\n• BLISKO (±0,150 s): drobna pociecha, seria przepada\nDalej to pudło. Dotknięcie ponad sekundę przed celem uznajemy za przypadkowe i pomijamy. Umiejętności poszerzają okna (oprócz 5.00).';
+      'Na najwyższej półce sklepu z zegarami tyka Chronos, bóg czasu — ostatni i najdroższy zegar w grze. Kup go, a poznasz dalszą historię.\nDroga do niego: trafiaj w 5.00, zbieraj Tiki, kupuj za nie zegary, które zarabiają za ciebie.';
 
   @override
   String get help_tiki_t => 'Tiki';
 
   @override
   String get help_tiki =>
-      'Tiki to pieniądze w grze. Duży licznik u góry pokazuje, ile ich masz, a mniejszy pod nim — ile zarabiasz na sekundę. Wydajesz je w sklepie na dole ekranu.';
+      'Tiki to waluta gry. Na górze ekranu:\n• duża liczba — ile masz Tików\n• pod nią — ile przybywa na sekundę\n• „5.00 = +…” — ile da trafienie równo 5.00\nTiki wydajesz w sklepie na dole: na zegary i umiejętności.';
 
   @override
   String get help_clocks_t => 'Zegary';
 
   @override
   String get help_clocks =>
-      'Zegary (zakładka Zegary) grają za ciebie i co sekundę dokładają Tiki — także gdy gra jest zamknięta. Pierwszy jest Dziadek; kupienie zegara odkrywa następny, mocniejszy. Liczba na ikonie to ile ich masz. Przyciski ×1, ×10, ×100 i MAX ustalają, ile kupujesz naraz.';
+      'Zegary grają rundy za ciebie (ich wyniki pokazują dymki obok tarczy) i co sekundę dają Tiki — także gdy gra jest zamknięta, do limitu czasu.\n• Kupienie zegara odkrywa następny: droższy i mocniejszy.\n• Liczba na ikonie — ile ich masz.\n• Każda kolejna sztuka tego samego zegara kosztuje trochę więcej.\n• ×1, ×10, ×100, MAX — ile sztuk kupujesz naraz.';
 
   @override
   String get help_upgrades_t => 'Bonusy zegarów';
 
   @override
   String get help_upgrades =>
-      'Pod każdym zegarem jest pasek. Gdy uzbierasz ich tyle, ile pokazuje (u Dziadka 10, 20, 40…), wszystkie zegary tego rodzaju zaczynają zarabiać więcej — za darmo, same z siebie. Pierwsze zegary dostają ×2; droższe mają niższe progi i mniejszy mnożnik. Gdy masz po 25 sztuk dwóch zegarów, które do siebie pasują (np. Dziadka i Babci), włącza się synergia: wzmacniają się nawzajem.';
+      'Pasek pod zegarem pokazuje, ile sztuk brakuje do progu, np. „20/40 → ×2”. Po osiągnięciu progu wszystkie zegary tego rodzaju zarabiają tyle razy więcej, na stałe.\n• Pierwsze zegary: progi 10, 20, 40… i mnożnik ×2.\n• Droższe zegary: niższe progi, mniejszy mnożnik.\nSynergia: po 25 sztuk dwóch pasujących zegarów (np. Dziadka i Babci) wzmacnia oba.';
 
   @override
   String get help_skills_t => 'Umiejętności';
 
   @override
   String get help_skills =>
-      'Umiejętności (zakładka Umiejętności) wzmacniają twoje własne trafienia: większa nagroda, szersze okna, dłuższa seria. Mają poziomy — „Poziom 2/10” to drugi z dziesięciu możliwych. Dotknij karty, by przeczytać szczegóły.';
+      'Umiejętności wzmacniają twoje własne trafienia — nie zegary. Dają m.in. wyższą nagrodę, szersze okna ocen i dłuższą serię.\n• Każda ma poziomy, np. „Poziom 2/10”; kolejny poziom kosztuje więcej Tików.\n• Nowa karta pojawia się, gdy zbliżasz się do jej ceny.\n• Dotknij karty, by zobaczyć dokładny efekt.';
 
   @override
   String get help_combo_t => 'Seria (combo)';
 
   @override
   String get help_combo =>
-      'Kolejne trafienia bez pudła budują serię, a seria mnoży każdą wypłatę (pasek COMBO pod zegarem). Pudło ją zeruje, chyba że masz Tarczę.';
+      'Każde trafienie dokłada kroki serii: PERFEKT +3, ŚWIETNIE +2, DOBRZE +1. Seria mnoży wszystkie twoje wypłaty — mnożnik widać przy napisie COMBO. Ma górny limit.\nBLISKO albo pudło zeruje serię. Wyjątek: ładunek Tarczy (umiejętność) pochłania jedno zerowanie, a kolejne kroki serii go odnawiają.';
 
   @override
   String get help_golden_t => 'Złota Sekunda';
 
   @override
   String get help_golden =>
-      'Co jakiś czas (średnio co 10 minut) po ekranie przelatuje złoty zegarek. Dotknij go, a następna runda będzie złota. Trafisz ją — dostaniesz jeden z bonusów; im lepsze trafienie, tym mocniejszy (PERFEKT w pełni, ŚWIETNIE 60%, DOBRZE 30%, pudło nic):\n• Szał (45% szans): cały dochód — zegary i trafienia — ×7 przez 77 s\n• Fart (45%): od razu Tiki — 10 minut pracy zegarów\n• Gorąca ręka (10%): przez 60 s każde trafienie liczy się jak PERFEKT i płaci ×10';
+      'Średnio co 10 minut przez ekran przelatuje złoty zegarek. Dotknięty zamienia następną rundę w złotą.\nTrafienie w złotej rundzie daje losową nagrodę:\n• Szał (45%) — cały dochód ×7 przez 77 s\n• Fart (45%) — od razu Tiki za 10 minut pracy zegarów\n• Gorąca ręka (10%) — przez 60 s każde trafienie liczy się jak PERFEKT i płaci ×10\nSiła nagrody zależy od oceny: PERFEKT 100%, ŚWIETNIE 60%, DOBRZE 30%, pudło nic.';
 
   @override
   String get help_modes_t => 'Przełączniki';
 
   @override
   String get help_modes =>
-      'Później nad sklepem pojawią się przełączniki: „Na ślepo” (od 4.00 stoper i pasek znikają, ale trafienia płacą ×3, z perkiem Śmiałek ×4), „Drugi zegar” (dwa stopery naraz, każda połowa ekranu to jeden) i „Auto-kupiec” (sam kupuje zegary).';
+      'Przełączniki nad sklepem zmieniają zasady rundy. Każdy pojawia się dopiero po odblokowaniu:\n• Na ślepo — od 4.00 cyfry i pasek znikają; trafienia płacą ×3 (z perkiem Śmiałek ×4)\n• Drugi zegar — dwa stopery naraz; lewa i prawa połowa ekranu to osobne zegary\n• Auto-kupiec — sam kupuje zegary';
 
   @override
   String get help_season_t => 'Wydarzenia';
 
   @override
   String get help_season =>
-      'W święta złoty zegarek zmienia wygląd. Znaczek u góry pokazuje postęp: ile świątecznych zegarków udało się złapać (np. 0/5) i ile było trafień (np. 0/50). Za ukończenie jest nagroda.';
+      'W czasie świąt złoty zegarek zmienia wygląd. Znaczek u góry liczy dwa cele: złapane świąteczne zegarki (np. 0/5) i trafienia (np. 0/50). Za oba dostajesz nagrodę, a świąteczny motyw zostaje na stałe.';
 
   @override
   String get help_prestige_t => 'Paradoks czasowy';
 
   @override
   String get help_prestige =>
-      'Gdy uzbierasz naprawdę dużo, wir u góry zaświeci się. Możesz wtedy cofnąć czas: zaczynasz od nowa, ale dostajesz Chronony — stały bonus do wszystkiego, więc kolejna gra idzie dużo szybciej — i tyle samo Okruchów czasu ✦. Okruchy wydajesz na perki zaraz po cofnięciu czasu, zanim ruszy nowa gra, albo później na ekranie paradoksu.';
+      'Gdy zarobisz dość Tików, wir u góry się zaświeci. Cofnięcie czasu zeruje Tiki, zegary i umiejętności. W zamian dostajesz:\n• Chronony — stały mnożnik całego dochodu; ich liczba rośnie z Tikami zarobionymi w tej pętli\n• Okruchy czasu — tyle samo, co Chrononów; płacisz nimi za perki\nPerki kupujesz zaraz po cofnięciu czasu albo później na ekranie paradoksu. Chronony, Okruchy, perki i osiągnięcia zostają.';
 
   @override
   String get help_icons_t => 'Ikony u góry';
 
   @override
   String get help_icons =>
-      'Puchar — osiągnięcia (każde daje +1% dochodu). Wykres — statystyki. Tarcza — wygląd zegara. Zębatka — ustawienia. Wir — paradoks czasowy. Znak zapytania — ta pomoc. Złota spirala — Sprężyny (po pierwszym cofnięciu czasu).';
+      '• Puchar — osiągnięcia (każde: +1% dochodu)\n• Wykres — statystyki\n• Tarcza — wygląd stopera\n• Znak zapytania — ta pomoc\n• Zębatka — ustawienia\n• Wir — paradoks czasowy\n• Spirala — Sprężyny';
 
   @override
   String notificationTitle(String amount) {
@@ -2755,14 +2755,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_springs =>
-      'Po pierwszym cofnięciu czasu u góry pojawia się spirala — to Sprężyny. Nakręcają się same: jedna na dobę, także gdy nie grasz, a każde trafienie „równo 5.00” dokręca 15 minut z zapasu. Zapas mieści 2 godziny i wraca sam w 4 godziny, więc opłaca się wracać kilka razy dziennie. Pierwsze „równo 5.00” po godzinie przerwy dokręca całą godzinę. Zbierzesz najwyżej 10 Sprężyn. Dotknij spirali i podnieś mistrzostwo zegara: stopień 1 kosztuje 1 Sprężynę, stopień 2 — 2 i tak do stopnia 5. Każdy stopień mnoży dochód tego zegara ×1,5, na zawsze: zostaje po cofnięciu czasu i w nowej pętli czasu. Na stopniu 3 i 5 zegar dostaje tytuł mistrza.';
+      'Sprężyny działają od pierwszego cofnięcia czasu (spirala u góry).\n• Nakręcają się same: jedna na dobę, także gdy nie grasz. Mieści się najwyżej 10.\n• Trafienie równo 5.00 dokręca 15 minut z zapasu. Zapas mieści 2 godziny i odnawia się w 4 godziny.\n• Pierwsze równo 5.00 po godzinie przerwy dokręca całą godzinę.\nSprężynami płacisz za mistrzostwo zegara: stopień 1 kosztuje 1 Sprężynę, stopień 2 — 2 i tak do stopnia 5. Każdy stopień mnoży dochód tego zegara ×1,5 na zawsze — także po cofnięciu czasu i w nowej pętli. Stopnie 3 i 5 dają tytuł mistrza.';
 
   @override
   String get help_dials_t => 'Tarcze zegara';
 
   @override
   String get help_dials =>
-      'Im więcej Tików zarobisz, tym więcej tarcz odblokujesz; ostatnie sześć to trofea za ukończone pętle czasu. Wybierasz je przyciskiem z tarczą u góry ekranu, obok statystyk. To tylko wygląd, nie zmienia wyników.';
+      'Tarcze zmieniają tylko wygląd stopera, nie wyniki. Kolejne odblokowujesz, zarabiając coraz więcej Tików; sześć ostatnich to trofea za ukończone pętle czasu. Wybierasz je przyciskiem z tarczą u góry ekranu.';
 
   @override
   String springsRefund(int count) {
@@ -2915,7 +2915,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_loop =>
-      'Celem gry jest kupić Chronosa, ostatni zegar. Wtedy pętla jest ukończona: dostajesz rozdział historii i możesz zacząć nową pętlę. Nowa pętla zaczyna wszystko od zera — także Chronony i perki — a Chronos zmienia w niej jedną zasadę. Zostają Sprężyny, mistrzostwo zegarów, osiągnięcia i tarcze, więc każda pętla idzie szybciej. Ukończenie pętli ze zmienioną zasadą daje pieczęć: mały bonus na zawsze i tarczę zegara. Każdy bonus Chronosa zdobyty przed wyjściem daje +1 Sprężynę. Siedem pętli to cała historia; potem zasady wybierasz sam. Wszystko jest w Kronice, na ekranie paradoksu.';
+      'Kupienie Chronosa kończy pętlę czasu: odblokowuje rozdział historii i pozwala zacząć nową pętlę.\n• Nowa pętla zeruje wszystko, także Chronony i perki.\n• Zostają Sprężyny, mistrzostwo zegarów, osiągnięcia i tarcze.\n• W każdej pętli Chronos zmienia jedną zasadę. Ukończenie takiej pętli daje pieczęć: mały stały bonus i tarczę zegara.\n• Każdy bonus Chronosa zdobyty przed wyjściem z pętli daje +1 Sprężynę.\nSiedem pętli to cała historia; potem zasady wybierasz sam. Wszystko zapisuje Kronika na ekranie paradoksu.';
 
   @override
   String get rule_blindfold => 'Zepsuty stoper';
@@ -3070,4 +3070,55 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get chapter_7 =>
       'Punkt 5.00. Chronos stoi pod drzwiami Babci, pierwszy raz od wieków o czasie.\n— Wejdź, zegarmistrzu — mówi do ciebie. — Sernik jest dla dwojga, ale Babcia zawsze kroi na pięć. Od dziś sam ustawiasz zasady. Ja idę na podwieczorek.';
+
+  @override
+  String get help_round_t => 'Runda';
+
+  @override
+  String get help_round =>
+      'Stoper liczy od zera. Dotknij ekranu, gdy pokaże 5.00 — od tego, jak blisko trafisz, zależy ocena:\n• równo 5.00 (±0,010 s) — PERFEKT i premia: Tiki za kilka sekund pracy zegarów\n• PERFEKT (±0,015 s) — 6 Tików, seria +3\n• ŚWIETNIE (±0,030 s) — 3 Tiki, seria +2\n• DOBRZE (±0,050 s) — 1 Tik, seria +1\n• BLISKO (±0,150 s) — drobna pociecha, seria przepada\nDalej to pudło. Dotknięcie wcześniej niż sekundę przed 5.00 się nie liczy. Umiejętności poszerzają okna ocen (poza „równo 5.00”).';
+
+  @override
+  String get help_res_t => 'Zasoby';
+
+  @override
+  String get help_res_tiki => 'Tiki — waluta: zegary i umiejętności';
+
+  @override
+  String get help_res_chronon => 'Chronony — stały mnożnik dochodu z paradoksu';
+
+  @override
+  String get help_res_shard => 'Okruchy czasu — waluta perków';
+
+  @override
+  String get help_res_spring => 'Sprężyny — mistrzostwo zegarów';
+
+  @override
+  String get helpLocked => 'Graj dalej, aby odblokować nowe mechaniki';
+
+  @override
+  String get notificationAskBody =>
+      'Zegary zarabiają, gdy gra jest zamknięta — ale tylko do limitu czasu. Wyślemy jedno powiadomienie, gdy go osiągną.';
+
+  @override
+  String get notificationAskYes => 'Tak, daj znać';
+
+  @override
+  String get notificationAskNo => 'Nie, dziękuję';
+
+  @override
+  String get prologue_t => 'Prolog: Najwyższa półka';
+
+  @override
+  String get prologue =>
+      'W starym sklepie z zegarami, na najwyższej półce, tyka Chronos — bóg czasu. Ktoś przez pomyłkę przykleił mu metkę z ceną. Cena ma tyle zer, że nikt jeszcze nie próbował.\n— My spróbujemy — mówi Dziadek i stuka w swój zegarek. — Kto kupi Chronosa, ten pozna jego sekret.\n— A czym się płaci?\n— Tikami. Zatrzymaj stoper równo na 5.00, a Tiki same wpadną do kieszeni. Za Tiki kupisz zegary, a zegary zarobią na następne. Aż któregoś dnia zdejmiemy Chronosa z półki.';
+
+  @override
+  String get prologueGoal => 'Cel: kup Chronosa';
+
+  @override
+  String get prologueGo => 'Do dzieła!';
+
+  @override
+  String get chroniclePrologue => 'Prolog';
 }

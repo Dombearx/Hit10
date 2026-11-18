@@ -9,9 +9,11 @@ import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 import '../widgets/buy_button.dart';
+import '../widgets/choice_dialog.dart';
 import '../widgets/emoji_card.dart';
 import 'loop_screen.dart';
 import 'sheet.dart';
+import '../widgets/res_text.dart';
 
 /// Time paradox (docs/02 §9): Chronons, the rewind button, the perk tree.
 Future<void> showPrestige(BuildContext context, GameController c) {
@@ -30,25 +32,14 @@ class _Prestige extends StatelessWidget {
 
   Future<void> _rewind(BuildContext context) async {
     final l = AppLocalizations.of(context);
-    Future<bool> ask(String text) async =>
-        await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: Text(text),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(l.cancel),
-              ),
-              TextButton(
-                key: const Key('confirm-yes'),
-                onPressed: () => Navigator.pop(context, true),
-                child: Text(l.yes),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+    Future<bool> ask(String text) => showChoiceDialog(
+      context,
+      art: const EmojiArt('cyclone', Color(0xFFE2D2FF)),
+      body: text,
+      yes: l.yes,
+      no: l.cancel,
+      yesKey: const Key('confirm-yes'),
+    );
     // R-PRES-6: two confirmations.
     if (!await ask(l.prestigeConfirm1)) return;
     if (!context.mounted || !await ask(l.prestigeConfirm2)) return;
@@ -73,13 +64,13 @@ class _Prestige extends StatelessWidget {
     final l = AppLocalizations.of(context);
     return Column(
       children: [
-        Text(
+        ResText(
           l.prestigePendingTitle(controller.lastPrestigeGain),
           textAlign: TextAlign.center,
           style: const TextStyle(fontFamily: Fonts.display, fontSize: 20),
         ),
         const SizedBox(height: 4),
-        Text(
+        ResText(
           l.prestigePendingBody,
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600),
@@ -119,11 +110,11 @@ class _Prestige extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
         LoopCard(controller: c),
-        Text(
+        ResText(
           l.prestigeChronons(s.chronons, mult),
           style: const TextStyle(fontFamily: Fonts.display, fontSize: 18),
         ),
-        Text(
+        ResText(
           l.prestigeShards(s.shards),
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
@@ -139,7 +130,7 @@ class _Prestige extends StatelessWidget {
               ? _pending(context)
               : Column(
                   children: [
-                    Text(
+                    ResText(
                       gain > 0
                           ? l.prestigeGain(gain)
                           : l.prestigeNext(f.n(needed)),
@@ -162,7 +153,7 @@ class _Prestige extends StatelessWidget {
                           fontSize: 17,
                         ),
                       ),
-                      Text(
+                      ResText(
                         l.prestigeNext(f.n(needed)),
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -276,7 +267,7 @@ class _PerkTile extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Text(
+                  ResText(
                     perkDescription(l, id),
                     style: TextStyle(
                       fontSize: 12,
@@ -298,7 +289,8 @@ class _PerkTile extends StatelessWidget {
             const SizedBox(width: 6),
             BuyButton(
               key: Key('perk-$id'),
-              price: owned ? l.perkOwned : '${cfg.cost} ✦',
+              price: owned ? l.perkOwned : '${cfg.cost}',
+              res: owned ? null : Res.shard,
               enabled: !owned && available && c.state.shards >= cfg.cost,
               minWidth: 72,
               onPressed: () => c.buyPerk(id) == BuyResult.ok,

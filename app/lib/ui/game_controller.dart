@@ -746,6 +746,17 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// The prologue (Chronos on the top shelf) is due: once, before the
+  /// very first round, so a new player knows what the game is heading for.
+  bool get prologuePending =>
+      !state.tipsSeen.contains('prologue') &&
+      !state.tutorialDone &&
+      state.prestiges == 0 &&
+      state.loopsDone == 0 &&
+      state.earnedTotal == 0;
+
+  void prologueShown() => state.tipsSeen.add('prologue');
+
   /// The season's intro dialog is due: once per season run, checked with
   /// the offline income and the daily bonus.
   bool seasonIntroPending = false;

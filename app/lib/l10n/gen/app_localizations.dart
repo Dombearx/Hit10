@@ -2135,7 +2135,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_goal.
   ///
   /// In en, this message translates to:
-  /// **'The stopwatch counts seconds. Tap the screen when it shows 5.00 — the closer, the better:\n• 5.00 (±0.010 s): a PERFECT plus a bonus — seconds of your clocks\' work\n• PERFECT (±0.015 s): 6 Ticks, streak +3\n• GREAT (±0.030 s): 3 Ticks, streak +2\n• GOOD (±0.050 s): 1 Tick, streak +1\n• CLOSE (±0.150 s): a small consolation, the streak breaks\nAnything further is a miss. A tap over a second before the target counts as a slip and is ignored. Skills widen the windows (except 5.00).'**
+  /// **'On the top shelf of the clock shop ticks Chronos, the god of time — the last and most expensive clock in the game. Buy him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.'**
   String get help_goal;
 
   /// No description provided for @help_tiki_t.
@@ -2147,7 +2147,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_tiki.
   ///
   /// In en, this message translates to:
-  /// **'Ticks are the game\'s money. The big counter at the top shows how many you have, the smaller one below it how much you earn per second. You spend them in the shop at the bottom.'**
+  /// **'Ticks are the game\'s currency. At the top of the screen:\n• the big number — your Ticks\n• below it — how many you gain per second\n• \"5.00 = +…\" — what a hit on exactly 5.00 pays\nYou spend Ticks in the shop at the bottom: on clocks and skills.'**
   String get help_tiki;
 
   /// No description provided for @help_clocks_t.
@@ -2159,7 +2159,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_clocks.
   ///
   /// In en, this message translates to:
-  /// **'Clocks (the Clocks tab) play for you and add Ticks every second — even while the game is closed. Grandpa comes first; buying a clock reveals the next, stronger one. The number on the icon is how many you own. ×1, ×10, ×100 and MAX set how many you buy at once.'**
+  /// **'Clocks play rounds for you (the bubbles beside the dial show their results) and give Ticks every second — even while the game is closed, up to a time limit.\n• Buying a clock reveals the next one: pricier and stronger.\n• The number on the icon — how many you own.\n• Each extra copy of the same clock costs a bit more.\n• ×1, ×10, ×100, MAX — how many you buy at once.'**
   String get help_clocks;
 
   /// No description provided for @help_upgrades_t.
@@ -2171,7 +2171,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_upgrades.
   ///
   /// In en, this message translates to:
-  /// **'Each clock has a bar. Once you own as many as it shows (10, 20, 40… for Grandpa), all clocks of that kind earn more — free, on their own. The first clocks get ×2; pricier ones have lower counts and a smaller multiplier. Own 25 each of two clocks that go together (like Grandpa and Grandma) and a synergy switches on: they boost each other.'**
+  /// **'The bar under a clock shows how many more you need for the next step, e.g. \"20/40 → ×2\". At each step all clocks of that kind earn that many times more, for good.\n• First clocks: steps at 10, 20, 40… and ×2.\n• Pricier clocks: lower steps, smaller multipliers.\nSynergy: 25 each of two matching clocks (e.g. Grandpa and Grandma) boosts both.'**
   String get help_upgrades;
 
   /// No description provided for @help_skills_t.
@@ -2183,7 +2183,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_skills.
   ///
   /// In en, this message translates to:
-  /// **'Skills (the Skills tab) boost your own hits: bigger rewards, wider windows, longer streaks. They have levels — \"Level 2/10\" means the second of ten. Tap a card to read the details.'**
+  /// **'Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and longer streaks.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.'**
   String get help_skills;
 
   /// No description provided for @help_combo_t.
@@ -2195,7 +2195,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_combo.
   ///
   /// In en, this message translates to:
-  /// **'Hits in a row build a streak, and the streak multiplies every payout (the COMBO bar under the clock). A miss resets it, unless you have a Shield.'**
+  /// **'Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. It has a cap.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it.'**
   String get help_combo;
 
   /// No description provided for @help_golden_t.
@@ -2207,7 +2207,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_golden.
   ///
   /// In en, this message translates to:
-  /// **'Every so often (10 minutes on average) a golden clock flies across the screen. Tap it and the next round turns golden. Hit that round and you get one of the bonuses; the better the hit, the stronger it is (PERFECT in full, GREAT 60%, GOOD 30%, a miss nothing):\n• Frenzy (45% chance): all income — clocks and hits — ×7 for 77 s\n• Lucky (45%): Ticks at once — 10 minutes of your clocks\' work\n• Hot hand (10%): for 60 s every hit counts as a PERFECT and pays ×10'**
+  /// **'About every 10 minutes a golden clock flies across the screen. Tapping it turns the next round golden.\nA hit in a golden round gives a random reward:\n• Frenzy (45%) — all income ×7 for 77 s\n• Lucky (45%) — Ticks worth 10 minutes of your clocks, right away\n• Hot hand (10%) — for 60 s every hit counts as PERFECT and pays ×10\nThe reward\'s strength depends on the grade: PERFECT 100%, GREAT 60%, GOOD 30%, a miss nothing.'**
   String get help_golden;
 
   /// No description provided for @help_modes_t.
@@ -2219,7 +2219,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_modes.
   ///
   /// In en, this message translates to:
-  /// **'Later, toggles appear above the shop: \"Blind\" (from 4.00 the stopwatch and its ring disappear, but hits pay ×3, ×4 with the Daredevil perk), \"Second clock\" (two stopwatches, each half of the screen is one) and \"Auto buyer\" (buys clocks for you).'**
+  /// **'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys clocks for you'**
   String get help_modes;
 
   /// No description provided for @help_season_t.
@@ -2231,7 +2231,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_season.
   ///
   /// In en, this message translates to:
-  /// **'On holidays the golden clock changes its look. The badge at the top shows your progress: how many holiday clocks you caught (e.g. 0/5) and how many hits you made (e.g. 0/50). Finishing pays a reward.'**
+  /// **'On holidays the golden clock changes its look. The badge at the top counts two goals: holiday clocks caught (e.g. 0/5) and hits (e.g. 0/50). Both together earn a reward, and the holiday theme stays unlocked.'**
   String get help_season;
 
   /// No description provided for @help_prestige_t.
@@ -2243,7 +2243,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_prestige.
   ///
   /// In en, this message translates to:
-  /// **'Once you\'ve collected a lot, the swirl at the top lights up. You can then rewind time: you start over but get Chronons — a permanent bonus to everything, so the next run goes much faster — and as many Time shards ✦. Spend the Shards on perks right after rewinding, before the new run starts, or later on the paradox screen.'**
+  /// **'Once you\'ve earned enough Ticks, the swirl at the top lights up. Rewinding time resets your Ticks, clocks and skills. In return you get:\n• Chronons — a permanent multiplier on all income; their number grows with the Ticks earned this loop\n• Shards of time — as many as Chronons; they pay for perks\nYou buy perks right after the rewind or later on the paradox screen. Chronons, Shards, perks and achievements stay.'**
   String get help_prestige;
 
   /// No description provided for @help_icons_t.
@@ -2255,7 +2255,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_icons.
   ///
   /// In en, this message translates to:
-  /// **'Trophy — achievements (each gives +1% income). Chart — statistics. Dial — the stopwatch look. Gear — settings. Swirl — time paradox. Question mark — this help. Gold spiral — Mainsprings (after your first rewind).'**
+  /// **'• Trophy — achievements (each: +1% income)\n• Chart — statistics\n• Dial — the stopwatch look\n• Question mark — this help\n• Gear — settings\n• Swirl — time paradox\n• Spiral — Mainsprings'**
   String get help_icons;
 
   /// No description provided for @notificationTitle.
@@ -4895,7 +4895,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_springs.
   ///
   /// In en, this message translates to:
-  /// **'After your first rewind a spiral appears at the top — your Mainsprings. They wind themselves: one a day, even while you\'re away, and every exact 5.00 winds 15 more minutes out of a reserve. The reserve holds 2 hours and comes back by itself in 4, so it pays to return a few times a day. The first exact 5.00 after an hour\'s break winds a whole hour. You can hold up to 10 Mainsprings. Tap the spiral to raise a clock\'s mastery: tier 1 costs 1 Mainspring, tier 2 costs 2, up to tier 5. Each tier multiplies that clock\'s income by 1.5, for good: it survives the rewind and a new Time Loop. At tiers 3 and 5 a clock earns a master title.'**
+  /// **'Mainsprings work from your first rewind (the spiral at the top).\n• They wind themselves: one a day, even while you\'re away. At most 10 fit.\n• A hit on exactly 5.00 winds 15 minutes from the reserve. The reserve holds 2 hours and refills in 4 hours.\n• The first exactly-5.00 after an hour\'s break winds a whole hour.\nMainsprings pay for clock mastery: tier 1 costs 1 Mainspring, tier 2 costs 2, and so on up to tier 5. Each tier multiplies that clock\'s income ×1.5 for good — also after a rewind and in a new loop. Tiers 3 and 5 give a master\'s title.'**
   String get help_springs;
 
   /// No description provided for @help_dials_t.
@@ -4907,7 +4907,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_dials.
   ///
   /// In en, this message translates to:
-  /// **'The more Ticks you earn, the more dial faces you unlock; the last six are trophies for finished Time Loops. Pick one with the dial button at the top, next to the stats. They only change the look, not the results.'**
+  /// **'Dial faces change only how the stopwatch looks, not your results. You unlock more by earning more Ticks; the last six are trophies for finished Time Loops. Pick one with the dial button at the top of the screen.'**
   String get help_dials;
 
   /// No description provided for @springsRefund.
@@ -5159,7 +5159,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_loop.
   ///
   /// In en, this message translates to:
-  /// **'The goal of the game is to buy Chronos, the last clock. When you do, the loop is finished: you get a chapter of the story and may start a new loop. A new loop starts everything from zero — Chronons and perks too — and Chronos changes one rule in it. Your Mainsprings, clock mastery, achievements and dial faces stay, so every loop goes faster. Finishing a loop with a changed rule wins its seal: a small bonus that holds for good, and a dial face. Every bonus of Chronos you reach before leaving pays +1 Mainspring. Seven loops tell the whole story; after that you pick the rules yourself. Everything is in the Chronicle, on the Time paradox screen.'**
+  /// **'Buying Chronos finishes the Time Loop: it opens a chapter of the story and lets you start a new loop.\n• A new loop resets everything, Chronons and perks included.\n• Mainsprings, clock mastery, achievements and dial faces stay.\n• In each loop Chronos changes one rule. Finishing such a loop earns a seal: a small permanent bonus and a dial face.\n• Each Chronos bonus earned before you leave the loop gives +1 Mainspring.\nSeven loops tell the whole story; after that you pick the rules. The Chronicle on the paradox screen keeps it all.'**
   String get help_loop;
 
   /// No description provided for @rule_blindfold.
@@ -5425,6 +5425,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'5.00 sharp. Chronos stands at Grandma\'s door, on time for the first time in ages.\n“Come in, watchmaker,” he says to you. “The cheesecake is for two, but Grandma always cuts it in five. From today you set the rules. I\'m off to tea.”'**
   String get chapter_7;
+
+  /// No description provided for @help_round_t.
+  ///
+  /// In en, this message translates to:
+  /// **'The round'**
+  String get help_round_t;
+
+  /// No description provided for @help_round.
+  ///
+  /// In en, this message translates to:
+  /// **'The stopwatch counts up from zero. Tap the screen when it shows 5.00 — how close you get sets the grade:\n• exactly 5.00 (±0.010 s) — a PERFECT plus a bonus: Ticks worth a few seconds of your clocks\n• PERFECT (±0.015 s) — 6 Ticks, streak +3\n• GREAT (±0.030 s) — 3 Ticks, streak +2\n• GOOD (±0.050 s) — 1 Tick, streak +1\n• CLOSE (±0.150 s) — a small consolation, the streak is lost\nAnything further is a miss. A tap more than a second before 5.00 doesn\'t count. Skills widen the grade windows (except \"exactly 5.00\").'**
+  String get help_round;
+
+  /// No description provided for @help_res_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
+  String get help_res_t;
+
+  /// No description provided for @help_res_tiki.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticks — currency: clocks and skills'**
+  String get help_res_tiki;
+
+  /// No description provided for @help_res_chronon.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronons — a permanent income multiplier from the paradox'**
+  String get help_res_chronon;
+
+  /// No description provided for @help_res_shard.
+  ///
+  /// In en, this message translates to:
+  /// **'Shards of time — the currency of perks'**
+  String get help_res_shard;
+
+  /// No description provided for @help_res_spring.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings — clock mastery'**
+  String get help_res_spring;
+
+  /// No description provided for @helpLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep playing to unlock new mechanics'**
+  String get helpLocked;
+
+  /// No description provided for @notificationAskBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your clocks earn while the game is closed — but only up to a time limit. We\'ll send one notification when they reach it.'**
+  String get notificationAskBody;
+
+  /// No description provided for @notificationAskYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, let me know'**
+  String get notificationAskYes;
+
+  /// No description provided for @notificationAskNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No, thanks'**
+  String get notificationAskNo;
+
+  /// No description provided for @prologue_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Prologue: The top shelf'**
+  String get prologue_t;
+
+  /// No description provided for @prologue.
+  ///
+  /// In en, this message translates to:
+  /// **'In an old clock shop, on the very top shelf, ticks Chronos — the god of time. Someone stuck a price tag on him by mistake. The price has so many zeros that nobody has ever tried.\n\"We will,\" says Grandpa, tapping his pocket watch. \"Whoever buys Chronos learns his secret.\"\n\"And what do we pay with?\"\n\"Ticks. Stop the stopwatch on exactly 5.00 and the Ticks fall into your pocket. Ticks buy clocks, and clocks earn the next ones. Until one day we take Chronos off the shelf.\"'**
+  String get prologue;
+
+  /// No description provided for @prologueGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: buy Chronos'**
+  String get prologueGoal;
+
+  /// No description provided for @prologueGo.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s go!'**
+  String get prologueGo;
+
+  /// No description provided for @chroniclePrologue.
+  ///
+  /// In en, this message translates to:
+  /// **'Prologue'**
+  String get chroniclePrologue;
 }
 
 class _AppLocalizationsDelegate

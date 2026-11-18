@@ -22,6 +22,9 @@ abstract final class Palette {
   static const accent = Color(0xFFFF3D7F);
   static const neonCyan = Color(0xFF00F5FF);
   static const neonMagenta = Color(0xFFFF00E5);
+
+  /// Warm paper behind dialogs and the Chronicle.
+  static const paper = Color(0xFFFFF6E8);
 }
 
 abstract final class Fonts {
@@ -47,6 +50,38 @@ ThemeData buildTheme() {
     textTheme: base.textTheme.apply(
       bodyColor: Palette.outline,
       displayColor: Palette.outline,
+    ),
+    // Every dialog in the game's look (playtest: the system-style confirm
+    // windows looked foreign next to the cards).
+    dialogTheme: DialogThemeData(
+      backgroundColor: Palette.paper,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(26),
+        side: const BorderSide(color: Palette.outline, width: 3),
+      ),
+      titleTextStyle: const TextStyle(
+        fontFamily: Fonts.display,
+        fontSize: 22,
+        color: Palette.outline,
+      ),
+      contentTextStyle: const TextStyle(
+        fontFamily: Fonts.body,
+        fontSize: 16,
+        height: 1.35,
+        color: Palette.outline,
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: Palette.outline,
+        minimumSize: const Size(64, 48),
+        textStyle: const TextStyle(
+          fontFamily: Fonts.body,
+          fontWeight: FontWeight.w800,
+          fontSize: 15,
+        ),
+      ),
     ),
   );
 }

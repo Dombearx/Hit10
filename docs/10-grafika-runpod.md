@@ -180,3 +180,22 @@ Jeśli wydatki przekroczą ~$50, zatrzymać się i zapytać.
 - [Runpod — dostępne modele i ceny](https://docs.runpod.io/public-endpoints/reference)
 - [Flux Schnell](https://docs.runpod.io/public-endpoints/models/flux-schnell)
 - [Cennik Runpod](https://www.runpod.io/pricing)
+
+## Ilustracje fabuły (U-33) — do zrobienia
+
+Na razie w grze są placeholdery. Prompty scen (prolog i rozdziały 1–7,
+16:9, z opisem postaci wspólnym dla wszystkich scen) są w
+`tools/art/story_prompts.json`:
+
+```
+python3 tools/art/generate.py --spec story_prompts.json [--only prologue]  # → tools/art/out/qwen/
+python3 tools/art/sheet.py qwen /tmp/cand.png                              # wybór seeda
+# wpisać wybrane do tools/art/story_picks.json: {"prologue": "qwen/prologue_s1010"}
+python3 tools/art/story.py [id]   # kadr 16:9, 1280×720 JPG → app/assets/story/<id>.jpg
+```
+
+Bez wycinania tła (to sceny, nie ikony), wystarczy Pillow. Gra pokazuje
+obrazek, gdy tylko plik jest w `app/assets/story/`; brakujące rozdziały
+dalej mają placeholder. Rozmiar Qwen: `1664*928` (pole `size` w pliku
+promptów). Koszt: 8 scen × 2 seedy.
+

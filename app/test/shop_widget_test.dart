@@ -5,6 +5,7 @@ import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
+import 'package:hit10/ui/widgets/res_text.dart';
 import 'package:hit10/ui/game_controller.dart';
 import 'package:hit10/ui/providers.dart';
 import 'package:hit10/ui/shop/generator_list.dart';
@@ -19,6 +20,8 @@ void main() {
     GameState? state,
     int Function()? wallMs,
   }) async {
+    // The prologue before the first round has its own test.
+    state = (state ?? GameState())..tipsSeen.add('prologue');
     final c = GameController(
       balance: balance,
       state: state,
@@ -144,9 +147,9 @@ void main() {
         .first;
     final desc = find.byKey(const Key('gen-desc-atomic'));
     await tester.scrollUntilVisible(desc, 200, scrollable: list);
-    final text = tester.widget<Text>(desc);
+    final text = tester.widget<ResText>(desc);
     expect(text.maxLines, isNull); // never cut
-    expect(text.data, 'Myli się o sekundę na sto milionów lat.');
+    expect(text.text, 'Myli się o sekundę na sto milionów lat.');
 
     await tester.tap(find.byKey(const Key('gen-info-atomic')));
     await tester.pumpAndSettle();

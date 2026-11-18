@@ -8,6 +8,7 @@ import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
+import 'package:hit10/ui/widgets/res_text.dart';
 import 'package:hit10/ui/game_controller.dart';
 import 'package:hit10/ui/providers.dart';
 import 'package:hit10/ui/screens/prestige_screen.dart';
@@ -69,7 +70,12 @@ void main() {
     expect(c.rewindPending, isTrue);
     expect(c.state.shards, 10);
     expect(c.state.skills['echo'], 9);
-    expect(find.text('Okruchy czasu: 10 ✦'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (w) => w is ResText && w.text == 'Okruchy czasu: 10 ✦',
+      ),
+      findsOneWidget,
+    );
 
     final sheetList = find.byType(Scrollable).last;
     final perk = find.byKey(const Key('perk-muscleMemory1'));

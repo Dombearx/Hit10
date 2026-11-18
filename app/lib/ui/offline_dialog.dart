@@ -7,11 +7,13 @@ import 'theme.dart';
 import 'widgets/ad_buttons.dart';
 import 'widgets/ad_offer_sheet.dart';
 import 'widgets/buy_button.dart';
+import 'widgets/choice_dialog.dart';
 import 'widgets/emoji_card.dart';
 import 'catalog.dart';
 import '../ads/rewarded_ads.dart';
 import '../engine/ad_offers.dart';
 import '../engine/game_engine.dart';
+import 'widgets/res_text.dart';
 
 /// "While you were away…" (R-OFF-2): the amount counts up, then Collect.
 Future<void> showOfflineDialog(
@@ -34,24 +36,16 @@ Future<void> _askNotifications(BuildContext context, GameController c) async {
   }
   c.state.tipsSeen.add('notifyAsked');
   final l = AppLocalizations.of(context);
-  final yes = await showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
-      content: Text(l.notificationAsk),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          child: Text(l.no),
-        ),
-        TextButton(
-          key: const Key('notify-yes'),
-          onPressed: () => Navigator.pop(context, true),
-          child: Text(l.yes),
-        ),
-      ],
-    ),
+  final yes = await showChoiceDialog(
+    context,
+    art: const EmojiArt('bell', Color(0xFFFFE29A)),
+    title: l.notificationAsk,
+    body: l.notificationAskBody,
+    yes: l.notificationAskYes,
+    no: l.notificationAskNo,
+    yesKey: const Key('notify-yes'),
   );
-  if (yes == true) {
+  if (yes) {
     await c.notifications.requestPermission();
   } else {
     c.settings.notifications = false;
@@ -111,12 +105,23 @@ Future<void> _show(
                 tween: Tween(begin: 0, end: r.amount),
                 duration: const Duration(milliseconds: 900),
                 curve: Curves.easeOutCubic,
-                builder: (context, v, _) => Text(
-                  '+${f.n(v)}',
-                  style: const TextStyle(
-                    fontFamily: Fonts.display,
-                    fontSize: 40,
-                    color: Palette.perfectDeep,
+                // The amount with the Tiki coin beside it.
+                builder: (context, v, _) => FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '+${f.n(v)}',
+                        style: const TextStyle(
+                          fontFamily: Fonts.display,
+                          fontSize: 40,
+                          color: Palette.perfectDeep,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const ResIcon(Res.tiki, size: 34),
+                    ],
                   ),
                 ),
               ),

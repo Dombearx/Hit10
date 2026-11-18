@@ -17,6 +17,7 @@ import 'ad_buttons.dart';
 import 'ad_offer_sheet.dart';
 import 'coach.dart';
 import 'emoji_card.dart';
+import 'res_text.dart';
 
 const _springGold = Color(0xFFE8A317);
 
@@ -218,7 +219,7 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
+                  child: ResText(
                     full
                         ? l.springsFull('${sp.maxStock}')
                         : l.springsNext(f.duration(next)),
@@ -231,7 +232,7 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
               ],
             ),
             const SizedBox(height: 8),
-            Text(
+            ResText(
               l.springsIntro(f.mult(sp.levelFactor)),
               style: const TextStyle(fontSize: 14),
             ),
@@ -249,7 +250,7 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(
+                      child: ResText(
                         l.springsRefund(s.springsRefunded),
                         style: const TextStyle(
                           fontSize: 13.5,

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Generate game art via RunPod Public Endpoints (see docs/10-grafika-runpod.md).
 
-Usage: python3 tools/art/generate.py [--only ID[,ID]] [--model MODEL[,MODEL]] [--dry-run]
-Reads RUNPOD_API_KEY from the environment (or repo-root .env). Specs: prompts.json.
+Usage: python3 tools/art/generate.py [--only ID[,ID]] [--model MODEL[,MODEL]] [--spec FILE] [--dry-run]
+Reads RUNPOD_API_KEY from the environment (or repo-root .env). Specs: prompts.json
+(icons), story_prompts.json (story illustrations, 16:9).
 Raw results go to tools/art/out/<model>/<id>_s<seed>.png (+ .json with metadata).
 """
 import argparse, json, os, pathlib, sys, urllib.request
@@ -11,17 +12,23 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 HERE = ROOT / "tools" / "art"
 REF_BASE = "https://raw.githubusercontent.com/Dombearx/Hit10/main/app/assets/art/"
 
+def full(s, c):
+    """Style, the cast (story scenes), then the item's own prompt."""
+    cast = c.get("characters")
+    return c["style"] + ". " + (cast + ". " if cast else "") + s["prompt"]
+
+
 MODELS = {
     # endpoint id, builder(spec, cfg) -> input dict
     "qwen-edit": ("qwen-image-edit-2511", lambda s, c: {
-        "prompt": c["style"] + ". " + s["prompt"] if not s.get("edit_prompt") else s["edit_prompt"],
+        "prompt": full(s, c) if not s.get("edit_prompt") else s["edit_prompt"],
         "images": [REF_BASE + r + ".png" for r in s.get("refs", c.get("refs", []))][:3],
-        "size": "1024*1024", "seed": s["seed"], "output_format": "png"}),
+        "size": c.get("size", "1024*1024"), "seed": s["seed"], "output_format": "png"}),
     "qwen": ("qwen-image-t2i", lambda s, c: {
-        "prompt": c["style"] + ". " + s["prompt"], "negative_prompt": c.get("negative", ""),
-        "size": "1024*1024", "seed": s["seed"], "enable_safety_checker": True}),
+        "prompt": full(s, c), "negative_prompt": c.get("negative", ""),
+        "size": c.get("size", "1024*1024"), "seed": s["seed"], "enable_safety_checker": True}),
     "zimage": ("z-image-turbo", lambda s, c: {
-        "prompt": c["style"] + ". " + s["prompt"], "size": "1024*1024",
+        "prompt": full(s, c), "size": c.get("size", "1024*1024"),
         "seed": s["seed"], "output_format": "png", "enable_safety_checker": True}),
 }
 
@@ -54,9 +61,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--only")
     ap.add_argument("--model", default="qwen")
+    ap.add_argument("--spec", default="prompts.json")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
-    cfg = json.loads((HERE / "prompts.json").read_text())
+    cfg = json.loads((HERE / a.spec).read_text())
     only = set(a.only.split(",")) if a.only else None
     key = None if a.dry_run else api_key()
     total = 0.0

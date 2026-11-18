@@ -9,6 +9,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
+import '../widgets/res_text.dart';
 
 /// The "Skills" tab (docs/02 §4): level, effect now → next, price.
 class SkillList extends StatelessWidget {
@@ -177,7 +178,7 @@ class _SkillTile extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Text(
+                        ResText(
                           maxed
                               ? l.skillEffectMax(label, now)
                               : l.skillEffect(label, now, next),
@@ -187,7 +188,7 @@ class _SkillTile extends StatelessWidget {
                             color: Palette.perfectText,
                           ),
                         ),
-                        Text(
+                        ResText(
                           skillDescription(l, id),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -211,6 +212,7 @@ class _SkillTile extends StatelessWidget {
             // button read as a score).
             label: maxed ? null : l.skillBuyLevel('${level + 1}'),
             price: maxed ? l.skillMaxed : f.price(cost!),
+            res: maxed ? null : Res.tiki,
             enabled: affordable,
             onPressed: () => c.buySkill(id),
           ),
@@ -257,7 +259,7 @@ class _LockedSkill extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  Text(
+                  ResText(
                     l.skillLockedHint(f.price(reveal)),
                     style: TextStyle(
                       fontSize: 12.5,
@@ -418,7 +420,7 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Text(
+                ResText(
                   maxed
                       ? l.skillEffectMax(label, now)
                       : l.skillEffect(label, now, next),
@@ -438,7 +440,7 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                     ),
                   ),
                 if (id == 'power' || id == 'echo')
-                  Text(
+                  ResText(
                     _perfectNow(c, l, f),
                     key: Key('perfect-now-$id'),
                     style: const TextStyle(
@@ -505,7 +507,7 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                     ),
                   ),
                 const SizedBox(height: 8),
-                Text(
+                ResText(
                   skillInfo(l, id),
                   key: const Key('skill-info-text'),
                   style: const TextStyle(fontSize: 14.5, height: 1.35),
@@ -516,6 +518,7 @@ Future<void> showSkillInfo(BuildContext context, GameController c, String id) {
                     key: const Key('skill-info-buy'),
                     label: maxed ? null : l.skillBuyLevel('${level + 1}'),
                     price: maxed ? l.skillMaxed : f.price(cost!),
+                    res: maxed ? null : Res.tiki,
                     enabled: cost != null && cost <= c.state.tiki,
                     minWidth: 160,
                     onPressed: () => c.buySkill(id),

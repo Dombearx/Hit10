@@ -159,7 +159,8 @@ void main() {
   test('the first paradox is a tip, not a goal (R-TUT-7)', () {
     final s = GameState()
       ..tutorialDone = true
-      ..earnedTotal = 1e8 // exactly 1 Chronon
+      ..earnedTotal =
+          1e8 // exactly 1 Chronon
       ..owned['grandpa'] = 10;
     final c = controller(s);
     expect(c.engine.canPrestige(), isTrue);
@@ -347,6 +348,7 @@ void main() {
   });
 
   Future<GameController> pump(WidgetTester tester, GameState s) async {
+    s.tipsSeen.add('prologue'); // it has its own test
     final c = controller(s);
     tester.view.physicalSize = const Size(1170, 2532);
     tester.view.devicePixelRatio = 3;
@@ -463,5 +465,85 @@ void main() {
     await tester.tap(find.byKey(const Key('help-replay')));
     await tester.pump(const Duration(milliseconds: 500));
     expect(s.tutorialDone, isFalse);
+  });
+
+  testWidgets('a new game opens with the prologue: the goal is Chronos', (
+    tester,
+  ) async {
+    final s = GameState();
+    final c = controller(s);
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          balanceProvider.overrideWithValue(balance),
+          gameControllerProvider.overrideWithValue(c),
+        ],
+        child: const Hit5App(locale: Locale('pl')),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.byKey(const Key('prologue')), findsOneWidget);
+    expect(find.text('Cel: kup Chronosa'), findsOneWidget);
+    // No picture drawn yet: the placeholder scene holds its place.
+    expect(find.byKey(const Key('story-placeholder-prologue')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('prologue-go')));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.byKey(const Key('prologue')), findsNothing);
+    expect(s.tipsSeen, contains('prologue'));
+    expect(c.prologuePending, isFalse);
+  });
+
+  test('no prologue for a game already under way', () {
+    expect(
+      controller(GameState()..tutorialDone = true).prologuePending,
+      isFalse,
+    );
+    expect(controller(GameState()..earnedTotal = 50).prologuePending, isFalse);
+    expect(controller(GameState()..prestiges = 1).prologuePending, isFalse);
+  });
+
+  testWidgets('help hides what the player has not met yet', (tester) async {
+    final s = GameState()..tutorialDone = true;
+    await pump(tester, s);
+    await tester.tap(find.byKey(const Key('open-help')));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.byKey(const Key('help-chronos')), findsOneWidget);
+    // No paradox, Mainsprings or loops yet: "???" instead.
+    expect(find.byKey(const Key('help-cyclone')), findsNothing);
+    expect(find.byKey(const Key('help-gear')), findsNothing);
+    expect(find.byKey(const Key('help-classical_building')), findsNothing);
+    expect(
+      find.byKey(const Key('help-locked-0'), skipOffstage: false),
+      findsOneWidget,
+    );
+    expect(
+      find.text(
+        'Graj dalej, aby odblokować nowe mechaniki',
+        skipOffstage: false,
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('after a paradox its card and the Mainsprings open', (
+    tester,
+  ) async {
+    final s = GameState()
+      ..tutorialDone = true
+      ..prestiges = 1
+      ..chronons = 3;
+    await pump(tester, s);
+    await tester.tap(find.byKey(const Key('open-help')));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.dragUntilVisible(
+      find.byKey(const Key('help-gear')),
+      find.byType(Scrollable).last,
+      const Offset(0, -200),
+    );
+    expect(find.byKey(const Key('help-cyclone')), findsOneWidget);
+    expect(find.byKey(const Key('help-gear')), findsOneWidget);
   });
 }

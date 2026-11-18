@@ -540,10 +540,24 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   który dymek, jak długo, jak zniknął, czy zasłania tarczę lub cel).
 - **R-TUT-4:** Czerwona kropka na zakładce Zegary / Umiejętności, gdy za
   nią jest coś, na co gracza stać (po samouczku).
+- **R-TUT-0 (prolog):** przed pierwszą rundą nowej gry (bez Tików,
+  paradoksu i ukończonej pętli) jedno okno z prologiem: Chronos tyka na
+  najwyższej półce sklepu z metką z ceną, Dziadek proponuje go kupić za
+  Tiki. Pod tekstem cel jednym zdaniem: „Cel: kup Chronosa”. Pokazuje się
+  raz; prolog jest też pierwszym wpisem rozdziałów w Kronice (zawsze
+  otwarty). Playtest: fabuła zaczynała się dopiero po pierwszej pętli, więc
+  nic nie mówiło, do czego gra prowadzi.
 - **R-TUT-5:** Przycisk „?” w nagłówku otwiera „Jak grać”: zwijana lista
-  (cel, Tiki, zegary, ulepszenia, umiejętności, seria, Złota Sekunda,
-  przełączniki, wydarzenia, paradoks, ikony nagłówka) — same tytuły,
-  dotknięcie rozwija opis — plus „Pokaż samouczek od nowa”.
+  (cel gry, runda, Tiki, zasoby, zegary, seria, bonusy zegarów,
+  umiejętności, Złota Sekunda, przełączniki, wydarzenia, paradoks,
+  Sprężyny, pętla czasu, tarcze, ikony nagłówka) — same tytuły,
+  dotknięcie rozwija opis — plus „Pokaż samouczek od nowa”. Opisy krótko
+  tłumaczą, jak działa system, nie doradzają strategii. Sekcje o rzeczach,
+  których gracz jeszcze nie spotkał (przełączniki przed odblokowaniem,
+  paradoks przed pierwszą możliwością cofnięcia, Sprężyny, pętla, tarcze,
+  wydarzenia poza sezonem), są zakryte: kłódka i „???”, a pod nimi „Graj
+  dalej, aby odblokować nowe mechaniki”. Sekcja „Zasoby” wymienia tylko
+  zasoby już spotkane.
 - **R-TUT-5a (powtórka):** „Pokaż samouczek od nowa” pokazuje wszystkie
   cztery kroki także graczowi, który ma już zegary: kroki nie wynikają
   wtedy ze stanu gry, tylko idą po kolei, każdy z przyciskiem OK (krok 1

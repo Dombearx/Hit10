@@ -5,6 +5,7 @@ import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
+import 'res_text.dart';
 
 /// One line over the shop: what to aim for next, with its progress as the
 /// pill's fill (R-TUT-7), for the whole game.
@@ -82,7 +83,7 @@ class NextGoalBar extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Text(
+                    child: ResText(
                       text,
                       maxLines: 1,
                       style: const TextStyle(
