@@ -396,12 +396,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       ListenableBuilder(
                         key: CoachTargets.combo,
                         listenable: controller,
-                        // A little air above (the dial) and below (the
-                        // goal bar): playtest found them too close.
-                        builder: (context, _) => Padding(
-                          padding: const EdgeInsets.only(top: 4, bottom: 6),
-                          child: ComboMeter(controller: controller),
-                        ),
+                        builder: (context, _) =>
+                            ComboMeter(controller: controller),
                       ),
                       ListenableBuilder(
                         key: CoachTargets.modeRow,
