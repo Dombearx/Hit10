@@ -10,6 +10,7 @@ import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
 import '../widgets/res_text.dart';
 import 'sheet.dart';
+import '../widgets/story_art.dart';
 
 /// Time Loops (docs/13 §5.2): the ending of a loop, the confirmation of a
 /// new one, and the Chronicle (chapters, seals, the rules).
@@ -260,8 +261,10 @@ class _LoopEnd extends StatelessWidget {
                                 fontSize: 17,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
+                            const SizedBox(height: 8),
+                            StoryArt('chapter_${s.loop}'),
+                            const SizedBox(height: 8),
+                            ResText(
                               chapter.$2,
                               style: const TextStyle(
                                 fontSize: 14.5,
@@ -498,7 +501,9 @@ class _Chronicle extends StatelessWidget {
                 l.chroniclePrologue,
                 style: const TextStyle(fontFamily: Fonts.display, fontSize: 16),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 8),
+              const StoryArt('prologue'),
+              const SizedBox(height: 8),
               ResText(
                 l.prologue,
                 style: const TextStyle(fontSize: 14.5, height: 1.35),
@@ -523,7 +528,9 @@ class _Chronicle extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 8),
+                      StoryArt('chapter_$n'),
+                      const SizedBox(height: 8),
                       ResText(
                         chapterTexts(l, n)!.$2,
                         style: const TextStyle(fontSize: 14.5, height: 1.35),

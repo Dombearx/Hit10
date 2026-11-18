@@ -5,8 +5,8 @@ import 'catalog.dart';
 import 'game_controller.dart';
 import 'theme.dart';
 import 'widgets/buy_button.dart';
-import 'widgets/emoji_card.dart';
 import 'widgets/res_text.dart';
+import 'widgets/story_art.dart';
 
 /// The story before the first round (playtest: the Chronicle only started
 /// after the first loop, so nothing said what the game was heading for).
@@ -42,14 +42,7 @@ Future<void> showPrologue(BuildContext context, GameController c) {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          EmojiCard(art: generatorArt['grandpa']!, size: 60),
-                          const SizedBox(width: 14),
-                          EmojiCard(art: generatorArt['chronos']!, size: 76),
-                        ],
-                      ),
+                      const StoryArt('prologue'),
                       const SizedBox(height: 12),
                       Text(
                         l.prologue_t,

@@ -206,6 +206,14 @@ zostały te same (`trophy`, `fire`…).
   elementy ekranu głównego nie stykają się (playtest: dół tarczy dotykał
   napisu COMBO).
 
+- **U-33:** **Ilustracje fabuły:** prolog i każdy z siedmiu rozdziałów ma
+  ilustrację 16:9 (zaokrąglona ramka z konturem) nad tekstem — w oknie
+  prologu, w Kronice i w zakończeniu pętli. Plik
+  `app/assets/story/<id>.jpg` (`prologue`, `chapter_1` … `chapter_7`).
+  Dopóki pliku nie ma, w tym miejscu stoi placeholder: postacie rozdziału
+  (karty z ikonami) na miękkim gradiencie w kolorze sceny. Dodanie
+  obrazka nie wymaga zmian w kodzie (docs/10, „Ilustracje fabuły”).
+
 ### 4.3 Grafika AI (po wydaniu, opcjonalnie)
 Nie jest potrzebna do 1.0. Jeśli dojdzie, zastępuje emoji w tych samych
 kartach (U-10), więc kod się nie zmienia. Wspólny szablon promptu:

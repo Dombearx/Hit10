@@ -487,6 +487,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
     expect(find.byKey(const Key('prologue')), findsOneWidget);
     expect(find.text('Cel: kup Chronosa'), findsOneWidget);
+    // No picture drawn yet: the placeholder scene holds its place.
+    expect(find.byKey(const Key('story-placeholder-prologue')), findsOneWidget);
     await tester.tap(find.byKey(const Key('prologue-go')));
     await tester.pump(const Duration(milliseconds: 500));
     expect(find.byKey(const Key('prologue')), findsNothing);
