@@ -56,6 +56,12 @@ class _Help extends StatelessWidget {
         started || s.skills.isNotEmpty,
       ),
       sec('glowing_star', l.help_golden_t, l.help_golden, started),
+      sec(
+        'bullseye',
+        l.help_challenges_t,
+        l.help_challenges,
+        s.challenges.isNotEmpty,
+      ),
       sec('see_no_evil_monkey', l.help_modes_t, l.help_modes, modes),
       sec(
         'wrapped_gift',

@@ -73,7 +73,7 @@ void main() {
         ..lastSeenMs = now - 3600 * 1000,
     );
     final shown = first.pendingOffline!.amount;
-    first.background(title: (a) => a); // closed without collecting
+    first.background(texts: testReminderTexts); // closed without collecting
     await first.save();
     now += 5000; // reopened a few seconds later
     final again = open(saveFromJsonString(store.main!).state);

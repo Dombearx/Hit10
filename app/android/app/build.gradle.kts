@@ -24,6 +24,12 @@ val admobAppId = System.getenv("ADMOB_APP_ID")
     ?: (project.findProperty("ADMOB_APP_ID") as String?)
     ?: "ca-app-pub-3940256099942544~3347511713"
 
+// Play Games project id for the cloud save (docs/05 T-35): empty unless
+// the release build passes it; the game then never calls Play Games.
+val playGamesAppId = System.getenv("PLAY_GAMES_APP_ID")
+    ?: (project.findProperty("PLAY_GAMES_APP_ID") as String?)
+    ?: ""
+
 android {
     namespace = "io.github.dombearx.hit10"
     compileSdk = flutter.compileSdkVersion
@@ -48,6 +54,13 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         manifestPlaceholders["admobAppId"] = admobAppId
+        // A string resource, not a placeholder: a number in a manifest
+        // meta-data value would be read as an integer.
+        resValue("string", "play_games_app_id", playGamesAppId)
+    }
+
+    buildFeatures {
+        resValues = true
     }
 
     signingConfigs {

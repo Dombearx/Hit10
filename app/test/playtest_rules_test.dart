@@ -134,7 +134,26 @@ void main() {
         expect(d.day, i % 7 + 1);
         e.claimDaily(d);
       }
-      expect(e.dailyFor(plus(9))!.day, 1); // skipped day 8
+      expect(e.dailyFor(plus(10))!.day, 1); // two days missed
+    });
+
+    test('one missed day a week keeps the streak (R-DZIEN-3)', () {
+      s.tutorialDone = true;
+      e.claimDaily(e.dailyFor(plus(0))!);
+      e.claimDaily(e.dailyFor(plus(1))!);
+      // Day 3 missed: the grace day keeps the streak.
+      final graced = e.dailyFor(plus(3))!;
+      expect(graced.grace, isTrue);
+      expect(graced.day, 3);
+      e.claimDaily(graced);
+      // Another missed day in the same week: the streak starts over.
+      final again = e.dailyFor(plus(5))!;
+      expect(again.grace, isFalse);
+      expect(again.day, 1);
+      e.claimDaily(again);
+      // A new week brings the grace day back.
+      e.claimDaily(e.dailyFor(plus(6))!);
+      expect(e.dailyFor(plus(8))!.grace, isTrue);
     });
 
     test('pays minutes of passive income once the clocks earn', () {

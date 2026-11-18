@@ -84,6 +84,8 @@ class _DiagnosticsPanelState extends State<DiagnosticsPanel>
           ),
           Text(
             'input jitter ${d.jitterMs.toStringAsFixed(2)} ms (${d.samples})  '
+            'corrected ≤${d.maxWaitMs.toStringAsFixed(1)} ms  '
+            'offset ${(widget.controller.inputOffsetSeconds * 1000).round()} ms  '
             'frame avg ${avgFrame.toStringAsFixed(1)} max ${maxFrame.toStringAsFixed(1)} ms '
             '(${avgFrame > 0 ? (1000 / avgFrame).round() : 0} fps)',
             style: style,

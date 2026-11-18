@@ -9,6 +9,9 @@ import 'game_screen.dart';
 import 'providers.dart';
 import 'theme.dart';
 
+/// The most the system's text size may enlarge the game (docs/04 U-35).
+const maxTextScale = 1.3;
+
 class Hit5App extends ConsumerWidget {
   const Hit5App({super.key, this.locale});
 
@@ -42,7 +45,13 @@ class Hit5App extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       // Tablets (M-9): the phone layout, scaled up to fill the screen.
-      builder: (context, child) => TabletScale(child: child!),
+      // Large system text (docs/04 U-35) grows up to ×1.3: a game screen
+      // is laid out to the pixel, and beyond that its numbers would not
+      // fit a phone; dialogs and help scroll.
+      builder: (context, child) => MediaQuery.withClampedTextScaling(
+        maxScaleFactor: maxTextScale,
+        child: TabletScale(child: child!),
+      ),
       home: const GameScreen(),
     );
   }

@@ -1313,7 +1313,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String notificationTitle(String amount) {
-    return 'Twoje zegary uzbierały $amount Tików! Wracaj po więcej.';
+    return 'Twoje zegary uzbierały $amount Tików!';
   }
 
   @override
@@ -1332,14 +1332,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settingsHaptics => 'Wibracje';
 
   @override
-  String get settingsNotifications => 'Powiadom, gdy zegary uzbierają limit';
+  String get settingsNotifications => 'Powiadomienia';
 
   @override
   String get settingsAnalytics => 'Wysyłaj statystyki gry';
 
   @override
   String get settingsAnalyticsHint =>
-      'Pomagają nam dopracować grę. Bez konta, imienia i identyfikatora reklamowego.';
+      'Statystyki rozgrywki i raporty o awariach pomagają nam dopracować grę. Bez konta, imienia i identyfikatora reklamowego.';
 
   @override
   String get settingsLanguage => 'Język';
@@ -2103,7 +2103,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String dailyHint(int total) {
-    return 'Wracaj codziennie — przez $total dni premia rośnie. Przerwa zaczyna od nowa.';
+    return 'Wracaj codziennie — przez $total dni premia rośnie. Jeden dzień przerwy w tygodniu seria wybacza.';
   }
 
   @override
@@ -3098,7 +3098,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get notificationAskBody =>
-      'Zegary zarabiają, gdy gra jest zamknięta — ale tylko do limitu czasu. Wyślemy jedno powiadomienie, gdy go osiągną.';
+      'Zegary zarabiają, gdy gra jest zamknięta — ale tylko do limitu czasu. Damy znać, gdy go osiągną, i przypomnimy o dziennej premii. Najwyżej dwa powiadomienia, nigdy w nocy.';
 
   @override
   String get notificationAskYes => 'Tak, daj znać';
@@ -3121,4 +3121,330 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get chroniclePrologue => 'Prolog';
+
+  @override
+  String get calibTitle => 'Kalibracja';
+
+  @override
+  String get calibIntro =>
+      'Każdy telefon trochę spóźnia dotyk i obraz. Dotknij 10 razy, gdy stoper pokaże 5.00: gra zmierzy, o ile zwykle się spóźniasz, i od teraz będzie to odejmować. Twoja precyzja zostaje twoja — znika tylko stałe opóźnienie.';
+
+  @override
+  String calibCurrent(String offset) {
+    return 'Obecne przesunięcie: $offset';
+  }
+
+  @override
+  String get calibStart => 'Zacznij';
+
+  @override
+  String get calibTapHint => 'Dotknij na 5.00';
+
+  @override
+  String get calibNoTap => 'Bez dotknięcia — jeszcze raz';
+
+  @override
+  String calibResultLate(int ms) {
+    return 'Twoje dotknięcia są liczone średnio $ms ms po czasie.';
+  }
+
+  @override
+  String calibResultEarly(int ms) {
+    return 'Twoje dotknięcia są liczone średnio $ms ms przed czasem.';
+  }
+
+  @override
+  String get calibResultZero =>
+      'Twoje dotknięcia trafiają średnio w punkt — przesunięcie nie jest potrzebne.';
+
+  @override
+  String get calibUnreliable =>
+      'Wyniki są mocno rozrzucone. Powtórz test spokojnie, patrząc na cyfry.';
+
+  @override
+  String calibApply(String offset) {
+    return 'Zastosuj ($offset)';
+  }
+
+  @override
+  String get calibRepeat => 'Powtórz';
+
+  @override
+  String get calibReset => 'Wyzeruj';
+
+  @override
+  String settingsCalibration(String offset) {
+    return 'Kalibracja opóźnienia: $offset';
+  }
+
+  @override
+  String settingsCalibrationHint(String offset) {
+    return 'Twoje ostatnie dotknięcia to średnio $offset — kalibracja może pomóc.';
+  }
+
+  @override
+  String get adShowFailed =>
+      'Nie udało się wyświetlić reklamy — bez nagrody, ale oferta na ciebie czeka. Spróbuj za chwilę.';
+
+  @override
+  String get welcomeTitle => 'Witaj z powrotem!';
+
+  @override
+  String get collectAll => 'Odbierz wszystko';
+
+  @override
+  String welcomeSeason(String season) {
+    return 'Trwa wydarzenie: $season! Postęp pokazuje plakietka u góry.';
+  }
+
+  @override
+  String get dailyGrace =>
+      'Ominął cię jeden dzień — dzień łaski tego tygodnia uratował serię.';
+
+  @override
+  String get statsAskTitle => 'Pomożesz dopracować grę?';
+
+  @override
+  String get statsAskBody =>
+      'Czy gra może wysyłać anonimowe statystyki rozgrywki i raporty o awariach? Bez konta, imienia i identyfikatora reklamowego. Zmienisz to w każdej chwili w ustawieniach.';
+
+  @override
+  String get statsAskYes => 'Tak, wysyłaj';
+
+  @override
+  String get statsAskNo => 'Nie, dziękuję';
+
+  @override
+  String get buyAmountNext => 'PRÓG';
+
+  @override
+  String get notificationOfflineBody =>
+      'Limit offline jest pełny: dalsze czekanie nic już nie dorzuci.';
+
+  @override
+  String notificationDailyTitle(int day, int days) {
+    return 'Dzienna premia czeka — dzień $day/$days';
+  }
+
+  @override
+  String get notificationDailyBody =>
+      'Wpadnij ją odebrać, żeby seria trwała dalej.';
+
+  @override
+  String get notificationReserveTitle => 'Zapas dokręcania pełny';
+
+  @override
+  String notificationReserveBody(String first) {
+    return 'Równe 5.00 znów nakręcają Sprężynę — pierwsze aż o $first.';
+  }
+
+  @override
+  String get settingsNotificationsHint =>
+      'Limit offline, dzienna premia, pełny zapas dokręcania. Najwyżej dwa naraz, nigdy w nocy.';
+
+  @override
+  String get cloudOfferTitle => 'Zapis w chmurze';
+
+  @override
+  String cloudOfferBody(
+    String cloudTime,
+    String cloudEarned,
+    String localTime,
+    String localEarned,
+  ) {
+    return 'W Google Play Gry jest zapis z większym postępem:\n• w chmurze: $cloudTime gry, $cloudEarned Tików łącznie\n• na tym telefonie: $localTime gry, $localEarned Tików łącznie\nWczytać zapis z chmury? Postęp z tego telefonu zostanie zastąpiony.';
+  }
+
+  @override
+  String get cloudLoad => 'Wczytaj z chmury';
+
+  @override
+  String get cloudKeep => 'Zostaw ten z telefonu';
+
+  @override
+  String get settingsCloud => 'Zapis w chmurze (Google Play Gry)';
+
+  @override
+  String get settingsCloudOn =>
+      'Połączono: gra zapisuje się w chmurze przy każdym wyjściu.';
+
+  @override
+  String get settingsCloudOff =>
+      'Zachowa postęp, gdy zmienisz albo zresetujesz telefon.';
+
+  @override
+  String get settingsCloudConnect => 'Połącz z Google Play Gry';
+
+  @override
+  String get settingsCloudRestore => 'Wczytaj z chmury';
+
+  @override
+  String get settingsCloudNothing =>
+      'W chmurze nie ma zapisu z większym postępem niż na tym telefonie.';
+
+  @override
+  String get challengesTitle => 'Wyzwania';
+
+  @override
+  String get challengesToday => 'Dzisiaj';
+
+  @override
+  String get challengesWeek => 'Ten tydzień';
+
+  @override
+  String get challengesRerollHint =>
+      'Dopasowane do twojej celności. Któreś nie pasuje? ↻ wymienia je — raz dziennie.';
+
+  @override
+  String get challengesNewTomorrow => 'Nowe o północy.';
+
+  @override
+  String challengesDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Zostało $days dni',
+      few: 'Zostały $days dni',
+      one: 'Ostatni dzień',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chGreat(int n) {
+    return 'Traf ŚWIETNIE lub lepiej $n razy';
+  }
+
+  @override
+  String chStreak(int n) {
+    return 'Dojdź do serii $n';
+  }
+
+  @override
+  String chJackpot(int n) {
+    return 'Zatrzymaj stoper równo na 5.00 ($n×)';
+  }
+
+  @override
+  String chPerfectWindow(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n PERFEKTÓW',
+      few: '$n PERFEKTY',
+      one: '1 PERFEKT',
+    );
+    return '$_temp0 w 10 kolejnych rundach';
+  }
+
+  @override
+  String chHitEarnings(String amount) {
+    return 'Zarób trafieniami $amount Tików';
+  }
+
+  @override
+  String chBuyClocks(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n zegarów',
+      few: '$n zegary',
+      one: '1 zegar',
+    );
+    return 'Kup $_temp0';
+  }
+
+  @override
+  String chMilestones(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n bonusów zegarów',
+      few: '$n bonusy zegarów',
+      one: 'bonus zegara',
+    );
+    return 'Zdobądź $_temp0';
+  }
+
+  @override
+  String chSkillLevels(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n poziomów',
+      few: '$n poziomy',
+      one: '1 poziom',
+    );
+    return 'Kup $_temp0 umiejętności';
+  }
+
+  @override
+  String chGolden(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n Złotych Sekund',
+      few: '$n Złote Sekundy',
+      one: 'Złotą Sekundę',
+    );
+    return 'Złap $_temp0';
+  }
+
+  @override
+  String chSpring(String hours) {
+    return 'Nakręć Sprężynę o $hours h trafieniami równo w 5.00';
+  }
+
+  @override
+  String get challengeClaimed => 'Odebrane';
+
+  @override
+  String get challengeReroll => 'Wylosuj inne (raz dziennie)';
+
+  @override
+  String challengeBonus(int done, int total) {
+    return 'Wszystkie trzy dzisiaj: $done/$total';
+  }
+
+  @override
+  String get challengeBonusDone => 'Dziś wszystkie trzy — brawo!';
+
+  @override
+  String challengeBonusPaid(String amount) {
+    return 'Wszystkie trzy dzisiaj! Premia +$amount Tików';
+  }
+
+  @override
+  String challengeDone(String what) {
+    return 'Wyzwanie ukończone: $what';
+  }
+
+  @override
+  String get challengeOpen => 'Odbierz';
+
+  @override
+  String challengeCarry(String what) {
+    return 'Nagrody za wczorajsze ukończone wyzwania: $what';
+  }
+
+  @override
+  String challengeCarrySprings(int n) {
+    return '+$n Sprężyna';
+  }
+
+  @override
+  String get tip_challenges =>
+      'Nowość: trzy wyzwania dziennie, dopasowane do twojej celności. Dotknij, by zobaczyć!';
+
+  @override
+  String get help_challenges_t => 'Wyzwania';
+
+  @override
+  String get help_challenges =>
+      'Codziennie trzy wyzwania, co tydzień jeszcze jedno — postęp widać na plakietce u góry. Liczby biorą się z twoich ostatnich dotknięć, więc są wyzwaniem przy każdej celności, a zwykle wystarczy kilka minut gry.\n• Każde dzienne płaci 10 minut dochodu zegarów, wszystkie trzy razem jeszcze 30.\n• Tygodniowe daje 1 Sprężynę (przed pierwszym paradoksem: godzinę dochodu).\n• Któreś nie pasuje? ↻ wymienia dzienne wyzwanie, raz dziennie.\n• Ukończone, ale nieodebrane? Wypłaca się samo, gdy przychodzą nowe — nic nie przepada.';
+
+  @override
+  String chPerfect(int n) {
+    return 'Traf PERFEKT $n razy';
+  }
 }

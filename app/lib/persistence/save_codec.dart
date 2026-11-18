@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:archive/archive.dart';
 
+import '../model/challenges.dart';
 import '../model/game_state.dart';
 import '../model/grading.dart';
 import '../model/number_format.dart';
@@ -110,6 +111,13 @@ Map<String, Object?> encodeSave(SaveData d) {
     'turboLeft': s.turboLeft,
     'dailyKey': s.dailyKey,
     'dailyStreak': s.dailyStreak,
+    'dailyGraceUsed': s.dailyGraceUsed,
+    'challengeDay': s.challengeDay,
+    'challengeWeek': s.challengeWeek,
+    'challengeRerollDay': s.challengeRerollDay,
+    'challengeBonusDay': s.challengeBonusDay,
+    'tutorialEndPlay': s.tutorialEndPlay,
+    'challenges': [for (final c in s.challenges) c.toJson()],
     'seasonKey': s.seasonKey,
     'seasonCatches': s.seasonCatches,
     'seasonHits': s.seasonHits,
@@ -165,6 +173,7 @@ Map<String, Object?> encodeSave(SaveData d) {
       'blindPerfects': l.blindPerfects,
       'bothClocksPerfects': l.bothClocksPerfects,
       'dailyClaims': l.dailyClaims,
+      'challengesDone': l.challengesDone,
       'shieldSaves': l.shieldSaves,
       'goldenFast': l.goldenFast,
       'goldenInFrenzy': l.goldenInFrenzy,
@@ -181,6 +190,8 @@ Map<String, Object?> encodeSave(SaveData d) {
       'reduceMotion': st.reduceMotion,
       'notifications': st.notifications,
       'analytics': st.analytics,
+      'analyticsAsked': st.analyticsAsked,
+      'inputOffsetMs': st.inputOffsetMs,
     },
   };
 }
@@ -242,6 +253,12 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..turboLeft = _d(j['turboLeft'])
     ..dailyKey = _i(j['dailyKey'])
     ..dailyStreak = _i(j['dailyStreak'])
+    ..dailyGraceUsed = j['dailyGraceUsed'] == true
+    ..challengeDay = _i(j['challengeDay'])
+    ..challengeWeek = _i(j['challengeWeek'])
+    ..challengeRerollDay = _i(j['challengeRerollDay'])
+    ..challengeBonusDay = _i(j['challengeBonusDay'])
+    ..tutorialEndPlay = _d(j['tutorialEndPlay'])
     ..seasonKey = j['seasonKey'] is String ? j['seasonKey']! as String : ''
     ..seasonCatches = _i(j['seasonCatches'])
     ..seasonHits = _i(j['seasonHits'])
@@ -268,6 +285,10 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..dial = j['dial'] is String ? j['dial']! as String : ''
     // A save from before the counter: this run's taps are unknown.
     ..runTaps = j.containsKey('runTaps') ? _i(j['runTaps']) : 1 << 30;
+  final challenges = j['challenges'];
+  if (challenges is List) {
+    s.challenges.addAll(challenges.map(Challenge.fromJson).nonNulls);
+  }
   s.seasonsDone.addAll(_sl(j['seasonsDone']));
   _m(j['seasonStash']).forEach((k, v) {
     if (v is List && v.length == 2) s.seasonStash[k] = [_i(v[0]), _i(v[1])];
@@ -329,6 +350,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..blindPerfects = _i(l['blindPerfects'])
     ..bothClocksPerfects = _i(l['bothClocksPerfects'])
     ..dailyClaims = _i(l['dailyClaims'])
+    ..challengesDone = _i(l['challengesDone'])
     ..shieldSaves = _i(l['shieldSaves'])
     ..goldenFast = _i(l['goldenFast'])
     ..goldenInFrenzy = _i(l['goldenInFrenzy'])
@@ -346,7 +368,10 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
         : Notation.short
     ..reduceMotion = st['reduceMotion'] == true
     ..notifications = st['notifications'] != false
-    ..analytics = st['analytics'] != false;
+    ..analytics = st['analytics'] != false
+    // Turned off before the question existed: that was an answer.
+    ..analyticsAsked = st['analyticsAsked'] == true || st['analytics'] == false
+    ..inputOffsetMs = _d(st['inputOffsetMs']).clamp(-150.0, 250.0);
   if (s.tiki < 0 || s.earnedTotal < 0) {
     throw SaveFormatException('negative money');
   }

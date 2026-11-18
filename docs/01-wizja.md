@@ -3,7 +3,7 @@
 ## Jednym zdaniem
 
 **Hit5** to mobilna gra typu idle/clicker, w której trzeba dotknąć ekranu,
-gdy stoper pokaże **równo 10.00 s**. Za trafienia dostajesz **Tiki**, za Tiki
+gdy stoper pokaże **równo 5.00 s**. Za trafienia dostajesz **Tiki**, za Tiki
 kupujesz umiejętności i coraz dokładniejsze „zegary”, które grają za ciebie.
 Wzorem jest Cookie Clicker. Różnica: tutaj liczy się wyczucie czasu, a nie
 szybkość klikania.
@@ -40,12 +40,14 @@ Sekunda, tryby ryzyka, osiągnięcia, prestiż, dochód offline, zapis stanu,
 samouczek, ustawienia. Do tego oprawa z [04-ekrany-i-oprawa.md](04-ekrany-i-oprawa.md).
 
 **Poza zakresem 1.0 (świadomie):**
-- Żadnego backendu, kont, logowania ani synchronizacji w chmurze. Gra działa
-  w 100% offline na telefonie.
+- Żadnego własnego backendu ani kont. Gra działa w 100% offline na
+  telefonie. Zapis w chmurze idzie przez Google Play Gry (darmowe, konto
+  Google gracza, 05 T-35).
 - Rankingi, wydarzenia, zakupy w aplikacji.
 - Zbieranie danych o graczach. Wyjątki: reklamy w M6 (ze zgodą
-  użytkownika) i statystyki rozgrywki w Firebase Analytics, bez
-  identyfikatora reklamowego i z możliwością wyłączenia w ustawieniach
+  użytkownika) oraz statystyki rozgrywki (Firebase Analytics) i raporty
+  o awariach (Crashlytics), bez identyfikatora reklamowego; w EOG dopiero
+  po zgodzie, wszędzie z możliwością wyłączenia w ustawieniach
   ([05 §8a](05-technika.md)).
 
 **Monetyzacja (etap M6, przed wydaniem):** wyłącznie **reklamy nagradzane**,

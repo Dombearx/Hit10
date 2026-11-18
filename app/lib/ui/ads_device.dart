@@ -21,12 +21,20 @@ RewardedAds createRewardedAds() =>
     : FakeRewardedAds();
 
 /// Rewarded ads from AdMob behind the game's [RewardedAds] door (T-26).
-/// Asks for consent first (UMP), keeps one ad loaded, and reports not
-/// ready instead of making anyone wait (T-27).
+/// At launch it only checks whether consent is needed (UMP asks for that
+/// on every launch); the consent form waits for [askConsentIfNeeded],
+/// after the tutorial. Keeps one ad loaded, replaces it before AdMob's
+/// one-hour limit, and reports not ready instead of making anyone wait
+/// (T-27).
 class AdMobRewardedAds implements RewardedAds, AdPrivacy {
   AdMobRewardedAds({required this.unitId});
 
   final String unitId;
+
+  /// A loaded ad is good for about an hour; one shown later may fail or not
+  /// count. Replaced a little before.
+  static const adLifetime = Duration(minutes: 55);
+
   RewardedAd? _adValue;
   RewardedAd? get _ad => _adValue;
   set _ad(RewardedAd? v) {
@@ -34,10 +42,13 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
     _notify();
   }
 
+  Timer? _expiry;
+
   final _changes = StreamController<bool>.broadcast();
 
-  /// Consent and SDK start, before the first load.
+  /// This launch's consent check, before anything else.
   bool _starting = true;
+  final _checked = Completer<void>();
 
   @override
   bool get isLoading => _ad == null && (_starting || _loading);
@@ -60,10 +71,12 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
   }
 
   bool _canRequest = false;
+  bool _initialized = false;
   int _failures = 0;
 
-  /// Consent, SDK start, first load. Never throws; without consent or
-  /// network the offers simply stay greyed out.
+  /// The consent check (no form), then the SDK when consent is already
+  /// there or not needed. Never throws; without consent or network the
+  /// offers simply stay greyed out.
   Future<void> start() async {
     try {
       final updated = Completer<void>();
@@ -73,21 +86,53 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
         (_) => updated.complete(),
       );
       await updated.future;
-      await ConsentForm.loadAndShowConsentFormIfRequired((_) {});
-      _canRequest = await ConsentInformation.instance.canRequestAds();
-      if (!_canRequest) return;
-      await MobileAds.instance.initialize();
-      _load();
+      await _startIfAllowed();
     } on Object catch (e) {
       debugPrint('ads unavailable: $e');
     } finally {
       _starting = false;
+      if (!_checked.isCompleted) _checked.complete();
       _notify();
     }
   }
 
+  Future<void> _startIfAllowed() async {
+    _canRequest = await ConsentInformation.instance.canRequestAds();
+    if (!_canRequest) return;
+    if (!_initialized) {
+      await MobileAds.instance.initialize();
+      _initialized = true;
+    }
+    _load();
+  }
+
+  @override
+  Future<bool?> consentRequired() async {
+    await _checked.future;
+    try {
+      return switch (await ConsentInformation.instance.getConsentStatus()) {
+        ConsentStatus.notRequired => false,
+        ConsentStatus.required || ConsentStatus.obtained => true,
+        _ => null,
+      };
+    } on Object {
+      return null;
+    }
+  }
+
+  @override
+  Future<void> askConsentIfNeeded() async {
+    await _checked.future;
+    try {
+      await ConsentForm.loadAndShowConsentFormIfRequired((_) {});
+      await _startIfAllowed();
+    } on Object catch (e) {
+      debugPrint('consent form failed: $e');
+    }
+  }
+
   void _load() {
-    if (_loading || _ad != null || !_canRequest) return;
+    if (_loading || _ad != null || !_canRequest || !_initialized) return;
     _loading = true;
     RewardedAd.load(
       adUnitId: unitId,
@@ -97,6 +142,13 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
           _ad = ad;
           _loading = false;
           _failures = 0;
+          _expiry?.cancel();
+          _expiry = Timer(adLifetime, () {
+            if (_ad != ad) return;
+            _ad = null;
+            ad.dispose();
+            _load();
+          });
         },
         onAdFailedToLoad: (error) {
           _loading = false;
@@ -113,39 +165,43 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
   bool get isReady => _ad != null;
 
   @override
-  Future<bool> show() async {
+  Future<AdResult> show() async {
     final ad = _ad;
     if (ad == null) {
       _load();
-      return false;
+      return AdResult.failed;
     }
     _ad = null;
+    _expiry?.cancel();
     var earned = false;
     var closed = false;
-    final done = Completer<bool>();
+    final done = Completer<AdResult>();
     void finish(Ad a, {bool failed = false}) {
       closed = true;
       a.dispose();
       _load();
       if (done.isCompleted) return;
-      if (earned || failed) {
-        done.complete(earned);
+      if (earned) {
+        done.complete(AdResult.earned);
+        return;
+      }
+      if (failed) {
+        done.complete(AdResult.failed);
         return;
       }
       // On some devices the reward callback lands just after the ad is
       // closed: wait a moment for it before calling the ad unwatched
       // (playtest 25: a watched rescue gave nothing).
       Timer(const Duration(milliseconds: 1500), () {
-        if (!done.isCompleted) done.complete(earned);
+        if (!done.isCompleted) {
+          done.complete(earned ? AdResult.earned : AdResult.closedEarly);
+        }
       });
     }
 
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: finish,
-      onAdFailedToShowFullScreenContent: (a, _) {
-        earned = false;
-        finish(a, failed: true);
-      },
+      onAdFailedToShowFullScreenContent: (a, _) => finish(a, failed: true),
     );
     try {
       // R-AD-3: the reward counts only once the network says it was earned.
@@ -153,7 +209,7 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
         onUserEarnedReward: (_, _) {
           earned = true;
           // Late reward: the ad is already closed and waiting for it.
-          if (closed && !done.isCompleted) done.complete(true);
+          if (closed && !done.isCompleted) done.complete(AdResult.earned);
         },
       );
     } on Object catch (e) {
@@ -178,8 +234,7 @@ class AdMobRewardedAds implements RewardedAds, AdPrivacy {
   Future<void> showOptions() async {
     try {
       await ConsentForm.showPrivacyOptionsForm((_) {});
-      _canRequest = await ConsentInformation.instance.canRequestAds();
-      _load();
+      await _startIfAllowed();
     } on Object catch (e) {
       debugPrint('privacy options failed: $e');
     }

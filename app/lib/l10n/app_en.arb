@@ -1074,7 +1074,7 @@
   "help_prestige": "Once you've earned enough Ticks, the swirl at the top lights up. Rewinding time resets your Ticks, clocks and skills. In return you get:\n• Chronons — a permanent multiplier on all income; their number grows with the Ticks earned this loop\n• Shards of time — as many as Chronons; they pay for perks\nYou buy perks right after the rewind or later on the paradox screen. Chronons, Shards, perks and achievements stay.",
   "help_icons_t": "Icons at the top",
   "help_icons": "• Trophy — achievements (each: +1% income)\n• Chart — statistics\n• Dial — the stopwatch look\n• Question mark — this help\n• Gear — settings\n• Swirl — time paradox\n• Spiral — Mainsprings",
-  "notificationTitle": "Your clocks collected {amount} Ticks! Come back for more.",
+  "notificationTitle": "Your clocks collected {amount} Ticks!",
   "@notificationTitle": {
     "placeholders": {
       "amount": {
@@ -1087,9 +1087,9 @@
   "settingsSound": "Sound effects",
   "settingsMusic": "Music",
   "settingsHaptics": "Vibration",
-  "settingsNotifications": "Tell me when the clocks are full",
+  "settingsNotifications": "Notifications",
   "settingsAnalytics": "Send game statistics",
-  "settingsAnalyticsHint": "Helps us balance the game. No account, no name, no ad ID.",
+  "settingsAnalyticsHint": "Gameplay statistics and crash reports help us tune the game. No account, no name, no ad ID.",
   "settingsLanguage": "Language",
   "languageSystem": "System",
   "settingsNotation": "Numbers",
@@ -1346,7 +1346,7 @@
   "settingsAdPrivacy": "Ad privacy choices",
   "dailyTitle": "Daily bonus",
   "dailyDay": "Day {day} of {total}",
-  "dailyHint": "Come back every day — the bonus grows for {total} days. Missing one starts over.",
+  "dailyHint": "Come back every day — the bonus grows for {total} days. One missed day a week is forgiven.",
   "@dailyDay": {
     "placeholders": {
       "day": {
@@ -2037,12 +2037,286 @@
   "help_res_shard": "Shards of time — the currency of perks",
   "help_res_spring": "Mainsprings — clock mastery",
   "helpLocked": "Keep playing to unlock new mechanics",
-  "notificationAskBody": "Your clocks earn while the game is closed — but only up to a time limit. We'll send one notification when they reach it.",
+  "notificationAskBody": "Your clocks earn while the game is closed — but only up to a time limit. We'll tell you when they reach it and remind you of the daily bonus. Two notifications at most, never at night.",
   "notificationAskYes": "Yes, let me know",
   "notificationAskNo": "No, thanks",
   "prologue_t": "Prologue: The top shelf",
   "prologue": "In an old clock shop, on the very top shelf, ticks Chronos — the god of time. Someone stuck a price tag on him by mistake. The price has so many zeros that nobody has ever tried.\n\"We will,\" says Grandpa, tapping his pocket watch. \"Whoever buys Chronos learns his secret.\"\n\"And what do we pay with?\"\n\"Ticks. Stop the stopwatch on exactly 5.00 and the Ticks fall into your pocket. Ticks buy clocks, and clocks earn the next ones. Until one day we take Chronos off the shelf.\"",
   "prologueGoal": "Goal: buy Chronos",
   "prologueGo": "Let's go!",
-  "chroniclePrologue": "Prologue"
+  "chroniclePrologue": "Prologue",
+  "calibTitle": "Calibration",
+  "calibIntro": "Every phone registers touches and shows the picture a little late. Tap 10 times when the stopwatch shows 5.00: the game measures how late you usually are and takes that off from now on. Your precision stays yours — only the constant delay goes away.",
+  "calibCurrent": "Current offset: {offset}",
+  "@calibCurrent": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "calibStart": "Start",
+  "calibTapHint": "Tap at 5.00",
+  "calibNoTap": "No tap — again",
+  "calibResultLate": "Your taps register {ms} ms late on average.",
+  "@calibResultLate": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "calibResultEarly": "Your taps register {ms} ms early on average.",
+  "@calibResultEarly": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "calibResultZero": "Your taps land right on time — no offset needed.",
+  "calibUnreliable": "The taps were very scattered. Try again calmly, watching the digits.",
+  "calibApply": "Apply ({offset})",
+  "@calibApply": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "calibRepeat": "Again",
+  "calibReset": "Reset to 0 ms",
+  "settingsCalibration": "Input lag calibration: {offset}",
+  "@settingsCalibration": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsCalibrationHint": "Your recent taps average {offset} — calibrating may help.",
+  "@settingsCalibrationHint": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "adShowFailed": "The ad couldn't be shown — no reward, and the offer is still yours. Try again in a moment.",
+  "welcomeTitle": "Welcome back!",
+  "collectAll": "Collect all",
+  "welcomeSeason": "{season} is on! The badge at the top shows your progress.",
+  "@welcomeSeason": {
+    "placeholders": {
+      "season": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyGrace": "You missed a day — this week's grace day kept your streak.",
+  "statsAskTitle": "Help us tune the game?",
+  "statsAskBody": "May the game send anonymous gameplay statistics and crash reports? No account, no name, no ad ID. You can change this in the settings anytime.",
+  "statsAskYes": "Yes, send them",
+  "statsAskNo": "No, thanks",
+  "buyAmountNext": "BONUS",
+  "notificationOfflineBody": "The offline limit is full: from now on waiting earns nothing more.",
+  "notificationDailyTitle": "Daily bonus waiting — day {day}/{days}",
+  "@notificationDailyTitle": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationDailyBody": "Drop in to collect it and keep your streak going.",
+  "notificationReserveTitle": "Winding reserve full",
+  "notificationReserveBody": "Exact 5.00s wind your Mainspring again — the first one by {first}.",
+  "@notificationReserveBody": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsNotificationsHint": "The offline limit, the daily bonus, a full winding reserve. Two at most, never at night.",
+  "cloudOfferTitle": "Cloud save found",
+  "cloudOfferBody": "Google Play Games has a save with more progress:\n• in the cloud: {cloudTime} played, {cloudEarned} Ticks earned\n• on this phone: {localTime} played, {localEarned} Ticks earned\nLoad the cloud save? This phone's progress will be replaced.",
+  "@cloudOfferBody": {
+    "placeholders": {
+      "cloudTime": {
+        "type": "String"
+      },
+      "cloudEarned": {
+        "type": "String"
+      },
+      "localTime": {
+        "type": "String"
+      },
+      "localEarned": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudLoad": "Load from the cloud",
+  "cloudKeep": "Keep this phone's",
+  "settingsCloud": "Cloud save (Google Play Games)",
+  "settingsCloudOn": "Connected: the game saves to the cloud whenever you leave it.",
+  "settingsCloudOff": "Keeps your progress when you change or reset your phone.",
+  "settingsCloudConnect": "Connect Google Play Games",
+  "settingsCloudRestore": "Load from the cloud",
+  "settingsCloudNothing": "The cloud has no save with more progress than this phone.",
+  "challengesTitle": "Challenges",
+  "challengesToday": "Today",
+  "challengesWeek": "This week",
+  "challengesRerollHint": "Sized to your aim. Don't like one? ↻ swaps it — once a day.",
+  "challengesNewTomorrow": "New ones at midnight.",
+  "challengesDaysLeft": "{days, plural, =1{Last day} other{{days} days left}}",
+  "@challengesDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "chGreat": "Hit GREAT or better {n} times",
+  "@chGreat": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chStreak": "Reach a streak of {n}",
+  "@chStreak": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chJackpot": "Stop the watch at exactly 5.00 ({n}×)",
+  "@chJackpot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chPerfectWindow": "{n, plural, =1{1 PERFECT} other{{n} PERFECTs}} within 10 rounds in a row",
+  "@chPerfectWindow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chHitEarnings": "Earn {amount} Ticks from hits",
+  "@chHitEarnings": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chBuyClocks": "Buy {n, plural, =1{1 clock} other{{n} clocks}}",
+  "@chBuyClocks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chMilestones": "Earn {n, plural, =1{a clock bonus} other{{n} clock bonuses}}",
+  "@chMilestones": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chSkillLevels": "Buy {n, plural, =1{1 skill level} other{{n} skill levels}}",
+  "@chSkillLevels": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chGolden": "Catch {n, plural, =1{a Golden Second} other{{n} Golden Seconds}}",
+  "@chGolden": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chSpring": "Wind the Mainspring {hours} h with exact 5.00s",
+  "@chSpring": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "challengeClaimed": "Claimed",
+  "challengeReroll": "Swap for another (once a day)",
+  "challengeBonus": "All three today: {done}/{total}",
+  "@challengeBonus": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "challengeBonusDone": "All three done today — well played!",
+  "challengeBonusPaid": "All three today! Bonus +{amount} Ticks",
+  "@challengeBonusPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "challengeDone": "Challenge done: {what}",
+  "@challengeDone": {
+    "placeholders": {
+      "what": {
+        "type": "String"
+      }
+    }
+  },
+  "challengeOpen": "Claim",
+  "challengeCarry": "Yesterday's finished challenges paid out: {what}",
+  "@challengeCarry": {
+    "placeholders": {
+      "what": {
+        "type": "String"
+      }
+    }
+  },
+  "challengeCarrySprings": "+{n} Mainspring",
+  "@challengeCarrySprings": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "tip_challenges": "New: three challenges a day, sized to your aim. Tap to see them!",
+  "help_challenges_t": "Challenges",
+  "help_challenges": "Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don't like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.",
+  "chPerfect": "Hit PERFECT {n} times",
+  "@chPerfect": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }

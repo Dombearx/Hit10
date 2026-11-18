@@ -1316,7 +1316,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String notificationTitle(String amount) {
-    return 'Your clocks collected $amount Ticks! Come back for more.';
+    return 'Your clocks collected $amount Ticks!';
   }
 
   @override
@@ -1335,14 +1335,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsHaptics => 'Vibration';
 
   @override
-  String get settingsNotifications => 'Tell me when the clocks are full';
+  String get settingsNotifications => 'Notifications';
 
   @override
   String get settingsAnalytics => 'Send game statistics';
 
   @override
   String get settingsAnalyticsHint =>
-      'Helps us balance the game. No account, no name, no ad ID.';
+      'Gameplay statistics and crash reports help us tune the game. No account, no name, no ad ID.';
 
   @override
   String get settingsLanguage => 'Language';
@@ -2105,7 +2105,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dailyHint(int total) {
-    return 'Come back every day — the bonus grows for $total days. Missing one starts over.';
+    return 'Come back every day — the bonus grows for $total days. One missed day a week is forgiven.';
   }
 
   @override
@@ -3095,7 +3095,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationAskBody =>
-      'Your clocks earn while the game is closed — but only up to a time limit. We\'ll send one notification when they reach it.';
+      'Your clocks earn while the game is closed — but only up to a time limit. We\'ll tell you when they reach it and remind you of the daily bonus. Two notifications at most, never at night.';
 
   @override
   String get notificationAskYes => 'Yes, let me know';
@@ -3118,4 +3118,324 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chroniclePrologue => 'Prologue';
+
+  @override
+  String get calibTitle => 'Calibration';
+
+  @override
+  String get calibIntro =>
+      'Every phone registers touches and shows the picture a little late. Tap 10 times when the stopwatch shows 5.00: the game measures how late you usually are and takes that off from now on. Your precision stays yours — only the constant delay goes away.';
+
+  @override
+  String calibCurrent(String offset) {
+    return 'Current offset: $offset';
+  }
+
+  @override
+  String get calibStart => 'Start';
+
+  @override
+  String get calibTapHint => 'Tap at 5.00';
+
+  @override
+  String get calibNoTap => 'No tap — again';
+
+  @override
+  String calibResultLate(int ms) {
+    return 'Your taps register $ms ms late on average.';
+  }
+
+  @override
+  String calibResultEarly(int ms) {
+    return 'Your taps register $ms ms early on average.';
+  }
+
+  @override
+  String get calibResultZero =>
+      'Your taps land right on time — no offset needed.';
+
+  @override
+  String get calibUnreliable =>
+      'The taps were very scattered. Try again calmly, watching the digits.';
+
+  @override
+  String calibApply(String offset) {
+    return 'Apply ($offset)';
+  }
+
+  @override
+  String get calibRepeat => 'Again';
+
+  @override
+  String get calibReset => 'Reset to 0 ms';
+
+  @override
+  String settingsCalibration(String offset) {
+    return 'Input lag calibration: $offset';
+  }
+
+  @override
+  String settingsCalibrationHint(String offset) {
+    return 'Your recent taps average $offset — calibrating may help.';
+  }
+
+  @override
+  String get adShowFailed =>
+      'The ad couldn\'t be shown — no reward, and the offer is still yours. Try again in a moment.';
+
+  @override
+  String get welcomeTitle => 'Welcome back!';
+
+  @override
+  String get collectAll => 'Collect all';
+
+  @override
+  String welcomeSeason(String season) {
+    return '$season is on! The badge at the top shows your progress.';
+  }
+
+  @override
+  String get dailyGrace =>
+      'You missed a day — this week\'s grace day kept your streak.';
+
+  @override
+  String get statsAskTitle => 'Help us tune the game?';
+
+  @override
+  String get statsAskBody =>
+      'May the game send anonymous gameplay statistics and crash reports? No account, no name, no ad ID. You can change this in the settings anytime.';
+
+  @override
+  String get statsAskYes => 'Yes, send them';
+
+  @override
+  String get statsAskNo => 'No, thanks';
+
+  @override
+  String get buyAmountNext => 'BONUS';
+
+  @override
+  String get notificationOfflineBody =>
+      'The offline limit is full: from now on waiting earns nothing more.';
+
+  @override
+  String notificationDailyTitle(int day, int days) {
+    return 'Daily bonus waiting — day $day/$days';
+  }
+
+  @override
+  String get notificationDailyBody =>
+      'Drop in to collect it and keep your streak going.';
+
+  @override
+  String get notificationReserveTitle => 'Winding reserve full';
+
+  @override
+  String notificationReserveBody(String first) {
+    return 'Exact 5.00s wind your Mainspring again — the first one by $first.';
+  }
+
+  @override
+  String get settingsNotificationsHint =>
+      'The offline limit, the daily bonus, a full winding reserve. Two at most, never at night.';
+
+  @override
+  String get cloudOfferTitle => 'Cloud save found';
+
+  @override
+  String cloudOfferBody(
+    String cloudTime,
+    String cloudEarned,
+    String localTime,
+    String localEarned,
+  ) {
+    return 'Google Play Games has a save with more progress:\n• in the cloud: $cloudTime played, $cloudEarned Ticks earned\n• on this phone: $localTime played, $localEarned Ticks earned\nLoad the cloud save? This phone\'s progress will be replaced.';
+  }
+
+  @override
+  String get cloudLoad => 'Load from the cloud';
+
+  @override
+  String get cloudKeep => 'Keep this phone\'s';
+
+  @override
+  String get settingsCloud => 'Cloud save (Google Play Games)';
+
+  @override
+  String get settingsCloudOn =>
+      'Connected: the game saves to the cloud whenever you leave it.';
+
+  @override
+  String get settingsCloudOff =>
+      'Keeps your progress when you change or reset your phone.';
+
+  @override
+  String get settingsCloudConnect => 'Connect Google Play Games';
+
+  @override
+  String get settingsCloudRestore => 'Load from the cloud';
+
+  @override
+  String get settingsCloudNothing =>
+      'The cloud has no save with more progress than this phone.';
+
+  @override
+  String get challengesTitle => 'Challenges';
+
+  @override
+  String get challengesToday => 'Today';
+
+  @override
+  String get challengesWeek => 'This week';
+
+  @override
+  String get challengesRerollHint =>
+      'Sized to your aim. Don\'t like one? ↻ swaps it — once a day.';
+
+  @override
+  String get challengesNewTomorrow => 'New ones at midnight.';
+
+  @override
+  String challengesDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days left',
+      one: 'Last day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chGreat(int n) {
+    return 'Hit GREAT or better $n times';
+  }
+
+  @override
+  String chStreak(int n) {
+    return 'Reach a streak of $n';
+  }
+
+  @override
+  String chJackpot(int n) {
+    return 'Stop the watch at exactly 5.00 ($n×)';
+  }
+
+  @override
+  String chPerfectWindow(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n PERFECTs',
+      one: '1 PERFECT',
+    );
+    return '$_temp0 within 10 rounds in a row';
+  }
+
+  @override
+  String chHitEarnings(String amount) {
+    return 'Earn $amount Ticks from hits';
+  }
+
+  @override
+  String chBuyClocks(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n clocks',
+      one: '1 clock',
+    );
+    return 'Buy $_temp0';
+  }
+
+  @override
+  String chMilestones(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n clock bonuses',
+      one: 'a clock bonus',
+    );
+    return 'Earn $_temp0';
+  }
+
+  @override
+  String chSkillLevels(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n skill levels',
+      one: '1 skill level',
+    );
+    return 'Buy $_temp0';
+  }
+
+  @override
+  String chGolden(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n Golden Seconds',
+      one: 'a Golden Second',
+    );
+    return 'Catch $_temp0';
+  }
+
+  @override
+  String chSpring(String hours) {
+    return 'Wind the Mainspring $hours h with exact 5.00s';
+  }
+
+  @override
+  String get challengeClaimed => 'Claimed';
+
+  @override
+  String get challengeReroll => 'Swap for another (once a day)';
+
+  @override
+  String challengeBonus(int done, int total) {
+    return 'All three today: $done/$total';
+  }
+
+  @override
+  String get challengeBonusDone => 'All three done today — well played!';
+
+  @override
+  String challengeBonusPaid(String amount) {
+    return 'All three today! Bonus +$amount Ticks';
+  }
+
+  @override
+  String challengeDone(String what) {
+    return 'Challenge done: $what';
+  }
+
+  @override
+  String get challengeOpen => 'Claim';
+
+  @override
+  String challengeCarry(String what) {
+    return 'Yesterday\'s finished challenges paid out: $what';
+  }
+
+  @override
+  String challengeCarrySprings(int n) {
+    return '+$n Mainspring';
+  }
+
+  @override
+  String get tip_challenges =>
+      'New: three challenges a day, sized to your aim. Tap to see them!';
+
+  @override
+  String get help_challenges_t => 'Challenges';
+
+  @override
+  String get help_challenges =>
+      'Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks\' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don\'t like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.';
+
+  @override
+  String chPerfect(int n) {
+    return 'Hit PERFECT $n times';
+  }
 }

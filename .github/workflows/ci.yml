@@ -51,7 +51,9 @@ jobs:
         run: |
           cd app
           flutter pub get
-          flutter build apk --release
+          # Test APK for our own phones: features behind a flag are on
+          # (docs/07 "Funkcje za flagą"); the Play upload below has none.
+          flutter build apk --release --dart-define=FEATURE_CALIBRATION=true
           cp build/app/outputs/flutter-apk/app-release.apk "../hit5-${GITHUB_REF_NAME//\//-}.apk"
       - uses: actions/upload-artifact@v4
         with:
@@ -94,6 +96,9 @@ jobs:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
+          # Cloud save (docs/05 T-35): the Play Games project id, for the
+          # manifest (Gradle reads it) and the game (--dart-define).
+          PLAY_GAMES_APP_ID: ${{ secrets.PLAY_GAMES_APP_ID }}
         run: |
           cd app
           flutter pub get
@@ -102,11 +107,11 @@ jobs:
             export HIT10_KEYSTORE="$RUNNER_TEMP/upload.jks"
             signed=signed
           else
-            unset ADMOB_APP_ID ADMOB_REWARDED_ID FIREBASE_APP_ID
+            unset ADMOB_APP_ID ADMOB_REWARDED_ID FIREBASE_APP_ID PLAY_GAMES_APP_ID
             signed=unsigned
           fi
           define=()
-          for v in ADMOB_REWARDED_ID FIREBASE_APP_ID FIREBASE_API_KEY FIREBASE_PROJECT_ID FIREBASE_SENDER_ID; do
+          for v in ADMOB_REWARDED_ID FIREBASE_APP_ID FIREBASE_API_KEY FIREBASE_PROJECT_ID FIREBASE_SENDER_ID PLAY_GAMES_APP_ID; do
             [ -n "${!v:-}" ] && define+=(--dart-define="$v=${!v}")
           done
           flutter build appbundle --release --build-number=${{ github.run_number }} "${define[@]}"

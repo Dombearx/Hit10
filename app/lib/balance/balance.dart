@@ -126,6 +126,50 @@ class DailyConfig {
   final double floorPerDay;
 }
 
+/// Daily and weekly challenges (docs/02 §18).
+class ChallengesConfig {
+  ChallengesConfig(Map<String, Object?> j)
+    : unlockPlaySeconds = _d(j['unlockPlaySeconds']),
+      dailySeconds = _d(j['dailySeconds']),
+      weeklySeconds = _d(j['weeklySeconds']),
+      reachShare = _d(j['reachShare']),
+      firstReachShare = _d(j['firstReachShare']),
+      dailyMinutes = _d(j['dailyMinutes']),
+      dailyFloor = _d(j['dailyFloor']),
+      bonusMinutes = _d(j['bonusMinutes']),
+      bonusFloor = _d(j['bonusFloor']),
+      weeklyMinutes = _d(j['weeklyMinutes']),
+      weeklyFloor = _d(j['weeklyFloor']),
+      weeklySprings = _i(j['weeklySprings']);
+
+  /// Challenges start this much play after the tutorial ended — never
+  /// during it — usually still in the first session, so the first one
+  /// gives a reason to come back.
+  final double unlockPlaySeconds;
+
+  /// A daily challenge is sized for about this much play, the weekly one
+  /// for [weeklySeconds] over several sessions.
+  final double dailySeconds;
+  final double weeklySeconds;
+
+  /// Share of simulated sessions of the player's own taps that reach a
+  /// target (docs/14 §1).
+  final double reachShare;
+
+  /// The very first set is easier: the first visit should pay quickly.
+  final double firstReachShare;
+
+  /// Rewards: minutes of passive income, at least the floor in Tiki; the
+  /// weekly pays [weeklySprings] Mainsprings once they are unlocked.
+  final double dailyMinutes;
+  final double dailyFloor;
+  final double bonusMinutes;
+  final double bonusFloor;
+  final double weeklyMinutes;
+  final double weeklyFloor;
+  final int weeklySprings;
+}
+
 /// "Beginner's luck" (playtest 08): the first [rounds] rounds of a new
 /// game pay more, so a new player buys within a minute. The windows stay
 /// as they are: hitting 10.00 must stay an achievement.
@@ -600,6 +644,7 @@ class Balance {
       beginner = BeginnerConfig(_m(j['beginner'])),
       close = CloseConfig(_m(j['close'])),
       daily = DailyConfig(_m(j['daily'])),
+      challenges = ChallengesConfig(_m(j['challenges'])),
       seasons = SeasonsConfig(_m(j['seasons'])),
       jackpot = JackpotConfig(_m(j['jackpot'])),
       springs = SpringsConfig(_m(j['springs'])),
@@ -646,6 +691,7 @@ class Balance {
   final BeginnerConfig beginner;
   final CloseConfig close;
   final DailyConfig daily;
+  final ChallengesConfig challenges;
   final SeasonsConfig seasons;
   final JackpotConfig jackpot;
   final SpringsConfig springs;
@@ -662,6 +708,15 @@ class Balance {
   /// Cross-field checks (T-6). Returns human-readable problems; empty = valid.
   List<String> validate() {
     final e = <String>[];
+    final ch = challenges;
+    for (final share in [ch.reachShare, ch.firstReachShare]) {
+      if (share <= 0 || share >= 1) {
+        e.add('challenges: reach shares must be between 0 and 1');
+      }
+    }
+    if (ch.dailySeconds <= 0 || ch.weeklySeconds < ch.dailySeconds) {
+      e.add('challenges: dailySeconds > 0 and weeklySeconds >= dailySeconds');
+    }
     void unique(String what, Iterable<String> ids) {
       final seen = <String>{};
       for (final id in ids) {

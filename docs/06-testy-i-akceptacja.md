@@ -60,7 +60,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 
 | id | Test | Zaliczony, gdy |
 |---|---|---|
-| **M-1** | Precyzja: tryb diagnostyczny (T-12) na ≥2 telefonach (60 Hz i 120 Hz), 100 rund | rozrzut różnicy timeStamp→Stopwatch < 4 ms; histogram błędów gracza bez „schodków” co klatkę |
+| **M-1** | Precyzja: tryb diagnostyczny (T-12) na ≥2 telefonach (60 Hz i 120 Hz), 100 rund; potem (APK testowe, flaga `FEATURE_CALIBRATION`) kalibracja i kolejne 100 rund | histogram błędów gracza bez „schodków” co klatkę; „corrected ≤” pokazuje, ile T-10 odejmuje przy zajętej klatce; po kalibracji średni błąd (R-STAT-1) bliski 0, rozrzut nie gorszy |
 | **M-2** | Uczciwość przy obciążeniu: PERFEKT w Szale z pełnymi cząsteczkami | wyniki nie gorsze niż bez efektów (ten sam gracz, 50 rund) |
 | **M-3** | Wydajność | brak klatek > 16 ms w profilerze przez 2 min gry z efektami (T-21) |
 | **M-4** | Cykl życia: wyjście w połowie rundy, rozmowa, obrót telefonu, ubicie procesu | brak utraty postępu > 10 s, runda anulowana, offline naliczony |
@@ -68,9 +68,11 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | **M-6** | Dźwięk i wibracje | dźwięk trafienia bez odczuwalnego opóźnienia (U-14), wyłączniki działają |
 | **M-7** | Ogranicz ruch | brak wstrząsów i błysków (U-6) |
 | **M-8** | „Czy to wciąga?” — 3 osoby spoza projektu grają 15 min bez instrukcji | każda rozumie zasadę w < 1 min, ≥2 z 3 chcą grać dalej; notujemy, co było niejasne |
-| **M-9** | Małe i duże ekrany (≈5" i tablet), tryb ciemny systemu | nic nie wychodzi poza ekran, cyfry czytelne; na tablecie układ telefonu powiększony na cały ekran (`TabletScale`), bez pustych pasów po bokach |
-| **M-10** | Reklamy na telefonie (M6): testowe jednostki, zgoda UMP z adresu w UE (VPN albo ustawienia debug UMP), brak sieci, przerwanie reklamy w połowie | nagroda tylko po pełnym obejrzeniu, okno zgody pojawia się i da się je zmienić z ustawień, gra działa bez sieci |
-| **M-11** | Powiadomienie: wyjście z gry, odczekanie do limitu (z limitem skróconym w trybie diagnostycznym), odmowa zgody, wyłączenie w ustawieniach | przychodzi jedno powiadomienie z poprawną kwotą; po odmowie albo wyłączeniu żadnego; powrót do gry anuluje zaplanowane |
+| **M-9** | Małe i duże ekrany (≈5" i tablet), tryb ciemny systemu, największa czcionka systemowa | nic nie wychodzi poza ekran, cyfry czytelne; na tablecie układ telefonu powiększony na cały ekran (`TabletScale`), bez pustych pasów po bokach; tekst rośnie najwyżej ×1.3 (U-35, test `text_scale_test.dart`) |
+| **M-10** | Reklamy na telefonie (M6): testowe jednostki, zgoda UMP z adresu w UE (VPN albo ustawienia debug UMP), brak sieci, przerwanie reklamy w połowie, reklama załadowana ponad godzinę temu | nagroda tylko po pełnym obejrzeniu; okno zgody **dopiero po samouczku** (nie przy starcie), po pytaniu o statystyki, i da się je zmienić z ustawień; gra działa bez sieci; błąd wyświetlenia mówi „nie udało się wyświetlić”, a nie „nie obejrzana do końca” |
+| **M-11** | Powiadomienia: wyjście z gry, odczekanie (limit skrócony w trybie diagnostycznym), odmowa zgody, wyłączenie w ustawieniach | najwyżej dwa przypomnienia, żadne między 22:00 a 9:00, z poprawną kwotą; po odmowie albo wyłączeniu żadnego; powrót do gry anuluje zaplanowane |
+| **M-12** | Zapis w chmurze (build z `PLAY_GAMES_APP_ID`): logowanie do Play Gry na telefonie A, gra, wyjście; instalacja na telefonie B (albo po wyczyszczeniu danych) | na B po starcie pytanie „Zapis w chmurze” z liczbami obu stron; „Wczytaj” przywraca postęp z A, „Zostaw” niczego nie zmienia i przy wyjściu nadpisuje chmurę; bez logowania nic się nie dzieje |
+| **M-13** | Bateria: gra otwarta na ⏸ przez 10 min (Android: Ustawienia → Bateria / profiler) | po ok. 3 s pauzy arena przestaje rysować (T-21a), saldo dalej rośnie; dotknięcie natychmiast wznawia; zużycie baterii wyraźnie niższe niż w trakcie gry |
 
 ## 3. Kryteria akceptacji etapów
 

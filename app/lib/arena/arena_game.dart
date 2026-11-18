@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
-import 'package:flame/components.dart';
+import 'package:flame/components.dart' hide Timer;
 import 'package:flame/game.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/painting.dart';
@@ -105,9 +105,10 @@ class ArenaGame extends FlameGame {
     await add(stage);
     _warmUp();
     _sub = controller.feedback.listen(stage.onFeedback);
-    _starts = controller.roundStarts.listen(
-      (e) => stage.onRoundStart(e.$2, clock: e.$1),
-    );
+    _starts = controller.roundStarts.listen((e) {
+      wake(); // a round started from the pause button or a screen reader
+      stage.onRoundStart(e.$2, clock: e.$1);
+    });
   }
 
   /// Renders every effect label once, off screen, so the first PERFECT does
@@ -194,9 +195,86 @@ class ArenaGame extends FlameGame {
   /// The bubble currently shown on each side (left, right).
   final _popups = <GeneratorPopup?>[null, null];
 
+  // ---------------------------------------------- battery (docs/05 T-21a) --
+
+  /// Seconds of stillness before the arena stops drawing: long enough for
+  /// the last result's effects to finish.
+  static const sleepAfter = 3.0;
+
+  double _stillFor = 0;
+
+  /// While asleep: the economy ticks at 10 Hz without frames.
+  Timer? _sleepTick;
+  int? _sleepLook;
+
+  bool get asleep => _sleepTick != null;
+
+  /// Nothing on the arena moves: every stopwatch waits (paused, or stopped
+  /// after untapped rounds) and no golden clock flies.
+  bool get _still =>
+      controller.clocks.every((c) => c.round.phase == RoundPhase.waiting) &&
+      controller.engine.goldenVisibleLeft <= 0 &&
+      _golden == null;
+
+  /// What a still arena shows; when it changes, one frame is drawn.
+  int _look() => Object.hashAll([
+    controller.paused,
+    controller.state.dial,
+    controller.engine.goldenRound,
+    controller.season?.id,
+    controller.state.tutorialDone,
+    controller.coachTiming,
+    controller.settings.reduceMotion,
+    labels,
+    size.x,
+    size.y,
+    for (final c in controller.clocks) c.round.gameTime(controller.now()),
+  ]);
+
+  void _sleep() {
+    _sleepLook = _look();
+    pauseEngine();
+    _sleepTick = Timer.periodic(const Duration(milliseconds: 100), (_) {
+      controller.tick();
+      if (!_still) {
+        wake();
+      } else if (_look() != _sleepLook) {
+        _sleepLook = _look();
+        stepEngine(); // draw the change, stay asleep
+      }
+    });
+  }
+
+  /// Back to full frames: a touch on the arena, the app shown again, or
+  /// something on it starts to move.
+  void wake() {
+    _sleepTick?.cancel();
+    _sleepTick = null;
+    _stillFor = 0;
+    if (paused) resumeEngine();
+  }
+
+  /// The app is hidden: no ticking in the background (offline income
+  /// covers that time, R-OFF-1); [wake] when it is shown again.
+  void suspend() {
+    _sleepTick?.cancel();
+    _sleepTick = null;
+  }
+
   @override
   void update(double dt) {
     controller.tick();
+    if (!asleep) {
+      if (_still) {
+        _stillFor += dt;
+        if (_stillFor >= sleepAfter) {
+          _sleep();
+          return;
+        }
+      } else {
+        _stillFor = 0;
+      }
+    }
     _updateGolden();
     controller.showcase.maxPerSecond =
         controller.balance.ui.generatorPopupsPerSecond;
@@ -246,6 +324,7 @@ class ArenaGame extends FlameGame {
   void onRemove() {
     _sub?.cancel();
     _starts?.cancel();
+    suspend();
     super.onRemove();
   }
 }

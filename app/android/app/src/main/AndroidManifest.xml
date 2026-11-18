@@ -13,6 +13,11 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${admobAppId}"/>
+        <!-- Play Games Saved Games, the cloud save (docs/05 T-35); empty
+             (and unused) unless the release build passes the id. -->
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/play_games_app_id"/>
         <!-- Game statistics (docs/05 T-30): off until the player's setting
              turns them on, and never tied to the advertising id. -->
         <meta-data
@@ -23,6 +28,11 @@
             android:value="false"/>
         <meta-data
             android:name="google_analytics_default_allow_ad_personalization_signals"
+            android:value="false"/>
+        <!-- Crash reports (docs/05 T-30): kept on the phone until the
+             player's consent turns collection on (T-33). -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
             android:value="false"/>
         <activity
             android:name=".MainActivity"
