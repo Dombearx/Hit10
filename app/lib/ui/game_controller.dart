@@ -456,23 +456,31 @@ class GameController extends ChangeNotifier {
   /// cloud may hold the progress the player wants back.
   Future<void> uploadCloud({bool force = false}) async {
     if (!cloud.available || !cloudSignedIn || cloudOffer != null) return;
-    if (_retired) return;
+    // Leaving the app fires twice in a row: one upload at a time.
+    if (_retired || _uploading) return;
     final now = _wallMs();
     if (!force &&
         now - cloudSavedAtMs < CloudSync.minUploadGap.inMilliseconds) {
       return;
     }
-    final played = state.lifetime.secondsPlayed;
-    final ok = await cloud.save(
-      exportText(),
-      played: Duration(seconds: played.round()),
-      description: 'Hit5 · ${(played / 3600).toStringAsFixed(1)} h',
-    );
-    if (ok) {
-      cloudSavedAtMs = now;
-      notifyListeners();
+    _uploading = true;
+    try {
+      final played = state.lifetime.secondsPlayed;
+      final ok = await cloud.save(
+        exportText(),
+        played: Duration(seconds: played.round()),
+        description: 'Hit5 · ${(played / 3600).toStringAsFixed(1)} h',
+      );
+      if (ok) {
+        cloudSavedAtMs = now;
+        notifyListeners();
+      }
+    } finally {
+      _uploading = false;
     }
   }
+
+  bool _uploading = false;
 
   // ------------------------------------------------------ export / reset --
 

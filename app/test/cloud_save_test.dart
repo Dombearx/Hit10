@@ -87,5 +87,9 @@ void main() {
     now += 61 * 1000;
     await c.uploadCloud();
     expect(cloud.saves, 2);
+    // Leaving the app: "hidden" and "paused" at once upload once.
+    now += 61 * 1000;
+    await Future.wait([c.uploadCloud(), c.uploadCloud()]);
+    expect(cloud.saves, 3);
   });
 }
