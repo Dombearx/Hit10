@@ -9,14 +9,19 @@ import '../analytics/analytics.dart';
 import '../balance/balance.dart';
 import '../engine/ad_offers.dart';
 import '../engine/game_engine.dart';
+import '../engine/notification_plan.dart';
 import '../engine/round_engine.dart';
+import '../engine/tap_clock.dart';
 import '../model/achievements.dart';
 import '../model/economy.dart';
+import '../model/features.dart';
 import '../model/game_state.dart';
 import '../model/grading.dart';
+import '../model/number_format.dart';
 import '../model/seasons.dart';
 import '../model/settings.dart';
 import '../model/showcase.dart';
+import '../persistence/cloud_save.dart';
 import '../persistence/save_codec.dart';
 import '../persistence/save_store.dart';
 import 'audio.dart';
@@ -144,6 +149,8 @@ class GameController extends ChangeNotifier {
     Haptics? haptics,
     this.notifications = const NoNotifications(),
     this.analytics = const NoAnalytics(),
+    this.cloud = const NoCloudSave(),
+    this._consentRequired = false,
     int Function()? wallClockMs,
     DateTime Function()? localNow,
   }) : state = state ?? GameState(),
@@ -184,6 +191,7 @@ class GameController extends ChangeNotifier {
   final Haptics haptics;
   final OfflineNotifications notifications;
   final Analytics analytics;
+  final CloudSave cloud;
   final int Function() _wallMs;
   final DateTime Function() _localNow;
   late final GameEngine engine;
@@ -283,7 +291,49 @@ class GameController extends ChangeNotifier {
     sfx.musicVolume = settings.musicVolume;
     sfx.updateMusicVolume();
     haptics.enabled = settings.haptics;
-    analytics.setEnabled(settings.analytics);
+    analytics.setConsent(statsConsent);
+  }
+
+  // ------------------------------------------------------------- consent --
+
+  /// Whether the law asks for consent where the player is (EEA, UK; from
+  /// the ad network's consent check), null while unknown (docs/05 T-33).
+  bool? _consentRequired;
+
+  /// The ad network told us whether consent is needed here.
+  void setConsentRequired(bool? required) {
+    if (required == _consentRequired) return;
+    _consentRequired = required;
+    _applySettings();
+    notifyListeners();
+  }
+
+  /// Statistics and crash reports: off when the player said no; sent when
+  /// they said yes or no consent is needed; otherwise held on the phone
+  /// until they answer (T-33).
+  StatsConsent get statsConsent {
+    if (!settings.analytics) return StatsConsent.off;
+    if (settings.analyticsAsked || _consentRequired == false) {
+      return StatsConsent.on;
+    }
+    return StatsConsent.held;
+  }
+
+  /// Time to ask about statistics: consent is (or may be) required, the
+  /// player has not answered, and the tutorial is over — a natural break,
+  /// not the first seconds of the game (docs/02 R-TUT-0).
+  bool get statsQuestionPending =>
+      settings.analytics &&
+      !settings.analyticsAsked &&
+      _consentRequired != false &&
+      state.tutorialDone &&
+      !replaying;
+
+  void answerStatsQuestion({required bool yes}) {
+    settings
+      ..analytics = yes
+      ..analyticsAsked = true;
+    applySettings();
   }
 
   // ---------------------------------------------------------- statistics --
@@ -336,6 +386,88 @@ class GameController extends ChangeNotifier {
     unawaited(save());
   }
 
+  // ---------------------------------------------- cloud save (T-35) --
+
+  /// Signed in to Play Games (the settings show it).
+  bool cloudSignedIn = false;
+
+  /// When this phone last wrote the cloud save (wall clock), 0 = never in
+  /// this session.
+  int cloudSavedAtMs = 0;
+
+  /// A cloud save with more progress than this phone's, waiting for the
+  /// player's answer (T-35: never loaded without asking).
+  CloudOffer? cloudOffer;
+
+  /// Cloud saves the player chose not to load, by their play seconds.
+  Set<int> get _cloudDeclined => {
+    for (final t in state.tipsSeen)
+      if (t.startsWith('cloudDeclined:')) ?int.tryParse(t.substring(14)),
+  };
+
+  /// At launch: signed in? Then is the cloud ahead of this phone?
+  /// [manual]: the player asked from the settings; any save with more play
+  /// is offered, even one turned down before. Returns the offer, if any.
+  Future<CloudOffer?> checkCloud({bool manual = false}) async {
+    if (!cloud.available) return null;
+    cloudSignedIn = await cloud.signedIn();
+    notifyListeners();
+    if (!cloudSignedIn) return null;
+    final offer = CloudSync.offer(
+      await cloud.load(),
+      state.lifetime.secondsPlayed,
+      declined: manual ? const {} : _cloudDeclined,
+    );
+    if (!manual) cloudOffer = offer;
+    notifyListeners();
+    return offer;
+  }
+
+  /// The player answered [cloudOffer]: load it (the app restarts after,
+  /// like an import) or keep this phone's progress, which the next upload
+  /// writes over it.
+  Future<bool> answerCloudOffer(CloudOffer offer, {required bool load}) async {
+    cloudOffer = null;
+    if (load) {
+      await importText(offer.text);
+      return true;
+    }
+    state.tipsSeen.add('cloudDeclined:${offer.playSeconds.round()}');
+    unawaited(save());
+    notifyListeners();
+    return false;
+  }
+
+  /// The player connects Play Games from the settings.
+  Future<void> signInCloud() async {
+    cloudSignedIn = await cloud.signIn();
+    notifyListeners();
+    if (cloudSignedIn) await uploadCloud(force: true);
+  }
+
+  /// Writes this phone's progress to the cloud (leaving the app; at most
+  /// once a minute unless [force]). Not while an offer is unanswered: the
+  /// cloud may hold the progress the player wants back.
+  Future<void> uploadCloud({bool force = false}) async {
+    if (!cloud.available || !cloudSignedIn || cloudOffer != null) return;
+    if (_retired) return;
+    final now = _wallMs();
+    if (!force &&
+        now - cloudSavedAtMs < CloudSync.minUploadGap.inMilliseconds) {
+      return;
+    }
+    final played = state.lifetime.secondsPlayed;
+    final ok = await cloud.save(
+      exportText(),
+      played: Duration(seconds: played.round()),
+      description: 'Hit5 · ${(played / 3600).toStringAsFixed(1)} h',
+    );
+    if (ok) {
+      cloudSavedAtMs = now;
+      notifyListeners();
+    }
+  }
+
   // ------------------------------------------------------ export / reset --
 
   /// Set once this controller's save has been replaced (import, reset): it
@@ -350,13 +482,13 @@ class GameController extends ChangeNotifier {
   /// on anything that is not an exported save. The app restarts after.
   Future<void> importText(String text) async {
     final data = importSave(text);
-    _retired = true;
+    await _retire();
     await store?.write(saveToJsonString(data));
   }
 
   /// Wipes the progress but keeps the player's settings.
   Future<void> resetProgress() async {
-    _retired = true;
+    await _retire();
     await store?.clear();
     await store?.write(
       saveToJsonString(
@@ -430,12 +562,23 @@ class GameController extends ChangeNotifier {
   /// grade comes from the clock read right here.
   void onPointerDown(Duration eventTime, {int clock = 0}) {
     if (_adPlaying) return;
-    final t = now();
-    diagnostics.recordInput(t, eventTime);
+    final handler = now();
+    // When the touch happened, not when the busy UI thread got to it
+    // (T-10): the platform stamp mapped onto our clock.
+    final t = tapClock.tapTime(
+      handler,
+      eventTime == Duration.zero ? null : eventTime.inMicroseconds / 1e6,
+    );
+    diagnostics.recordInput(handler, eventTime, tapClock.lastWait);
     unawaited(sfx.init()); // the web needs a gesture before audio starts
     final slot = clocks[clock.clamp(0, clocks.length - 1)];
     final wasWaiting = slot.round.phase == RoundPhase.waiting;
-    _handle(slot, slot.round.tap(t));
+    // A graded tap also takes off the player's calibrated input lag
+    // (T-13); the tap that starts a round does not.
+    final graded = slot.round.phase == RoundPhase.running
+        ? t - inputOffsetSeconds
+        : t;
+    _handle(slot, slot.round.tap(graded));
     // Starting from rest: the second clock follows half a round later.
     if (wasWaiting && clocks.length > 1 && slot.index == 0) {
       final b = clocks[1].round;
@@ -445,6 +588,13 @@ class GameController extends ChangeNotifier {
       }
     }
   }
+
+  /// Maps touch timestamps onto [now] (T-10).
+  final TapClock tapClock = TapClock();
+
+  /// The calibrated input lag (T-13), zero while the feature is off.
+  double get inputOffsetSeconds =>
+      Features.calibration ? settings.inputOffsetMs / 1000 : 0;
 
   /// QA builds only (store screenshots): holds the rounds still, so a
   /// result can be captured before the next round starts (R-RUNDA-6).
@@ -746,14 +896,17 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// The prologue (Chronos on the top shelf) is due: once, before the
-  /// very first round, so a new player knows what the game is heading for.
+  /// The prologue (Chronos on the top shelf) is due: once, right after a
+  /// new player's first Tiki, when that round's result is over. Not
+  /// before the first round: the first touch of the clock comes first
+  /// (R-TUT-0), and the story reads better once a Tik is in the pocket.
   bool get prologuePending =>
       !state.tipsSeen.contains('prologue') &&
       !state.tutorialDone &&
       state.prestiges == 0 &&
       state.loopsDone == 0 &&
-      state.earnedTotal == 0;
+      state.earnedTotal > 0 &&
+      clocks.every((c) => c.round.phase == RoundPhase.waiting);
 
   void prologueShown() => state.tipsSeen.add('prologue');
 
@@ -772,6 +925,7 @@ class GameController extends ChangeNotifier {
     if (paid == null) return;
     engine.seasonRewardPaid = null;
     _log('season_complete', {'season': season?.key ?? ''});
+    _reviewMoment();
     sfx.play('fanfare', gain: 0.8);
     unawaited(haptics.medium());
     _seasonCompleted.add(paid);
@@ -903,6 +1057,7 @@ class GameController extends ChangeNotifier {
     // A new loop started from the ending has no ending to mark yet.
     if (!state.loopGoal || state.loopEndSeen) return;
     state.loopEndSeen = true;
+    _reviewMoment(); // Chronos is bought: the best moment there is
     unawaited(save());
   }
 
@@ -1024,8 +1179,48 @@ class GameController extends ChangeNotifier {
     // The run's upgrades are gone, and the second clock may be too.
     _rebuildClocks();
     _checkAchievements(const AchievementContext());
+    // A fresh, faster run: from the second paradox on, a good moment.
+    if (state.prestiges >= 2) _reviewMoment();
     unawaited(save());
     notifyListeners();
+  }
+
+  // -------------------------------------------------------------- review --
+
+  /// Time to show Google Play's rating window (docs/02 R-OCENA-1): set at
+  /// a high point, shown by the UI at the next quiet moment.
+  bool reviewPending = false;
+
+  /// Real-time days that must pass before a second rating window.
+  static const reviewAgainAfterDays = 120;
+
+  /// A high point (second paradox or later, a loop completed, a season
+  /// finished, the 100th exact 5.00): asks for a rating only from a player
+  /// who clearly likes the game — after at least 3 hours and on at least
+  /// 3 different days — and at most twice, months apart.
+  void _reviewMoment() {
+    if (!state.tutorialDone || replaying) return;
+    if (state.lifetime.secondsPlayed < 3 * 3600) return;
+    if (state.lifetime.dailyClaims < 3) return;
+    final asked = [
+      for (final t in state.tipsSeen)
+        if (t.startsWith('review:')) int.tryParse(t.substring(7)) ?? 0,
+    ];
+    if (asked.length >= 2) return;
+    if (asked.isNotEmpty &&
+        _wallMs() - asked.reduce(math.max) <
+            reviewAgainAfterDays * 24 * 3600 * 1000) {
+      return;
+    }
+    reviewPending = true;
+  }
+
+  /// The UI showed (or tried to show) the rating window.
+  void reviewShown() {
+    reviewPending = false;
+    state.tipsSeen.add('review:${_wallMs()}');
+    _log('review_prompt');
+    unawaited(save());
   }
 
   // ----------------------------------------------------------- ad offers --
@@ -1040,6 +1235,10 @@ class GameController extends ChangeNotifier {
 
   /// Pauses the rounds, plays an ad and grants the offer only if it was
   /// watched to the end (R-AD-3). Returns whether the reward was granted.
+  /// How the last ad ended: the message after it says why there is no
+  /// reward (R-AD-8).
+  AdResult? lastAdResult;
+
   Future<bool> watchAd(AdOffer offer, RewardedAds provider) async {
     if (_adPlaying || !ads.available(offer, _wallMs())) return false;
     if (!provider.isReady) {
@@ -1052,14 +1251,22 @@ class GameController extends ChangeNotifier {
       // The ad has its own sound: the game's music and effects stay quiet
       // until it closes (playtest 24: the music played over the ad).
       sfx.mute(true);
-      final bool ok;
+      final AdResult result;
       try {
-        ok = await provider.show();
+        result = await provider.show();
       } finally {
         sfx.mute(false);
       }
-      _log(ok ? 'ad_reward' : 'ad_closed_early', {'offer': offer.name});
-      if (!ok) return false;
+      lastAdResult = result;
+      _log(
+        switch (result) {
+          AdResult.earned => 'ad_reward',
+          AdResult.closedEarly => 'ad_closed_early',
+          AdResult.failed => 'ad_show_failed',
+        },
+        {'offer': offer.name},
+      );
+      if (result != AdResult.earned) return false;
       final amount = ads.grant(
         offer,
         _wallMs(),
@@ -1459,21 +1666,47 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> save() async {
-    if (_retired) return;
+  /// The newest save waiting for the write in progress, and that write.
+  String? _pendingSave;
+  Future<void>? _writing;
+
+  /// Saves the state as it is now. Writes never overlap (T-18): leaving
+  /// the app fires both "hidden" and "paused", and two writes into one
+  /// temp file could leave a broken save. A save asked for during a write
+  /// waits for it; several such saves become one, the newest.
+  Future<void> save() {
+    if (_retired) return Future.value();
     _sinceSave = 0;
     state.lastSeenMs = _wallMs();
-    final store = this.store;
-    if (store == null) return;
+    if (store == null) return Future.value();
+    _pendingSave = saveToJsonString(
+      SaveData(state, settings, balanceVersion: balance.version),
+    );
+    return _writing ??= _drainSaves();
+  }
+
+  Future<void> _drainSaves() async {
     try {
-      await store.write(
-        saveToJsonString(
-          SaveData(state, settings, balanceVersion: balance.version),
-        ),
-      );
-    } on Object catch (e) {
-      debugPrint('save failed: $e');
+      while (_pendingSave != null) {
+        final text = _pendingSave!;
+        _pendingSave = null;
+        try {
+          await store!.write(text);
+        } on Object catch (e) {
+          debugPrint('save failed: $e');
+        }
+      }
+    } finally {
+      _writing = null;
     }
+  }
+
+  /// Stops this controller's saves for good and waits for the one in
+  /// progress, so it cannot land on top of a save that replaces it.
+  Future<void> _retire() async {
+    _retired = true;
+    _pendingSave = null;
+    await _writing;
   }
 
   /// App hidden, a panel covers the clock or an ad plays (R-RUNDA-8).
@@ -1511,25 +1744,94 @@ class GameController extends ChangeNotifier {
     unawaited(save());
   }
 
-  /// Leaving the app: also schedules the "offline limit reached"
-  /// notification (R-OFF-4).
-  void background({required String Function(String amount) title}) {
+  /// Leaving the app: also schedules the reminders worth sending
+  /// (R-OFF-4, R-POW-1…3) — at most two, never at night.
+  void background({
+    required ReminderTexts texts,
+    String decimalSeparator = '.',
+  }) {
     pause();
+    unawaited(uploadCloud()); // T-35: the phone may not come back
     if (!settings.notifications) return;
+    final reminders = plannedReminders(texts, decimalSeparator);
+    if (reminders.isNotEmpty) unawaited(notifications.schedule(reminders));
+  }
+
+  /// The reminders [background] schedules now (tests see them here).
+  List<Reminder> plannedReminders(
+    ReminderTexts texts, [
+    String decimalSeparator = '.',
+  ]) {
+    final now = _localNow();
+    final nowMs = _wallMs();
+    final candidates = <NotificationKind, DateTime>{};
+    // The offline limit (R-OFF-4): only if the clocks earn anything.
     final rate = econ.passive() * engine.offlineEfficiency();
-    if (rate <= 0) return;
     final cap = engine.offlineCapSeconds();
-    unawaited(
-      notifications.scheduleOfflineFull(
-        DateTime.now().add(Duration(seconds: cap.round())),
-        rate * cap,
-        title,
-      ),
-    );
+    if (rate > 0) {
+      candidates[NotificationKind.offlineFull] = now.add(
+        Duration(seconds: cap.round()),
+      );
+    }
+    // Tomorrow's daily bonus (R-POW-2): once a streak is worth keeping
+    // and today's is collected.
+    if (state.tutorialDone &&
+        state.dailyStreak >= 2 &&
+        state.dailyKey == dateKey(now)) {
+      candidates[NotificationKind.dailyBonus] = NotificationPlan.dailyReminder(
+        now,
+      );
+    }
+    // The winding reserve (R-POW-1): after a paradox, when at least half
+    // of it was used and refilling takes a while.
+    if (econ.springsUnlocked &&
+        engine.springReserveAt(nowMs) <= balance.springs.hitReserve / 2) {
+      final fullIn = engine.springReserveFullIn(nowMs);
+      if (fullIn.isFinite && fullIn >= 30 * 60) {
+        candidates[NotificationKind.reserveFull] = now.add(
+          Duration(seconds: fullIn.round()),
+        );
+      }
+    }
+    final days = balance.daily.minutes.length;
+    final first = balance.springs.firstHitSeconds;
+    final firstText = first >= 3600
+        ? '${(first / 3600).round()} h'
+        : '${(first / 60).round()} min';
+    return [
+      for (final p in NotificationPlan.choose(now, candidates))
+        switch (p.kind) {
+          NotificationKind.offlineFull => Reminder(
+            p.kind,
+            p.at,
+            texts.offlineTitle(
+              formatNumber(
+                rate * cap,
+                decimalSeparator: decimalSeparator,
+                notation: settings.notation,
+              ),
+            ),
+            texts.offlineBody,
+          ),
+          NotificationKind.dailyBonus => Reminder(
+            p.kind,
+            p.at,
+            texts.dailyTitle(state.dailyStreak % days + 1, days),
+            texts.dailyBody,
+          ),
+          NotificationKind.reserveFull => Reminder(
+            p.kind,
+            p.at,
+            texts.reserveTitle,
+            texts.reserveBody(firstText),
+          ),
+        },
+    ];
   }
 
   void resume() {
     _lastTick = null;
+    tapClock.reset(); // the phone may have slept: the clocks may differ now
     unawaited(notifications.cancel());
     checkOffline();
   }
@@ -1550,14 +1852,24 @@ class GameController extends ChangeNotifier {
 /// spread would mean grades depend on frame timing.
 class InputDiagnostics {
   final List<double> _offsets = [];
+  final List<double> _waits = [];
 
-  void recordInput(double clockSeconds, Duration eventTime) {
+  /// [wait] is how much earlier than the handler the tap was counted
+  /// ([TapClock.lastWait]).
+  void recordInput(double clockSeconds, Duration eventTime, [double wait = 0]) {
     if (eventTime == Duration.zero) return;
     _offsets.add(clockSeconds - eventTime.inMicroseconds / 1e6);
     if (_offsets.length > 100) _offsets.removeAt(0);
+    _waits.add(wait);
+    if (_waits.length > 100) _waits.removeAt(0);
   }
 
   int get samples => _offsets.length;
+
+  /// The largest correction among the last 100 taps, in ms: how late the
+  /// handler would have counted a tap without the platform stamp.
+  double get maxWaitMs =>
+      _waits.isEmpty ? 0 : _waits.reduce((a, b) => a > b ? a : b) * 1000;
 
   /// Largest deviation of the input offset from its mean, in ms.
   double get jitterMs {
@@ -1575,6 +1887,8 @@ Future<GameController> loadGame(
   SaveStore store, {
   OfflineNotifications notifications = const NoNotifications(),
   Analytics analytics = const NoAnalytics(),
+  CloudSave cloud = const NoCloudSave(),
+  bool? consentRequired = false,
   Sfx? sfx,
   Haptics? haptics,
 }) async {
@@ -1598,6 +1912,8 @@ Future<GameController> loadGame(
     store: store,
     notifications: notifications,
     analytics: analytics,
+    cloud: cloud,
+    consentRequired: consentRequired,
     sfx: sfx,
     haptics: haptics,
   );

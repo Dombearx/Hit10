@@ -92,6 +92,67 @@ void main() {
     expect(Settings().analytics, isTrue);
   });
 
+  group('consent where the law asks for it (T-33)', () {
+    GameController held(RecordingAnalytics a, {GameState? s}) => GameController(
+      balance: balance,
+      state: s ?? GameState(),
+      store: MemorySaveStore(),
+      analytics: a,
+      consentRequired: null, // not known yet at launch
+      wallClockMs: () => now,
+    );
+
+    test('events wait on the phone until the player says yes', () {
+      final a = RecordingAnalytics(initial: StatsConsent.held);
+      final c = held(a);
+      expect(c.statsConsent, StatsConsent.held);
+      expect(a.events, isEmpty);
+      expect(a.heldCount, greaterThan(0)); // the tutorial funnel
+      // The consent check says it is needed: still held, and the question
+      // waits for the end of the tutorial.
+      c.setConsentRequired(true);
+      expect(c.statsQuestionPending, isFalse);
+      c.finishTutorial();
+      expect(c.statsQuestionPending, isTrue);
+      c.answerStatsQuestion(yes: true);
+      expect(c.statsConsent, StatsConsent.on);
+      expect(a.last('tutorial_step'), containsPair('step', 'aim'));
+      expect(a.names, contains('tutorial_complete'));
+      expect(a.userProperties['tutorial_done'], 'true');
+      expect(c.statsQuestionPending, isFalse);
+      expect(c.settings.analyticsAsked, isTrue);
+    });
+
+    test('a no drops what was held and sends nothing later', () {
+      final a = RecordingAnalytics(initial: StatsConsent.held);
+      final c = held(a)..setConsentRequired(true);
+      c.finishTutorial();
+      c.answerStatsQuestion(yes: false);
+      expect(c.statsConsent, StatsConsent.off);
+      expect(a.heldCount, 0);
+      c.setMode(blind: true);
+      expect(a.events, isEmpty);
+    });
+
+    test('no consent needed: sent at once, nobody is asked', () {
+      final a = RecordingAnalytics(initial: StatsConsent.held);
+      final c = held(a)..setConsentRequired(false);
+      expect(c.statsConsent, StatsConsent.on);
+      expect(a.names, contains('tutorial_step'));
+      c.finishTutorial();
+      expect(c.statsQuestionPending, isFalse);
+    });
+
+    test('an old "off" counts as an answer', () {
+      final st = Settings()..analytics = false;
+      final back = importSave(
+        exportSave(SaveData(GameState(), st, balanceVersion: 1)),
+      ).settings;
+      expect(back.analyticsAsked, isTrue);
+      expect(Settings().analyticsAsked, isFalse);
+    });
+  });
+
   test('every event fits Firebase limits', () {
     final a = RecordingAnalytics();
     final s = GameState()..tiki = 1e9;

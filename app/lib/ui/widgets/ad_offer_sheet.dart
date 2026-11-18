@@ -61,7 +61,7 @@ void confirmAdResultWith(
   bool ok,
 ) {
   final text = !ok
-      ? l.adNoReward
+      ? (c.lastAdResult == AdResult.failed ? l.adShowFailed : l.adNoReward)
       : switch (offer) {
           AdOffer.turbo => l.adDoneTurbo(clockText(c.state.turboLeft)),
           AdOffer.golden => l.adDoneGolden,

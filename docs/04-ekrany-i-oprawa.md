@@ -50,12 +50,17 @@ wyglądać, brzmieć i reagować.
 
 - Dźwięk efektów, muzyka (osobne suwaki).
 - Wibracje (wł./wył.).
-- Powiadomienie o pełnym limicie offline (wł./wył., R-OFF-4).
+- Powiadomienia (wł./wył.): limit offline, dzienna premia, pełny zapas
+  dokręcania (02 R-OFF-4, R-POW-1…3).
+- Kalibracja opóźnienia (05 T-13) — tylko z flagą `FEATURE_CALIBRATION`.
 - Język: systemowy / polski / angielski.
 - Zapis liczb: skrócony (12.4M) / naukowy (1.24e7).
 - **Ogranicz ruch:** bez wstrząsów ekranu i błysków, mniej cząsteczek.
+- Zapis w chmurze (Google Play Gry): połącz / wczytaj z chmury (05 T-35;
+  tylko w buildzie z projektem Play Games).
 - Eksport i import zapisu (tekst do skopiowania).
 - Reset postępu (dwa potwierdzenia, drugie wymaga wpisania słowa).
+- Statystyki gry i raporty o awariach (05 T-33). Prywatność reklam (UMP).
 - Autorzy i licencje (z `CREDITS.md`). Polityka prywatności (link od M6).
 
 ## 3. Efekty („juice”) — tabela wymagań
@@ -215,6 +220,22 @@ zostały te same (`trophy`, `fire`…).
   Dopóki pliku nie ma, w tym miejscu stoi placeholder: postacie rozdziału
   (karty z ikonami) na miękkim gradiencie w kolorze sceny. Dodanie
   obrazka nie wymaga zmian w kodzie (docs/10, „Ilustracje fabuły”).
+
+- **U-34:** **„Witaj z powrotem”** (02 R-OFF-2, R-DZIEN-1): dochód offline
+  i dzienna premia w jednym oknie — kwota offline (z ×2 za reklamę),
+  pod nią seria 7 dni z kwotą premii i ewentualną informacją o dniu łaski,
+  linijka o nowym wydarzeniu, jeden przycisk „Odbierz wszystko”. Gdy jest
+  tylko jedno z dwojga, okno ma jego tytuł („Gdy cię nie było…” albo
+  „Dzienna premia”). Kolejność okien przy starcie: zapis w chmurze
+  (05 T-35), prolog, „Witaj z powrotem”, wydarzenie (gdy nie było linijki),
+  koniec pętli, pytanie o statystyki i zgoda na reklamy (05 T-33, T-26),
+  prośba o ocenę (02 R-OCENA-1).
+- **U-35:** **Duża czcionka systemowa:** tekst rośnie razem z ustawieniem
+  Androida, ale najwyżej ×1.3 (`maxTextScale`): ekran gry jest ułożony co
+  do piksela, a większe liczby nie mieszczą się na telefonie. Saldo
+  zmniejsza się, zamiast wychodzić poza ekran. Pilnuje tego
+  `text_scale_test.dart` (×1.3, ×1.6, ×2.0, PL i EN: gra, sklep, wszystkie
+  arkusze, okno powitalne).
 
 ### 4.3 Grafika AI (po wydaniu, opcjonalnie)
 Nie jest potrzebna do 1.0. Jeśli dojdzie, zastępuje emoji w tych samych

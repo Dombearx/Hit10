@@ -6,13 +6,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../ads/rewarded_ads.dart';
+import '../../analytics/analytics.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../../model/features.dart';
 import '../../model/number_format.dart';
 import '../../persistence/save_codec.dart';
+import '../cloud_dialog.dart';
 import '../game_controller.dart';
 import '../providers.dart';
 import '../seasons_ui.dart';
 import '../theme.dart';
+import 'calibration_sheet.dart';
 import 'sheet.dart';
 
 /// Settings (docs/04 §2).
@@ -67,12 +71,14 @@ class _Settings extends ConsumerWidget {
             _Switch(
               key: const Key('set-notifications'),
               label: l.settingsNotifications,
+              hint: l.settingsNotificationsHint,
               value: s.notifications,
               onChanged: (v) {
                 apply(() => s.notifications = v);
                 if (v) unawaited(c.notifications.requestPermission());
               },
             ),
+            if (Features.calibration) _CalibrationRow(controller: c),
           ],
         ),
         _Group(
@@ -126,6 +132,7 @@ class _Settings extends ConsumerWidget {
         _Group(
           title: l.settingsSave,
           children: [
+            if (c.cloud.available) _CloudRow(controller: c),
             Row(
               children: [
                 Expanded(
@@ -161,8 +168,14 @@ class _Settings extends ConsumerWidget {
               key: const Key('set-analytics'),
               label: l.settingsAnalytics,
               hint: l.settingsAnalyticsHint,
-              value: s.analytics,
-              onChanged: (v) => apply(() => s.analytics = v),
+              // Held for an answer (T-33) reads as off: nothing is sent.
+              value: c.statsConsent == StatsConsent.on,
+              // A choice here is an answer to the question (T-33).
+              onChanged: (v) => apply(
+                () => s
+                  ..analytics = v
+                  ..analyticsAsked = true,
+              ),
             ),
             _Action(
               key: const Key('set-privacy'),
@@ -325,6 +338,104 @@ class _AskDialogState extends State<_AskDialog> {
 const privacyPolicyUrl = 'https://dombearx.github.io/hit5/privacy.html';
 
 /// UMP's "privacy options" entry, shown only where the law requires it.
+/// Cloud save through Play Games (docs/05 T-35): connect, or load a cloud
+/// save with more progress (asks first, then restarts like an import).
+class _CloudRow extends ConsumerWidget {
+  const _CloudRow({required this.controller});
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final hint = TextStyle(
+      fontSize: 12.5,
+      color: Palette.outline.withValues(alpha: 0.7),
+    );
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l.settingsCloud, style: _labelStyle),
+          Text(
+            c.cloudSignedIn ? l.settingsCloudOn : l.settingsCloudOff,
+            style: hint,
+          ),
+          const SizedBox(height: 8),
+          if (!c.cloudSignedIn)
+            _Action(
+              key: const Key('set-cloud-connect'),
+              label: l.settingsCloudConnect,
+              onTap: () => unawaited(c.signInCloud()),
+            )
+          else
+            _Action(
+              key: const Key('set-cloud-restore'),
+              label: l.settingsCloudRestore,
+              onTap: () => _restore(context, ref),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _restore(BuildContext context, WidgetRef ref) async {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final restart = ref.read(restartProvider);
+    final messenger = ScaffoldMessenger.of(context);
+    final offer = await c.checkCloud(manual: true);
+    if (!context.mounted) return;
+    if (offer == null) {
+      messenger.showSnackBar(SnackBar(content: Text(l.settingsCloudNothing)));
+      return;
+    }
+    final load = await showCloudOffer(context, c, offer);
+    if (await c.answerCloudOffer(offer, load: load)) await restart();
+  }
+}
+
+/// Input-lag calibration (docs/05 T-13). Suggests itself when the recent
+/// taps lean one way by more than a GOOD window's half.
+class _CalibrationRow extends StatelessWidget {
+  const _CalibrationRow({required this.controller});
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final stats = controller.state.stats;
+    final lean = stats.recentErrors.length >= 30 ? stats.meanError : 0.0;
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _Action(
+            key: const Key('set-calibration'),
+            label: l.settingsCalibration(
+              formatOffsetMs(controller.settings.inputOffsetMs),
+            ),
+            onTap: () => showCalibration(context, controller),
+          ),
+          if (lean.abs() > 0.025)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, left: 4),
+              child: Text(
+                l.settingsCalibrationHint(formatOffsetMs(lean * 1000)),
+                style: TextStyle(
+                  fontSize: 12.5,
+                  color: Palette.outline.withValues(alpha: 0.7),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class _AdPrivacyButton extends StatelessWidget {
   const _AdPrivacyButton({required this.privacy});
   final AdPrivacy privacy;

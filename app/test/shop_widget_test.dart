@@ -80,6 +80,26 @@ void main() {
     expect(c.econ.generatorCost('grandpa'), greaterThan(c.state.tiki));
   });
 
+  testWidgets('BONUS buys up to the next free ×2 (R-ULEP-1)', (tester) async {
+    final s = GameState()
+      ..tutorialDone =
+          true // the tutorial's bubbles are not in the way
+      ..dailyKey =
+          dateKey(DateTime.now()) // no daily bonus window
+      ..dailyStreak = 1
+      ..tiki = 1e6
+      ..owned['grandpa'] = 3;
+    final c = await pumpGame(tester, state: s);
+    await tester.tap(find.byKey(const Key('amount-next')));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(find.text('×7'), findsWidgets);
+    await tester.tap(find.byKey(const Key('buy-grandpa')));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(c.state.owned['grandpa'], 10);
+    expect(c.econ.milestonesReached('grandpa'), 1);
+    await tester.pump(const Duration(seconds: 6)); // the bonus toast leaves
+  });
+
   testWidgets('offline dialog appears and collects (R-OFF-2)', (tester) async {
     const now = 10 * 3600 * 1000;
     final s = GameState()..lastSeenMs = now - 2 * 3600 * 1000;
@@ -87,7 +107,7 @@ void main() {
     final c = await pumpGame(tester, state: s, wallMs: () => now);
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('Gdy cię nie było…'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('offline-collect')));
+    await tester.tap(find.byKey(const Key('welcome-collect')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.tiki, closeTo(3600, 1)); // 2 h × 1/s × 50 %
     expect(c.pendingOffline, isNull);
@@ -107,12 +127,35 @@ void main() {
     c.checkOffline();
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('Dzienna premia'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('daily-collect')));
+    await tester.tap(find.byKey(const Key('welcome-collect')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.tiki, c.balance.daily.floorPerDay);
     expect(c.pendingDaily, isNull);
     c.checkOffline(); // same day: nothing new
     expect(c.pendingDaily, isNull);
+  });
+
+  testWidgets('offline income and the daily bonus share one window', (
+    tester,
+  ) async {
+    const now = 10 * 3600 * 1000;
+    final s = GameState()
+      ..tutorialDone = true
+      ..lastSeenMs = now - 2 * 3600 * 1000
+      ..tipsSeen.add('notifyAsked');
+    s.owned['grandma'] = 1;
+    final c = await pumpGame(tester, state: s, wallMs: () => now);
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.byKey(const Key('welcome')), findsOneWidget);
+    expect(find.text('Witaj z powrotem!'), findsOneWidget);
+    final both = c.pendingOffline!.amount + c.pendingDaily!.amount;
+    await tester.tap(find.byKey(const Key('welcome-collect')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(c.state.tiki, closeTo(both, 1e-6));
+    expect(c.pendingOffline, isNull);
+    expect(c.pendingDaily, isNull);
+    await tester.pump(const Duration(milliseconds: 300)); // closing
+    expect(find.byKey(const Key('welcome')), findsNothing);
   });
 
   testWidgets('shop folds away and back (U-2)', (tester) async {

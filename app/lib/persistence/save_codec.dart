@@ -110,6 +110,7 @@ Map<String, Object?> encodeSave(SaveData d) {
     'turboLeft': s.turboLeft,
     'dailyKey': s.dailyKey,
     'dailyStreak': s.dailyStreak,
+    'dailyGraceUsed': s.dailyGraceUsed,
     'seasonKey': s.seasonKey,
     'seasonCatches': s.seasonCatches,
     'seasonHits': s.seasonHits,
@@ -181,6 +182,8 @@ Map<String, Object?> encodeSave(SaveData d) {
       'reduceMotion': st.reduceMotion,
       'notifications': st.notifications,
       'analytics': st.analytics,
+      'analyticsAsked': st.analyticsAsked,
+      'inputOffsetMs': st.inputOffsetMs,
     },
   };
 }
@@ -242,6 +245,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..turboLeft = _d(j['turboLeft'])
     ..dailyKey = _i(j['dailyKey'])
     ..dailyStreak = _i(j['dailyStreak'])
+    ..dailyGraceUsed = j['dailyGraceUsed'] == true
     ..seasonKey = j['seasonKey'] is String ? j['seasonKey']! as String : ''
     ..seasonCatches = _i(j['seasonCatches'])
     ..seasonHits = _i(j['seasonHits'])
@@ -346,7 +350,10 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
         : Notation.short
     ..reduceMotion = st['reduceMotion'] == true
     ..notifications = st['notifications'] != false
-    ..analytics = st['analytics'] != false;
+    ..analytics = st['analytics'] != false
+    // Turned off before the question existed: that was an answer.
+    ..analyticsAsked = st['analyticsAsked'] == true || st['analytics'] == false
+    ..inputOffsetMs = _d(st['inputOffsetMs']).clamp(-150.0, 250.0);
   if (s.tiki < 0 || s.earnedTotal < 0) {
     throw SaveFormatException('negative money');
   }

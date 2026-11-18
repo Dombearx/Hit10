@@ -1313,7 +1313,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String notificationTitle(String amount) {
-    return 'Twoje zegary uzbierały $amount Tików! Wracaj po więcej.';
+    return 'Twoje zegary uzbierały $amount Tików!';
   }
 
   @override
@@ -1332,14 +1332,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settingsHaptics => 'Wibracje';
 
   @override
-  String get settingsNotifications => 'Powiadom, gdy zegary uzbierają limit';
+  String get settingsNotifications => 'Powiadomienia';
 
   @override
   String get settingsAnalytics => 'Wysyłaj statystyki gry';
 
   @override
   String get settingsAnalyticsHint =>
-      'Pomagają nam dopracować grę. Bez konta, imienia i identyfikatora reklamowego.';
+      'Statystyki rozgrywki i raporty o awariach pomagają nam dopracować grę. Bez konta, imienia i identyfikatora reklamowego.';
 
   @override
   String get settingsLanguage => 'Język';
@@ -3098,7 +3098,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get notificationAskBody =>
-      'Zegary zarabiają, gdy gra jest zamknięta — ale tylko do limitu czasu. Wyślemy jedno powiadomienie, gdy go osiągną.';
+      'Zegary zarabiają, gdy gra jest zamknięta — ale tylko do limitu czasu. Damy znać, gdy go osiągną, i przypomnimy o dziennej premii. Najwyżej dwa powiadomienia, nigdy w nocy.';
 
   @override
   String get notificationAskYes => 'Tak, daj znać';
@@ -3121,4 +3121,164 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get chroniclePrologue => 'Prolog';
+
+  @override
+  String get calibTitle => 'Kalibracja';
+
+  @override
+  String get calibIntro =>
+      'Każdy telefon trochę spóźnia dotyk i obraz. Dotknij 10 razy, gdy stoper pokaże 5.00: gra zmierzy, o ile zwykle się spóźniasz, i od teraz będzie to odejmować. Twoja precyzja zostaje twoja — znika tylko stałe opóźnienie.';
+
+  @override
+  String calibCurrent(String offset) {
+    return 'Obecne przesunięcie: $offset';
+  }
+
+  @override
+  String get calibStart => 'Zacznij';
+
+  @override
+  String get calibTapHint => 'Dotknij na 5.00';
+
+  @override
+  String get calibNoTap => 'Bez dotknięcia — jeszcze raz';
+
+  @override
+  String calibResultLate(int ms) {
+    return 'Twoje dotknięcia są liczone średnio $ms ms po czasie.';
+  }
+
+  @override
+  String calibResultEarly(int ms) {
+    return 'Twoje dotknięcia są liczone średnio $ms ms przed czasem.';
+  }
+
+  @override
+  String get calibResultZero =>
+      'Twoje dotknięcia trafiają średnio w punkt — przesunięcie nie jest potrzebne.';
+
+  @override
+  String get calibUnreliable =>
+      'Wyniki są mocno rozrzucone. Powtórz test spokojnie, patrząc na cyfry.';
+
+  @override
+  String calibApply(String offset) {
+    return 'Zastosuj ($offset)';
+  }
+
+  @override
+  String get calibRepeat => 'Powtórz';
+
+  @override
+  String get calibReset => 'Wyzeruj';
+
+  @override
+  String settingsCalibration(String offset) {
+    return 'Kalibracja opóźnienia: $offset';
+  }
+
+  @override
+  String settingsCalibrationHint(String offset) {
+    return 'Twoje ostatnie dotknięcia to średnio $offset — kalibracja może pomóc.';
+  }
+
+  @override
+  String get adShowFailed =>
+      'Nie udało się wyświetlić reklamy — bez nagrody, ale oferta na ciebie czeka. Spróbuj za chwilę.';
+
+  @override
+  String get welcomeTitle => 'Witaj z powrotem!';
+
+  @override
+  String get collectAll => 'Odbierz wszystko';
+
+  @override
+  String welcomeSeason(String season) {
+    return 'Trwa wydarzenie: $season! Postęp pokazuje plakietka u góry.';
+  }
+
+  @override
+  String get dailyGrace =>
+      'Ominął cię jeden dzień — dzień łaski tego tygodnia uratował serię.';
+
+  @override
+  String get statsAskTitle => 'Pomożesz dopracować grę?';
+
+  @override
+  String get statsAskBody =>
+      'Czy gra może wysyłać anonimowe statystyki rozgrywki i raporty o awariach? Bez konta, imienia i identyfikatora reklamowego. Zmienisz to w każdej chwili w ustawieniach.';
+
+  @override
+  String get statsAskYes => 'Tak, wysyłaj';
+
+  @override
+  String get statsAskNo => 'Nie, dziękuję';
+
+  @override
+  String get buyAmountNext => 'PRÓG';
+
+  @override
+  String get notificationOfflineBody =>
+      'Limit offline jest pełny: dalsze czekanie nic już nie dorzuci.';
+
+  @override
+  String notificationDailyTitle(int day, int days) {
+    return 'Dzienna premia czeka — dzień $day/$days';
+  }
+
+  @override
+  String get notificationDailyBody =>
+      'Wpadnij ją odebrać, żeby seria trwała dalej.';
+
+  @override
+  String get notificationReserveTitle => 'Zapas dokręcania pełny';
+
+  @override
+  String notificationReserveBody(String first) {
+    return 'Równe 5.00 znów nakręcają Sprężynę — pierwsze aż o $first.';
+  }
+
+  @override
+  String get settingsNotificationsHint =>
+      'Limit offline, dzienna premia, pełny zapas dokręcania. Najwyżej dwa naraz, nigdy w nocy.';
+
+  @override
+  String get cloudOfferTitle => 'Zapis w chmurze';
+
+  @override
+  String cloudOfferBody(
+    String cloudTime,
+    String cloudEarned,
+    String localTime,
+    String localEarned,
+  ) {
+    return 'W Google Play Gry jest zapis z większym postępem:\n• w chmurze: $cloudTime gry, $cloudEarned Tików łącznie\n• na tym telefonie: $localTime gry, $localEarned Tików łącznie\nWczytać zapis z chmury? Postęp z tego telefonu zostanie zastąpiony.';
+  }
+
+  @override
+  String get cloudLoad => 'Wczytaj z chmury';
+
+  @override
+  String get cloudKeep => 'Zostaw ten z telefonu';
+
+  @override
+  String get settingsCloud => 'Zapis w chmurze (Google Play Gry)';
+
+  @override
+  String get settingsCloudOn =>
+      'Połączono: gra zapisuje się w chmurze przy każdym wyjściu.';
+
+  @override
+  String get settingsCloudOff =>
+      'Zachowa postęp, gdy zmienisz albo zresetujesz telefon.';
+
+  @override
+  String get settingsCloudConnect => 'Połącz z Google Play Gry';
+
+  @override
+  String get settingsCloudRestore => 'Wczytaj z chmury';
+
+  @override
+  String get settingsCloudNothing =>
+      'W chmurze nie ma zapisu z większym postępem niż na tym telefonie.';
 }

@@ -20,28 +20,41 @@
 <main>
 <h1>Hit5</h1>
 <p class="lang"><a href="#pl">Polski</a> · <a href="#en">English</a></p>
-<small>Obowiązuje od / Effective: 2026-11-03</small>
+<small>Obowiązuje od / Effective: 2026-11-18</small>
 
 <h2 id="pl">Polityka prywatności</h2>
 <p>Hit5 to gra na telefon. Nie zakładasz w niej konta i nie podajesz nam
 żadnych danych. Gra nie ma własnego serwera. Wysyła tylko statystyki
-rozgrywki, które możesz wyłączyć (niżej).</p>
+rozgrywki i raporty o awariach, które możesz wyłączyć (niżej).</p>
 <h3>Co zostaje na Twoim telefonie</h3>
 <p>Postęp w grze (Tiki, zegary, osiągnięcia, ustawienia) jest zapisany tylko
 w pamięci telefonu. Jeśli masz włączoną kopię zapasową Androida, system może
 przechować ten plik na Twoim koncie Google, żeby przywrócić go na nowym
-telefonie; robi to Google, a nie my. Powiadomienie o pełnym limicie offline
-jest planowane lokalnie na telefonie i nigdzie nie jest wysyłane.</p>
-<h3>Statystyki gry</h3>
+telefonie; robi to Google, a nie my. Przypomnienia (pełny limit offline,
+dzienna premia, pełny zapas dokręcania) są planowane lokalnie na telefonie
+i nigdzie nie są wysyłane.</p>
+<h3>Zapis w chmurze (Google Play Gry)</h3>
+<p>Jeśli zalogujesz się do Google Play Gry, gra zapisuje kopię postępu
+(ten sam plik co na telefonie) w Twoim koncie Google Play Gry, żeby przywrócić
+go na nowym telefonie. Przechowuje ją Google, a nie my; usuniesz ją
+w ustawieniach Google Play Gry. Bez logowania nic nie jest wysyłane.
+Szczegóły: <a href="https://policies.google.com/privacy">polityka
+prywatności Google</a>.</p>
+<h3>Statystyki gry i raporty o awariach</h3>
 <p>Żeby dopracować grę (na przykład tempo zdobywania zegarów czy samouczek),
 gra wysyła do Google Analytics for Firebase statystyki rozgrywki. Są to
 ukończenie samouczka, zakupy zegarów i umiejętności za Tiki, paradoks
-czasu, celność trafień, przyjęte oferty reklam i błędy gry. Firebase dodaje
+czasu, celność trafień i przyjęte oferty reklam. Gdy w grze wystąpi błąd,
+Firebase Crashlytics wysyła raport o nim (miejsce w kodzie, model telefonu,
+wersje Androida i gry). Firebase dodaje
 do nich losowy identyfikator instalacji, model telefonu, wersję Androida
 i gry, kraj (ustalany z adresu IP, którego Google nie przechowuje) oraz
 czas gry. Statystyki nie zawierają identyfikatora reklamowego, imienia ani
-niczego, co wpisujesz, i nie służą do reklam. Przechowujemy je 2 miesiące.
-Możesz je wyłączyć w ustawieniach gry („Wysyłaj statystyki gry”).
+niczego, co wpisujesz, i nie służą do reklam. Przechowujemy je 2 miesiące
+(raporty o awariach: 90 dni). W Europejskim Obszarze Gospodarczym, Wielkiej
+Brytanii i Szwajcarii gra najpierw pyta o zgodę i do tego czasu niczego nie
+wysyła. Wszędzie możesz je wyłączyć w ustawieniach gry („Wysyłaj statystyki
+gry”).
 Szczegóły:
 <a href="https://firebase.google.com/support/privacy">prywatność
 w Firebase</a>.</p>
@@ -61,8 +74,9 @@ w ustawieniach Androida.</p>
 <h3>Dzieci</h3>
 <p>Gra nie jest skierowana do dzieci poniżej 13 lat.</p>
 <h3>Usunięcie danych</h3>
-<p>Wszystko, co gra zapisuje, usuniesz, odinstalowując ją albo wybierając
-w ustawieniach „Zacznij od nowa”. Statystyki gry nie są powiązane z Tobą
+<p>Wszystko, co gra zapisuje na telefonie, usuniesz, odinstalowując ją albo
+wybierając w ustawieniach „Zacznij od nowa”; kopię w chmurze — w ustawieniach
+Google Play Gry. Statystyki gry nie są powiązane z Tobą
 (tylko z losowym identyfikatorem instalacji) i znikają po 2 miesiącach.
 Po wyłączeniu ich w ustawieniach gra przestaje je wysyłać.</p>
 <h3>Kontakt</h3>
@@ -72,22 +86,33 @@ polityki opublikujemy na tej stronie z nową datą.</p>
 <h2 id="en">Privacy policy</h2>
 <p>Hit5 is a mobile game. You don't create an account and you don't give us
 any data. The game has no server of its own. It only sends gameplay
-statistics, which you can turn off (below).</p>
+statistics and crash reports, which you can turn off (below).</p>
 <h3>What stays on your phone</h3>
 <p>Your progress (Ticks, clocks, achievements, settings) is saved only in the
 phone's storage. If Android backup is on, the system may keep that file in
 your Google account so it can be restored on a new phone; Google does that,
-not us. The "clocks are full" notification is scheduled locally on the phone
-and is never sent anywhere.</p>
-<h3>Game statistics</h3>
+not us. Reminders (offline limit full, daily bonus, winding reserve full)
+are scheduled locally on the phone and are never sent anywhere.</p>
+<h3>Cloud save (Google Play Games)</h3>
+<p>If you sign in to Google Play Games, the game saves a copy of your
+progress (the same file as on the phone) in your Google Play Games account,
+so it can be restored on a new phone. Google keeps it, not us; you can
+delete it in the Google Play Games settings. Without signing in nothing is
+sent. Details: <a href="https://policies.google.com/privacy">Google's privacy
+policy</a>.</p>
+<h3>Game statistics and crash reports</h3>
 <p>To improve the game (for example how fast clocks come or the tutorial),
 the game sends gameplay statistics to Google Analytics for Firebase:
 finishing the tutorial, buying clocks and skills with Ticks, time paradoxes,
-timing accuracy, ad offers taken and game errors. Firebase adds a random
+timing accuracy and ad offers taken. When the game hits an error, Firebase
+Crashlytics sends a report about it (where in the code, phone model,
+Android and game version). Firebase adds a random
 install ID, the phone model, Android and game version, country (derived from
 the IP address, which Google does not store) and play time. The statistics
 contain no advertising ID, no name and nothing you type, and are not used
-for ads. We keep them for 2 months. You can turn them off in the game's
+for ads. We keep them for 2 months (crash reports: 90 days). In the European
+Economic Area, the UK and Switzerland the game asks for your consent first
+and sends nothing until then. Everywhere you can turn them off in the game's
 settings ("Send game statistics"). Details:
 <a href="https://firebase.google.com/support/privacy">privacy in
 Firebase</a>.</p>
@@ -105,8 +130,9 @@ You can reset or delete your advertising ID at any time in Android settings.</p>
 <h3>Children</h3>
 <p>The game is not directed at children under 13.</p>
 <h3>Deleting data</h3>
-<p>Everything the game saves is removed when you uninstall it or choose
-"Start over" in its settings. Game statistics are not linked to you, only
+<p>Everything the game saves on the phone is removed when you uninstall it or
+choose "Start over" in its settings; the cloud copy, in the Google Play Games
+settings. Game statistics are not linked to you, only
 to a random install ID, and are deleted after 2 months. Once you turn them
 off in the settings, the game stops sending them.</p>
 <h3>Contact</h3>

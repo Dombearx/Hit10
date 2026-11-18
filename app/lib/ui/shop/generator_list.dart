@@ -19,7 +19,10 @@ import '../widgets/springs.dart';
 import '../widgets/coach.dart';
 import '../widgets/res_text.dart';
 
-enum BuyAmount { one, ten, hundred, max }
+/// How many clocks one tap buys (R-GEN-2): 1, 10, 100, up to the next
+/// free bonus (R-ULEP-1, like "Next" in other idle games), or as many as
+/// the Tiki pay for.
+enum BuyAmount { one, ten, hundred, next, max }
 
 /// The "Clocks" tab: revealed generators, then one silhouette (R-GEN-4).
 class GeneratorList extends StatefulWidget {
@@ -192,6 +195,8 @@ class _GeneratorTile extends StatelessWidget {
       BuyAmount.one => 1,
       BuyAmount.ten => 10,
       BuyAmount.hundred => 100,
+      // All bonuses reached: one at a time.
+      BuyAmount.next => (c.econ.nextMilestone(id) ?? owned + 1) - owned,
       BuyAmount.max => c.econ.maxAffordable(id, c.state.tiki).clamp(1, 1 << 30),
     };
     final price = c.econ.bulkCost(id, count);

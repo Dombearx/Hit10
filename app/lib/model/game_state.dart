@@ -164,6 +164,10 @@ class GameState {
   /// Day of the 7-day streak that [dailyKey] paid (1–7).
   int dailyStreak = 0;
 
+  /// This week's grace day is used up (R-DZIEN-3): one missed day keeps
+  /// the streak once per seven claims.
+  bool dailyGraceUsed = false;
+
   // ---------------------------------------------------------- seasons --
   /// The season run being counted ("halloween-2026", docs/02 §14); the
   /// counters below reset when it changes.

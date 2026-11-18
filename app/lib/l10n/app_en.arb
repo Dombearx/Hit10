@@ -1074,7 +1074,7 @@
   "help_prestige": "Once you've earned enough Ticks, the swirl at the top lights up. Rewinding time resets your Ticks, clocks and skills. In return you get:\n• Chronons — a permanent multiplier on all income; their number grows with the Ticks earned this loop\n• Shards of time — as many as Chronons; they pay for perks\nYou buy perks right after the rewind or later on the paradox screen. Chronons, Shards, perks and achievements stay.",
   "help_icons_t": "Icons at the top",
   "help_icons": "• Trophy — achievements (each: +1% income)\n• Chart — statistics\n• Dial — the stopwatch look\n• Question mark — this help\n• Gear — settings\n• Swirl — time paradox\n• Spiral — Mainsprings",
-  "notificationTitle": "Your clocks collected {amount} Ticks! Come back for more.",
+  "notificationTitle": "Your clocks collected {amount} Ticks!",
   "@notificationTitle": {
     "placeholders": {
       "amount": {
@@ -1087,9 +1087,9 @@
   "settingsSound": "Sound effects",
   "settingsMusic": "Music",
   "settingsHaptics": "Vibration",
-  "settingsNotifications": "Tell me when the clocks are full",
+  "settingsNotifications": "Notifications",
   "settingsAnalytics": "Send game statistics",
-  "settingsAnalyticsHint": "Helps us balance the game. No account, no name, no ad ID.",
+  "settingsAnalyticsHint": "Gameplay statistics and crash reports help us tune the game. No account, no name, no ad ID.",
   "settingsLanguage": "Language",
   "languageSystem": "System",
   "settingsNotation": "Numbers",
@@ -2037,12 +2037,135 @@
   "help_res_shard": "Shards of time — the currency of perks",
   "help_res_spring": "Mainsprings — clock mastery",
   "helpLocked": "Keep playing to unlock new mechanics",
-  "notificationAskBody": "Your clocks earn while the game is closed — but only up to a time limit. We'll send one notification when they reach it.",
+  "notificationAskBody": "Your clocks earn while the game is closed — but only up to a time limit. We'll tell you when they reach it and remind you of the daily bonus. Two notifications at most, never at night.",
   "notificationAskYes": "Yes, let me know",
   "notificationAskNo": "No, thanks",
   "prologue_t": "Prologue: The top shelf",
   "prologue": "In an old clock shop, on the very top shelf, ticks Chronos — the god of time. Someone stuck a price tag on him by mistake. The price has so many zeros that nobody has ever tried.\n\"We will,\" says Grandpa, tapping his pocket watch. \"Whoever buys Chronos learns his secret.\"\n\"And what do we pay with?\"\n\"Ticks. Stop the stopwatch on exactly 5.00 and the Ticks fall into your pocket. Ticks buy clocks, and clocks earn the next ones. Until one day we take Chronos off the shelf.\"",
   "prologueGoal": "Goal: buy Chronos",
   "prologueGo": "Let's go!",
-  "chroniclePrologue": "Prologue"
+  "chroniclePrologue": "Prologue",
+  "calibTitle": "Calibration",
+  "calibIntro": "Every phone registers touches and shows the picture a little late. Tap 10 times when the stopwatch shows 5.00: the game measures how late you usually are and takes that off from now on. Your precision stays yours — only the constant delay goes away.",
+  "calibCurrent": "Current offset: {offset}",
+  "@calibCurrent": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "calibStart": "Start",
+  "calibTapHint": "Tap at 5.00",
+  "calibNoTap": "No tap — again",
+  "calibResultLate": "Your taps register {ms} ms late on average.",
+  "@calibResultLate": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "calibResultEarly": "Your taps register {ms} ms early on average.",
+  "@calibResultEarly": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "calibResultZero": "Your taps land right on time — no offset needed.",
+  "calibUnreliable": "The taps were very scattered. Try again calmly, watching the digits.",
+  "calibApply": "Apply ({offset})",
+  "@calibApply": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "calibRepeat": "Again",
+  "calibReset": "Reset to 0 ms",
+  "settingsCalibration": "Input lag calibration: {offset}",
+  "@settingsCalibration": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsCalibrationHint": "Your recent taps average {offset} — calibrating may help.",
+  "@settingsCalibrationHint": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "adShowFailed": "The ad couldn't be shown — no reward, and the offer is still yours. Try again in a moment.",
+  "welcomeTitle": "Welcome back!",
+  "collectAll": "Collect all",
+  "welcomeSeason": "{season} is on! The badge at the top shows your progress.",
+  "@welcomeSeason": {
+    "placeholders": {
+      "season": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyGrace": "You missed a day — this week's grace day kept your streak.",
+  "statsAskTitle": "Help us tune the game?",
+  "statsAskBody": "May the game send anonymous gameplay statistics and crash reports? No account, no name, no ad ID. You can change this in the settings anytime.",
+  "statsAskYes": "Yes, send them",
+  "statsAskNo": "No, thanks",
+  "buyAmountNext": "BONUS",
+  "notificationOfflineBody": "The offline limit is full: from now on waiting earns nothing more.",
+  "notificationDailyTitle": "Daily bonus waiting — day {day}/{days}",
+  "@notificationDailyTitle": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationDailyBody": "Drop in to collect it and keep your streak going.",
+  "notificationReserveTitle": "Winding reserve full",
+  "notificationReserveBody": "Exact 5.00s wind your Mainspring again — the first one by {first}.",
+  "@notificationReserveBody": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsNotificationsHint": "The offline limit, the daily bonus, a full winding reserve. Two at most, never at night.",
+  "cloudOfferTitle": "Cloud save found",
+  "cloudOfferBody": "Google Play Games has a save with more progress:\n• in the cloud: {cloudTime} played, {cloudEarned} Ticks earned\n• on this phone: {localTime} played, {localEarned} Ticks earned\nLoad the cloud save? This phone's progress will be replaced.",
+  "@cloudOfferBody": {
+    "placeholders": {
+      "cloudTime": {
+        "type": "String"
+      },
+      "cloudEarned": {
+        "type": "String"
+      },
+      "localTime": {
+        "type": "String"
+      },
+      "localEarned": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudLoad": "Load from the cloud",
+  "cloudKeep": "Keep this phone's",
+  "settingsCloud": "Cloud save (Google Play Games)",
+  "settingsCloudOn": "Connected: the game saves to the cloud whenever you leave it.",
+  "settingsCloudOff": "Keeps your progress when you change or reset your phone.",
+  "settingsCloudConnect": "Connect Google Play Games",
+  "settingsCloudRestore": "Load from the cloud",
+  "settingsCloudNothing": "The cloud has no save with more progress than this phone."
 }

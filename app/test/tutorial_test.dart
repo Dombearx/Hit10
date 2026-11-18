@@ -467,10 +467,14 @@ void main() {
     expect(s.tutorialDone, isFalse);
   });
 
-  testWidgets('a new game opens with the prologue: the goal is Chronos', (
+  testWidgets('the first Tik opens the prologue: the goal is Chronos', (
     tester,
   ) async {
-    final s = GameState();
+    // The first round paid: the prologue follows, not precedes, the first
+    // touch of the clock (R-TUT-0).
+    final s = GameState()
+      ..tiki = 3
+      ..earnedTotal = 3;
     final c = controller(s);
     tester.view.physicalSize = const Size(1170, 2532);
     tester.view.devicePixelRatio = 3;
@@ -496,13 +500,25 @@ void main() {
     expect(c.prologuePending, isFalse);
   });
 
-  test('no prologue for a game already under way', () {
+  test('no prologue before the first Tik or for a game under way', () {
+    expect(controller(GameState()).prologuePending, isFalse);
     expect(
       controller(GameState()..tutorialDone = true).prologuePending,
       isFalse,
     );
-    expect(controller(GameState()..earnedTotal = 50).prologuePending, isFalse);
-    expect(controller(GameState()..prestiges = 1).prologuePending, isFalse);
+    expect(
+      controller(
+        GameState()
+          ..earnedTotal = 50
+          ..prestiges = 1,
+      ).prologuePending,
+      isFalse,
+    );
+    // Not over a round's result: only once the clock waits again.
+    final c = controller(GameState()..earnedTotal = 1);
+    expect(c.prologuePending, isTrue);
+    c.onPointerDown(Duration.zero);
+    expect(c.prologuePending, isFalse);
   });
 
   testWidgets('help hides what the player has not met yet', (tester) async {

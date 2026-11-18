@@ -60,9 +60,37 @@ Free (Spark plan, no card needed).
 5. AdMob → Apps → Hit5 → App settings → **Link to Firebase** (shows ad
    revenue next to player behaviour; optional).
 6. Privacy & messaging → GDPR message (step 2.4): make sure Google
-   Analytics for Firebase is not blocked by the chosen vendor list.
-   Firebase reads the consent the UMP form stores (TCF), and the game's
-   own setting can switch statistics off.
+   Analytics for Firebase is not blocked by the chosen vendor list. In the
+   EEA/UK the game also asks its own question about statistics and crash
+   reports after the tutorial and holds them on the phone until then
+   (docs/05 T-33).
+7. **Crashlytics** (crash reports, docs/05 T-30): Firebase console →
+   Crashlytics → *Enable*. Nothing else: the game sends Dart errors only,
+   so the Crashlytics Gradle plugin is not needed (the app tells the SDK
+   so in `res/values/crashlytics.xml`). The first report shows up after
+   the first error on a phone whose player said yes.
+
+## 2b. Play Games Services (cloud save, docs/05 T-35)
+
+Free. Needed only for the cloud save; without it the game simply has no
+"Cloud save" row.
+
+1. Play Console → Hit5 → **Grow users → Play Games Services → Setup and
+   management → Configuration** → *No, my game doesn't use Google APIs* →
+   name "Hit5" → Create.
+2. **Credentials → Add credential → Android**: package
+   `io.github.dombearx.hit10`; create the OAuth client it asks for with
+   the **SHA-1 of the app signing key** (Play Console → Test and release →
+   App integrity → App signing). Add a second credential with the SHA-1 of
+   the **upload key** (`keytool -list -v -keystore hit5-upload.jks`), so
+   the test APKs from CI that use it can sign in too.
+3. **Properties → Saved Games: On.**
+4. **Testers**: add the testers' Google accounts (until the configuration
+   is published only they can sign in).
+5. Copy the **Project ID** (a long number at the top of Configuration)
+   into the secret `PLAY_GAMES_APP_ID` (step 3).
+6. When the closed test is happy: **Review and publish** the Play Games
+   configuration (separate from the app release).
 
 ## 3. GitHub secrets (Hit5 repo → Settings → Secrets and variables → Actions)
 
@@ -78,6 +106,7 @@ Free (Spark plan, no card needed).
 | `FIREBASE_API_KEY` | Web API key from step 2a |
 | `FIREBASE_PROJECT_ID` | Project ID from step 2a |
 | `FIREBASE_SENDER_ID` | Project number from step 2a |
+| `PLAY_GAMES_APP_ID` | Play Games Project ID from step 2b (optional: no cloud save without it) |
 
 After the next push, the CI run's **hit5-aab** artifact contains
 `…-signed.aab`. (Without the secrets it is `…-unsigned.aab`, test ids,
@@ -149,24 +178,30 @@ higher versionCode blocks the next uploads until the run number passes it.
      no sexual content, no profanity, no gambling (no real money, no
      loot boxes bought with money), no user interaction or sharing, no
      location. Expect PEGI 3 / ESRB Everyone.
-   - **Data safety** (from the code, docs/05 T-26, T-30):
+   - **Data safety** (from the code, docs/05 T-26, T-30, T-35):
      - Does the app collect or share user data? **Yes** — via the
-       AdMob SDK and Firebase Analytics (docs/05 §8a).
+       AdMob SDK, Firebase Analytics and Crashlytics, and Play Games
+       Services (docs/05 §8a).
      - Data types: **Device or other IDs** (advertising ID via AdMob;
        Firebase app instance ID) — collected and shared, purpose
        *Advertising or marketing*, *Analytics*, not optional for ads.
        **App activity → App interactions** (Firebase game events, AdMob)
-       — collected, purpose *Analytics*, **optional** (setting "Send game
-       statistics"). **App info and performance → Crash logs** (`app_error`)
-       and **Diagnostics** — collected, purpose *Analytics*. Follow
-       Google's guides "Prepare your app for the Data safety form" for the
-       Mobile Ads SDK and for Firebase.
+       — collected, purpose *Analytics*, **optional** (the statistics
+       question / setting "Send game statistics"). **App info and
+       performance → Crash logs** and **Diagnostics** (Crashlytics) —
+       collected, purpose *Analytics*, **optional** (same choice). **App
+       activity → Other actions** (the saved game in Play Games, only when
+       the player signs in) — collected, purpose *App functionality*,
+       **optional**. Follow Google's guides "Prepare your app for the Data
+       safety form" for the Mobile Ads SDK, Firebase and Play Games
+       Services.
      - Data is encrypted in transit: **Yes** (HTTPS).
      - Users can request deletion: no account exists; statistics are tied
        to a random install ID only and expire after 2 months; game data is
        deleted by uninstalling.
-     - Game progress itself stays on the device (Android backup is the
-       user's own Google account) — not "collected" in Play's sense.
+     - Game progress stays on the device (Android backup is the user's
+       own Google account); the cloud copy lives in the player's own Play
+       Games account (the "Other actions" entry above).
    - Government app / financial features / health: No.
    - News app: No.
 4. **Closed testing** (required for new personal developer accounts):

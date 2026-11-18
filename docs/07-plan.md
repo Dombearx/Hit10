@@ -134,6 +134,13 @@ i balansu. Zmiany liczb wpisujemy do 02/03.
 - [x] Wpis w sklepie PL/EN: nazwa, opis, ikona, grafika 1024×500, zrzuty
       (U-28)
 - [x] Statystyki gry w Firebase Analytics (05 §8a)
+- [x] Po przeglądzie dobrych praktyk (11.2026): ocena dotknięcia ze
+      znacznika czasu (05 T-10), kalibracja za flagą (T-13), zgoda na
+      reklamy i statystyki po samouczku (T-26, T-33), Crashlytics (T-30),
+      zapis w chmurze Play Games (T-35), prośba o ocenę (02 R-OCENA-1),
+      przypomnienia (R-POW), „Witaj z powrotem” (04 U-34), dzień łaski
+      (R-DZIEN-3), kupowanie do progu (R-GEN-2), uśpienie areny (T-21a),
+      kolejka zapisów (T-18), duża czcionka (04 U-35)
 - [ ] Data Safety, kategoria wiekowa 13+, ankieta treści
 - [ ] **Test zamknięty: 12 testerów przez 14 dni** (wymóg dla nowych kont
       osobistych). Uwagi testerów poprawiamy w trakcie.
@@ -169,12 +176,25 @@ test zamknięty) opisuje `store/PLAY_CONSOLE.md`.
 | Repo `Dombearx/Dombearx.github.io` na stronę WWW | przed M6 |
 | 12 testerów do testu zamkniętego (adresy Google) | przed M6 |
 | Projekt Firebase i sekrety `FIREBASE_*` w CI (`store/PLAY_CONSOLE.md`) | przed wydaniem |
+| Crashlytics: włączyć w konsoli Firebase (`store/PLAY_CONSOLE.md` §2a.7) | przed wydaniem |
+| Play Games Services i sekret `PLAY_GAMES_APP_ID` (`store/PLAY_CONSOLE.md` §2b) | przed wydaniem (bez tego nie ma zapisu w chmurze) |
+| Opublikować nową politykę prywatności z `site/hit5/privacy.html` | przed kolejną wersją dla testerów |
+
+## Funkcje za flagą
+
+Gotowe i przetestowane, ale jeszcze niewidoczne dla graczy. Każda to
+stała z `--dart-define` w `app/lib/model/features.dart`: wydanie do Play
+jej nie ustawia, APK testowe z CI (dla naszych telefonów) ją włącza.
+
+| Flaga | Co | Kiedy włączyć |
+|---|---|---|
+| `FEATURE_CALIBRATION` | kalibracja opóźnienia dotyku (05 T-13) | po teście M-1 z kalibracją na ≥2 telefonach |
 
 ## Otwarte decyzje
 
 | Decyzja | Kiedy |
 |---|---|
-| Kalibracja opóźnienia ekranu (T-13) | przerwa po M1 |
+| Włączenie kalibracji opóźnienia dla graczy (T-13, gotowa za flagą) | po teście M-1 z kalibracją |
 | Reklamy pełnoekranowe i zakup „Bez reklam” (01) | po wydaniu, na podstawie danych |
 | Zakupy w aplikacji: Premium, skórki zegara (01) | wersja 1.1 |
 | Grafika AI zamiast emoji (04 §4.3) | po wydaniu |

@@ -952,16 +952,29 @@ class GameEngine {
     if (!s.tutorialDone) return null;
     final key = dateKey(now);
     if (key == s.dailyKey) return null;
-    final yesterday = dateKey(
-      DateTime(now.year, now.month, now.day).subtract(const Duration(days: 1)),
-    );
+    final today = DateTime(now.year, now.month, now.day);
+    // Calendar days, not 24 h: DateTime arithmetic on dates crosses DST.
+    int daysAgo(int n) =>
+        dateKey(DateTime(today.year, today.month, today.day - n));
     final days = b.daily.minutes.length;
-    final day = s.dailyKey == yesterday ? s.dailyStreak % days + 1 : 1;
+    var grace = false;
+    final int day;
+    if (s.dailyKey == daysAgo(1)) {
+      day = s.dailyStreak % days + 1;
+    } else if (s.dailyKey == daysAgo(2) &&
+        s.dailyStreak > 0 &&
+        !s.dailyGraceUsed) {
+      // One missed day keeps the streak, once a week (R-DZIEN-3).
+      day = s.dailyStreak % days + 1;
+      grace = true;
+    } else {
+      day = 1;
+    }
     final amount = math.max(
       b.daily.floorPerDay * day,
       passive() * 60 * b.daily.minutes[day - 1],
     );
-    return DailyBonus(key, day, amount);
+    return DailyBonus(key, day, amount, grace: grace);
   }
 
   void claimDaily(DailyBonus d) {
@@ -969,6 +982,11 @@ class GameEngine {
     s.dailyKey = d.key;
     s.dailyStreak = d.day;
     s.lifetime.dailyClaims++;
+    if (d.grace) {
+      s.dailyGraceUsed = true;
+    } else if (d.day == 1) {
+      s.dailyGraceUsed = false; // a new week, a new grace day
+    }
   }
 
   void claimOffline(OfflineReport r, {double multiplier = 1}) {
@@ -981,10 +999,12 @@ class GameEngine {
 /// yyyymmdd of a local date.
 int dateKey(DateTime d) => d.year * 10000 + d.month * 100 + d.day;
 
-/// The daily bonus on offer: streak [day] (1–7) pays [amount].
+/// The daily bonus on offer: streak [day] (1–7) pays [amount]. [grace]:
+/// yesterday was missed and this week's grace day kept the streak.
 class DailyBonus {
-  const DailyBonus(this.key, this.day, this.amount);
+  const DailyBonus(this.key, this.day, this.amount, {this.grace = false});
   final int key;
   final int day;
   final double amount;
+  final bool grace;
 }

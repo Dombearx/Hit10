@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Crashlytics records Dart errors only (docs/05 T-30). We don't apply
+         the Crashlytics Gradle plugin (no google-services.json, T-32), so
+         the SDK must not insist on its build id; Java stack traces are
+         left to Play's Android vitals. -->
+    <bool name="com.google.firebase.crashlytics.RequireBuildId">false</bool>
+</resources>

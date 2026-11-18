@@ -4,6 +4,19 @@
 /// plugs Firebase in behind it, tests and the web use the stand-ins below.
 library;
 
+/// What the player allows (docs/05 T-33).
+enum StatsConsent {
+  /// Nothing is collected; anything held is dropped.
+  off,
+
+  /// The answer is not in yet where the law asks for one (EEA, UK):
+  /// events and crash reports wait on the phone, nothing is sent.
+  held,
+
+  /// Sent.
+  on,
+}
+
 abstract interface class Analytics {
   /// One event. [name] and the keys of [params]: ≤ 40 characters, letters,
   /// digits and `_`; values are `String` (≤ 100 characters) or `num`.
@@ -13,8 +26,67 @@ abstract interface class Analytics {
   /// (≤ 24-character name, ≤ 36-character value; null clears it).
   void setUserProperty(String name, String? value);
 
-  /// The player's choice in the settings (on by default).
-  void setEnabled(bool on);
+  /// What the player allows, for statistics and crash reports alike.
+  void setConsent(StatsConsent consent);
+
+  /// A Dart error Flutter caught (Crashlytics on devices, docs/05 T-30):
+  /// Play's Android vitals only see the app dying.
+  void recordError(Object error, StackTrace? stack, {bool fatal = false});
+}
+
+/// Holds events while consent is [StatsConsent.held] and sends them once
+/// it turns [StatsConsent.on]; [StatsConsent.off] drops them. Starts held:
+/// nothing leaves the phone before the controller knows the answer.
+abstract class ConsentAwareAnalytics implements Analytics {
+  /// At most this many events wait for an answer (the first minutes of a
+  /// new player, the tutorial funnel); later ones are dropped.
+  static const maxHeld = 300;
+
+  StatsConsent _consent = StatsConsent.held;
+  StatsConsent get consent => _consent;
+  final List<(String, Map<String, Object>)> _held = [];
+  final Map<String, String?> _properties = {};
+
+  /// Events waiting for consent (tests).
+  int get heldCount => _held.length;
+
+  void sendEvent(String name, Map<String, Object> params);
+  void sendUserProperty(String name, String? value);
+
+  /// Switches the backend's own collection (and crash reports).
+  void applyConsent(StatsConsent consent);
+
+  @override
+  void log(String name, [Map<String, Object> params = const {}]) {
+    switch (_consent) {
+      case StatsConsent.on:
+        sendEvent(name, params);
+      case StatsConsent.held:
+        if (_held.length < maxHeld) _held.add((name, params));
+      case StatsConsent.off:
+        break;
+    }
+  }
+
+  @override
+  void setUserProperty(String name, String? value) {
+    _properties[name] = value;
+    if (_consent == StatsConsent.on) sendUserProperty(name, value);
+  }
+
+  @override
+  void setConsent(StatsConsent consent) {
+    if (consent == _consent) return;
+    _consent = consent;
+    applyConsent(consent);
+    if (consent == StatsConsent.on) {
+      _properties.forEach(sendUserProperty);
+      for (final (name, params) in _held) {
+        sendEvent(name, params);
+      }
+    }
+    if (consent != StatsConsent.held) _held.clear();
+  }
 }
 
 /// No statistics: web, tests, and builds without a Firebase project
@@ -26,16 +98,25 @@ class NoAnalytics implements Analytics {
   @override
   void setUserProperty(String name, String? value) {}
   @override
-  void setEnabled(bool on) {}
+  void setConsent(StatsConsent consent) {}
+  @override
+  void recordError(Object error, StackTrace? stack, {bool fatal = false}) {}
 }
 
-/// Keeps what was logged, for tests.
-class RecordingAnalytics implements Analytics {
+/// Keeps what was sent, for tests. Starts with consent given, like a
+/// player outside the EEA.
+class RecordingAnalytics extends ConsentAwareAnalytics {
+  RecordingAnalytics({StatsConsent initial = StatsConsent.on}) {
+    setConsent(initial);
+  }
+
   final List<(String, Map<String, Object>)> events = [];
   final Map<String, String?> userProperties = {};
-  bool enabled = true;
+  final List<Object> errors = [];
 
-  /// Names of the events logged so far, in order.
+  bool get enabled => consent == StatsConsent.on;
+
+  /// Names of the events sent so far, in order.
   List<String> get names => [for (final e in events) e.$1];
 
   /// The parameters of the last event called [name].
@@ -47,16 +128,20 @@ class RecordingAnalytics implements Analytics {
   }
 
   @override
-  void log(String name, [Map<String, Object> params = const {}]) {
-    if (enabled) events.add((name, params));
-  }
+  void sendEvent(String name, Map<String, Object> params) =>
+      events.add((name, params));
 
   @override
-  void setUserProperty(String name, String? value) =>
+  void sendUserProperty(String name, String? value) =>
       userProperties[name] = value;
 
   @override
-  void setEnabled(bool on) => enabled = on;
+  void applyConsent(StatsConsent consent) {}
+
+  @override
+  void recordError(Object error, StackTrace? stack, {bool fatal = false}) {
+    if (consent != StatsConsent.off) errors.add(error);
+  }
 }
 
 /// Rounds after which the player's accuracy is reported once

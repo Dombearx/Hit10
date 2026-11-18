@@ -4,19 +4,22 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../ads/rewarded_ads.dart';
 import '../arena/arena_game.dart';
 import '../l10n/gen/app_localizations.dart';
 import '../model/grading.dart';
 import 'diagnostics_panel.dart';
 import 'format.dart';
 import 'game_controller.dart';
-import 'daily_dialog.dart';
-import 'offline_dialog.dart';
+import 'cloud_dialog.dart';
 import 'prologue_dialog.dart';
+import 'welcome_dialog.dart';
 import 'season_dialog.dart';
 import 'seasons_ui.dart';
 import 'providers.dart';
+import 'notifications.dart';
 import 'qa_hook.dart';
+import 'review.dart';
 import 'shop/generator_list.dart';
 import 'shop/skill_list.dart';
 import 'app_updates.dart';
@@ -41,6 +44,7 @@ import 'widgets/springs.dart';
 import 'widgets/toasts.dart';
 import 'widgets/frenzy_background.dart';
 import 'widgets/alert_dot.dart';
+import 'widgets/choice_dialog.dart';
 import 'widgets/coach.dart';
 import 'widgets/next_goal.dart';
 
@@ -62,8 +66,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   void _onHide() {
     controller.sfx.mute(true); // U-21
+    arena.suspend();
+    final l = AppLocalizations.of(context);
     controller.background(
-      title: AppLocalizations.of(context).notificationTitle,
+      decimalSeparator: l.decimalSeparator,
+      texts: ReminderTexts(
+        offlineTitle: l.notificationTitle,
+        offlineBody: l.notificationOfflineBody,
+        dailyTitle: l.notificationDailyTitle,
+        dailyBody: l.notificationDailyBody,
+        reserveTitle: l.notificationReserveTitle,
+        reserveBody: l.notificationReserveBody,
+      ),
     );
   }
 
@@ -154,34 +168,70 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   void _onShow() {
     controller.sfx.mute(false);
+    arena.wake();
     controller.resume();
     _maybeShowOffline();
   }
 
-  /// The "while you were away" dialog, then the daily bonus, then a new
-  /// season's intro.
-  Future<void> _maybeShowOffline() async {
+  /// Asked once per launch, after the tutorial: the ad network's consent
+  /// form, if the law needs one here and it was never answered (T-33).
+  bool _adConsentAsked = false;
+
+  /// Windows that wait for a quiet moment, one after another: the prologue
+  /// (after a new player's first Tik), "welcome back" (offline income and
+  /// the daily bonus together), a new season, the end of a loop, and the
+  /// statistics question and consent form after the tutorial (docs/05
+  /// T-33) — never in the first seconds of the game.
+  Future<void> _maybeShowOffline({bool review = false}) async {
     if (_offlineOpen || !mounted) return;
     final c = controller;
-    if (!c.prologuePending &&
+    // The rating window comes only at a break the player made: after
+    // the paradox screen, or with the other windows (R-OCENA-1).
+    final askReview = review && c.reviewPending;
+    final ads = ref.read(rewardedAdsProvider);
+    final askConsent =
+        !_adConsentAsked &&
+        ads is AdPrivacy &&
+        c.state.tutorialDone &&
+        !c.replaying;
+    if (c.cloudOffer == null &&
+        !c.prologuePending &&
         c.pendingOffline == null &&
         c.pendingDaily == null &&
         !c.seasonIntroPending &&
-        !c.loopEndPending) {
+        !c.loopEndPending &&
+        !c.statsQuestionPending &&
+        !askConsent &&
+        !askReview) {
       return;
     }
     _offlineOpen = true;
     c.pause();
     try {
-      if (c.prologuePending) {
+      // More progress in the cloud (a new phone, a reinstall): first, and
+      // only if the player says so (T-35).
+      final offer = c.cloudOffer;
+      if (offer != null) {
+        final restart = ref.read(restartProvider);
+        final load = await showCloudOffer(context, c, offer);
+        if (await c.answerCloudOffer(offer, load: load)) {
+          await restart();
+          return;
+        }
+      }
+      if (mounted && c.prologuePending) {
         c.prologueShown();
         await showPrologue(context, c);
       }
-      if (mounted && c.pendingOffline != null) {
-        await showOfflineDialog(context, c, ref.read(rewardedAdsProvider));
-      }
-      if (mounted && c.pendingDaily != null) {
-        await showDailyDialog(context, c);
+      if (mounted && (c.pendingOffline != null || c.pendingDaily != null)) {
+        // A new season gets a line here rather than a window of its own.
+        final season = await showWelcomeDialog(
+          context,
+          c,
+          ads,
+          withSeason: c.seasonIntroPending,
+        );
+        if (season) c.seasonIntroShown();
       }
       if (mounted && c.seasonIntroPending) {
         c.seasonIntroShown();
@@ -191,9 +241,36 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       if (mounted && c.loopEndPending) {
         await showLoopEnd(context, c);
       }
+      if (mounted && c.statsQuestionPending) {
+        await _askStats(c);
+      }
+      if (mounted && askConsent) {
+        _adConsentAsked = true;
+        await (ads as AdPrivacy).askConsentIfNeeded();
+      } else if (mounted && c.reviewPending) {
+        // Never in the same break as a consent form.
+        c.reviewShown();
+        await requestReview();
+      }
     } finally {
       _offlineOpen = false;
     }
+  }
+
+  /// "May we send game statistics?" where the law asks (T-33).
+  Future<void> _askStats(GameController c) async {
+    final l = AppLocalizations.of(context);
+    final yes = await showChoiceDialog(
+      context,
+      art: const EmojiArt('bar_chart', Color(0xFFB4D8FF)),
+      title: l.statsAskTitle,
+      body: l.statsAskBody,
+      yes: l.statsAskYes,
+      no: l.statsAskNo,
+      yesKey: const Key('stats-yes'),
+      noKey: const Key('stats-no'),
+    );
+    c.answerStatsQuestion(yes: yes);
   }
 
   /// When the tutorial starts pointing at Grandpa, his card comes on
@@ -296,7 +373,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           if (controller.pendingTip == 'loop') {
                             controller.tipActed('loop');
                           }
-                          showPrestige(context, controller);
+                          showPrestige(
+                            context,
+                            controller,
+                          ).then((_) => _maybeShowOffline(review: true));
                         },
                         onSettings: () => showSettings(context, controller),
                         onHelp: () => showHelp(context, controller),
@@ -310,6 +390,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             // A touch on an offer tile over the arena is not
                             // a round tap (it used to break the combo).
                             if (_uiPointers.remove(e.pointer)) return;
+                            arena.wake(); // T-21a: drawing again
                             final p = e.localPosition;
                             // A tap on the flying golden clock is not a round
                             // tap (R-ZLOTA-1).
@@ -413,7 +494,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             if (goal.kind == GoalKind.prestige ||
                                 goal.kind == GoalKind.perk) {
                               controller.tipActed('prestige');
-                              showPrestige(context, controller);
+                              showPrestige(
+                                context,
+                                controller,
+                              ).then((_) => _maybeShowOffline(review: true));
                             } else {
                               setState(() {
                                 _tab = 0;
@@ -636,28 +720,33 @@ class _Header extends StatelessWidget {
                   const SizedBox(width: 10),
                 ],
               ),
-              Row(
-                key: CoachTargets.balance,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  AnimatedCounter(
-                    key: const Key('balance'),
-                    value: controller.state.tiki,
-                    decimalSeparator: l.decimalSeparator,
-                    notation: controller.settings.notation,
-                    whole: true,
-                  ),
-                  const SizedBox(width: 6),
-                  ResText(
-                    l.tikiLabel,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
+              // Shrinks rather than overflows (large text, huge numbers in
+              // scientific notation; U-35).
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  key: CoachTargets.balance,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    AnimatedCounter(
+                      key: const Key('balance'),
+                      value: controller.state.tiki,
+                      decimalSeparator: l.decimalSeparator,
+                      notation: controller.settings.notation,
+                      whole: true,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 6),
+                    ResText(
+                      l.tikiLabel,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               EffectChips(controller: controller),
               AnimatedOpacity(
@@ -814,6 +903,7 @@ class _ShopHeader extends StatelessWidget {
                           amountButton(BuyAmount.one, '×1'),
                           amountButton(BuyAmount.ten, '×10'),
                           amountButton(BuyAmount.hundred, '×100'),
+                          amountButton(BuyAmount.next, l.buyAmountNext),
                           amountButton(BuyAmount.max, l.buyAmountMax),
                         ],
                       ),

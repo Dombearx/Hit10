@@ -26,9 +26,10 @@ web-qa:
 web:
 	cd $(APP) && flutter build web --release --no-web-resources-cdn
 
-## Release-mode APK signed with the debug key, for installing on a phone.
+## Release-mode APK signed with the debug key, for installing on a phone;
+## features behind a flag are on (docs/07 "Funkcje za flagą").
 apk:
-	cd $(APP) && flutter build apk --release
+	cd $(APP) && flutter build apk --release --dart-define=FEATURE_CALIBRATION=true
 
 # Play upload bundle (docs/05 §9); signed when android/key.properties exists.
 aab:

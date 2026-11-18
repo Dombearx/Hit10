@@ -207,8 +207,10 @@ ekranie losowo wyskakują jego „trafienia” (sekcja 04).
 
 - **R-GEN-1:** Cena n-tego egzemplarza (n = liczba już posiadanych):
   `koszt_bazowy · 1.15^n`.
-- **R-GEN-2:** Kupowanie ×1 / ×10 / ×100 / MAX (przełącznik nad listą). Cena
-  zbiorcza to suma ciągu geometrycznego.
+- **R-GEN-2:** Kupowanie ×1 / ×10 / ×100 / PRÓG / MAX (przełącznik nad
+  listą). PRÓG kupuje tyle sztuk, ile brakuje do następnego darmowego
+  bonusu zegara (R-ULEP-1), a po ostatnim po jednej — jak „Next”
+  w AdVenture Capitalist. Cena zbiorcza to suma ciągu geometrycznego.
 - **R-GEN-3:** Brak sprzedaży generatorów w 1.0.
 - **R-GEN-4:** Kolejny generator jest widoczny jako sylwetka „???”, dopóki
   gracz nie kupi poprzedniego. Ten po nim jest całkiem ukryty.
@@ -459,22 +461,46 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   `P_bez_efektów · min(czas_nieobecności, limit) · wydajność`. Domyślnie limit
   8 h i wydajność 50% (perki zmieniają oba).
 - **R-OFF-2:** Okno „Gdy cię nie było…” pokazuje kwotę i animację wsypywania
-  Tików. W M6 dochodzi przycisk „×2 za reklamę”.
+  Tików. W M6 dochodzi przycisk „×2 za reklamę”. Gdy czeka też dzienna
+  premia (R-DZIEN-1), oba są w jednym oknie „Witaj z powrotem!” z jednym
+  przyciskiem „Odbierz wszystko” (×2 za reklamę dotyczy części offline);
+  nowe wydarzenie sezonowe dostaje w nim jedną linijkę zamiast własnego
+  okna (R-SEZ-4). Wcześniej przy powrocie wyskakiwały nawet cztery okna
+  po kolei.
 - **R-OFF-2a:** Kwota z okna jest w zapisie, dopóki gracz jej nie odbierze.
   Zamknięcie aplikacji nad oknem niczego nie kasuje: przy następnym
   otwarciu okno wraca, a nowa nieobecność dolicza się do niego (razem
   najwyżej do limitu offline). Playtest 23: kwota przepadała.
 - **R-OFF-3:** Ochrona przed cofnięciem zegara telefonu: ujemny czas
   nieobecności daje 0. Czas offline jest zawsze przycinany do limitu.
-- **R-OFF-4:** Przy wyjściu z gry planowane jest **jedno lokalne
-  powiadomienie** na moment, gdy dochód offline dojdzie do limitu, np.
-  „Dziadkowie uzbierali 2,4M Tików! Limit pełny.” Kwota jest liczona przy
-  wyjściu. Powrót do gry albo ponowne wyjście anuluje stare powiadomienie
-  i planuje nowe. Nigdy więcej niż jedno naraz, żadnych innych powiadomień.
+- **R-OFF-4:** Przy wyjściu z gry planowane jest lokalne powiadomienie na
+  moment, gdy dochód offline dojdzie do limitu: „Twoje zegary uzbierały
+  2,4M Tików!” i „Limit offline jest pełny: dalsze czekanie nic już nie
+  dorzuci.” Kwota jest liczona przy wyjściu. Powrót do gry albo ponowne
+  wyjście anuluje stare przypomnienia i planuje nowe. Inne przypomnienia
+  i limity: R-POW-1…3.
 - **R-OFF-5:** O zgodę na powiadomienia (Android 13+) gra pyta dopiero przy
   pierwszym oknie „Gdy cię nie było…”, z jednym zdaniem wyjaśnienia,
   a nie przy starcie. Odmowa nic nie psuje. Powiadomienia da się wyłączyć
-  w ustawieniach gry.
+  w ustawieniach gry (jeden przełącznik), a każdy rodzaj osobno
+  w ustawieniach Androida (osobne kanały).
+
+### 10.1 Przypomnienia (R-POW)
+
+Tylko rzeczy, na które gracz może coś zrobić; mało i nie w nocy.
+
+- **R-POW-1 (pełny zapas dokręcania):** po pierwszym paradoksie, gdy przy
+  wyjściu zapas dokręcania (R-SPR-3) jest zużyty co najmniej w połowie
+  i napełnia się co najmniej 30 min: „Zapas dokręcania pełny — równe 5.00
+  znów nakręcają Sprężynę, pierwsze aż o 1 h” (R-SPR-3a).
+- **R-POW-2 (dzienna premia):** gdy dzisiejsza premia jest odebrana,
+  a seria ma co najmniej 2 dni: jutro o 18:00 „Dzienna premia czeka —
+  dzień 5/7”.
+- **R-POW-3 (zasady):** najwyżej **2 przypomnienia na jedną nieobecność**,
+  co najmniej 3 h odstępu, nigdy między 22:00 a 9:00 (czas lokalny; takie
+  czeka do 9:00). Przy kolizji wygrywa ważniejsze: limit offline, dzienna
+  premia, zapas dokręcania. Każde wyjście planuje je od nowa, powrót
+  anuluje wszystkie.
 
 ## 11. Samouczek (pierwsze uruchomienie)
 
@@ -540,8 +566,13 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   który dymek, jak długo, jak zniknął, czy zasłania tarczę lub cel).
 - **R-TUT-4:** Czerwona kropka na zakładce Zegary / Umiejętności, gdy za
   nią jest coś, na co gracza stać (po samouczku).
-- **R-TUT-0 (prolog):** przed pierwszą rundą nowej gry (bez Tików,
-  paradoksu i ukończonej pętli) jedno okno z prologiem: Chronos tyka na
+- **R-TUT-0 (prolog):** zaraz po pierwszych Tikach nowej gry (bez
+  paradoksu i ukończonej pętli), gdy minie wynik tej rundy, jedno okno
+  z prologiem. Wcześniej był przed pierwszą rundą: pierwsze sekundy gry
+  to teraz zegar i pierwsze dotknięcie, a historia czyta się lepiej
+  z pierwszym Tikiem w kieszeni. Przed pierwszym dotknięciem nie ma
+  żadnego okna — także zgody na reklamy ani statystyki: o nie gra pyta
+  dopiero po samouczku (05 T-26, T-33). Prolog: Chronos tyka na
   najwyższej półce sklepu z metką z ceną, Dziadek proponuje go kupić za
   Tiki. Pod tekstem cel jednym zdaniem: „Cel: kup Chronosa”. Pokazuje się
   raz; prolog jest też pierwszym wpisem rozdziałów w Kronice (zawsze
@@ -611,11 +642,16 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
 ### 11.2 Dzienna premia (08, playtest)
 
 - **R-DZIEN-1:** Przy pierwszym uruchomieniu (lub powrocie) danego dnia,
-  po samouczku, gra pokazuje okno „Dzienna premia” z serią 7 dni.
+  po samouczku, gra pokazuje okno „Dzienna premia” z serią 7 dni (razem
+  z dochodem offline, jeśli jest, R-OFF-2).
 - **R-DZIEN-2:** Dzień N płaci `max(25·N, dochód pasywny × minuty[N])`,
   gdzie minuty = 5, 10, 15, 20, 30, 45, 60. Po 7. dniu seria wraca do 1.
 - **R-DZIEN-3:** Pominięty dzień (kalendarzowy, czas lokalny) zaczyna serię
-  od 1. Bez reklam przy tym oknie.
+  od 1 — z wyjątkiem **dnia łaski**: jeden pominięty dzień na tydzień
+  (7 odbiorów) seria wybacza, a okno mówi „Ominął cię jeden dzień —
+  dzień łaski tego tygodnia uratował serię”. Dwa pominięte dni z rzędu
+  albo drugi pominięty dzień w tym samym tygodniu zaczynają od 1. Nowy
+  tydzień (dzień 1) przywraca dzień łaski. Bez reklam przy tym oknie.
 
 ## 12. Statystyki
 
@@ -665,14 +701,16 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
   bo od tego jest `adOffline`.
 - **R-AD-3:** Nagroda trafia do gracza tylko po pełnym obejrzeniu (callback
   „reward earned” z SDK). Przerwana albo nieudana reklama oznacza brak
-  nagrody, brak kary i brak zużycia czasu odnowienia.
+  nagrody, brak kary i brak zużycia czasu odnowienia. Załadowana reklama
+  jest wymieniana po 55 min (AdMob uznaje ją za ważną ok. godziny).
 - **R-AD-4:** Przycisk niedostępnej oferty (czas odnowienia, brak reklamy,
   brak sieci) pokazuje powód i czas do dostępności. Gra nigdy nie czeka na
   załadowanie reklamy (T-27).
 - **R-AD-5:** Oferty pojawiają się dopiero po samouczku i po pierwszych
   5 minutach gry. Pierwsze wrażenie ma być „bez reklam”.
 - **R-AD-6:** Brak reklam przy starcie aplikacji i przy wychodzeniu z niej.
-  Nie ma też żadnej reklamy, której gracz sam nie wybrał.
+  Nie ma też żadnej reklamy, której gracz sam nie wybrał. Formularz zgody
+  na reklamy (UE) pokazuje się po samouczku, nie przy starcie (05 T-26).
 - **R-AD-7:** Przed reklamą gracz widzi ofertę: co dostanie (konkretnie, np.
   „×2 Tików przez 30 min”, kwota Worka), że to krótka reklama wideo
   z nagrodą po obejrzeniu do końca, oraz przyciski „▶ Obejrzyj” i „Nie
@@ -681,7 +719,9 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
   to na samym przycisku („▶ … za reklamę”), bo już są ofertą.
 - **R-AD-8:** Po reklamie komunikat potwierdza nagrodę („Turbo włączone!
   ×2 jeszcze przez 30:00”) albo jej brak („Reklama nie została obejrzana
-  do końca — bez nagrody”).
+  do końca — bez nagrody”). Reklama, która się nie wyświetliła (błąd sieci,
+  przeterminowana), mówi „Nie udało się wyświetlić reklamy — bez nagrody,
+  ale oferta na ciebie czeka”: gracz nic nie zrobił źle.
 - **R-AD-9:** Na czas okna oferty i samej reklamy **czas gry stoi**. Szał,
   Gorąca ręka, zapas Turbo, złoty zegar na ekranie, czas do następnej
   Złotej Sekundy i dochód pasywny czekają na gracza. Reklama ani czytanie
@@ -716,9 +756,10 @@ Daty i cel są w `balance.json` (`seasons`).
   w Ustawieniach i osiągnięcie sezonowe (+1%, jedno na wydarzenie).
   Nagrody są kosmetyczne albo jednorazowe — przegapione wydarzenie nie
   zostawia trwałej straty (bez presji FOMO).
-- **R-SEZ-4:** Przy pierwszym uruchomieniu w czasie wydarzenia (po oknach
-  offline i dziennej premii) gra pokazuje okno wydarzenia; potem otwiera je
-  plakietka w nagłówku z postępem („2/5 · 31/50”).
+- **R-SEZ-4:** Przy pierwszym uruchomieniu w czasie wydarzenia gra mówi
+  o nim: linijką w oknie „Witaj z powrotem” (R-OFF-2), a gdy tego okna nie
+  ma — własnym oknem wydarzenia. Potem otwiera je plakietka w nagłówku
+  z postępem („2/5 · 31/50”).
 - **R-SEZ-5:** Motyw: „Sezonowy” (domyślny, zmienia się z wydarzeniami),
   „Klasyczny” albo motyw ukończonego wydarzenia.
 - **R-SEZ-6:** Panel diagnostyczny (T-12) ma podgląd każdego wydarzenia bez
@@ -850,3 +891,16 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
 - **R-PETLA-8 (po historii):** po zdobyciu sześciu pieczęci gracz sam
   wybiera w Kronice zasady następnej pętli: dowolne, kilka naraz albo
   żadną. Kronika pamięta najkrótszy czas gry każdej zasady.
+
+## 17. Ocena w sklepie
+
+- **R-OCENA-1:** Gra prosi o ocenę systemowym oknem Google Play (In-App
+  Review API) tylko w dobrym momencie i późno: po drugim lub kolejnym
+  paradoksie (po zamknięciu ekranu paradoksu), po ukończeniu pętli (ekran
+  „Czas pokonany!”) albo po ukończeniu wydarzenia sezonowego (przy
+  najbliższej przerwie, nie w trakcie gry). Warunki: samouczek ukończony,
+  co najmniej 3 h gry i odebrana dzienna premia w co najmniej 3 różne dni.
+  Najwyżej dwa razy w całej grze, co najmniej 120 dni odstępu, nigdy
+  w tej samej przerwie co formularz zgody i nigdy po pudle. Google samo
+  decyduje, czy okno się pokaże; gra nie zna odpowiedzi i o nią nie pyta.
+  Opis w sklepie dalej nie prosi o oceny.

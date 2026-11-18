@@ -2261,7 +2261,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your clocks collected {amount} Ticks! Come back for more.'**
+  /// **'Your clocks collected {amount} Ticks!'**
   String notificationTitle(String amount);
 
   /// No description provided for @notificationAsk.
@@ -2297,7 +2297,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsNotifications.
   ///
   /// In en, this message translates to:
-  /// **'Tell me when the clocks are full'**
+  /// **'Notifications'**
   String get settingsNotifications;
 
   /// No description provided for @settingsAnalytics.
@@ -2309,7 +2309,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsAnalyticsHint.
   ///
   /// In en, this message translates to:
-  /// **'Helps us balance the game. No account, no name, no ad ID.'**
+  /// **'Gameplay statistics and crash reports help us tune the game. No account, no name, no ad ID.'**
   String get settingsAnalyticsHint;
 
   /// No description provided for @settingsLanguage.
@@ -5477,7 +5477,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationAskBody.
   ///
   /// In en, this message translates to:
-  /// **'Your clocks earn while the game is closed — but only up to a time limit. We\'ll send one notification when they reach it.'**
+  /// **'Your clocks earn while the game is closed — but only up to a time limit. We\'ll tell you when they reach it and remind you of the daily bonus. Two notifications at most, never at night.'**
   String get notificationAskBody;
 
   /// No description provided for @notificationAskYes.
@@ -5521,6 +5521,257 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prologue'**
   String get chroniclePrologue;
+
+  /// No description provided for @calibTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Calibration'**
+  String get calibTitle;
+
+  /// No description provided for @calibIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Every phone registers touches and shows the picture a little late. Tap 10 times when the stopwatch shows 5.00: the game measures how late you usually are and takes that off from now on. Your precision stays yours — only the constant delay goes away.'**
+  String get calibIntro;
+
+  /// No description provided for @calibCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current offset: {offset}'**
+  String calibCurrent(String offset);
+
+  /// No description provided for @calibStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get calibStart;
+
+  /// No description provided for @calibTapHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap at 5.00'**
+  String get calibTapHint;
+
+  /// No description provided for @calibNoTap.
+  ///
+  /// In en, this message translates to:
+  /// **'No tap — again'**
+  String get calibNoTap;
+
+  /// No description provided for @calibResultLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Your taps register {ms} ms late on average.'**
+  String calibResultLate(int ms);
+
+  /// No description provided for @calibResultEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'Your taps register {ms} ms early on average.'**
+  String calibResultEarly(int ms);
+
+  /// No description provided for @calibResultZero.
+  ///
+  /// In en, this message translates to:
+  /// **'Your taps land right on time — no offset needed.'**
+  String get calibResultZero;
+
+  /// No description provided for @calibUnreliable.
+  ///
+  /// In en, this message translates to:
+  /// **'The taps were very scattered. Try again calmly, watching the digits.'**
+  String get calibUnreliable;
+
+  /// No description provided for @calibApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply ({offset})'**
+  String calibApply(String offset);
+
+  /// No description provided for @calibRepeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Again'**
+  String get calibRepeat;
+
+  /// No description provided for @calibReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to 0 ms'**
+  String get calibReset;
+
+  /// No description provided for @settingsCalibration.
+  ///
+  /// In en, this message translates to:
+  /// **'Input lag calibration: {offset}'**
+  String settingsCalibration(String offset);
+
+  /// No description provided for @settingsCalibrationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your recent taps average {offset} — calibrating may help.'**
+  String settingsCalibrationHint(String offset);
+
+  /// No description provided for @adShowFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The ad couldn\'t be shown — no reward, and the offer is still yours. Try again in a moment.'**
+  String get adShowFailed;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back!'**
+  String get welcomeTitle;
+
+  /// No description provided for @collectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect all'**
+  String get collectAll;
+
+  /// No description provided for @welcomeSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'{season} is on! The badge at the top shows your progress.'**
+  String welcomeSeason(String season);
+
+  /// No description provided for @dailyGrace.
+  ///
+  /// In en, this message translates to:
+  /// **'You missed a day — this week\'s grace day kept your streak.'**
+  String get dailyGrace;
+
+  /// No description provided for @statsAskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us tune the game?'**
+  String get statsAskTitle;
+
+  /// No description provided for @statsAskBody.
+  ///
+  /// In en, this message translates to:
+  /// **'May the game send anonymous gameplay statistics and crash reports? No account, no name, no ad ID. You can change this in the settings anytime.'**
+  String get statsAskBody;
+
+  /// No description provided for @statsAskYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, send them'**
+  String get statsAskYes;
+
+  /// No description provided for @statsAskNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No, thanks'**
+  String get statsAskNo;
+
+  /// No description provided for @buyAmountNext.
+  ///
+  /// In en, this message translates to:
+  /// **'BONUS'**
+  String get buyAmountNext;
+
+  /// No description provided for @notificationOfflineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The offline limit is full: from now on waiting earns nothing more.'**
+  String get notificationOfflineBody;
+
+  /// No description provided for @notificationDailyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily bonus waiting — day {day}/{days}'**
+  String notificationDailyTitle(int day, int days);
+
+  /// No description provided for @notificationDailyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop in to collect it and keep your streak going.'**
+  String get notificationDailyBody;
+
+  /// No description provided for @notificationReserveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Winding reserve full'**
+  String get notificationReserveTitle;
+
+  /// No description provided for @notificationReserveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact 5.00s wind your Mainspring again — the first one by {first}.'**
+  String notificationReserveBody(String first);
+
+  /// No description provided for @settingsNotificationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The offline limit, the daily bonus, a full winding reserve. Two at most, never at night.'**
+  String get settingsNotificationsHint;
+
+  /// No description provided for @cloudOfferTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud save found'**
+  String get cloudOfferTitle;
+
+  /// No description provided for @cloudOfferBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play Games has a save with more progress:\n• in the cloud: {cloudTime} played, {cloudEarned} Ticks earned\n• on this phone: {localTime} played, {localEarned} Ticks earned\nLoad the cloud save? This phone\'s progress will be replaced.'**
+  String cloudOfferBody(
+    String cloudTime,
+    String cloudEarned,
+    String localTime,
+    String localEarned,
+  );
+
+  /// No description provided for @cloudLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Load from the cloud'**
+  String get cloudLoad;
+
+  /// No description provided for @cloudKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this phone\'s'**
+  String get cloudKeep;
+
+  /// No description provided for @settingsCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud save (Google Play Games)'**
+  String get settingsCloud;
+
+  /// No description provided for @settingsCloudOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected: the game saves to the cloud whenever you leave it.'**
+  String get settingsCloudOn;
+
+  /// No description provided for @settingsCloudOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps your progress when you change or reset your phone.'**
+  String get settingsCloudOff;
+
+  /// No description provided for @settingsCloudConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect Google Play Games'**
+  String get settingsCloudConnect;
+
+  /// No description provided for @settingsCloudRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load from the cloud'**
+  String get settingsCloudRestore;
+
+  /// No description provided for @settingsCloudNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'The cloud has no save with more progress than this phone.'**
+  String get settingsCloudNothing;
 }
 
 class _AppLocalizationsDelegate
