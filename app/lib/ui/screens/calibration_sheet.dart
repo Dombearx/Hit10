@@ -109,6 +109,15 @@ class _CalibrationPanelState extends State<CalibrationPanel>
   }
 
   void _apply(int offsetMs) {
+    final r = _result;
+    if (r != null) {
+      c.calibrationDone(
+        offsetMs: r.offsetMs,
+        spreadMs: r.spreadMs,
+        used: r.used,
+        applied: offsetMs == r.offsetMs,
+      );
+    }
     c.settings.inputOffsetMs = offsetMs.toDouble();
     c.applySettings();
     Navigator.of(context).pop();

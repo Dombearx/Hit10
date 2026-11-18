@@ -428,6 +428,11 @@ class GameController extends ChangeNotifier {
   /// writes over it.
   Future<bool> answerCloudOffer(CloudOffer offer, {required bool load}) async {
     cloudOffer = null;
+    _log('cloud_offer', {
+      'load': load ? 1 : 0,
+      'lead_min': ((offer.playSeconds - state.lifetime.secondsPlayed) / 60)
+          .round(),
+    });
     if (load) {
       await importText(offer.text);
       return true;
@@ -441,6 +446,7 @@ class GameController extends ChangeNotifier {
   /// The player connects Play Games from the settings.
   Future<void> signInCloud() async {
     cloudSignedIn = await cloud.signIn();
+    _log('cloud_connect', {'ok': cloudSignedIn ? 1 : 0});
     notifyListeners();
     if (cloudSignedIn) await uploadCloud(force: true);
   }
@@ -591,6 +597,20 @@ class GameController extends ChangeNotifier {
 
   /// Maps touch timestamps onto [now] (T-10).
   final TapClock tapClock = TapClock();
+
+  /// A calibration test finished (T-13): real phones' lag, by model
+  /// (Firebase adds the device), to decide when the flag goes on.
+  void calibrationDone({
+    required int offsetMs,
+    required double spreadMs,
+    required int used,
+    required bool applied,
+  }) => _log('calibration', {
+    'offset_ms': offsetMs,
+    'spread_ms': spreadMs.round(),
+    'used': used,
+    'applied': applied ? 1 : 0,
+  });
 
   /// The calibrated input lag (T-13), zero while the feature is off.
   double get inputOffsetSeconds =>
@@ -1644,7 +1664,7 @@ class GameController extends ChangeNotifier {
     final d = pendingDaily;
     if (d == null) return;
     engine.claimDaily(d);
-    _log('daily_collect', {'day': d.day});
+    _log('daily_collect', {'day': d.day, 'grace': d.grace ? 1 : 0});
     pendingDaily = null;
     sfx.play('fanfare', gain: 0.7);
     unawaited(haptics.medium());

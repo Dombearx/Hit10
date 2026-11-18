@@ -318,7 +318,7 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | `ad_show_failed` | `offer` | reklama załadowana, ale nie wyświetliła się (np. przeterminowana) |
   | `ad_unavailable` | `offer` | brak reklamy (fill rate) |
   | `offline_collect` | `away_min`, `capped` | jak długie są przerwy i czy limit offline ich nie ucina |
-  | `daily_collect` | `day` | seria dziennej premii |
+  | `daily_collect` | `day`, `grace` | seria dziennej premii; czy uratował ją dzień łaski (R-DZIEN-3) |
   | `golden_catch` | – | czy złota sekunda jest łapana |
   | `unlock_achievement` | `achievement_id` | które osiągnięcia są za łatwe lub za trudne |
   | `season_complete` | `season` | wydarzenia sezonowe |
@@ -328,6 +328,9 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | `dial_unlock` | `id` | tarcze (12 §3.3): kiedy padają w porównaniu z `idle_sim.dart` |
   | `mode_toggle` | `mode`, `on` | czy tryby są używane |
   | `review_prompt` | – | ile razy gra poprosiła o ocenę (02 R-OCENA-1) |
+  | `cloud_offer` | `load`, `lead_min` | zapis z chmury: wczytany czy nie, ile minut gry przewagi (T-35) |
+  | `cloud_connect` | `ok` | połączenie z Play Gry z ustawień |
+  | `calibration` | `offset_ms`, `spread_ms`, `used`, `applied` | opóźnienie prawdziwych telefonów (Firebase dodaje model); tylko z flagą T-13 |
 
   Wyjątki Darta idą do Crashlytics (T-30), nie jako zdarzenie.
 
