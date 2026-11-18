@@ -116,6 +116,7 @@ Map<String, Object?> encodeSave(SaveData d) {
     'challengeWeek': s.challengeWeek,
     'challengeRerollDay': s.challengeRerollDay,
     'challengeBonusDay': s.challengeBonusDay,
+    'tutorialEndPlay': s.tutorialEndPlay,
     'challenges': [for (final c in s.challenges) c.toJson()],
     'seasonKey': s.seasonKey,
     'seasonCatches': s.seasonCatches,
@@ -257,6 +258,7 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..challengeWeek = _i(j['challengeWeek'])
     ..challengeRerollDay = _i(j['challengeRerollDay'])
     ..challengeBonusDay = _i(j['challengeBonusDay'])
+    ..tutorialEndPlay = _d(j['tutorialEndPlay'])
     ..seasonKey = j['seasonKey'] is String ? j['seasonKey']! as String : ''
     ..seasonCatches = _i(j['seasonCatches'])
     ..seasonHits = _i(j['seasonHits'])

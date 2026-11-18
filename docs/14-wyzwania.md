@@ -110,8 +110,8 @@ Rekomendacja niżej została przyjęta z dwiema zmianami po rozmowie:
 - **Każde zadanie to celowanie w 5.00.** Przez chwilę było „z obu stron”
   (trafienia tuż przed i tuż po 5.00), ale kazało klikać celowo za późno
   — odpadło.
-- **Nie od razu, ale w pierwszej sesji:** po samouczku i 3 min gry, także
-  w trakcie sesji (przed reklamami, które przychodzą po 5 min). Przez
+- **Nie od razu, ale w pierwszej sesji:** 3 min gry po końcu samouczka
+  (nigdy w trakcie samouczka ani jego powtórki), także w trakcie sesji. Przez
   chwilę wyzwania czekały na powrót do gry po 10 min — za późno dla
   graczy, których mają zatrzymać (§7). Pierwszy zestaw jest łatwiejszy.
 

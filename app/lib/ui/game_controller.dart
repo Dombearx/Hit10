@@ -949,6 +949,8 @@ class GameController extends ChangeNotifier {
   /// the middle of a session, like the ad offers, and a session can cross
   /// midnight.
   void syncChallenges() {
+    // Not while the tutorial is replayed from the help (R-TUT-5a).
+    if (replaying) return;
     final first = state.challengeDay == 0;
     final paid = engine.refreshChallenges(
       _localNow(),
@@ -1624,6 +1626,7 @@ class GameController extends ChangeNotifier {
         'rounds': state.stats.rounds,
       });
       analytics.setUserProperty('tutorial_done', 'true');
+      state.tutorialEndPlay = state.lifetime.secondsPlayed;
     }
     state.tutorialDone = true;
     engine.goldenEnabled = true;

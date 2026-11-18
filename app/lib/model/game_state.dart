@@ -180,6 +180,11 @@ class GameState {
   /// The three daily challenges (slots 0–2) and the weekly one (slot 3).
   final List<Challenge> challenges = [];
 
+  /// Play time ([LifetimeStats.secondsPlayed]) when the tutorial ended:
+  /// challenges count their minutes from here (R-WYZ-1). 0 for saves from
+  /// before it, whose tutorial is long over.
+  double tutorialEndPlay = 0;
+
   // ---------------------------------------------------------- seasons --
   /// The season run being counted ("halloween-2026", docs/02 §14); the
   /// counters below reset when it changes.

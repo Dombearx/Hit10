@@ -290,14 +290,48 @@ void main() {
     );
     c.syncChallenges();
     expect(s.challenges, isEmpty); // under 3 min of play
-    // Before the ad offers: never both at once.
-    expect(b.challenges.unlockPlaySeconds, lessThan(b.ads.unlockAfterSeconds));
     expect(c.challengePlayer().reachShare, b.challenges.firstReachShare);
     s.lifetime.secondsPlayed = b.challenges.unlockPlaySeconds;
     c.syncChallenges(); // mid-session, at a round start
     expect(s.challenges, hasLength(4));
     expect(a.names, contains('challenges_unlocked'));
     expect(c.challengePlayer().reachShare, b.challenges.reachShare);
+  });
+
+  test('never during the tutorial: 3 min counted from its end', () {
+    final s = GameState()..lifetime.secondsPlayed = 500; // a slow tutorial
+    final c = GameController(
+      balance: b,
+      state: s,
+      store: MemorySaveStore(),
+      localNow: () => DateTime(2026, 11, 18, 12),
+    );
+    c.syncChallenges();
+    expect(s.challenges, isEmpty); // tutorial not done
+    c.finishTutorial();
+    c.syncChallenges();
+    expect(s.challenges, isEmpty); // not as its last bubble closes
+    s.lifetime.secondsPlayed += b.challenges.unlockPlaySeconds;
+    c.syncChallenges();
+    expect(s.challenges, hasLength(4));
+  });
+
+  test('not handed out while the tutorial is replayed', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..lifetime.secondsPlayed = 3600
+      ..owned['grandpa'] = 1;
+    final c = GameController(
+      balance: b,
+      state: s,
+      store: MemorySaveStore(),
+      localNow: () => DateTime(2026, 11, 18, 12),
+    )..replayTutorial();
+    c.syncChallenges();
+    expect(s.challenges, isEmpty);
+    c.finishTutorial(); // the replay ends
+    c.syncChallenges();
+    expect(s.challenges, hasLength(4));
   });
 
   test('the controller hands them out and counts purchases', () async {

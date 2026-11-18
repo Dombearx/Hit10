@@ -914,14 +914,15 @@ Skąd i dlaczego: [14-wyzwania.md](14-wyzwania.md). Liczby w pliku balansu
 - **R-WYZ-1 (zestaw):** codziennie trzy wyzwania, po jednym z każdej
   grupy, i jedno tygodniowe (od poniedziałku, czas lokalny), bez serwera.
   W tym samym miejscu nie wypada ten sam rodzaj dwa dni (tygodnie) z rzędu.
-  Pierwsze wyzwania przychodzą po samouczku i 3 min gry
-  (`unlockPlaySeconds`), także w trakcie sesji — przy starcie rundy, jak
-  inne odblokowania. To przed ofertami reklam (5 min, R-AD-5), więc dwie
-  nowości nie przychodzą naraz, i zwykle jeszcze w pierwszej sesji, więc
-  pierwsza nagroda daje powód do powrotu (przegląd innych gier: 14 §7).
-  Pierwszy raz ze wskazówką przy plakietce (w zwykłym odstępie
-  wskazówek, R-TUT-2). Każde zadanie to celowanie w 5.00 albo
-  zwykła gra — żadne nie każe klikać celowo obok.
+  Pierwsze wyzwania przychodzą po 3 min gry **liczonych od końca
+  samouczka** (`unlockPlaySeconds`) — nigdy w trakcie samouczka, w chwili
+  jego zakończenia ani w czasie jego powtórki z pomocy — także w trakcie
+  sesji, przy starcie rundy, jak inne odblokowania. Zwykle to jeszcze
+  pierwsza sesja, więc pierwsza nagroda daje powód do powrotu (przegląd
+  innych gier: 14 §7). Pierwszy raz ze wskazówką przy plakietce, w zwykłym
+  odstępie wskazówek (R-TUT-2), więc nie nakłada się na inne nowości.
+  Każde zadanie to celowanie w 5.00 albo zwykła gra — żadne nie każe
+  klikać celowo obok.
 
   | Grupa | Rodzaje |
   |---|---|

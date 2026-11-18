@@ -142,9 +142,9 @@ class ChallengesConfig {
       weeklyFloor = _d(j['weeklyFloor']),
       weeklySprings = _i(j['weeklySprings']);
 
-  /// Challenges start after the tutorial and this much play — before the
-  /// ad offers, so the two never arrive together, and within a typical
-  /// first session, so the first one gives a reason to come back.
+  /// Challenges start this much play after the tutorial ended — never
+  /// during it — usually still in the first session, so the first one
+  /// gives a reason to come back.
   final double unlockPlaySeconds;
 
   /// A daily challenge is sized for about this much play, the weekly one

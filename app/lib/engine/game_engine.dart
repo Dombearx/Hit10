@@ -980,10 +980,12 @@ class GameEngine {
 
   // --------------------------------------------- challenges (02 §18) --
 
-  /// Challenges start after the tutorial and a little play.
+  /// Challenges start a little play after the tutorial ended — never
+  /// during it, nor right as its last bubble closes (R-WYZ-1).
   bool get challengesUnlocked =>
       s.tutorialDone &&
-      s.lifetime.secondsPlayed >= b.challenges.unlockPlaySeconds;
+      s.lifetime.secondsPlayed - s.tutorialEndPlay >=
+          b.challenges.unlockPlaySeconds;
 
   /// The daily challenges (slots 0–2, in order) and the weekly one.
   List<Challenge> get dailyChallenges =>
