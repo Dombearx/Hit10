@@ -206,12 +206,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       return;
     }
     _offlineOpen = true;
-    c.pause();
+    // The round stops only for a window that really shows (R-RUNDA-8):
+    // a consent check with no form to show must not pause the game.
+    final hold = c.pause;
     try {
       // More progress in the cloud (a new phone, a reinstall): first, and
       // only if the player says so (T-35).
       final offer = c.cloudOffer;
       if (offer != null) {
+        hold();
         final restart = ref.read(restartProvider);
         final load = await showCloudOffer(context, c, offer);
         if (await c.answerCloudOffer(offer, load: load)) {
@@ -220,10 +223,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         }
       }
       if (mounted && c.prologuePending) {
+        hold();
         c.prologueShown();
         await showPrologue(context, c);
       }
       if (mounted && (c.pendingOffline != null || c.pendingDaily != null)) {
+        hold();
         // A new season gets a line here rather than a window of its own.
         final season = await showWelcomeDialog(
           context,
@@ -234,21 +239,28 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         if (season) c.seasonIntroShown();
       }
       if (mounted && c.seasonIntroPending) {
+        hold();
         c.seasonIntroShown();
         await showSeasonDialog(context, c);
       }
       // The loop's goal is reached: its ending (R-PETLA-2).
       if (mounted && c.loopEndPending) {
+        hold();
         await showLoopEnd(context, c);
       }
       if (mounted && c.statsQuestionPending) {
+        hold();
         await _askStats(c);
       }
       if (mounted && askConsent) {
         _adConsentAsked = true;
-        await (ads as AdPrivacy).askConsentIfNeeded();
+        final privacy = ads as AdPrivacy;
+        // Where no consent is needed nothing shows: play on.
+        if (await privacy.consentRequired() != false) hold();
+        await privacy.askConsentIfNeeded();
       } else if (mounted && c.reviewPending) {
         // Never in the same break as a consent form.
+        hold();
         c.reviewShown();
         await requestReview();
       }

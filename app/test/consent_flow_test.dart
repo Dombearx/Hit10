@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/ads/rewarded_ads.dart';
 import 'package:hit10/analytics/analytics.dart';
 import 'package:hit10/engine/game_engine.dart';
+import 'package:hit10/engine/round_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
@@ -14,13 +15,15 @@ import 'helpers.dart';
 
 /// An ad network with a consent form (UMP) that only counts the calls.
 class PrivacyAds extends FakeRewardedAds implements AdPrivacy {
+  PrivacyAds({this.required = true});
+  final bool required;
   int asked = 0;
   @override
   Future<bool> optionsRequired() async => false;
   @override
   Future<void> showOptions() async {}
   @override
-  Future<bool?> consentRequired() async => true;
+  Future<bool?> consentRequired() async => required;
   @override
   Future<void> askConsentIfNeeded() async => asked++;
 }
@@ -33,16 +36,17 @@ void main() {
 
   Future<(GameController, PrivacyAds, RecordingAnalytics)> pump(
     WidgetTester tester,
-    GameState s,
-  ) async {
-    final ads = PrivacyAds();
+    GameState s, {
+    bool required = true,
+  }) async {
+    final ads = PrivacyAds(required: required);
     final a = RecordingAnalytics(initial: StatsConsent.held);
     final c = GameController(
       balance: balance,
       state: s,
       store: MemorySaveStore(),
       analytics: a,
-      consentRequired: true,
+      consentRequired: required,
       localNow: () => day,
     );
     c.checkOffline();
@@ -94,5 +98,22 @@ void main() {
     c.notifyListeners();
     await tester.pump(const Duration(milliseconds: 300));
     expect(ads.asked, 1);
+  });
+
+  testWidgets('no consent needed here: the end of the tutorial plays on', (
+    tester,
+  ) async {
+    final s = GameState()
+      ..tipsSeen.add('prologue')
+      ..dailyKey = dateKey(day)
+      ..dailyStreak = 1;
+    final (c, ads, _) = await pump(tester, s, required: false);
+    c.finishTutorial();
+    c.onPointerDown(Duration.zero); // a round runs
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(ads.asked, 1); // checked, nothing to show
+    expect(find.byKey(const Key('stats-yes')), findsNothing);
+    expect(c.round.phase, RoundPhase.running);
+    c.pause();
   });
 }
