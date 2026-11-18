@@ -12,6 +12,7 @@ import 'format.dart';
 import 'game_controller.dart';
 import 'daily_dialog.dart';
 import 'offline_dialog.dart';
+import 'prologue_dialog.dart';
 import 'season_dialog.dart';
 import 'seasons_ui.dart';
 import 'providers.dart';
@@ -32,6 +33,7 @@ import 'throttled.dart';
 import 'widgets/animated_counter.dart';
 import 'widgets/combo_meter.dart';
 import 'widgets/ad_buttons.dart';
+import 'widgets/res_text.dart';
 import 'widgets/effect_chips.dart';
 import 'widgets/mode_row.dart';
 import 'widgets/pause_button.dart';
@@ -161,7 +163,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   Future<void> _maybeShowOffline() async {
     if (_offlineOpen || !mounted) return;
     final c = controller;
-    if (c.pendingOffline == null &&
+    if (!c.prologuePending &&
+        c.pendingOffline == null &&
         c.pendingDaily == null &&
         !c.seasonIntroPending &&
         !c.loopEndPending) {
@@ -170,7 +173,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     _offlineOpen = true;
     c.pause();
     try {
-      if (c.pendingOffline != null) {
+      if (c.prologuePending) {
+        c.prologueShown();
+        await showPrologue(context, c);
+      }
+      if (mounted && c.pendingOffline != null) {
         await showOfflineDialog(context, c, ref.read(rewardedAdsProvider));
       }
       if (mounted && c.pendingDaily != null) {
@@ -389,8 +396,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       ListenableBuilder(
                         key: CoachTargets.combo,
                         listenable: controller,
-                        builder: (context, _) =>
-                            ComboMeter(controller: controller),
+                        // A little air above (the dial) and below (the
+                        // goal bar): playtest found them too close.
+                        builder: (context, _) => Padding(
+                          padding: const EdgeInsets.only(top: 4, bottom: 6),
+                          child: ComboMeter(controller: controller),
+                        ),
                       ),
                       ListenableBuilder(
                         key: CoachTargets.modeRow,
@@ -643,7 +654,7 @@ class _Header extends StatelessWidget {
                     whole: true,
                   ),
                   const SizedBox(width: 6),
-                  Text(
+                  ResText(
                     l.tikiLabel,
                     style: const TextStyle(
                       fontSize: 18,

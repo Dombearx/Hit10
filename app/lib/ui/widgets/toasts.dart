@@ -14,6 +14,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 import 'burst.dart';
 import 'emoji_card.dart';
+import 'res_text.dart';
 
 /// One toast: an achievement or a free bonus (R-ULEP-1, R-SYN-1).
 typedef _Toast = ({AchievementDef? achievement, MilestoneEvent? bonus});
@@ -174,7 +175,7 @@ class _AchievementToastsState extends State<AchievementToasts> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
+                          ResText(
                             look.$2,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -184,7 +185,7 @@ class _AchievementToastsState extends State<AchievementToasts> {
                               color: Palette.accent,
                             ),
                           ),
-                          Text(
+                          ResText(
                             look.$3,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -196,7 +197,7 @@ class _AchievementToastsState extends State<AchievementToasts> {
                         ],
                       ),
                     ),
-                    Text(
+                    ResText(
                       look.$4,
                       style: const TextStyle(
                         fontFamily: Fonts.display,

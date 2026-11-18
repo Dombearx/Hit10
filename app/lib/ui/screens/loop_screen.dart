@@ -8,12 +8,13 @@ import '../game_controller.dart';
 import '../theme.dart';
 import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
+import '../widgets/res_text.dart';
 import 'sheet.dart';
 
 /// Time Loops (docs/13 §5.2): the ending of a loop, the confirmation of a
 /// new one, and the Chronicle (chapters, seals, the rules).
 
-const _paper = Color(0xFFFFF6E8);
+const _paper = Palette.paper;
 
 BoxDecoration _card([Color color = Colors.white]) => BoxDecoration(
   color: color,
@@ -137,9 +138,9 @@ Future<bool> confirmNewLoop(BuildContext context, GameController c) async {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l.loopConfirmResets, style: const TextStyle(fontSize: 15)),
+          ResText(l.loopConfirmResets, style: const TextStyle(fontSize: 15)),
           const SizedBox(height: 10),
-          Text(
+          ResText(
             l.loopConfirmKeeps,
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
           ),
@@ -292,7 +293,7 @@ class _LoopEnd extends StatelessWidget {
                     if (bonusesLeft > 0)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
-                        child: Text(
+                        child: ResText(
                           l.loopStayHint(bonusesLeft),
                           textAlign: TextAlign.center,
                           style: _dim,
@@ -484,6 +485,27 @@ class _Chronicle extends StatelessWidget {
           ),
         ],
         heading(l.chronicleChapters),
+        // The prologue is always open: where it all started.
+        Container(
+          key: const Key('chapter-0'),
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.all(12),
+          decoration: _card(Colors.white),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l.chroniclePrologue,
+                style: const TextStyle(fontFamily: Fonts.display, fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              ResText(
+                l.prologue,
+                style: const TextStyle(fontSize: 14.5, height: 1.35),
+              ),
+            ],
+          ),
+        ),
         for (var n = 1; n <= c.balance.loops.storyChapters; n++)
           Container(
             key: Key('chapter-$n'),
@@ -502,7 +524,7 @@ class _Chronicle extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
+                      ResText(
                         chapterTexts(l, n)!.$2,
                         style: const TextStyle(fontSize: 14.5, height: 1.35),
                       ),

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/app.dart';
+import 'package:hit10/ui/widgets/res_text.dart';
 import 'package:hit10/ui/game_controller.dart';
 import 'package:hit10/ui/providers.dart';
 
@@ -13,6 +14,7 @@ void main() {
   final balance = loadBalance();
 
   Future<GameController> pump(WidgetTester tester, GameState s) async {
+    s.tipsSeen.add('prologue'); // it has its own test
     final c = GameController(
       balance: balance,
       state: s,
@@ -88,11 +90,11 @@ void main() {
     await pump(tester, s);
     await tester.tap(find.byKey(const Key('skill-info-power')));
     await tester.pumpAndSettle();
-    final power = tester.widget<Text>(
+    final power = tester.widget<ResText>(
       find.byKey(const Key('perfect-now-power')),
     );
     // 6 Tiki for a PERFECT = 1.2 s of the clocks' 5/s.
-    expect(power.data, contains('≈ 1,2 s dochodu zegarów'));
+    expect(power.text, contains('≈ 1,2 s dochodu zegarów'));
   });
 
   testWidgets('a skill card opens its full explanation; buy from there', (
@@ -104,8 +106,10 @@ void main() {
     final c = await pump(tester, s);
     await tester.tap(find.byKey(const Key('skill-info-power')));
     await tester.pumpAndSettle();
-    final info = tester.widget<Text>(find.byKey(const Key('skill-info-text')));
-    expect(info.data, startsWith('Trafienie daje stałą liczbę Tików'));
+    final info = tester.widget<ResText>(
+      find.byKey(const Key('skill-info-text')),
+    );
+    expect(info.text, startsWith('Trafienie daje stałą liczbę Tików'));
     await tester.tap(find.byKey(const Key('skill-info-buy')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(c.state.skills['power'], 1);

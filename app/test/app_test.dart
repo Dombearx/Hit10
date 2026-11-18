@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/balance/balance.dart';
 import 'package:hit10/ui/app.dart';
+import 'package:hit10/ui/widgets/res_text.dart';
 import 'package:hit10/ui/game_controller.dart';
 import 'package:hit10/ui/providers.dart';
 
@@ -28,7 +29,10 @@ void main() {
   testWidgets('game screen in Polish', (tester) async {
     await tester.pumpWidget(app(const Locale('pl')));
     await tester.pump(const Duration(milliseconds: 100));
-    expect(find.text('Tiki'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate((w) => w is ResText && w.text == 'Tiki'),
+      findsOneWidget,
+    );
     expect(find.text('0'), findsOneWidget);
     expect(find.byKey(const Key('arena')), findsOneWidget);
   });
@@ -36,7 +40,10 @@ void main() {
   testWidgets('game screen in English', (tester) async {
     await tester.pumpWidget(app(const Locale('en')));
     await tester.pump(const Duration(milliseconds: 100));
-    expect(find.text('Ticks'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate((w) => w is ResText && w.text == 'Ticks'),
+      findsOneWidget,
+    );
   });
 
   test('tablets scale the phone layout up, phones stay as they are', () {

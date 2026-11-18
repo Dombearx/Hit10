@@ -5,6 +5,7 @@ import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
+import 'res_text.dart';
 
 /// What the coach can point at. Each is put on one widget of the game
 /// screen; the coach measures it after layout.
@@ -485,7 +486,7 @@ class _Bubble extends StatelessWidget {
                 children: [
                   Expanded(
                     child: IgnorePointer(
-                      child: Text(
+                      child: ResText(
                         mark.text,
                         style: const TextStyle(
                           color: Colors.white,

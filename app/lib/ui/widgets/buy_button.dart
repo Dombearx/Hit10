@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers.dart';
 import '../theme.dart';
 import 'burst.dart';
+import 'res_text.dart';
 
 /// Chunky pink price button that squashes on press (docs/04 §3 "Zakup").
 class BuyButton extends ConsumerStatefulWidget {
@@ -16,7 +17,11 @@ class BuyButton extends ConsumerStatefulWidget {
     this.minWidth = 84,
     this.celebrate = true,
     this.loading = false,
+    this.res,
   });
+
+  /// The resource the price is paid in: its icon follows the price.
+  final Res? res;
 
   /// Not pressable yet, but about to be: a spinner beside the price (an ad
   /// still loading).
@@ -149,6 +154,10 @@ class _BuyButtonState extends ConsumerState<BuyButton>
                           ),
                         ),
                       ),
+                      if (widget.res != null) ...[
+                        const SizedBox(width: 3),
+                        ResIcon(widget.res!, size: 15),
+                      ],
                     ],
                   ),
                 ],

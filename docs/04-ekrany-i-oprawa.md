@@ -189,6 +189,23 @@ zostały te same (`trophy`, `fire`…).
 - **U-28:** **Do sklepu:** grafika promocyjna 1024×500 złożona z tła gry,
   logo i kart postaci. 4–8 zrzutów ekranu z gry z podpisami PL/EN.
 
+- **U-30:** **Ikony zasobów** (jak w grach planszowych): każdy zasób ma
+  jedną ikonę, która stoi przed jego nazwą w każdym tekście, we wszystkich
+  formach (Tiki/Tików/Tikami, Ticks): Tiki — moneta, Chronony — wir
+  paradoksu, Okruchy czasu — fioletowa czteroramienna gwiazdka (rysowana
+  w kodzie, zastępuje znak „✦”), Sprężyny — spirala (U-27 jak złoty
+  zegarek: rysowana w kodzie). Ta sama ikona stoi za ceną na przyciskach
+  zakupu (zegary i umiejętności — moneta, perki — gwiazdka) i przy kwotach
+  w oknach „Gdy cię nie było” i dziennej premii.
+- **U-31:** **Okna dialogowe** w stylu gry, bez systemowego wyglądu: kremowe
+  tło, gruby ciemny kontur, zaokrąglenie 26, ikona-karta u góry, pytanie,
+  pod nim duży różowy przycisk „tak” i cichy przycisk tekstowy „nie”
+  (playtest: systemowe okienko pytania o powiadomienia wyglądało obco).
+- **U-32:** **Odstępy:** tarcza stopera trzyma co najmniej 18 px wolnego
+  miejsca pod swoim cieniem, a pasek combo ma margines nad i pod sobą —
+  elementy ekranu głównego nie stykają się (playtest: dół tarczy dotykał
+  napisu COMBO).
+
 ### 4.3 Grafika AI (po wydaniu, opcjonalnie)
 Nie jest potrzebna do 1.0. Jeśli dojdzie, zastępuje emoji w tych samych
 kartach (U-10), więc kod się nie zmienia. Wspólny szablon promptu:

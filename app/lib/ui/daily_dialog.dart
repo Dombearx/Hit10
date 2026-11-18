@@ -7,6 +7,7 @@ import 'game_controller.dart';
 import 'theme.dart';
 import 'widgets/buy_button.dart';
 import 'widgets/emoji_card.dart';
+import 'widgets/res_text.dart';
 
 /// The daily bonus (playtest 08): a 7-day streak shown as tiles, today's
 /// amount counting up, one button to collect.
@@ -56,12 +57,23 @@ Future<void> showDailyDialog(BuildContext context, GameController c) {
                 tween: Tween(begin: 0, end: d.amount),
                 duration: const Duration(milliseconds: 900),
                 curve: Curves.easeOutCubic,
-                builder: (context, v, _) => Text(
-                  '+${f.n(v)}',
-                  style: const TextStyle(
-                    fontFamily: Fonts.display,
-                    fontSize: 40,
-                    color: Palette.perfectDeep,
+                // The amount with the Tiki coin beside it.
+                builder: (context, v, _) => FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '+${f.n(v)}',
+                        style: const TextStyle(
+                          fontFamily: Fonts.display,
+                          fontSize: 40,
+                          color: Palette.perfectDeep,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const ResIcon(Res.tiki, size: 34),
+                    ],
                   ),
                 ),
               ),

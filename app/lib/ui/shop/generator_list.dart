@@ -17,6 +17,7 @@ import '../widgets/buy_button.dart';
 import '../widgets/emoji_card.dart';
 import '../widgets/springs.dart';
 import '../widgets/coach.dart';
+import '../widgets/res_text.dart';
 
 enum BuyAmount { one, ten, hundred, max }
 
@@ -253,7 +254,7 @@ class _GeneratorTile extends StatelessWidget {
                   Text(sub, style: small),
                   // The joke on its own lines, never cut.
                   if (owned == 0)
-                    Text(
+                    ResText(
                       generatorDescription(l, id),
                       key: Key('gen-desc-$id'),
                       style: small.copyWith(fontStyle: FontStyle.italic),
@@ -274,6 +275,7 @@ class _GeneratorTile extends StatelessWidget {
               key: Key('buy-$id'),
               label: amount == BuyAmount.one ? null : '×$count',
               price: f.price(price),
+              res: Res.tiki,
               enabled: affordable,
               onPressed: () => c.buyGenerators(id, count),
             ),
@@ -320,14 +322,20 @@ class _MilestoneBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 6),
-          Text(
-            next == null
-                ? l.milestoneMax
-                : l.milestoneProgress('$owned', '$next', mult),
-            style: const TextStyle(
-              fontSize: 11.5,
-              fontWeight: FontWeight.w800,
-              color: Palette.perfectText,
+          // Shrinks rather than overflows on a narrow card.
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                next == null
+                    ? l.milestoneMax
+                    : l.milestoneProgress('$owned', '$next', mult),
+                style: const TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w800,
+                  color: Palette.perfectText,
+                ),
+              ),
             ),
           ),
         ],
@@ -480,7 +488,7 @@ Future<void> showGeneratorInfo(
                 ],
               ),
               const SizedBox(height: 12),
-              Text(
+              ResText(
                 generatorDescription(l, id),
                 style: const TextStyle(
                   fontSize: 15,

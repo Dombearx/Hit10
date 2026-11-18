@@ -9,6 +9,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 import 'ad_buttons.dart';
 import 'emoji_card.dart';
+import 'res_text.dart';
 
 /// The offer before a rewarded ad (docs/02 §13, AdMob policy): what the
 /// player gets, that it is a short video, and a way to say no. Only "Watch"
@@ -158,7 +159,7 @@ class _OfferDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 6),
-            Text(detail, textAlign: TextAlign.center),
+            ResText(detail, textAlign: TextAlign.center),
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

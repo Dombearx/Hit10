@@ -9,6 +9,7 @@ import 'catalog.dart';
 import 'theme.dart';
 import 'widgets/buy_button.dart';
 import 'widgets/emoji_card.dart';
+import 'widgets/res_text.dart';
 
 /// The running calendar event (docs/02 §14): what to do, how far along the
 /// player is and what it pays. Also its intro when the season starts.
@@ -76,7 +77,7 @@ Future<void> showSeasonDialog(BuildContext context, GameController c) {
                   done: done,
                 ),
                 const SizedBox(height: 12),
-                Text(
+                ResText(
                   done
                       ? l.seasonDone(name)
                       : l.seasonReward(f.n(c.engine.seasonReward()), name),
