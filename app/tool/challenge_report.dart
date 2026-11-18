@@ -2,7 +2,9 @@
 // precision, the targets the planner sets from their own taps and how many
 // minutes of play they then take to complete.
 //
-//   dart run tool/challenge_report.dart
+//   dart run tool/challenge_report.dart [--first]
+//
+// --first: the easier very first set (balance `firstReachShare`).
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -10,11 +12,12 @@ import 'package:hit10/balance/balance.dart';
 import 'package:hit10/model/challenges.dart';
 import 'package:hit10/model/grading.dart';
 
-void main() {
+void main(List<String> args) {
   final b = Balance.fromJsonString(
     File('assets/balance.json').readAsStringSync(),
   );
   final c = b.challenges;
+  final share = args.contains('--first') ? c.firstReachShare : c.reachShare;
   final windows = Windows(
     perfect: b.tier('perfect').window,
     great: b.tier('great').window,
@@ -72,7 +75,7 @@ void main() {
           goldenEnabled: true,
           dailySeconds: c.dailySeconds,
           weeklySeconds: c.weeklySeconds,
-          reachShare: c.reachShare,
+          reachShare: share,
         );
         final ch = Challenge(kind, ChallengePlanner.target(kind, p, rng));
         targets.add(ch.target);

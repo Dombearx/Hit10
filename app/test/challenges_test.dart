@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hit10/analytics/analytics.dart';
 import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/model/challenges.dart';
 import 'package:hit10/model/game_state.dart';
@@ -275,20 +276,28 @@ void main() {
     expect(e2.dailyChallenges.map((c) => c.slot), [0, 1, 2]);
   });
 
-  test('the first ones come at a return, never mid-session (R-WYZ-1)', () {
+  test('they arrive at a round start after 3 min; the first set easier', () {
     final s = GameState()
       ..tutorialDone = true
-      ..lifetime.secondsPlayed = 3600;
+      ..lifetime.secondsPlayed = 100;
+    final a = RecordingAnalytics();
     final c = GameController(
       balance: b,
       state: s,
       store: MemorySaveStore(),
+      analytics: a,
       localNow: () => DateTime(2026, 11, 18, 12),
     );
-    c.syncChallenges(); // a round starts: not now
-    expect(s.challenges, isEmpty);
-    c.checkOffline(); // back in the game
+    c.syncChallenges();
+    expect(s.challenges, isEmpty); // under 3 min of play
+    // Before the ad offers: never both at once.
+    expect(b.challenges.unlockPlaySeconds, lessThan(b.ads.unlockAfterSeconds));
+    expect(c.challengePlayer().reachShare, b.challenges.firstReachShare);
+    s.lifetime.secondsPlayed = b.challenges.unlockPlaySeconds;
+    c.syncChallenges(); // mid-session, at a round start
     expect(s.challenges, hasLength(4));
+    expect(a.names, contains('challenges_unlocked'));
+    expect(c.challengePlayer().reachShare, b.challenges.reachShare);
   });
 
   test('the controller hands them out and counts purchases', () async {
@@ -302,7 +311,7 @@ void main() {
       store: MemorySaveStore(),
       localNow: () => DateTime(2026, 11, 18, 12),
     );
-    c.syncChallenges(atReturn: true);
+    c.syncChallenges();
     expect(s.challenges, hasLength(4));
     // Make the building slot "buy 5 clocks" and play it.
     s.challenges.removeWhere((x) => x.slot == 2);

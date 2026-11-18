@@ -110,8 +110,10 @@ Rekomendacja niżej została przyjęta z dwiema zmianami po rozmowie:
 - **Każde zadanie to celowanie w 5.00.** Przez chwilę było „z obu stron”
   (trafienia tuż przed i tuż po 5.00), ale kazało klikać celowo za późno
   — odpadło.
-- **Nie od razu:** pierwsze wyzwania przychodzą przy powrocie do gry po
-  co najmniej 10 min gry, nigdy w trakcie pierwszej sesji (jak reklamy).
+- **Nie od razu, ale w pierwszej sesji:** po samouczku i 3 min gry, także
+  w trakcie sesji (przed reklamami, które przychodzą po 5 min). Przez
+  chwilę wyzwania czekały na powrót do gry po 10 min — za późno dla
+  graczy, których mają zatrzymać (§7). Pierwszy zestaw jest łatwiejszy.
 
 Zestaw: celność (A1, A2, A3), wyczyn (A5, N× PERFEKT, D4), rozwój
 (D1, D2, D3), tydzień (ŚWIETNIE+, równe 5.00, seria, Złote Sekundy,
@@ -170,3 +172,51 @@ arkusz z listą, plakietka i zapis postępu. Zdarzenia do Analytics:
 **Jak sprawdzić, czy działa:** retencja D7 i liczba sesji dziennie przed
 i po (Firebase), udział graczy, którzy kończą choć jedno zadanie dziennie,
 i czy typowy błąd graczy z zadaniami spada szybciej (`accuracy`).
+
+## 7. Kiedy odblokować — jak robią to inne gry (11.2026)
+
+Pytanie: czy wyzwania po 2–3 sesjach to nie za późno? Dane o sesjach:
+gracz idle ma ok. 5 sesji dziennie po ok. 8 min, mediana gier mobilnych
+5–6 min (GameAnalytics); mediana retencji D1 ok. 22%, ponad połowa graczy
+nie wraca po pierwszej sesji. Codzienne zadania pracują głównie na powroty
+w dniach 1–7, więc gracz, który zagrał raz czy dwa po kilka minut, musi je
+zobaczyć jeszcze w dniu instalacji.
+
+| Gra | Kiedy codzienne zadania |
+|---|---|
+| Subway Surfers | od początku (prosty dzienny cel: litery) |
+| Candy Crush | od początku (dzienne koło nagród) |
+| Clash Royale | wcześnie, na ekranie głównym: 3 zadania, premia dzienna i tygodniowa |
+| Brawl Stars | od 300 pucharów; 2 małe zadania dziennie |
+| Dragon Mania Legends | od poziomu 11 |
+| Merge Mansion | od poziomu 15 |
+| AFK Arena, Archero | po rozdziale 3 kampanii |
+| Honkai Star Rail, Genshin | po kilku godzinach fabuły; 4 zadania i premia za wszystkie |
+
+Wnioski: proste gry casual dają dzienne rzeczy od pierwszego dnia, gry
+z wieloma systemami dopiero po zrozumieniu podstawowej pętli; prawie nikt
+nie liczy sesji, tylko postęp. Poradniki branżowe: dzienne nagrody pod
+koniec pierwszego doświadczenia z grą (FTUE), na koniec sesji coś
+rozpoczętego, przy pierwszym wejściu nagroda od razu albo prawie od razu.
+Hit5 ma jedną mechanikę, której uczy się w minutę, stąd 3 min gry
+i łatwiejszy pierwszy zestaw. Sprawdzamy to zdarzeniem
+`challenges_unlocked` (`play_min`) i retencją D1/D7 graczy, którzy
+zobaczyli wyzwania pierwszego dnia.
+
+Źródła: [Supercell — Brawl Stars](https://supercell.com/en/games/brawlstars/blog/game-updates/update-taras-bazaar),
+[Mobile Matters — Clash Royale daily tasks](https://mobilematters.gg/clash-royale/supercell-introduces-daily-tasks-to-clash-royale),
+[Merge Mansion support](https://support.metacoregames.com/hc/en/merge-mansion/articles/daily-challenges-daily-scoop-467),
+[Dragon Mania Legends wiki](https://dragon-mania-legends.wiki/wiki/Daily_Task),
+[BlueStacks — AFK Arena](https://www.bluestacks.com/blog/game-guides/afk-arena/afka-daily-todo-list-en.html),
+[Archero patch notes](https://progameguides.com/archero/archero-patch-notes/),
+[Destructoid — Honkai Star Rail](https://destructoid.com/how-to-unlock-daily-training-and-daily-missions-in-honkai-star-rail),
+[Codashop — Genshin](https://news.codashop.com/sg/?p=15563),
+[AppGamer — Subway Surfers](https://www.appgamer.com/subway-surfers/daily-challenge),
+[King — Candy Crush](https://community.king.com/en/candy-crush-saga/kb/articles/394-what-are-boosters-learn-all-about-them-here),
+[MAF — daily rewards po FTUE](https://maf.ad/en/blog/daily-login-rewards-engagement-retention/),
+[Udonis — FTUE](https://www.blog.udonis.co/mobile-marketing/mobile-games/first-time-user-experience),
+[Playio — pierwsza sesja](https://blog.playio.co/mobile-game-onboarding-retention),
+[Apple — Onboarding for Games](https://developer.apple.com/app-store/onboarding-for-games/),
+[WN Hub — GameAnalytics, gry idle](https://wnhub.io/news/marketing/item-3203),
+[GameAnalytics 2025](https://gamedevreports.substack.com/p/gameanalytics-mobile-gaming-benchmarks),
+[Game Growth Advisor — retencja](https://gamegrowthadvisor.com/blog/2026-03-17-mobile-game-retention-strategies-2026/).

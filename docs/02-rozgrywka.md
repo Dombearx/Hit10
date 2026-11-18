@@ -914,11 +914,13 @@ Skąd i dlaczego: [14-wyzwania.md](14-wyzwania.md). Liczby w pliku balansu
 - **R-WYZ-1 (zestaw):** codziennie trzy wyzwania, po jednym z każdej
   grupy, i jedno tygodniowe (od poniedziałku, czas lokalny), bez serwera.
   W tym samym miejscu nie wypada ten sam rodzaj dwa dni (tygodnie) z rzędu.
-  Pierwsze wyzwania przychodzą przy **powrocie do gry** (start albo
-  powrót z tła) po samouczku i co najmniej 10 min gry
-  (`unlockPlaySeconds`) — nigdy w trakcie sesji, jak reklamy (R-AD-5):
-  pierwsza sesja zostaje prosta, a powrót coś przynosi. Pierwszy raz ze
-  wskazówką przy plakietce. Każde zadanie to celowanie w 5.00 albo
+  Pierwsze wyzwania przychodzą po samouczku i 3 min gry
+  (`unlockPlaySeconds`), także w trakcie sesji — przy starcie rundy, jak
+  inne odblokowania. To przed ofertami reklam (5 min, R-AD-5), więc dwie
+  nowości nie przychodzą naraz, i zwykle jeszcze w pierwszej sesji, więc
+  pierwsza nagroda daje powód do powrotu (przegląd innych gier: 14 §7).
+  Pierwszy raz ze wskazówką przy plakietce (w zwykłym odstępie
+  wskazówek, R-TUT-2). Każde zadanie to celowanie w 5.00 albo
   zwykła gra — żadne nie każe klikać celowo obok.
 
   | Grupa | Rodzaje |
@@ -936,6 +938,9 @@ Skąd i dlaczego: [14-wyzwania.md](14-wyzwania.md). Liczby w pliku balansu
   Liczą się okna z umiejętności i długość rundy (Start później). Nowy
   gracz bez dotknięć jest liczony jak gracz o rozrzucie 75 ms. Cel jest
   ustalany raz, przy wydaniu wyzwania, i zaokrąglany do „ładnych” liczb.
+  **Pierwszy zestaw jest łatwiejszy:** cel osiągany w 80% sesji
+  (`firstReachShare`) — dzienne zajmują wtedy 1–3.5 min (mediana), żeby
+  pierwsza wizyta szybko coś dała.
   Symulacja (14 §5): dzienne zajmują 2–4 min (mediana) i do 5–6 min
   (80% graczy) przy każdej celności od 20 do 150 ms.
 - **R-WYZ-3 (postęp):** liczą się dotknięcia gracza na obu zegarach (runda

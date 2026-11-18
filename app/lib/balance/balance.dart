@@ -133,6 +133,7 @@ class ChallengesConfig {
       dailySeconds = _d(j['dailySeconds']),
       weeklySeconds = _d(j['weeklySeconds']),
       reachShare = _d(j['reachShare']),
+      firstReachShare = _d(j['firstReachShare']),
       dailyMinutes = _d(j['dailyMinutes']),
       dailyFloor = _d(j['dailyFloor']),
       bonusMinutes = _d(j['bonusMinutes']),
@@ -141,8 +142,9 @@ class ChallengesConfig {
       weeklyFloor = _d(j['weeklyFloor']),
       weeklySprings = _i(j['weeklySprings']);
 
-  /// Challenges start after the tutorial and this much play: the first
-  /// session stays simple.
+  /// Challenges start after the tutorial and this much play — before the
+  /// ad offers, so the two never arrive together, and within a typical
+  /// first session, so the first one gives a reason to come back.
   final double unlockPlaySeconds;
 
   /// A daily challenge is sized for about this much play, the weekly one
@@ -153,6 +155,9 @@ class ChallengesConfig {
   /// Share of simulated sessions of the player's own taps that reach a
   /// target (docs/14 §1).
   final double reachShare;
+
+  /// The very first set is easier: the first visit should pay quickly.
+  final double firstReachShare;
 
   /// Rewards: minutes of passive income, at least the floor in Tiki; the
   /// weekly pays [weeklySprings] Mainsprings once they are unlocked.
@@ -704,8 +709,10 @@ class Balance {
   List<String> validate() {
     final e = <String>[];
     final ch = challenges;
-    if (ch.reachShare <= 0 || ch.reachShare >= 1) {
-      e.add('challenges.reachShare must be between 0 and 1');
+    for (final share in [ch.reachShare, ch.firstReachShare]) {
+      if (share <= 0 || share >= 1) {
+        e.add('challenges: reach shares must be between 0 and 1');
+      }
     }
     if (ch.dailySeconds <= 0 || ch.weeklySeconds < ch.dailySeconds) {
       e.add('challenges: dailySeconds > 0 and weeklySeconds >= dailySeconds');

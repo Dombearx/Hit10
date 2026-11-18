@@ -933,7 +933,10 @@ class GameController extends ChangeNotifier {
       goldenEnabled: !engine.goldenBlocked,
       dailySeconds: cfg.dailySeconds,
       weeklySeconds: cfg.weeklySeconds,
-      reachShare: cfg.reachShare,
+      // The very first set is easier (R-WYZ-2).
+      reachShare: state.challengeDay == 0
+          ? cfg.firstReachShare
+          : cfg.reachShare,
     );
   }
 
@@ -942,18 +945,19 @@ class GameController extends ChangeNotifier {
   ChallengePay? challengeCarry;
 
   /// A new day or week: new challenges (R-WYZ-1). Called at start-up, on
-  /// return ([atReturn]) and when a round starts (a session can cross
-  /// midnight). The very first ones come only at a return to the game,
-  /// never in the middle of a session: the first one stays simple, and
-  /// coming back finds something new.
-  void syncChallenges({bool atReturn = false}) {
-    if (state.challenges.isEmpty && !atReturn) return;
+  /// return and when a round starts — so the first ones may arrive in
+  /// the middle of a session, like the ad offers, and a session can cross
+  /// midnight.
+  void syncChallenges() {
+    final first = state.challengeDay == 0;
     final paid = engine.refreshChallenges(
       _localNow(),
       challengePlayer,
       _challengeRng,
     );
     if (paid.tiki + paid.bonus > 0 || paid.springs > 0) challengeCarry = paid;
+    // When players meet them (05 T-34): play_min says how far in.
+    if (first && state.challengeDay != 0) _log('challenges_unlocked');
   }
 
   void _challengeRound(RoundOutcome o, double error) {
@@ -1805,7 +1809,7 @@ class GameController extends ChangeNotifier {
     engine.holdOffline(pendingOffline);
     if (pendingOffline != null) unawaited(save());
     pendingDaily = engine.dailyFor(_localNow());
-    syncChallenges(atReturn: true);
+    syncChallenges();
     state.lastSeenMs = _wallMs();
     engine.windSprings(_wallMs());
     if (pendingOffline != null || pendingDaily != null || seasonIntroPending) {

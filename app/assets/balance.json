@@ -542,10 +542,11 @@
     "floorPerDay": 25
   },
   "challenges": {
-    "unlockPlaySeconds": 600,
+    "unlockPlaySeconds": 180,
     "dailySeconds": 240,
     "weeklySeconds": 2100,
     "reachShare": 0.6,
+    "firstReachShare": 0.8,
     "dailyMinutes": 10,
     "dailyFloor": 200,
     "bonusMinutes": 30,
