@@ -201,10 +201,12 @@ zostały te same (`trophy`, `fire`…).
   tło, gruby ciemny kontur, zaokrąglenie 26, ikona-karta u góry, pytanie,
   pod nim duży różowy przycisk „tak” i cichy przycisk tekstowy „nie”
   (playtest: systemowe okienko pytania o powiadomienia wyglądało obco).
-- **U-32:** **Odstępy:** tarcza stopera trzyma co najmniej 18 px wolnego
-  miejsca pod swoim cieniem, a pasek combo ma margines nad i pod sobą —
-  elementy ekranu głównego nie stykają się (playtest: dół tarczy dotykał
-  napisu COMBO).
+- **U-32:** **Płomień serii** rośnie z combo w polu o stałym rozmiarze
+  (wysokość paska combo, 30 px), więc nawet przy pełnym combo nie zasłania
+  mnożnika, licznika serii, chipów trybów ani dołu tarczy (playtest:
+  powiększony płomień wychodził poza pasek). Tarcza i pasek combo nie mają
+  dodatkowych marginesów: zapas na płomień zmniejszał tarczę, gdy ekran był
+  pełny (chipy trybów, efekty).
 
 - **U-33:** **Ilustracje fabuły:** prolog i każdy z siedmiu rozdziałów ma
   ilustrację 16:9 (zaokrąglona ramka z konturem) nad tekstem — w oknie

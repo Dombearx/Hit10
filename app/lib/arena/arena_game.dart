@@ -283,17 +283,11 @@ class Stage extends Component {
         : Vector2(size.x * (i == 0 ? 0.26 : 0.74), y);
   }
 
-  /// Clear space kept below the dial's shadow, above the combo row
-  /// (playtest: the dial's foot touched the COMBO line).
-  static const bottomGap = 18.0;
-
   double radiusOf(int i) {
     final h = size.y - _top;
-    // The shadow hangs 0.07 r below the face, the outline a little more.
-    final fit = (h / 2 - bottomGap) / 1.1;
     return _count == 1
-        ? math.max(0, math.min(size.x * 0.40, math.min(h * 0.42, fit)))
-        : math.max(0, math.min(size.x * 0.23, math.min(h * 0.36, fit)));
+        ? math.min(size.x * 0.40, h * 0.42)
+        : math.min(size.x * 0.23, h * 0.36);
   }
 
   Vector2 get center => centerOf(0);

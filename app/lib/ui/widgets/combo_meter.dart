@@ -18,6 +18,9 @@ class ComboMeter extends StatefulWidget {
 
 class _ComboMeterState extends State<ComboMeter>
     with SingleTickerProviderStateMixin {
+  /// The flame at full heat: as tall as the row.
+  static const _flame = 30.0;
+
   late final AnimationController _break = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 450),
@@ -58,7 +61,9 @@ class _ComboMeterState extends State<ComboMeter>
     final streak = c.state.comboStreak;
     final cap = c.econ.comboCap();
     final mult = 1 + c.balance.combo.multiplierPerStep * streak;
-    final heat = cap == 0 ? 0.0 : streak / cap;
+    // A streak above the cap (a loop rule that lowers it) is full heat,
+    // not a flame that outgrows its box.
+    final heat = cap == 0 ? 0.0 : (streak / cap).clamp(0.0, 1.0);
     final shields = c.engine.maxShieldCharges();
     return AnimatedBuilder(
       animation: _break,
@@ -89,15 +94,24 @@ class _ComboMeterState extends State<ComboMeter>
                 ),
               ),
               const SizedBox(width: 6),
-              AnimatedScale(
-                scale: 0.6 + 0.9 * heat,
-                duration: const Duration(milliseconds: 200),
-                child: Opacity(
-                  opacity: streak > 0 ? 1 : 0.3,
-                  child: Image.asset(
-                    EmojiArt.path('fire'),
-                    width: 26,
-                    height: 26,
+              // The flame grows inside a box sized for its largest size:
+              // a scale alone only paints bigger, and at full heat it
+              // covered the multiplier, the streak and the dial's foot
+              // (playtest).
+              SizedBox.square(
+                dimension: _flame,
+                child: Center(
+                  child: AnimatedScale(
+                    scale: 0.5 + 0.5 * heat,
+                    duration: const Duration(milliseconds: 200),
+                    child: Opacity(
+                      opacity: streak > 0 ? 1 : 0.3,
+                      child: Image.asset(
+                        EmojiArt.path('fire'),
+                        width: _flame,
+                        height: _flame,
+                      ),
+                    ),
                   ),
                 ),
               ),
