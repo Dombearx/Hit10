@@ -274,21 +274,25 @@ Dalej tarcze dają pieczęcie pętli (R-PETLA-5), co kilka dni każda.
   (5 z trafień), 6 tytułów, 10 tarcz, 29 h przepadło.
 
 Tabela wyżej jest z dziennego limitu 6 h (pierwsza wersja R-SPR-3).
-Od wersji z zapasem dokręcania (R-SPR-3, 3a, 3b; `late_game_report.dart
---part 3`, na kodzie gry) Sprężyn dziennie jest:
+Od wersji z zapasem dokręcania (R-SPR-3, 3b; 30 min za trafienie, bez
+premii za pierwsze trafienie; `late_game_report.dart --part 3`, na kodzie
+gry) Sprężyn dziennie jest:
 
 | Gracz | Limit 6 h na dobę | Zapas 2 h | Zapas i 2 reklamy |
 |---|---|---|---|
-| 1 × 2 min, σ = 80 ms | 1.03 | 1.06 | 1.06 |
-| 3 × 3 min, σ = 50 ms | 1.24 | 1.25 | 1.30 |
-| 6 × 2 min, σ = 50 ms | 1.25 | 1.42 | 1.48 |
+| 1 × 2 min, σ = 80 ms | 1.03 | 1.07 | 1.07 |
+| 3 × 3 min, σ = 50 ms | 1.24 | 1.25 | 1.40 |
+| 6 × 2 min, σ = 50 ms | 1.25 | 1.42 | 1.50 |
 | 1 × 30 min, σ = 40 ms | 1.25 | 1.09 | 1.26 |
 | 3 × 11 min, σ = 40 ms | 1.25 | 1.26 | 1.43 |
-| 5 × 5 min, σ = 40 ms | 1.25 | 1.42 | 1.52 |
+| 5 × 5 min, σ = 40 ms | 1.25 | 1.42 | 1.58 |
 
-Gracz „3 sesje” ma tyle samo co wcześniej, częste krótkie wejścia dają
-do 1.42, jedna długa sesja mniej (1.09). Reklamy liczą się tylko wtedy,
-gdy trafienie zastaje pusty zapas.
+Bez reklam to te same liczby co w wersji z premią 1 h za pierwsze
+trafienie po przerwie (15 min za kolejne): gracz „3 sesje” ma tyle samo
+co przy limicie dziennym, częste krótkie wejścia dają do 1.42, jedna
+długa sesja mniej (1.09). Reklama przy 30 min za trafienie daje więcej
+w krótkich sesjach (3 × 3 min: 1.40 zamiast 1.30), bo zapas opróżnia się
+po 4 trafieniach i oferta w ogóle się pojawia.
 
 ### 4.4 Pętle czasu (docs/13)
 

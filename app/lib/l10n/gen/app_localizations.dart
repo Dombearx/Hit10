@@ -4730,12 +4730,6 @@ abstract class AppLocalizations {
   /// **'Mainsprings: {count}. {hits, plural, =0{Exact hits wind nothing until the reserve is back} =1{1 exact hit left to wind} other{{hits} exact hits left to wind}}'**
   String springsBadgeHits(String count, int hits);
 
-  /// No description provided for @springsBadgeBonus.
-  ///
-  /// In en, this message translates to:
-  /// **'Mainsprings: {count}. The next exact hit winds extra; {hits} plain hits left in the reserve'**
-  String springsBadgeBonus(String count, int hits);
-
   /// No description provided for @springsBadgeFull.
   ///
   /// In en, this message translates to:
@@ -4747,12 +4741,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MAX'**
   String get springsBadgeMax;
-
-  /// No description provided for @springsBonusTag.
-  ///
-  /// In en, this message translates to:
-  /// **'+{hours}h'**
-  String springsBonusTag(int hours);
 
   /// No description provided for @springsIntro.
   ///
@@ -4789,12 +4777,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Every exact 5.00 winds {time} out of the reserve. The reserve comes back by itself in {refill}.'**
   String springsReserveHow(String time, String refill);
-
-  /// No description provided for @springsReserveFirst.
-  ///
-  /// In en, this message translates to:
-  /// **'Your next exact 5.00 winds a whole {time}: the first one after a break of {after}.'**
-  String springsReserveFirst(String time, String after);
 
   /// No description provided for @springsReserveEmpty.
   ///
@@ -5729,8 +5711,8 @@ abstract class AppLocalizations {
   /// No description provided for @notificationReserveBody.
   ///
   /// In en, this message translates to:
-  /// **'Exact 5.00s wind your Mainspring again — the first one by {first}.'**
-  String notificationReserveBody(String first);
+  /// **'Exact 5.00s wind your Mainspring again — {time} each.'**
+  String notificationReserveBody(String time);
 
   /// No description provided for @settingsNotificationsHint.
   ///

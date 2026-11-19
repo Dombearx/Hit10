@@ -86,8 +86,7 @@ void main() {
       ..prestiges = 1
       ..springClockMs = now
       ..springReserve = 0
-      ..springReserveMs = now
-      ..springLastHitMs = now;
+      ..springReserveMs = now;
     final ads = FakeRewardedAds(delay: Duration.zero);
     final c = await pumpGame(tester, s, ads);
     expect(find.byKey(const Key('springs-ad-hint')), findsOneWidget);
@@ -106,7 +105,7 @@ void main() {
     expect(find.textContaining('Zapas pełny'), findsOneWidget);
   });
 
-  testWidgets('a full reserve: no ad, the first exact hit is announced', (
+  testWidgets('a full reserve: no ad, what a hit winds is said', (
     tester,
   ) async {
     final s = played()
@@ -117,8 +116,8 @@ void main() {
     await tester.tap(find.byKey(const Key('open-springs')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('ad-spring')), findsNothing);
-    expect(find.textContaining('dokręci aż 1 h'), findsOneWidget);
-    expect(c.engine.springFirstHitReady(now), isTrue);
+    expect(find.textContaining('dokręca 30 min z zapasu'), findsOneWidget);
+    expect(c.engine.springReserveAt(now), c.balance.springs.hitReserve);
   });
 
   testWidgets('an interrupted ad gives nothing and says so', (tester) async {

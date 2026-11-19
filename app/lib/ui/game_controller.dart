@@ -2019,10 +2019,10 @@ class GameController extends ChangeNotifier {
       }
     }
     final days = balance.daily.minutes.length;
-    final first = balance.springs.firstHitSeconds;
-    final firstText = first >= 3600
-        ? '${(first / 3600).round()} h'
-        : '${(first / 60).round()} min';
+    final hit = balance.springs.hitSeconds;
+    final hitText = hit >= 3600 && hit % 3600 == 0
+        ? '${(hit / 3600).round()} h'
+        : '${(hit / 60).round()} min';
     return [
       for (final p in NotificationPlan.choose(now, candidates))
         switch (p.kind) {
@@ -2048,7 +2048,7 @@ class GameController extends ChangeNotifier {
             p.kind,
             p.at,
             texts.reserveTitle,
-            texts.reserveBody(firstText),
+            texts.reserveBody(hitText),
           ),
         },
     ];

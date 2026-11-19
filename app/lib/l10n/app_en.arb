@@ -1702,17 +1702,6 @@
       }
     }
   },
-  "springsBadgeBonus": "Mainsprings: {count}. The next exact hit winds extra; {hits} plain hits left in the reserve",
-  "@springsBadgeBonus": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      },
-      "hits": {
-        "type": "int"
-      }
-    }
-  },
   "springsBadgeFull": "Mainsprings: {count}. Storage full: exact hits wind nothing and keep the reserve",
   "@springsBadgeFull": {
     "placeholders": {
@@ -1722,14 +1711,6 @@
     }
   },
   "springsBadgeMax": "MAX",
-  "springsBonusTag": "+{hours}h",
-  "@springsBonusTag": {
-    "placeholders": {
-      "hours": {
-        "type": "int"
-      }
-    }
-  },
   "springsIntro": "A Mainspring winds itself: one a day, even while you're away. Every exact 5.00 winds it faster. Spend Mainsprings on clock mastery: every tier multiplies that clock's income by {mult}, for good — nothing takes it back.",
   "springsNext": "Next one in {time}",
   "@springsNext": {
@@ -1766,17 +1747,6 @@
         "type": "String"
       },
       "refill": {
-        "type": "String"
-      }
-    }
-  },
-  "springsReserveFirst": "Your next exact 5.00 winds a whole {time}: the first one after a break of {after}.",
-  "@springsReserveFirst": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      },
-      "after": {
         "type": "String"
       }
     }
@@ -2165,10 +2135,10 @@
   },
   "notificationDailyBody": "Drop in to collect it and keep your streak going.",
   "notificationReserveTitle": "Winding reserve full",
-  "notificationReserveBody": "Exact 5.00s wind your Mainspring again — the first one by {first}.",
+  "notificationReserveBody": "Exact 5.00s wind your Mainspring again — {time} each.",
   "@notificationReserveBody": {
     "placeholders": {
-      "first": {
+      "time": {
         "type": "String"
       }
     }

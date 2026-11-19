@@ -513,8 +513,6 @@ class SpringsConfig {
       hitSeconds = _d(j['hitSeconds']),
       hitReserve = _d(j['hitReserve']),
       hitReserveRefill = _d(j['hitReserveRefill']),
-      firstHitSeconds = _d(j['firstHitSeconds']),
-      firstHitAfter = _d(j['firstHitAfter']),
       maxStock = _i(j['maxStock']),
       firstGift = _i(j['firstGift']),
       levelFactor = _d(j['levelFactor']),
@@ -532,11 +530,6 @@ class SpringsConfig {
   /// seconds of it that come back per real second (R-SPR-3).
   final double hitReserve;
   final double hitReserveRefill;
-
-  /// The first exact hit after [firstHitAfter] seconds without one winds
-  /// this much (R-SPR-3a).
-  final double firstHitSeconds;
-  final double firstHitAfter;
 
   /// Real seconds an empty reserve takes to fill up.
   double get reserveRefillSeconds =>
@@ -885,9 +878,7 @@ class Balance {
     if (sp.hitSeconds < 0 || sp.hitReserve < 0 || sp.levelFactor < 1) {
       e.add('springs hitSeconds, hitReserve ≥ 0 and levelFactor ≥ 1');
     }
-    if (sp.hitReserveRefill < 0 || sp.firstHitSeconds < sp.hitSeconds) {
-      e.add('springs hitReserveRefill ≥ 0, firstHitSeconds ≥ hitSeconds');
-    }
+    if (sp.hitReserveRefill < 0) e.add('springs hitReserveRefill ≥ 0');
     if (ads.springPerDay < 0) e.add('ads spring perDay must be ≥ 0');
     // Otherwise the dearest levels could never be afforded (idle_sim:
     // a bot saving for level 8 sat on a full stock of 7 for months).

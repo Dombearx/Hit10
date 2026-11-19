@@ -130,7 +130,6 @@ Map<String, Object?> encodeSave(SaveData d) {
     'springClockMs': s.springClockMs,
     'springReserve': s.springReserve,
     'springReserveMs': s.springReserveMs,
-    'springLastHitMs': s.springLastHitMs,
     'springAdDay': s.springAdDay,
     'springAdCount': s.springAdCount,
     'clockLevels': s.clockLevels,
@@ -269,7 +268,6 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     // Saves from before the reserve (R-SPR-3) start with a full one.
     ..springReserve = _d(j['springReserve'])
     ..springReserveMs = _i(j['springReserveMs'])
-    ..springLastHitMs = _i(j['springLastHitMs'])
     ..springAdDay = _i(j['springAdDay'])
     ..springAdCount = _i(j['springAdCount'])
     ..springsRefunded = _i(j['springsRefunded'])

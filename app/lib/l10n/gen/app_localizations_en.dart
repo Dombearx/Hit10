@@ -2651,22 +2651,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String springsBadgeBonus(String count, int hits) {
-    return 'Mainsprings: $count. The next exact hit winds extra; $hits plain hits left in the reserve';
-  }
-
-  @override
   String springsBadgeFull(String count) {
     return 'Mainsprings: $count. Storage full: exact hits wind nothing and keep the reserve';
   }
 
   @override
   String get springsBadgeMax => 'MAX';
-
-  @override
-  String springsBonusTag(int hours) {
-    return '+${hours}h';
-  }
 
   @override
   String springsIntro(String mult) {
@@ -2694,11 +2684,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String springsReserveHow(String time, String refill) {
     return 'Every exact 5.00 winds $time out of the reserve. The reserve comes back by itself in $refill.';
-  }
-
-  @override
-  String springsReserveFirst(String time, String after) {
-    return 'Your next exact 5.00 winds a whole $time: the first one after a break of $after.';
   }
 
   @override
@@ -3259,8 +3244,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationReserveTitle => 'Winding reserve full';
 
   @override
-  String notificationReserveBody(String first) {
-    return 'Exact 5.00s wind your Mainspring again — the first one by $first.';
+  String notificationReserveBody(String time) {
+    return 'Exact 5.00s wind your Mainspring again — $time each.';
   }
 
   @override

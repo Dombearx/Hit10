@@ -93,7 +93,7 @@ void main() {
         NotificationKind.dailyBonus,
       ]);
       expect(r.last.title, 'daily 5/7');
-      expect(r.first.body, 'reserve 1 h');
+      expect(r.first.body, 'reserve 30 min');
     });
 
     test('turned off in the settings: nothing is scheduled', () async {

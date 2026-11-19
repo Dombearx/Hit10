@@ -388,6 +388,24 @@ Razem 7 h z trafień i 24 h z samego czasu, czyli 31 h paska: jedna
 Sprężyna i 7 h zapasu na następną (1.29 Sprężyny). Bez trafień byłaby
 dokładnie jedna na dobę.
 
+### 5.4a Zmiana po wdrożeniu: 30 min za trafienie zamiast premii
+
+Premię R-SPR-3a usunęliśmy, a każde „równo 5.00” dokręca 30 min zamiast
+15. Powód: przy 15 min za trafienie zapas 2 h opróżnia się po 8
+trafieniach (ok. 5 min gry), więc bez premii krótkie wejścia nic nie
+dają. Premia to łatała, ale była dodatkową zasadą („pierwsze po
+godzinie”), znaczkiem i pomarańczowymi kropkami. Przy 30 min za
+trafienie wystarczą 4 trafienia (2–3 min), więc efekt jest ten sam bez
+dodatkowej zasady.
+
+Policzone na kodzie gry (03 §4.3): bez reklam liczby są takie jak
+z premią (1.25 przy 3 × 3 min, 1.42 przy 6 × 2 min, 1.09 przy 1 × 30
+min). Różnica jest w reklamie `adSpring`: pokazuje się tylko przy
+pustym zapasie, a przy 15 min bez premii w krótkich sesjach zapas
+prawie nigdy się nie opróżnia. Przy 30 min oferta pojawia się po 2–3
+minutach gry i daje ok. 45 min paska zamiast ok. 18 min z premią
+(uproszczony model, nie kod gry).
+
 ### 5.5 Porządki (małe, tanie)
 
 - **Pasek celu przez całą grę** (dziś R-TUT-7 znika po pierwszym
@@ -471,7 +489,7 @@ Przed kodem gry, w symulatorach (03 E-3):
 
 Po wydaniu (zdarzenia do dodania w T-34): `loop_done` (`loop`, `rule`,
 `days`, `play_min`), `loop_start` (`rule`), `mastery` (`clock`, `tier`),
-`spring_wind` (minuty z trafień, czy pierwsze trafienie po przerwie),
+`spring_wind` (minuty z trafień),
 `ad_reward` dla `adSpring`. Patrzymy, ilu graczy po Chronosie zaczyna
 drugą pętlę, które zasady wybierają i czy liczba sesji dziennie rośnie.
 

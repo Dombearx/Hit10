@@ -605,11 +605,9 @@
   },
   "springs": {
     "secondsPerSpring": 86400,
-    "hitSeconds": 900,
+    "hitSeconds": 1800,
     "hitReserve": 7200,
     "hitReserveRefill": 0.5,
-    "firstHitSeconds": 3600,
-    "firstHitAfter": 3600,
     "maxStock": 10,
     "firstGift": 1,
     "levelFactor": 1.5,

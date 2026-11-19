@@ -48,9 +48,6 @@ class GameState {
   double springReserve = 0;
   int springReserveMs = 0;
 
-  /// Wall-clock ms of the last exact hit (R-SPR-3a); 0 = none yet.
-  int springLastHitMs = 0;
-
   /// Local date (yyyymmdd) and "wind it" ads watched that day (R-SPR-3b).
   int springAdDay = 0;
   int springAdCount = 0;

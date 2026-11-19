@@ -2650,22 +2650,12 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String springsBadgeBonus(String count, int hits) {
-    return 'Sprężyny: $count. Najbliższe „równo 5.00” dokręci więcej; w zapasie $hits zwykłych trafień';
-  }
-
-  @override
   String springsBadgeFull(String count) {
     return 'Sprężyny: $count. Pełny magazyn: trafienia nic nie dokręcają i nie zużywają zapasu';
   }
 
   @override
   String get springsBadgeMax => 'MAX';
-
-  @override
-  String springsBonusTag(int hours) {
-    return '+${hours}h';
-  }
 
   @override
   String springsIntro(String mult) {
@@ -2693,11 +2683,6 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String springsReserveHow(String time, String refill) {
     return 'Każde „równo 5.00” dokręca $time z zapasu. Zapas wraca sam w $refill.';
-  }
-
-  @override
-  String springsReserveFirst(String time, String after) {
-    return 'Najbliższe „równo 5.00” dokręci aż $time: pierwsze po przerwie $after.';
   }
 
   @override
@@ -3263,8 +3248,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get notificationReserveTitle => 'Zapas dokręcania pełny';
 
   @override
-  String notificationReserveBody(String first) {
-    return 'Równe 5.00 znów nakręcają Sprężynę — pierwsze aż o $first.';
+  String notificationReserveBody(String time) {
+    return 'Równe 5.00 znów nakręcają Sprężynę — każde o $time.';
   }
 
   @override
