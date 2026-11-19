@@ -115,7 +115,119 @@ bool anyClockLevelAffordable(GameController c) {
   return false;
 }
 
-/// Header pill: ready Mainsprings and the next one winding (R-SPR-1/2).
+/// What the next exact hit does to the Mainspring, for the header badge
+/// (R-SPR-1): pips of the winding reserve, one per plain hit.
+class SpringHitState {
+  SpringHitState._(
+    this.full,
+    this.pips,
+    this.maxPips,
+    this.bonusPips,
+    this.bonusHours,
+  );
+
+  factory SpringHitState.of(GameController c) {
+    final sp = c.balance.springs;
+    final e = c.engine;
+    final now = c.wallMs();
+    final maxPips = sp.hitSeconds > 0
+        ? (sp.hitReserve / sp.hitSeconds).round()
+        : 0;
+    if (e.springsFull) return SpringHitState._(true, 0, maxPips, 0, 0);
+    final left = e.springReserveAt(now);
+    // A hair under a whole hit still counts as one: the reserve refills
+    // by the second.
+    final pips = sp.hitSeconds > 0
+        ? math.min(maxPips, (left / sp.hitSeconds + 1e-6).floor())
+        : 0;
+    var bonusPips = 0;
+    var bonusHours = 0;
+    if (pips > 0 && e.springFirstHitReady(now)) {
+      final bonus = math.min(sp.firstHitSeconds, left);
+      bonusPips = math.min(pips, (bonus / sp.hitSeconds + 1e-6).floor());
+      // The tag only when the whole bonus is there to wind.
+      if (left >= sp.firstHitSeconds) {
+        bonusHours = (sp.firstHitSeconds / 3600).round();
+      }
+    }
+    return SpringHitState._(false, pips, maxPips, bonusPips, bonusHours);
+  }
+
+  /// The stock is full: a hit winds nothing and takes nothing (R-SPR-4).
+  final bool full;
+
+  /// Plain hits the reserve still holds, out of [maxPips] (R-SPR-3).
+  final int pips;
+  final int maxPips;
+
+  /// Pips the next hit takes when it is the first after a break (R-SPR-3a).
+  final int bonusPips;
+
+  /// Hours of that bonus for the tag; 0 shows no tag.
+  final int bonusHours;
+
+  bool get empty => !full && pips == 0;
+}
+
+const _bonusOrange = Color(0xFFFF6F00);
+
+/// The reserve as pips in two rows under the stock count: gold for what is
+/// left, orange for what the bonus hit takes, hollow for what is gone.
+class _ReservePips extends StatelessWidget {
+  const _ReservePips(this.h);
+  final SpringHitState h;
+
+  @override
+  Widget build(BuildContext context) {
+    const dot = 3.5;
+    const gap = 1.5;
+    final perRow = (h.maxPips / 2).ceil();
+    Widget pip(int i) {
+      final on = i < h.pips;
+      final bonus = i < h.bonusPips;
+      return Container(
+        width: dot,
+        height: dot,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: bonus
+              ? _bonusOrange
+              : on
+              ? _springGold
+              : Palette.outline.withValues(alpha: 0.15),
+          border: on
+              ? null
+              : Border.all(
+                  color: Palette.outline.withValues(alpha: 0.35),
+                  width: 0.6,
+                ),
+        ),
+      );
+    }
+
+    Widget row(int from) => Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = from; i < math.min(h.maxPips, from + perRow); i++) ...[
+          if (i > from) const SizedBox(width: gap),
+          pip(i),
+        ],
+      ],
+    );
+    return Column(
+      key: const Key('springs-pips'),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        row(0),
+        const SizedBox(height: gap),
+        row(perRow),
+      ],
+    );
+  }
+}
+
+/// Header pill: ready Mainsprings, the next one winding (R-SPR-1/2) and
+/// what the next exact hit winds (R-SPR-3/3a/4).
 class SpringBadge extends StatelessWidget {
   const SpringBadge({super.key, required this.controller});
   final GameController controller;
@@ -126,11 +238,17 @@ class SpringBadge extends StatelessWidget {
     if (!c.econ.springsUnlocked) return const SizedBox.shrink();
     final l = AppLocalizations.of(context);
     final glow = anyClockLevelAffordable(c);
+    final h = SpringHitState.of(c);
+    final count = '${c.state.springs}';
     return KeyedSubtree(
       key: CoachTargets.springs,
       child: Semantics(
         button: true,
-        label: l.springsBadge('${c.state.springs}'),
+        label: h.full
+            ? l.springsBadgeFull(count)
+            : h.bonusPips > 0
+            ? l.springsBadgeBonus(count, h.pips)
+            : l.springsBadgeHits(count, h.pips),
         excludeSemantics: true,
         child: GestureDetector(
           key: const Key('open-springs'),
@@ -148,15 +266,71 @@ class SpringBadge extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SpringIcon(size: 30, fraction: c.engine.springFraction()),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Opacity(
+                      // Nothing to wind with hits right now.
+                      opacity: h.empty ? 0.55 : 1,
+                      child: SpringIcon(
+                        size: 30,
+                        fraction: c.engine.springFraction(),
+                      ),
+                    ),
+                    if (h.bonusHours > 0)
+                      Positioned(
+                        right: -6,
+                        top: -4,
+                        child: Container(
+                          key: const Key('springs-bonus-tag'),
+                          padding: const EdgeInsets.symmetric(horizontal: 2.5),
+                          decoration: BoxDecoration(
+                            color: _bonusOrange,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.white, width: 1),
+                          ),
+                          child: Text(
+                            l.springsBonusTag(h.bonusHours),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 8.5,
+                              height: 1.2,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
                 const SizedBox(width: 4),
-                Text(
-                  '${c.state.springs}',
-                  key: const Key('springs-count'),
-                  style: const TextStyle(
-                    fontFamily: Fonts.display,
-                    fontSize: 16,
-                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      count,
+                      key: const Key('springs-count'),
+                      style: const TextStyle(
+                        fontFamily: Fonts.display,
+                        fontSize: 16,
+                        height: 1.05,
+                      ),
+                    ),
+                    const SizedBox(height: 1.5),
+                    if (h.full)
+                      Text(
+                        l.springsBadgeMax,
+                        key: const Key('springs-max'),
+                        style: TextStyle(
+                          fontSize: 7.5,
+                          height: 1,
+                          fontWeight: FontWeight.w900,
+                          color: Palette.outline.withValues(alpha: 0.8),
+                        ),
+                      )
+                    else
+                      _ReservePips(h),
+                  ],
                 ),
                 // The reserve is empty and an ad can fill it (R-SPR-3b).
                 if (c.ads.available(AdOffer.spring, c.wallMs())) ...[

@@ -776,6 +776,16 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   z pierścieniem nakręcania i liczba gotowych Sprężyn. Gdy stać gracza na
   jakiś poziom, plakietka jest złota. Dotknięcie otwiera warsztat (lista
   kupionych kiedykolwiek zegarów z poziomami).
+- **R-SPR-1a:** Plakietka mówi też, co da następne „równo 5.00”, bez
+  wchodzenia do warsztatu. Pod liczbą Sprężyn jest 8 kropek (2 rzędy po
+  4): jedna kropka to 15 min zapasu, czyli jedno zwykłe trafienie (R-SPR-3).
+  Złota kropka to trafienie, które jeszcze się liczy, pusta to zużyte.
+  Gdy czeka premia z R-SPR-3a, kropki, które zabierze najbliższe
+  trafienie, są pomarańczowe, a na rogu spirali jest znaczek „+1h” (tylko
+  gdy w zapasie jest cała godzina). Pusty zapas: wszystkie kropki puste,
+  spirala przygaszona. Pełny magazyn (R-SPR-4): zamiast kropek napis
+  „MAX”. Bez animacji ciągłej, żeby nie rozpraszać przy celowaniu.
+  Plakietka nie jest przez to szersza, więc nagłówek się nie zmniejsza.
 - **R-SPR-2:** 1 Sprężyna na 24 h czasu rzeczywistego, także offline.
   Cofnięty zegar telefonu nic nie nakręca (jak R-OFF-3).
 - **R-SPR-3:** Każde „równo 5.00” (okno jackpotu, |błąd| < 0.010 s)
@@ -802,6 +812,12 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   mogą wyjść ponad limit.
   Wcześniej było 7: symulacja pokazała, że gracz odkładający na poziom 8
   stał miesiącami z pełnym magazynem i nie mógł go kupić.
+  Przy pełnym magazynie „równo 5.00” nic nie dokręca i **nie zabiera
+  zapasu** ani premii z R-SPR-3a: wszystko czeka, aż gracz wyda Sprężynę.
+  Trafienie, które kończy ostatnią Sprężynę, zabiera z zapasu tylko tyle,
+  ile jej brakowało. Toast „Zapas dokręcania pusty” nie wyskakuje wtedy,
+  bo zapas nie jest pusty. Wcześniej trafienie zużywało zapas, a nakręcony
+  czas przepadał.
 - **R-SPR-5 (mistrzostwo zegara):** Stopień N zegara kosztuje N Sprężyn,
   jest 5 stopni (razem 15 na zegar, 210 na wszystkie). Każdy stopień mnoży
   dochód tego zegara **×1.5** (×7.6 przy pięciu). Mistrzostwo nie

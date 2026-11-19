@@ -254,6 +254,52 @@ void main() {
     await tester.pump(const Duration(seconds: 10)); // let the toasts go
   });
 
+  testWidgets('the Mainspring badge shows what the next exact hit winds '
+      '(R-SPR-3/3a/4)', (tester) async {
+    GameState game(int springs) => GameState()
+      ..tutorialDone = true
+      ..dailyKey = dateKey(DateTime.now())
+      ..prestiges = 1
+      ..springs = springs;
+    int pips(WidgetTester tester, Color color) => tester
+        .widgetList<Container>(
+          find.descendant(
+            of: find.byKey(const Key('springs-pips')),
+            matching: find.byType(Container),
+          ),
+        )
+        .where((w) => (w.decoration as BoxDecoration?)?.color == color)
+        .length;
+    const gold = Color(0xFFE8A317);
+    const orange = Color(0xFFFF6F00);
+
+    // A fresh reserve after a break: the bonus hour is waiting.
+    final c = await pumpGame(tester, state: game(2));
+    expect(find.byKey(const Key('springs-bonus-tag')), findsOneWidget);
+    expect(find.text('+1h'), findsOneWidget);
+    expect(pips(tester, orange), 4);
+    expect(pips(tester, gold), 4);
+
+    // No break: eight plain hits, three of them used.
+    c.state
+      ..springLastHitMs = c.wallMs()
+      ..springReserve = c.balance.springs.hitReserve - 3 * 900
+      ..springReserveMs = c.wallMs();
+    c.notifyListeners();
+    await tester.pump();
+    expect(find.byKey(const Key('springs-bonus-tag')), findsNothing);
+    expect(pips(tester, orange), 0);
+    expect(pips(tester, gold), 5);
+
+    // Full stock: MAX instead of pips.
+    c.state.springs = c.balance.springs.maxStock;
+    c.notifyListeners();
+    await tester.pump();
+    expect(find.byKey(const Key('springs-max')), findsOneWidget);
+    expect(find.byKey(const Key('springs-pips')), findsNothing);
+    await tester.pump(const Duration(seconds: 10));
+  });
+
   testWidgets('no Mainspring badge before the first paradox', (tester) async {
     final s = GameState()..tutorialDone = true;
     await pumpGame(tester, state: s);

@@ -140,6 +140,34 @@ void main() {
     });
   });
 
+  group('a full stock (R-SPR-4)', () {
+    test('a hit takes nothing from the reserve and keeps the bonus', () {
+      afterParadox();
+      s.springs = sp.maxStock;
+      expect(e.springsFull, isTrue);
+      expect(e.springFirstHitReady(2000), isTrue);
+      expect(e.springHit(2000), 0);
+      expect(e.springReserveAt(2000), sp.hitReserve);
+      expect(e.springFirstHitReady(2000), isTrue);
+      expect(s.lifetime.springSecondsLost, 0);
+      // Spent one: the same hit winds again, bonus included.
+      s.springs--;
+      expect(e.springHit(3000), sp.firstHitSeconds);
+    });
+
+    test('the last spring takes only what it still needs', () {
+      afterParadox();
+      s
+        ..springs = sp.maxStock - 1
+        ..springProgress = sp.secondsPerSpring - 300
+        ..springLastHitMs = 1000; // no break: a plain 15 min hit
+      expect(e.springHit(2000), closeTo(300, 1e-9));
+      expect(s.springs, sp.maxStock);
+      expect(e.springReserveAt(2000), closeTo(sp.hitReserve - 300, 1e-9));
+      expect(s.lifetime.springSecondsLost, 0);
+    });
+  });
+
   group('the "wind it" ad (R-SPR-3b)', () {
     final noon = DateTime(2026, 11, 15, 12).millisecondsSinceEpoch;
 

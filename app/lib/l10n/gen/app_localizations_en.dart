@@ -2636,8 +2636,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get springsTitle => 'Mainsprings';
 
   @override
-  String springsBadge(String count) {
-    return 'Mainsprings: $count';
+  String springsBadgeHits(String count, int hits) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hits,
+      locale: localeName,
+      other: '$hits exact hits left to wind',
+      one: '1 exact hit left to wind',
+      zero: 'Exact hits wind nothing until the reserve is back',
+    );
+    return 'Mainsprings: $count. $_temp0';
+  }
+
+  @override
+  String springsBadgeBonus(String count, int hits) {
+    return 'Mainsprings: $count. The next exact hit winds extra; $hits plain hits left in the reserve';
+  }
+
+  @override
+  String springsBadgeFull(String count) {
+    return 'Mainsprings: $count. Storage full: exact hits wind nothing and keep the reserve';
+  }
+
+  @override
+  String get springsBadgeMax => 'MAX';
+
+  @override
+  String springsBonusTag(int hours) {
+    return '+${hours}h';
   }
 
   @override
@@ -2652,7 +2677,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String springsFull(String max) {
-    return 'Storage full ($max). Spend some to keep winding.';
+    return 'Storage full ($max). Exact hits keep the reserve for now. Spend some to keep winding.';
   }
 
   @override

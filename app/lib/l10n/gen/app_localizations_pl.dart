@@ -2634,8 +2634,34 @@ class AppLocalizationsPl extends AppLocalizations {
   String get springsTitle => 'Sprężyny';
 
   @override
-  String springsBadge(String count) {
-    return 'Sprężyny: $count';
+  String springsBadgeHits(String count, int hits) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hits,
+      locale: localeName,
+      other: 'Zapas na $hits trafień',
+      few: 'Zapas na $hits trafienia',
+      one: 'Zapas na 1 trafienie',
+      zero: 'Trafienia nic nie dokręcą, aż wróci zapas',
+    );
+    return 'Sprężyny: $count. $_temp0';
+  }
+
+  @override
+  String springsBadgeBonus(String count, int hits) {
+    return 'Sprężyny: $count. Najbliższe „równo 5.00” dokręci więcej; w zapasie $hits zwykłych trafień';
+  }
+
+  @override
+  String springsBadgeFull(String count) {
+    return 'Sprężyny: $count. Pełny magazyn: trafienia nic nie dokręcają i nie zużywają zapasu';
+  }
+
+  @override
+  String get springsBadgeMax => 'MAX';
+
+  @override
+  String springsBonusTag(int hours) {
+    return '+${hours}h';
   }
 
   @override
@@ -2650,7 +2676,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String springsFull(String max) {
-    return 'Pełny magazyn ($max). Wydaj Sprężyny, żeby nakręcać dalej.';
+    return 'Pełny magazyn ($max). Trafienia nie zużywają teraz zapasu. Wydaj Sprężyny, żeby nakręcać dalej.';
   }
 
   @override

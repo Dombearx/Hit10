@@ -792,19 +792,33 @@ class GameEngine {
       s.springLastHitMs <= 0 ||
       nowMs - s.springLastHitMs >= b.springs.firstHitAfter * 1000;
 
+  /// The stock is full: the spring winds nothing until one is spent
+  /// (R-SPR-4).
+  bool get springsFull => s.springs >= b.springs.maxStock;
+
+  /// Seconds of winding that still fit before the stock is full.
+  double get springRoom {
+    final c = b.springs;
+    final free = c.maxStock - s.springs;
+    if (free <= 0) return 0;
+    return free * c.secondsPerSpring - s.springProgress;
+  }
+
   /// An exact hit (the dial read 5.00) winds [SpringsConfig.hitSeconds]
   /// out of the reserve — the first one after a break
   /// [SpringsConfig.firstHitSeconds] (R-SPR-3, 3a). Returns the seconds
-  /// wound (0 when the reserve is empty).
+  /// wound (0 when the reserve is empty). A full stock takes nothing from
+  /// the reserve and keeps the bonus for later; the last spring takes
+  /// only what it still needs (R-SPR-4).
   double springHit(int nowMs) {
-    if (!econ.springsUnlocked) return 0;
+    if (!econ.springsUnlocked || springsFull) return 0;
     final c = b.springs;
     _syncReserve(nowMs);
     final first = springFirstHitReady(nowMs);
     s.springLastHitMs = nowMs;
     final add = math.min(
-      first ? c.firstHitSeconds : c.hitSeconds,
-      s.springReserve,
+      math.min(first ? c.firstHitSeconds : c.hitSeconds, s.springReserve),
+      springRoom,
     );
     // Less than a minute is not worth a "+0 min" on the dial.
     if (add < 60) return 0;

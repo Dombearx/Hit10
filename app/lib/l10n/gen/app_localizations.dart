@@ -4718,11 +4718,35 @@ abstract class AppLocalizations {
   /// **'Mainsprings'**
   String get springsTitle;
 
-  /// No description provided for @springsBadge.
+  /// No description provided for @springsBadgeHits.
   ///
   /// In en, this message translates to:
-  /// **'Mainsprings: {count}'**
-  String springsBadge(String count);
+  /// **'Mainsprings: {count}. {hits, plural, =0{Exact hits wind nothing until the reserve is back} =1{1 exact hit left to wind} other{{hits} exact hits left to wind}}'**
+  String springsBadgeHits(String count, int hits);
+
+  /// No description provided for @springsBadgeBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings: {count}. The next exact hit winds extra; {hits} plain hits left in the reserve'**
+  String springsBadgeBonus(String count, int hits);
+
+  /// No description provided for @springsBadgeFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainsprings: {count}. Storage full: exact hits wind nothing and keep the reserve'**
+  String springsBadgeFull(String count);
+
+  /// No description provided for @springsBadgeMax.
+  ///
+  /// In en, this message translates to:
+  /// **'MAX'**
+  String get springsBadgeMax;
+
+  /// No description provided for @springsBonusTag.
+  ///
+  /// In en, this message translates to:
+  /// **'+{hours}h'**
+  String springsBonusTag(int hours);
 
   /// No description provided for @springsIntro.
   ///
@@ -4739,7 +4763,7 @@ abstract class AppLocalizations {
   /// No description provided for @springsFull.
   ///
   /// In en, this message translates to:
-  /// **'Storage full ({max}). Spend some to keep winding.'**
+  /// **'Storage full ({max}). Exact hits keep the reserve for now. Spend some to keep winding.'**
   String springsFull(String max);
 
   /// No description provided for @springsReserveTitle.

@@ -1690,11 +1690,42 @@
     }
   },
   "springsTitle": "Mainsprings",
-  "springsBadge": "Mainsprings: {count}",
-  "@springsBadge": {
+  "springsBadgeHits": "Mainsprings: {count}. {hits, plural, =0{Exact hits wind nothing until the reserve is back} =1{1 exact hit left to wind} other{{hits} exact hits left to wind}}",
+  "@springsBadgeHits": {
     "placeholders": {
       "count": {
         "type": "String"
+      },
+      "hits": {
+        "type": "int"
+      }
+    }
+  },
+  "springsBadgeBonus": "Mainsprings: {count}. The next exact hit winds extra; {hits} plain hits left in the reserve",
+  "@springsBadgeBonus": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "hits": {
+        "type": "int"
+      }
+    }
+  },
+  "springsBadgeFull": "Mainsprings: {count}. Storage full: exact hits wind nothing and keep the reserve",
+  "@springsBadgeFull": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "springsBadgeMax": "MAX",
+  "springsBonusTag": "+{hours}h",
+  "@springsBonusTag": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
       }
     }
   },
@@ -1707,7 +1738,7 @@
       }
     }
   },
-  "springsFull": "Storage full ({max}). Spend some to keep winding.",
+  "springsFull": "Storage full ({max}). Exact hits keep the reserve for now. Spend some to keep winding.",
   "@springsFull": {
     "placeholders": {
       "max": {
