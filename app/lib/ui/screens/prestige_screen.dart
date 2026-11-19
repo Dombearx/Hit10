@@ -242,6 +242,10 @@ class _PerkTile extends StatelessWidget {
     final owned = c.state.perks.contains(id);
     final available = c.engine.perkAvailable(id);
     final blocked = !owned && !available;
+    // A perk behind another one stays a mystery until that one is bought
+    // (the Altar of Chronos before the cat box), like other locked things.
+    final hidden =
+        !owned && cfg.requires != null && !c.state.perks.contains(cfg.requires);
     return Opacity(
       opacity: blocked ? 0.55 : 1,
       child: Container(
@@ -254,26 +258,27 @@ class _PerkTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            EmojiCard(art: perkArt[id]!, size: 46),
+            EmojiCard(art: perkArt[id]!, size: 46, locked: hidden),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    perkName(l, id),
+                    hidden ? '???' : perkName(l, id),
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  ResText(
-                    perkDescription(l, id),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Palette.outline.withValues(alpha: 0.75),
+                  if (!hidden)
+                    ResText(
+                      perkDescription(l, id),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Palette.outline.withValues(alpha: 0.75),
+                      ),
                     ),
-                  ),
                   if (blocked && cfg.requires != null)
                     Text(
                       l.perkRequires(perkName(l, cfg.requires!)),
