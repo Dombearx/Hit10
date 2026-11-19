@@ -748,12 +748,14 @@ class GameController extends ChangeNotifier {
           _challengeRound(o, grade.error);
           if (wound > 0) _challengeAdd(ChallengeKind.springWeek, wound);
         }
-        // An empty reserve is said once, until a hit winds again.
+        // An empty reserve is said once, until a hit winds again. A full
+        // stock takes nothing from it: not "empty" (R-SPR-4).
         var reserveEmpty = false;
         if (o.jackpot > 0 && econ.springsUnlocked) {
           if (wound > 0) {
             _reserveEmptyTold = false;
-          } else if (!_reserveEmptyTold) {
+          } else if (!_reserveEmptyTold &&
+              engine.springReserveAt(_wallMs()) < 60) {
             reserveEmpty = _reserveEmptyTold = true;
           }
         }
