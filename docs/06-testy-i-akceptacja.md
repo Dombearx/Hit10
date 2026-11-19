@@ -72,7 +72,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | **M-10** | Reklamy na telefonie (M6): testowe jednostki, zgoda UMP z adresu w UE (VPN albo ustawienia debug UMP), brak sieci, przerwanie reklamy w połowie, reklama załadowana ponad godzinę temu | nagroda tylko po pełnym obejrzeniu; okno zgody **dopiero po samouczku** (nie przy starcie), po pytaniu o statystyki, i da się je zmienić z ustawień; gra działa bez sieci; błąd wyświetlenia mówi „nie udało się wyświetlić”, a nie „nie obejrzana do końca” |
 | **M-11** | Powiadomienia: wyjście z gry, odczekanie (limit skrócony w trybie diagnostycznym), odmowa zgody, wyłączenie w ustawieniach | najwyżej dwa przypomnienia, żadne między 22:00 a 9:00, z poprawną kwotą; po odmowie albo wyłączeniu żadnego; powrót do gry anuluje zaplanowane |
 | **M-12** | Zapis w chmurze (build z `PLAY_GAMES_APP_ID`): logowanie do Play Gry na telefonie A, gra, wyjście; instalacja na telefonie B (albo po wyczyszczeniu danych) | na B po starcie pytanie „Zapis w chmurze” z liczbami obu stron; „Wczytaj” przywraca postęp z A, „Zostaw” niczego nie zmienia i przy wyjściu nadpisuje chmurę; bez logowania nic się nie dzieje |
-| **M-13** | Bateria: gra otwarta na ⏸ przez 10 min (Android: Ustawienia → Bateria / profiler) | po ok. 3 s pauzy arena przestaje rysować (T-21a), saldo dalej rośnie; dotknięcie natychmiast wznawia; zużycie baterii wyraźnie niższe niż w trakcie gry |
+| **M-13** | Bateria: gra bez kupionych zegarów otwarta na ⏸ przez 10 min (Android: Ustawienia → Bateria / profiler) | po ok. 3 s pauzy arena przestaje rysować (T-21a); z kupionymi zegarami nie zasypia, a ich dymki lecą dalej; saldo dalej rośnie; dotknięcie natychmiast wznawia; zużycie baterii wyraźnie niższe niż w trakcie gry |
 
 ## 3. Kryteria akceptacji etapów
 

@@ -2,13 +2,14 @@ import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/arena/arena_game.dart';
+import 'package:hit10/arena/generator_popup.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/game_controller.dart';
 
 import 'helpers.dart';
 
-/// docs/05 T-21a: a still arena stops drawing; the economy goes on.
+/// docs/05 T-21a: a still arena stops drawing; generator bubbles keep it\n/// awake.
 void main() {
   final balance = loadBalance();
   const labels = ArenaLabels(
@@ -30,16 +31,7 @@ void main() {
     shieldSaved: 'shield',
   );
 
-  testWidgets('asleep when still, awake for a round, money keeps coming', (
-    tester,
-  ) async {
-    final c = GameController(
-      balance: balance,
-      state: GameState()
-        ..tutorialDone = true
-        ..owned['grandma'] = 10,
-      store: MemorySaveStore(),
-    );
+  Future<ArenaGame> pumpArena(WidgetTester tester, GameController c) async {
     final arena = ArenaGame(c, labels);
     await tester.pumpWidget(
       Directionality(
@@ -61,25 +53,47 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
     expect(arena.isLoaded, isTrue);
     expect(arena.asleep, isFalse);
-    // Nobody taps: the clock waits, and after a few seconds it sleeps.
+    return arena;
+  }
+
+  testWidgets('asleep when still, awake for a round', (tester) async {
+    final c = GameController(
+      balance: balance,
+      state: GameState()..tutorialDone = true,
+      store: MemorySaveStore(),
+    );
+    final arena = await pumpArena(tester, c);
+    // Nobody taps and no generators: after a few seconds it sleeps.
     for (var i = 0; i < 40; i++) {
       await tester.pump(const Duration(milliseconds: 100));
     }
     expect(arena.asleep, isTrue);
     expect(arena.paused, isTrue);
-    // The economy still ticks without frames (real time passes: the
-    // controller reads a real stopwatch).
-    final before = c.state.tiki;
-    await tester.runAsync(
-      () => Future<void>.delayed(const Duration(milliseconds: 400)),
-    );
-    await tester.pump(const Duration(milliseconds: 400));
-    expect(c.state.tiki, greaterThan(before));
     // A round starts (the pause button): drawing again.
     c.onPointerDown(Duration.zero);
     await tester.pump(const Duration(milliseconds: 50));
     expect(arena.asleep, isFalse);
     expect(arena.paused, isFalse);
+    arena.suspend();
+  });
+
+  testWidgets('owned generators keep their bubbles flying through a pause', (
+    tester,
+  ) async {
+    final c = GameController(
+      balance: balance,
+      state: GameState()
+        ..tutorialDone = true
+        ..owned['grandma'] = 10,
+      store: MemorySaveStore(),
+    );
+    final arena = await pumpArena(tester, c);
+    for (var i = 0; i < 60; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    expect(arena.asleep, isFalse);
+    expect(arena.paused, isFalse);
+    expect(arena.descendants().whereType<GeneratorPopup>(), isNotEmpty);
     arena.suspend();
   });
 }

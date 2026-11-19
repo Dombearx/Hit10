@@ -210,9 +210,13 @@ class ArenaGame extends FlameGame {
   bool get asleep => _sleepTick != null;
 
   /// Nothing on the arena moves: every stopwatch waits (paused, or stopped
-  /// after untapped rounds) and no golden clock flies.
+  /// after untapped rounds), no golden clock flies and no generator is
+  /// owned (their bubbles keep flying through a pause, by design).
   bool get _still =>
       controller.clocks.every((c) => c.round.phase == RoundPhase.waiting) &&
+      !controller.balance.generators.any(
+        (g) => controller.econ.owned(g.id) > 0,
+      ) &&
       controller.engine.goldenVisibleLeft <= 0 &&
       _golden == null;
 

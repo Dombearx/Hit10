@@ -203,7 +203,8 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
   Cząsteczki z puli obiektów, bez alokacji w każdej klatce.
 - **T-21a (bateria):** gdy na arenie nic się nie rusza (każdy stoper
   czeka: pauza, stop po rundach bez dotknięcia, zasłaniający arkusz; nie
-  leci złoty zegarek) przez 3 s, silnik Flame przestaje rysować
+  leci złoty zegarek; gracz nie ma żadnego zegara-generatora, bo ich
+  dymki z wynikami lecą też w pauzie) przez 3 s, silnik Flame przestaje rysować
   (`pauseEngine`), a ekonomia tyka timerem 10 Hz bez klatek. Zmiana tego,
   co pokazuje stojąca tarcza (skórka, start później, pauza), rysuje jedną
   klatkę (`stepEngine`). Dotknięcie areny, start rundy (także z ▶) albo
