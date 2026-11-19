@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/arena/arena_game.dart';
+import 'package:hit10/arena/generator_popup.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/persistence/memory_save_store.dart';
 import 'package:hit10/ui/game_controller.dart';
@@ -67,6 +68,8 @@ void main() {
     }
     expect(arena.asleep, isTrue);
     expect(arena.paused, isTrue);
+    // No generator bubble is left frozen mid-air (they finish first).
+    expect(arena.descendants().whereType<GeneratorPopup>(), isEmpty);
     // The economy still ticks without frames (real time passes: the
     // controller reads a real stopwatch).
     final before = c.state.tiki;
