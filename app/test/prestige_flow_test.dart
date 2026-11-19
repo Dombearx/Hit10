@@ -151,6 +151,49 @@ void main() {
     expect(c.state.skills.containsKey('magnet'), isFalse); // no Muscle memory
   });
 
+  testWidgets('the Altar of Chronos stays ??? until the cat box is bought', (
+    tester,
+  ) async {
+    final c = controller(ready()..shards = 600);
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          balanceProvider.overrideWithValue(balance),
+          gameControllerProvider.overrideWithValue(c),
+          rewardedAdsProvider.overrideWithValue(
+            FakeRewardedAds(delay: Duration.zero),
+          ),
+        ],
+        child: const Hit5App(locale: Locale('pl')),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+    unawaited(showPrestige(tester.element(find.byKey(const Key('arena'))), c));
+    await tester.pumpAndSettle();
+
+    final sheetList = find.byType(Scrollable).last;
+    final altar = find.byKey(const Key('perk-unlockChronos'));
+    await tester.scrollUntilVisible(altar, 200, scrollable: sheetList);
+    await tester.pumpAndSettle();
+    expect(find.text('Ołtarz Chronosa'), findsNothing);
+    expect(find.text('???'), findsOneWidget);
+
+    final box = find.byKey(const Key('perk-unlockSchrodinger'));
+    await tester.scrollUntilVisible(box, -200, scrollable: sheetList);
+    await tester.ensureVisible(box);
+    await tester.pumpAndSettle();
+    await tester.tap(box);
+    await tester.pumpAndSettle();
+    expect(c.state.perks, contains('unlockSchrodinger'));
+    await tester.scrollUntilVisible(altar, 200, scrollable: sheetList);
+    await tester.pumpAndSettle();
+    expect(find.text('Ołtarz Chronosa'), findsOneWidget);
+    expect(find.text('???'), findsNothing);
+  });
+
   test('an app closed while choosing perks starts the new run on load', () {
     final s = ready()
       ..chronons = 10
