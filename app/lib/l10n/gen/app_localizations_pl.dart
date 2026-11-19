@@ -1046,6 +1046,9 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get modeNextRound => 'od następnej rundy';
+
+  @override
   String get modeSecond => 'Drugi zegar';
 
   @override

@@ -1838,6 +1838,12 @@ abstract class AppLocalizations {
   /// **'Blind ×{mult}'**
   String modeBlind(int mult);
 
+  /// No description provided for @modeNextRound.
+  ///
+  /// In en, this message translates to:
+  /// **'from next round'**
+  String get modeNextRound;
+
   /// No description provided for @modeSecond.
   ///
   /// In en, this message translates to:

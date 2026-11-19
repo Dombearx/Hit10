@@ -39,9 +39,35 @@ void main() {
     c.setMode(blind: false);
     expect(c.blindHidden(slot, 4.5), isFalse);
     expect(slot.mode, 1);
-    // Switching it back on mid-round changes nothing until the next round.
+  });
+
+  GameController blindReady() => GameController(
+    balance: loadBalance(),
+    state: GameState()
+      ..tutorialDone = true
+      ..lifetime.perfects = 100,
+  );
+
+  test('switched on before 4.00 the round goes blind and pays at once', () {
+    final c = blindReady();
+    final slot = c.clocks.first;
+    slot.round.tap(c.now() - 2); // 2 s into the round
+    expect(c.blindPending, isFalse);
     c.setMode(blind: true);
-    expect(c.blindHidden(slot, 4.5), isFalse);
+    expect(slot.blind, isTrue);
+    expect(slot.mode, 3);
+    expect(c.blindHidden(slot, 4.5), isTrue);
+    expect(c.blindPending, isFalse);
+  });
+
+  test('switched on after 4.00 it waits for the next round, and says so', () {
+    final c = blindReady();
+    final slot = c.clocks.first;
+    slot.round.tap(c.now() - 4.5); // the digits would already be gone
+    c.setMode(blind: true);
+    expect(slot.blind, isFalse);
     expect(slot.mode, 1);
+    expect(c.blindHidden(slot, 4.8), isFalse);
+    expect(c.blindPending, isTrue);
   });
 }
