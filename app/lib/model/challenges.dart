@@ -173,6 +173,7 @@ class ChallengePlayer {
     required this.skillLevelsLeft,
     required this.springsUnlocked,
     required this.goldenEnabled,
+    this.springsWindable = true,
     this.dailySeconds = 240,
     this.weeklySeconds = 2100,
     this.reachShare = 0.6,
@@ -200,6 +201,10 @@ class ChallengePlayer {
   final int bonusesInReach;
   final int skillLevelsLeft;
   final bool springsUnlocked;
+
+  /// Exact hits can wind the Mainspring: the stock is not full, or a
+  /// clock level it could buy would make room (R-SPR-4).
+  final bool springsWindable;
 
   /// Golden Seconds fly (not in the "Cloudy Day" loop, R-PETLA-4).
   final bool goldenEnabled;
@@ -257,7 +262,7 @@ abstract final class ChallengePlanner {
           ChallengeKind.milestones => p.bonusesInReach >= 1,
           ChallengeKind.skillLevels => p.skillLevelsLeft >= 2,
           ChallengeKind.goldenWeek => p.goldenEnabled,
-          ChallengeKind.springWeek => p.springsUnlocked,
+          ChallengeKind.springWeek => p.springsUnlocked && p.springsWindable,
           _ => true,
         })
           k,

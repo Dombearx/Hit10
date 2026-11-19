@@ -23,7 +23,14 @@ void main() {
     good: b.tier('good').window,
   );
 
-  ChallengePlayer player({double sigma = 0.05, int taps = 100}) {
+  ChallengePlayer player({
+    double sigma = 0.05,
+    int taps = 100,
+    double pay = 1,
+    bool springs = false,
+    bool windable = true,
+    bool golden = true,
+  }) {
     final rng = math.Random(1);
     double gauss() =>
         math.sqrt(-2 * math.log(1 - rng.nextDouble())) *
@@ -33,15 +40,16 @@ void main() {
       windows: windows,
       jackpotWindow: b.jackpot.window,
       roundSeconds: 5.7,
-      payout: const {Tier.perfect: 6, Tier.great: 3, Tier.good: 1},
-      jackpotPayout: 30,
+      payout: {Tier.perfect: 6 * pay, Tier.great: 3 * pay, Tier.good: pay},
+      jackpotPayout: 30 * pay,
       comboStep: 0.05,
       comboCap: 5,
       ownedClocks: 40,
       bonusesInReach: 2,
       skillLevelsLeft: 20,
-      springsUnlocked: false,
-      goldenEnabled: true,
+      springsUnlocked: springs,
+      springsWindable: windable,
+      goldenEnabled: golden,
     );
   }
 
@@ -224,6 +232,62 @@ void main() {
       expect(s.springs, springs + b.challenges.weeklySprings);
     });
 
+    test('a weekly one that can no longer move is swapped', () {
+      e.refreshChallenges(monday, player, rng);
+      s.challenges
+        ..removeWhere((c) => c.weekly)
+        ..add(Challenge(ChallengeKind.goldenWeek, 4, progress: 1));
+      // "Cloudy day" started mid-week: no Golden Seconds any more.
+      e.refreshChallenges(
+        monday.add(const Duration(days: 2)),
+        () => player(golden: false),
+        rng,
+      );
+      expect(e.weeklyChallenge!.kind, isNot(ChallengeKind.goldenWeek));
+      // A full Mainspring with nothing to spend it on.
+      s.challenges
+        ..removeWhere((c) => c.weekly)
+        ..add(Challenge(ChallengeKind.springWeek, 3600));
+      e.refreshChallenges(
+        monday.add(const Duration(days: 3)),
+        () => player(springs: true, windable: false),
+        rng,
+      );
+      expect(e.weeklyChallenge!.kind, isNot(ChallengeKind.springWeek));
+      expect(
+        ChallengePlanner.available(
+          weeklySlot,
+          player(springs: true, windable: false),
+        ),
+        isNot(contains(ChallengeKind.springWeek)),
+      );
+      // One that still can is left alone.
+      final w = Challenge(ChallengeKind.goldenWeek, 4);
+      s.challenges
+        ..removeWhere((c) => c.weekly)
+        ..add(w);
+      e.refreshChallenges(monday.add(const Duration(days: 4)), player, rng);
+      expect(e.weeklyChallenge, same(w));
+    });
+
+    test('after a paradox the hit-earnings target follows the new run', () {
+      e.refreshChallenges(monday, player, rng);
+      s.challenges.removeWhere((c) => c.slot == 1);
+      final rich = ChallengePlanner.target(
+        ChallengeKind.hitEarnings,
+        player(pay: 1000),
+        math.Random(7),
+      );
+      s.challenges.add(
+        Challenge(ChallengeKind.hitEarnings, rich, progress: rich / 4),
+      );
+      e.replanAfterReset(player(), math.Random(7));
+      final c = e.dailyChallenges[1];
+      expect(c.kind, ChallengeKind.hitEarnings);
+      expect(c.target, lessThan(rich / 100));
+      expect(c.fraction, closeTo(0.25, 0.01));
+    });
+
     test('one free re-roll a day, not for a finished one', () {
       e.refreshChallenges(monday, player, rng);
       final old = e.dailyChallenges[1];
@@ -296,6 +360,31 @@ void main() {
     expect(s.challenges, hasLength(4));
     expect(a.names, contains('challenges_unlocked'));
     expect(c.challengePlayer().reachShare, b.challenges.reachShare);
+  });
+
+  test('a Frenzy, Turbo or optional Blind does not inflate targets', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..lifetime.secondsPlayed = 3600
+      ..owned['grandma'] = 10
+      ..stats.rounds = 30;
+    final c = GameController(
+      balance: b,
+      state: s,
+      store: MemorySaveStore(),
+      analytics: RecordingAnalytics(),
+      localNow: () => DateTime(2026, 11, 18, 12),
+    );
+    final plain = c.challengePlayer();
+    c.engine
+      ..frenzy = 7
+      ..turbo = 2;
+    s.modeBlind = true;
+    final boosted = c.challengePlayer();
+    for (final t in plain.payout.keys) {
+      expect(boosted.payout[t], closeTo(plain.payout[t]!, 1e-9));
+    }
+    expect(boosted.jackpotPayout, closeTo(plain.jackpotPayout, 1e-9));
   });
 
   test('never during the tutorial: 3 min counted from its end', () {

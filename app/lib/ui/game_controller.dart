@@ -904,7 +904,11 @@ class GameController extends ChangeNotifier {
   /// What the planner knows about this player now (docs/14 §1).
   ChallengePlayer challengePlayer() {
     final cfg = balance.challenges;
-    final mode = engine.modeMultiplier();
+    // Sized for ordinary play: not the Blind mode the player may switch
+    // off (only the loop's forced one), nor a Frenzy or Turbo that happens
+    // to run right now.
+    final mode = engine.blindForced ? engine.modeMultiplier() : 1.0;
+    final boost = engine.frenzy * engine.turbo;
     return ChallengePlayer(
       recentErrors: List.of(state.stats.recentErrors),
       windows: econ.playerWindows(),
@@ -915,9 +919,9 @@ class GameController extends ChangeNotifier {
           balance.round.resultPause,
       payout: {
         for (final t in [Tier.perfect, Tier.great, Tier.good])
-          t: engine.hitPayout(Grade(t, 0), mode: mode),
+          t: engine.hitPayout(Grade(t, 0), mode: mode) / boost,
       },
-      jackpotPayout: engine.jackpotAmount() * mode,
+      jackpotPayout: engine.jackpotAmount() * mode / boost,
       comboStep: balance.combo.multiplierPerStep,
       comboCap: econ.comboCap(),
       ownedClocks: state.owned.values.fold(0, (a, b) => a + b),
@@ -932,6 +936,13 @@ class GameController extends ChangeNotifier {
           math.max(0, k.maxLevel - econ.level(k.id)),
       ].fold(0, (a, b) => a + b),
       springsUnlocked: econ.springsUnlocked,
+      springsWindable:
+          !engine.springsFull ||
+          balance.generators.any(
+            (g) =>
+                econ.clockLevelable(g.id) &&
+                econ.clockLevelCost(g.id)! <= state.springs,
+          ),
       goldenEnabled: !engine.goldenBlocked,
       dailySeconds: cfg.dailySeconds,
       weeklySeconds: cfg.weeklySeconds,
@@ -978,6 +989,12 @@ class GameController extends ChangeNotifier {
         ),
       ),
     );
+  }
+
+  /// A new run pays far less per hit: today's hit-earnings target follows.
+  void _replanChallenges() {
+    if (!engine.challengesUnlocked || state.challenges.isEmpty) return;
+    engine.replanAfterReset(challengePlayer(), _challengeRng);
   }
 
   void _challengeAdd(ChallengeKind kind, double amount) {
@@ -1277,6 +1294,7 @@ class GameController extends ChangeNotifier {
     if (!engine.startLoop(_wallMs())) return false;
     // The perks are gone, and the second clock with them.
     _rebuildClocks();
+    _replanChallenges();
     ads.rescue = null;
     _log('loop_start', {
       'loop': state.loop,
@@ -1360,6 +1378,7 @@ class GameController extends ChangeNotifier {
     engine.finishPrestige();
     // The run's upgrades are gone, and the second clock may be too.
     _rebuildClocks();
+    _replanChallenges();
     _checkAchievements(const AchievementContext());
     // A fresh, faster run: from the second paradox on, a good moment.
     if (state.prestiges >= 2) _reviewMoment();

@@ -1073,7 +1073,42 @@ class GameEngine {
       );
       s.challengeWeek = week;
     }
+    // A weekly one that can no longer move — Golden Seconds stopped by
+    // "Cloudy day", a full Mainspring with nothing to spend it on — is
+    // swapped rather than left stuck for the rest of the week.
+    final w = weeklyChallenge;
+    if (w != null &&
+        !w.done &&
+        !w.claimed &&
+        (w.kind == ChallengeKind.goldenWeek ||
+            w.kind == ChallengeKind.springWeek)) {
+      final p = player();
+      if (!ChallengePlanner.available(weeklySlot, p).contains(w.kind)) {
+        s.challenges
+          ..remove(w)
+          ..add(ChallengePlanner.pick(weeklySlot, p, rng, avoid: w.kind));
+      }
+    }
     return ChallengePay(tiki: tiki, springs: springs, bonus: bonus);
+  }
+
+  /// After a paradox or a new loop hits pay far less than when today's
+  /// "earn N Tiki from hits" was set: its target is set again for the new
+  /// run, keeping the share already done.
+  void replanAfterReset(ChallengePlayer player, math.Random rng) {
+    for (var i = 0; i < s.challenges.length; i++) {
+      final c = s.challenges[i];
+      if (c.kind != ChallengeKind.hitEarnings || c.done || c.claimed) {
+        continue;
+      }
+      final target = ChallengePlanner.target(c.kind, player, rng);
+      if (target >= c.target) continue;
+      s.challenges[i] = Challenge(
+        c.kind,
+        target,
+        progress: c.fraction * target,
+      );
+    }
   }
 
   /// What a challenge pays: minutes of passive income (at least a floor),
