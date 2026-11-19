@@ -1363,11 +1363,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notationScientific => 'Scientific (1.24e7)';
 
   @override
-  String get settingsReduceMotion => 'Reduce motion';
+  String get settingsReduceMotion => 'Calm mode';
 
   @override
   String get settingsReduceMotionHint =>
-      'No shakes or flashes, fewer particles';
+      'Less motion and flicker, a calmer Frenzy';
 
   @override
   String get settingsSave => 'Save';

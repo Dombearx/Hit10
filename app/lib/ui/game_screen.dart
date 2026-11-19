@@ -807,6 +807,7 @@ class _Header extends StatelessWidget {
                       decimalSeparator: l.decimalSeparator,
                       notation: controller.settings.notation,
                       whole: true,
+                      bump: !controller.settings.reduceMotion,
                     ),
                     const SizedBox(width: 6),
                     ResText(

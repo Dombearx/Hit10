@@ -18,6 +18,10 @@ class ParticleField extends Component {
   /// Particles scale with this (fewer on "reduce motion", U-6).
   double density = 1;
 
+  /// Launch speed scales with this (slower in calm mode, U-6): fast
+  /// particles spread over more of the screen.
+  double speed = 1;
+
   final Paint _paint = Paint();
   late final Path _star = _starPath();
 
@@ -51,7 +55,7 @@ class ParticleField extends Component {
       final p = _pool[_cursor];
       _cursor = (_cursor + 1) % capacity;
       final a = _rng.nextDouble() * math.pi * 2;
-      final s = speedMin + _rng.nextDouble() * (speedMax - speedMin);
+      final s = (speedMin + _rng.nextDouble() * (speedMax - speedMin)) * speed;
       p
         ..x = origin.x
         ..y = origin.y

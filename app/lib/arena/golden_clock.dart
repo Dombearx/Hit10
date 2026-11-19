@@ -15,6 +15,7 @@ class GoldenClock extends PositionComponent {
     required this.radius,
     required this.life,
     required this.fromLeft,
+    this.calm = false,
     this.item,
   }) : super(anchor: Anchor.center);
 
@@ -26,6 +27,10 @@ class GoldenClock extends PositionComponent {
   final double radius;
   final double life;
   final bool fromLeft;
+
+  /// Calm mode (docs/04 U-6): it still flies its wave (it has to be
+  /// caught), but without throbbing, rocking or turning rays.
+  final bool calm;
   double _t = 0;
 
   /// Set when caught or expired: shrinks/fades out, then removes itself.
@@ -89,7 +94,7 @@ class GoldenClock extends PositionComponent {
 
   @override
   void render(Canvas canvas) {
-    var scale = 1 + 0.06 * math.sin(_t * 8);
+    var scale = calm ? 1.0 : 1 + 0.06 * math.sin(_t * 8);
     var alpha = 1.0;
     final leaving = _leaving;
     if (leaving != null) {
@@ -99,7 +104,7 @@ class GoldenClock extends PositionComponent {
     }
     canvas.save();
     canvas.scale(scale);
-    canvas.rotate(math.sin(_t * 3) * 0.2);
+    if (!calm) canvas.rotate(math.sin(_t * 3) * 0.2);
     if (alpha < 1) {
       canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, alpha));
     }
@@ -127,7 +132,7 @@ class GoldenClock extends PositionComponent {
   /// Slowly turning sun rays behind the clock.
   void _drawRays(Canvas canvas, double r) {
     canvas.save();
-    canvas.rotate(_t * 0.8);
+    if (!calm) canvas.rotate(_t * 0.8);
     _ray.shader ??= const RadialGradient(
       colors: [Color(0x99FFF3B0), Color(0x00FFF3B0)],
     ).createShader(Rect.fromCircle(center: Offset.zero, radius: r * 1.9));

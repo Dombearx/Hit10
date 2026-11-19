@@ -55,7 +55,9 @@ wyglądać, brzmieć i reagować.
 - Kalibracja opóźnienia (05 T-13) — tylko z flagą `FEATURE_CALIBRATION`.
 - Język: systemowy / polski / angielski.
 - Zapis liczb: skrócony (12.4M) / naukowy (1.24e7).
-- **Ogranicz ruch:** bez wstrząsów ekranu i błysków, mniej cząsteczek.
+- **Tryb spokojny** (domyślnie wyłączony; dawniej „Ogranicz ruch”): mniej
+  ruchu i migania dla osób, którym od efektów robi się niedobrze (U-6).
+  Klucz w zapisie bez zmian (`reduceMotion`).
 - Zapis w chmurze (Google Play Gry): połącz / wczytaj z chmury (05 T-35;
   tylko w buildzie z projektem Play Games).
 - Eksport i import zapisu (tekst do skopiowania).
@@ -88,8 +90,35 @@ wyglądać, brzmieć i reagować.
 - **U-5:** Wszystkie efekty są w jednej warstwie (efekty areny w Flame,
   efekty UI we Flutterze). Siła każdego jest parametrem w jednym pliku
   (`effects` w pliku balansu albo osobny plik stylu).
-- **U-6:** Przy włączonym „Ogranicz ruch” wstrząsy i błyski są wyłączone,
-  a cząsteczek jest 1/3.
+- **U-6: Tryb spokojny.** Powód: tester zgłosił mdłości, najbardziej
+  w Szale. Według Xbox Accessibility Guidelines 117/118 i WCAG 2.3 mdłości
+  i dyskomfort wywołują przede wszystkim: (1) ruch lub zmiana koloru na
+  dużej części ekranu, zwłaszcza w peryferiach (u nas pulsujące neonowe tło
+  Szału, ~1 Hz, magenta ↔ cyjan, na cały ekran); (2) wstrząsy ekranu;
+  (3) migotanie i błyski, szczególnie nasycone, kilka razy na sekundę;
+  (4) obiekty rosnące lub powiększające się (efekt „zoomu”: fale uderzeniowe
+  do 2.6× tarczy, odbicia napisów 0→1.3); (5) dużo rzeczy ruszających się
+  naraz (cząsteczki, dymki generatorów, ciągłe pulsowanie). Przy włączonym
+  trybie, w kolejności wpływu:
+
+  | Efekt | Normalnie | Tryb spokojny |
+  |---|---|---|
+  | Tło Szału | neon na cały ekran, pulsuje magenta ↔ cyjan | stały, delikatny fioletowy odcień (30% zamiast 85%) |
+  | Poświata tarczy w Szale | pulsuje kolorem i rozmiarem | stała, słabsza |
+  | Wstrząsy ekranu, drgnięcie tarczy przy pudle, potrząsanie combo | są | brak |
+  | Błysk tarczy, biały błysk prestiżu | są | brak |
+  | Fale uderzeniowe (PERFEKT, ŚWIETNIE, 5.00) | są | brak |
+  | Napisy (PERFEKT!, +Tiki…) | odbicie 0→1.3, pudło wpada z odbiciem | pojawiają się i znikają w miejscu |
+  | Cząsteczki | pełne | 1/3, o 40% wolniejsze |
+  | Dymki generatorów | do 3/s | do 1/s |
+  | Pulsowanie: złota obwódka, cyfry w Zimnej krwi, „??” w trybie na ślepo, „dotknij, aby zacząć”, licznik Tików przy każdym zysku | jest | brak |
+  | Złoty zegarek | lata falą, kołysze się, pulsuje, promienie się kręcą | lata falą (trzeba go złapać), bez kołysania, pulsowania i kręcenia |
+  | Ozdoby tarcz (skórki) | ruchome | nieruchome |
+  | Prestiż | cyfry kręcą się 3 razy | cyfry spadają bez obrotu |
+
+  Nie zmienia się rozgrywka, czas rund, dźwięk ani muzyka (szybsza muzyka
+  Szału zostaje). Zimna krew (desaturacja i winieta) zostaje, bo narasta
+  płynnie przez 250 ms i jest sygnałem w grze. Pierścień samouczka zostaje.
 - **U-7:** Efekty nigdy nie zasłaniają cyfr stopera w trakcie rundy (cyfry
   są zawsze na wierzchu).
 

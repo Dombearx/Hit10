@@ -71,20 +71,23 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
         if (_pulse.isAnimating) {
           _mix = math.min(1, _mix + 0.05);
         }
-        // "Reduce motion" (U-6): neon stays, the pulsing doesn't.
-        final p = widget.controller.settings.reduceMotion
-            ? 0.5
-            : 0.5 + 0.5 * math.sin(_pulse.value * math.pi * 2);
+        // Calm mode (U-6): the whole screen cycling magenta ↔ cyan is the
+        // strongest effect in the game (tester: nausea during Frenzy). It
+        // becomes a still, light tint; the chip and the dial's halo still
+        // say Frenzy is on.
+        final calm = widget.controller.settings.reduceMotion;
+        final p = calm ? 0.5 : 0.5 + 0.5 * math.sin(_pulse.value * math.pi * 2);
+        final strength = _mix * (calm ? 0.3 : 0.85);
         final look = seasonLooks[_theme];
         final top = Color.lerp(
           look?.bgTop ?? Palette.bgTop,
           Color.lerp(Palette.neonMagenta, Palette.neonCyan, p),
-          _mix * 0.85,
+          strength,
         )!;
         final bottom = Color.lerp(
           look?.bgBottom ?? Palette.bgBottom,
           Color.lerp(Palette.neonCyan, Palette.neonMagenta, p),
-          _mix * 0.85,
+          strength,
         )!;
         // Zimna krew's focus zone: the world drains of colour, edges darken.
         return TweenAnimationBuilder<double>(

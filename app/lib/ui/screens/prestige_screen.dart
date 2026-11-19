@@ -363,7 +363,8 @@ class _RewindState extends State<_Rewind> with SingleTickerProviderStateMixin {
             ColoredBox(color: Palette.outline.withValues(alpha: 0.85)),
             Center(
               child: Transform.rotate(
-                angle: -spin * math.pi * 6,
+                // Calm mode: the digits run down without spinning.
+                angle: widget.reduceMotion ? 0 : -spin * math.pi * 6,
                 child: Text(
                   shown.toStringAsFixed(2).padLeft(5, '0'),
                   style: const TextStyle(

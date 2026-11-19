@@ -32,7 +32,8 @@ class _ComboMeterState extends State<ComboMeter>
     super.didUpdateWidget(old);
     final now = widget.controller.state.comboStreak;
     if (now < _last && _last >= 3) {
-      _break.forward(from: 0);
+      // Calm mode (U-6): no shaking row, only the (fewer) shards.
+      if (!widget.controller.settings.reduceMotion) _break.forward(from: 0);
       // The counter "shatters" (docs/04 §3).
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
