@@ -79,10 +79,10 @@ void main() {
       expect(e.windSprings(1000 + 30 * day + day), 1);
     });
 
-    test('exact hits wind 15 min out of a 2 h reserve (R-SPR-3)', () {
+    test('exact hits wind 30 min out of a 2 h reserve (R-SPR-3)', () {
       afterParadox();
-      s.springLastHitMs = 1000; // no break before: the plain 15 min
       const t = 2000;
+      expect(sp.hitSeconds, 1800);
       expect(e.springReserveAt(t), sp.hitReserve);
       var total = 0.0;
       for (var i = 0; i < 40; i++) {
@@ -96,8 +96,7 @@ void main() {
 
     test('the reserve comes back 30 min an hour, full after 4 h', () {
       afterParadox();
-      s.springLastHitMs = 1000;
-      for (var i = 0; i < 8; i++) {
+      for (var i = 0; i < 4; i++) {
         e.springHit(2000);
       }
       expect(e.springReserveAt(2000), 0);
@@ -111,29 +110,9 @@ void main() {
       expect(e.springReserveAt(500), 0);
     });
 
-    test('the first exact hit after an hour winds an hour (R-SPR-3a)', () {
-      afterParadox();
-      const hour = 3600 * 1000;
-      expect(e.springFirstHitReady(1000), isTrue);
-      expect(e.springHit(1000), sp.firstHitSeconds);
-      expect(e.springFirstHitReady(2000), isFalse);
-      expect(e.springHit(2000), sp.hitSeconds);
-      // 59 minutes are not a break; an hour is. Only what the reserve
-      // holds is wound.
-      var t = 2000 + hour - 60000;
-      expect(e.springHit(t), sp.hitSeconds);
-      while (e.springHit(t) > 0) {}
-      t += hour;
-      expect(e.springFirstHitReady(t), isTrue);
-      final reserve = e.springReserveAt(t);
-      expect(reserve, closeTo(1800, 60));
-      expect(e.springHit(t), closeTo(reserve, 1e-6));
-    });
-
     test('hits finishing a spring make it ready', () {
       afterParadox();
       s.springProgress = sp.secondsPerSpring - 60;
-      s.springLastHitMs = 1000;
       e.springHit(2000);
       expect(s.springs, 1);
       expect(s.springProgress, closeTo(sp.hitSeconds - 60, 1e-9));
@@ -141,26 +120,23 @@ void main() {
   });
 
   group('a full stock (R-SPR-4)', () {
-    test('a hit takes nothing from the reserve and keeps the bonus', () {
+    test('a hit takes nothing from the reserve', () {
       afterParadox();
       s.springs = sp.maxStock;
       expect(e.springsFull, isTrue);
-      expect(e.springFirstHitReady(2000), isTrue);
       expect(e.springHit(2000), 0);
       expect(e.springReserveAt(2000), sp.hitReserve);
-      expect(e.springFirstHitReady(2000), isTrue);
       expect(s.lifetime.springSecondsLost, 0);
-      // Spent one: the same hit winds again, bonus included.
+      // Spent one: the same hit winds again.
       s.springs--;
-      expect(e.springHit(3000), sp.firstHitSeconds);
+      expect(e.springHit(3000), sp.hitSeconds);
     });
 
     test('the last spring takes only what it still needs', () {
       afterParadox();
       s
         ..springs = sp.maxStock - 1
-        ..springProgress = sp.secondsPerSpring - 300
-        ..springLastHitMs = 1000; // no break: a plain 15 min hit
+        ..springProgress = sp.secondsPerSpring - 300;
       expect(e.springHit(2000), closeTo(300, 1e-9));
       expect(s.springs, sp.maxStock);
       expect(e.springReserveAt(2000), closeTo(sp.hitReserve - 300, 1e-9));
@@ -326,7 +302,6 @@ void main() {
         ..springClockMs = 42
         ..springReserve = 900
         ..springReserveMs = 43
-        ..springLastHitMs = 44
         ..springAdDay = 20261115
         ..springAdCount = 1
         ..clockLevels['gps'] = 2
@@ -343,7 +318,6 @@ void main() {
       expect(back.springClockMs, 42);
       expect(back.springReserve, 900);
       expect(back.springReserveMs, 43);
-      expect(back.springLastHitMs, 44);
       expect(back.springAdDay, 20261115);
       expect(back.springAdCount, 1);
       expect(back.clockLevels, {'gps': 2});

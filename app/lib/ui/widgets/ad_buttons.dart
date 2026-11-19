@@ -39,6 +39,7 @@ class AdCornerButtons extends ConsumerWidget {
     final now = c.wallMs();
     Widget tile(AdOffer o, String label, Key key) {
       final can = c.ads.available(o, now) && adsProvider.isReady;
+      if (c.ads.available(o, now)) c.adOfferShown(o);
       final cd = c.ads.cooldownLeftMs(o, now);
       final sub = cd > 0
           ? l.adCooldown(clockText(cd / 1000))
@@ -145,6 +146,7 @@ class RescuePopup extends ConsumerWidget {
       return const SizedBox.shrink();
     }
     final ready = adsProvider.isReady;
+    c.adOfferShown(AdOffer.rescue);
     final l = AppLocalizations.of(context);
     final left = (r.expiresAtPlay - c.state.playSeconds).clamp(0.0, 9.0);
     return GestureDetector(

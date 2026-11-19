@@ -377,8 +377,23 @@ class GameController extends ChangeNotifier {
 
   /// The player answered a rewarded offer (docs/02 §13): the take rate of
   /// each offer.
-  void adOfferAnswered(AdOffer offer, {required bool watch}) =>
-      _log('ad_offer', {'offer': offer.name, 'watch': watch ? 1 : 0});
+  void adOfferAnswered(AdOffer offer, {required bool watch}) {
+    _offersShown.remove(offer);
+    _log('ad_offer', {'offer': offer.name, 'watch': watch ? 1 : 0});
+  }
+
+  /// Offers on screen that already said so since the last answer, ad or
+  /// return to the game.
+  final _offersShown = <AdOffer>{};
+
+  /// A rewarded offer is on screen and can be taken (docs/05 §8a): the
+  /// denominator of the take rate. Safe to call on every build: it logs
+  /// once per appearance, again after the player answers or watches it,
+  /// and after the game comes back from the background.
+  void adOfferShown(AdOffer offer) {
+    if (!_offersShown.add(offer)) return;
+    _log('ad_offer_shown', {'offer': offer.name});
+  }
 
   /// Bumped on every settings change; the app rebuilds its locale from it.
   final settingsVersion = ValueNotifier<int>(0);
@@ -1480,6 +1495,7 @@ class GameController extends ChangeNotifier {
         sfx.mute(false);
       }
       lastAdResult = result;
+      _offersShown.remove(offer);
       _log(
         switch (result) {
           AdResult.earned => 'ad_reward',
@@ -2019,10 +2035,10 @@ class GameController extends ChangeNotifier {
       }
     }
     final days = balance.daily.minutes.length;
-    final first = balance.springs.firstHitSeconds;
-    final firstText = first >= 3600
-        ? '${(first / 3600).round()} h'
-        : '${(first / 60).round()} min';
+    final hit = balance.springs.hitSeconds;
+    final hitText = hit >= 3600 && hit % 3600 == 0
+        ? '${(hit / 3600).round()} h'
+        : '${(hit / 60).round()} min';
     return [
       for (final p in NotificationPlan.choose(now, candidates))
         switch (p.kind) {
@@ -2048,7 +2064,7 @@ class GameController extends ChangeNotifier {
             p.kind,
             p.at,
             texts.reserveTitle,
-            texts.reserveBody(firstText),
+            texts.reserveBody(hitText),
           ),
         },
     ];
@@ -2056,6 +2072,7 @@ class GameController extends ChangeNotifier {
 
   void resume() {
     _lastTick = null;
+    _offersShown.clear(); // a new visit: offers on screen count again
     tapClock.reset(); // the phone may have slept: the clocks may differ now
     unawaited(notifications.cancel());
     checkOffline();

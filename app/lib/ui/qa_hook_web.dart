@@ -221,8 +221,7 @@ void registerQaHook(GameController c) {
       if (m['springReserve'] case final num v) {
         c.state
           ..springReserve = v.toDouble()
-          ..springReserveMs = c.wallMs()
-          ..springLastHitMs = c.wallMs();
+          ..springReserveMs = c.wallMs();
       }
       if (m['chronons'] case final num v) c.state.chronons = v.toInt();
       // Time Loops (docs/13).

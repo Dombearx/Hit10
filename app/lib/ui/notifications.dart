@@ -35,7 +35,7 @@ class ReminderTexts {
   final String reserveTitle;
 
   /// [first]: what the first exact hit winds, formatted ("1 h").
-  final String Function(String first) reserveBody;
+  final String Function(String time) reserveBody;
 }
 
 abstract interface class OfflineNotifications {

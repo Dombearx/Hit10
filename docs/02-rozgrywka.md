@@ -497,7 +497,7 @@ Tylko rzeczy, na które gracz może coś zrobić; mało i nie w nocy.
 - **R-POW-1 (pełny zapas dokręcania):** po pierwszym paradoksie, gdy przy
   wyjściu zapas dokręcania (R-SPR-3) jest zużyty co najmniej w połowie
   i napełnia się co najmniej 30 min: „Zapas dokręcania pełny — równe 5.00
-  znów nakręcają Sprężynę, pierwsze aż o 1 h” (R-SPR-3a).
+  znów nakręcają Sprężynę — każde o 30 min”.
 - **R-POW-2 (dzienna premia):** gdy dzisiejsza premia jest odebrana,
   a seria ma co najmniej 2 dni: jutro o 18:00 „Dzienna premia czeka —
   dzień 5/7”.
@@ -782,31 +782,33 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   jakiś poziom, plakietka jest złota. Dotknięcie otwiera warsztat (lista
   kupionych kiedykolwiek zegarów z poziomami).
 - **R-SPR-1a:** Plakietka mówi też, co da następne „równo 5.00”, bez
-  wchodzenia do warsztatu. Pod liczbą Sprężyn jest 8 kropek (2 rzędy po
-  4): jedna kropka to 15 min zapasu, czyli jedno zwykłe trafienie (R-SPR-3).
+  wchodzenia do warsztatu. Pod liczbą Sprężyn są 4 kropki (2 rzędy po
+  2): jedna kropka to 30 min zapasu, czyli jedno trafienie (R-SPR-3).
   Złota kropka to trafienie, które jeszcze się liczy, pusta to zużyte.
-  Gdy czeka premia z R-SPR-3a, kropki, które zabierze najbliższe
-  trafienie, są pomarańczowe, a na rogu spirali jest znaczek „+1h” (tylko
-  gdy w zapasie jest cała godzina). Pusty zapas: wszystkie kropki puste,
+  Pusty zapas: wszystkie kropki puste,
   spirala przygaszona. Pełny magazyn (R-SPR-4): zamiast kropek napis
   „MAX”. Bez animacji ciągłej, żeby nie rozpraszać przy celowaniu.
   Plakietka nie jest przez to szersza, więc nagłówek się nie zmniejsza.
 - **R-SPR-2:** 1 Sprężyna na 24 h czasu rzeczywistego, także offline.
   Cofnięty zegar telefonu nic nie nakręca (jak R-OFF-3).
 - **R-SPR-3:** Każde „równo 5.00” (okno jackpotu, |błąd| < 0.010 s)
-  dokręca 15 min z **zapasu dokręcania**. Zapas mieści 2 h i wraca sam,
+  dokręca 30 min z **zapasu dokręcania**. Zapas mieści 2 h i wraca sam,
   30 min na godzinę czasu rzeczywistego (pełny po 4 h, także offline;
   cofnięty zegar telefonu nic nie oddaje). Trafienie zabiera z zapasu
   tyle, ile dokręca; gdy zostało mniej niż minuta, nie dokręca nic. Pod
-  tarczą wyskakuje „Sprężyna +15 min”, a przy pierwszym trafieniu na
+  tarczą wyskakuje „Sprężyna +30 min”, a przy pierwszym trafieniu na
   pustym zapasie „Zapas dokręcania pusty” (raz, do następnego
   dokręcenia). Warsztat pokazuje zapas paskiem („1 h 15 min z 2 h”)
   i mówi, kiedy będzie pełny. Wcześniej limit był dzienny (6 h na dobę):
   symulacja pokazała, że wybija się w 7–9 minut jednej sesji i nie
   zachęca do powrotu w ciągu dnia (13 §2.3).
-- **R-SPR-3a:** Pierwsze „równo 5.00” po co najmniej 1 h bez takiego
-  trafienia dokręca **1 h** zamiast 15 min (albo tyle, ile jest
-  w zapasie). Powód, żeby wejść na minutę.
+- **R-SPR-3a (usunięte):** Było: pierwsze „równo 5.00” po co najmniej
+  1 h bez trafienia dokręca 1 h zamiast 15 min. Zastąpione przez 30 min
+  za każde trafienie (13 §5.4a): zapas opróżniają 4 trafienia, czyli
+  2–3 minuty gry, więc krótkie wejścia opłacają się tak samo (1.25
+  Sprężyny dziennie przy 3 × 3 min, 1.42 przy 6 × 2 min), a gracz ma
+  jedną zasadę mniej. Oferta `adSpring` pokazuje się wtedy także
+  w krótkich sesjach.
 - **R-SPR-3b:** Oferta `adSpring` (§13): reklama napełnia zapas od razu.
   Najwyżej 2 razy na lokalną dobę, tylko gdy zapas jest pusty (mniej niż
   jedno trafienie). Przycisk jest w warsztacie, a plakietka Sprężyn
@@ -818,7 +820,7 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   Wcześniej było 7: symulacja pokazała, że gracz odkładający na poziom 8
   stał miesiącami z pełnym magazynem i nie mógł go kupić.
   Przy pełnym magazynie „równo 5.00” nic nie dokręca i **nie zabiera
-  zapasu** ani premii z R-SPR-3a: wszystko czeka, aż gracz wyda Sprężynę.
+  zapasu**: wszystko czeka, aż gracz wyda Sprężynę.
   Trafienie, które kończy ostatnią Sprężynę, zabiera z zapasu tylko tyle,
   ile jej brakowało. Toast „Zapas dokręcania pusty” nie wyskakuje wtedy,
   bo zapas nie jest pusty. Wcześniej trafienie zużywało zapas, a nakręcony
