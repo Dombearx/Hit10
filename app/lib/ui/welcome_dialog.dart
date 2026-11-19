@@ -106,6 +106,11 @@ class _Welcome extends StatelessWidget {
         ? l.offlineTitle
         : l.dailyTitle;
     final season = c.season;
+    final canDouble =
+        offline != null &&
+        offline.awaySeconds >= c.balance.ads.offlineMinAwaySeconds &&
+        c.ads.unlocked;
+    if (canDouble) c.adOfferShown(AdOffer.offline);
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 22, vertical: 24),
@@ -174,10 +179,7 @@ class _Welcome extends StatelessWidget {
                   onPressed: () => _collectAll(context),
                 ),
                 // R-OFF-2 / adOffline: ×2 for an ad after ≥ 30 min away.
-                if (offline != null &&
-                    offline.awaySeconds >=
-                        c.balance.ads.offlineMinAwaySeconds &&
-                    c.ads.unlocked)
+                if (canDouble)
                   // After a cold start the ad is often still loading when
                   // this opens: the button lights up once it is ready.
                   AdWatchButton(

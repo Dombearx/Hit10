@@ -636,6 +636,7 @@ class SpringReserveCard extends StatelessWidget {
             Consumer(
               builder: (context, ref, _) {
                 final ads = ref.watch(rewardedAdsProvider);
+                c.adOfferShown(AdOffer.spring);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

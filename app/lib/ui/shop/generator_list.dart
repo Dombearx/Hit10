@@ -417,6 +417,7 @@ class _TileFrame extends StatelessWidget {
 /// adBag (U-23): "📺 +5 min" on a card the player cannot afford yet.
 Widget? _bagButton(BuildContext context, GameController c) {
   if (!c.ads.available(AdOffer.bag, c.wallMs())) return null;
+  c.adOfferShown(AdOffer.bag);
   final l = AppLocalizations.of(context);
   final ads = ProviderScope.containerOf(context).read(rewardedAdsProvider);
   return GestureDetector(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hit10/ads/rewarded_ads.dart';
+import 'package:hit10/analytics/analytics.dart';
 import 'package:hit10/engine/ad_offers.dart';
 import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/engine/round_engine.dart';
@@ -30,12 +31,14 @@ void main() {
   Future<GameController> pumpGame(
     WidgetTester tester,
     GameState s,
-    FakeRewardedAds ads,
-  ) async {
+    FakeRewardedAds ads, {
+    Analytics analytics = const NoAnalytics(),
+  }) async {
     final c = GameController(
       balance: balance,
       state: s,
       store: MemorySaveStore(),
+      analytics: analytics,
       wallClockMs: () => now,
       localNow: () => DateTime.fromMillisecondsSinceEpoch(now),
     );
@@ -103,6 +106,34 @@ void main() {
     expect(find.text('2 h z 2 h'), findsOneWidget);
     expect(find.byKey(const Key('ad-spring')), findsNothing);
     expect(find.textContaining('Zapas pełny'), findsOneWidget);
+  });
+
+  testWidgets('offers on screen are counted once (ad_offer_shown)', (
+    tester,
+  ) async {
+    final a = RecordingAnalytics();
+    final s = played()
+      ..prestiges = 1
+      ..springClockMs = now
+      ..springReserve = 0
+      ..springReserveMs = now;
+    await pumpGame(
+      tester,
+      s,
+      FakeRewardedAds(delay: Duration.zero),
+      analytics: a,
+    );
+    List<Object?> shown() => [
+      for (final e in a.events)
+        if (e.$1 == 'ad_offer_shown') e.$2['offer'],
+    ];
+    expect(shown(), containsAll(['turbo', 'golden']));
+    expect(shown(), isNot(contains('spring')));
+    await tester.tap(find.byKey(const Key('open-springs')));
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 2));
+    expect(shown().where((o) => o == 'spring').length, 1);
+    expect(shown().where((o) => o == 'turbo').length, 1);
   });
 
   testWidgets('a full reserve: no ad, what a hit winds is said', (

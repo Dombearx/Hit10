@@ -78,6 +78,34 @@ void main() {
     expect(a.last('ad_unavailable'), containsPair('offer', 'bag'));
   });
 
+  test('an offer on screen says so once per appearance (ad_offer_shown)', () {
+    final a = RecordingAnalytics();
+    final c = controller(GameState()..tutorialDone = true, a);
+    int shown(String offer) => a.events
+        .where((e) => e.$1 == 'ad_offer_shown' && e.$2['offer'] == offer)
+        .length;
+    // Every build calls it: one event while it stays on screen.
+    c
+      ..adOfferShown(AdOffer.turbo)
+      ..adOfferShown(AdOffer.turbo)
+      ..adOfferShown(AdOffer.spring);
+    expect(shown('turbo'), 1);
+    expect(shown('spring'), 1);
+    expect(a.last('ad_offer_shown'), contains('play_min'));
+    // Answered: the next appearance counts again; the other offer not.
+    c
+      ..adOfferAnswered(AdOffer.turbo, watch: false)
+      ..adOfferShown(AdOffer.turbo)
+      ..adOfferShown(AdOffer.spring);
+    expect(shown('turbo'), 2);
+    expect(shown('spring'), 1);
+    // Back from the background: everything on screen counts again.
+    c
+      ..resume()
+      ..adOfferShown(AdOffer.spring);
+    expect(shown('spring'), 2);
+  });
+
   test('the player can turn statistics off, and the choice is saved', () {
     final a = RecordingAnalytics();
     final c = controller(GameState()..tutorialDone = true, a);

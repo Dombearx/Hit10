@@ -314,7 +314,8 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | `skill_buy` | `id`, `level` | które umiejętności kupują i kiedy |
   | `perk_buy` | `id`, `shards` | wybory po prestiżu |
   | `prestige` | `chronons`, `top_clock` | kiedy i z jakim zegarem robią paradoks |
-  | `ad_offer` | `offer`, `watch` | ile osób przyjmuje każdą ofertę |
+  | `ad_offer_shown` | `offer` | oferta jest na ekranie i da się ją wziąć: przycisk Turbo i Złotej Sekundy poza czasem odnowienia, Worek na karcie zegara, `adSpring` w warsztacie przy pustym zapasie, okienko Ratunku, „Podwój” w oknie powrotu. Raz na pojawienie się: znowu po odpowiedzi albo reklamie tej oferty i po powrocie do gry z tła. Mianownik: `ad_reward` / `ad_offer_shown` to odsetek pokazanych ofert, które kończą się nagrodą |
+  | `ad_offer` | `offer`, `watch` | odpowiedź w oknie oferty (Turbo, Złota Sekunda, Worek); Ratunek, „Podwój” i `adSpring` nie mają okna, więc dla nich liczy się od razu `ad_reward` / `ad_closed_early` |
   | `ad_reward` / `ad_closed_early` | `offer` | czy reklamy są oglądane do końca |
   | `ad_show_failed` | `offer` | reklama załadowana, ale nie wyświetliła się (np. przeterminowana) |
   | `ad_unavailable` | `offer` | brak reklamy (fill rate) |
