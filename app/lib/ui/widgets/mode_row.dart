@@ -7,7 +7,8 @@ import '../screens/loop_screen.dart';
 import '../theme.dart';
 
 /// Risk modes, second clock and auto buyer, shown once unlocked
-/// (docs/02 §7, §9). Changes apply from the next round (R-TRYB-1).
+/// (docs/02 §7, §9). Changes apply from the next round, Blind switched on
+/// before 4.00 at once (R-TRYB-1).
 class ModeRow extends StatelessWidget {
   const ModeRow({super.key, required this.controller});
   final GameController controller;
@@ -31,6 +32,7 @@ class ModeRow extends StatelessWidget {
           key: const Key('mode-blind'),
           label: l.modeBlind(e.blindMultiplier().round()),
           on: s.modeBlind,
+          note: c.blindPending ? l.modeNextRound : null,
           onTap: () => c.setMode(blind: !s.modeBlind),
         ),
       if (s.perks.contains('secondClock'))
@@ -82,10 +84,14 @@ class _Toggle extends StatelessWidget {
     required this.label,
     required this.on,
     required this.onTap,
+    this.note,
   });
   final String label;
   final bool on;
   final VoidCallback onTap;
+
+  /// A second, smaller line: "from the next round" while a switch waits.
+  final String? note;
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +108,27 @@ class _Toggle extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Palette.outline, width: 2),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontFamily: Fonts.display,
-            fontSize: 13,
-            color: on ? Colors.white : Palette.outline,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: Fonts.display,
+                fontSize: 13,
+                color: on ? Colors.white : Palette.outline,
+              ),
+            ),
+            if (note != null)
+              Text(
+                note!,
+                key: const Key('mode-note'),
+                style: TextStyle(
+                  fontSize: 10,
+                  color: on ? Colors.white : Palette.outline,
+                ),
+              ),
+          ],
         ),
       ),
     );

@@ -324,6 +324,7 @@
   "ok": "OK",
   "skip": "Pomiń",
   "modeBlind": "Na ślepo ×{mult}",
+  "modeNextRound": "od następnej rundy",
   "modeSecond": "Drugi zegar",
   "modeAuto": "Auto-kupiec",
   "adTurbo": "Turbo ×2",

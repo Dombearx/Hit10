@@ -1048,6 +1048,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get modeNextRound => 'from next round';
+
+  @override
   String get modeSecond => 'Second clock';
 
   @override

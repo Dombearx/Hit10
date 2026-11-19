@@ -840,6 +840,7 @@
       }
     }
   },
+  "modeNextRound": "from next round",
   "modeSecond": "Second clock",
   "modeAuto": "Auto buyer",
   "adTurbo": "Turbo ×2",

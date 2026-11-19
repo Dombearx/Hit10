@@ -307,7 +307,12 @@ na wypłatę z dotknięć gracza.
 Szybki zegar (stoper ×1.5) został usunięty po teście na telefonie: sekunda
 na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 
-- **R-TRYB-1:** Zmiana trybu działa od następnej rundy.
+- **R-TRYB-1:** Zmiana trybu działa od następnej rundy. Wyjątki dotyczą Na ślepo:
+  wyłączenie działa od razu (zegar wraca, runda płaci bez mnożnika), a
+  włączenie przed 4.00 czasu gry działa od razu, z mnożnikiem, bo gracz nie
+  widział jeszcze niczego, co tryb ukrywa. Włączone po 4.00 czeka na następną
+  rundę, a przełącznik pokazuje wtedy „od następnej rundy” (testerowi wyglądało
+  to tak, jakby trzeba było kilku rund, zanim tryb zadziała).
 
 ## 8. Osiągnięcia
 

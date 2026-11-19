@@ -554,12 +554,27 @@ class GameController extends ChangeNotifier {
     if (blind != null) state.modeBlind = blind;
     if (blind == false) {
       // Off mid-round: the clock shows again at once, and this round pays
-      // without the blind bonus (playtest 24). Switching on waits for the
-      // next round.
+      // without the blind bonus (playtest 24).
       for (final c in clocks) {
         c
           ..blind = false
           ..mode = engine.modeMultiplier();
+      }
+    } else if (blind == true && engine.blindActive) {
+      // On before the digits would go: nothing that will be hidden has been
+      // seen yet, so this round turns blind and pays for it at once. Later
+      // it waits for the next round (R-TRYB-1, playtest 28: switched on
+      // mid-round it looked as if it did nothing for two or three rounds).
+      final at = balance.blind.hideDigitsAt;
+      final t = now();
+      for (final c in clocks) {
+        if (c.round.phase == RoundPhase.running &&
+            at != null &&
+            c.round.gameTime(t) < at) {
+          c
+            ..blind = true
+            ..mode = engine.modeMultiplier();
+        }
       }
     }
     if (autoBuyer != null) state.autoBuyerOn = autoBuyer;
@@ -847,6 +862,12 @@ class GameController extends ChangeNotifier {
   /// Blind mode (docs/02 §7) hides the clock from [ModeConfig.hideDigitsAt]
   /// of game time: digits, progress ring, the bullet-time heartbeat and
   /// vignette. Ticking is a bought help and keeps going (playtest 22).
+  /// Blind is on but a running round started without it (switched on
+  /// after 4.00): the mode row says it starts with the next round.
+  bool get blindPending =>
+      engine.blindActive &&
+      clocks.any((c) => !c.blind && c.round.phase == RoundPhase.running);
+
   bool blindHidden(ClockSlot slot, double gameTime) {
     final at = balance.blind.hideDigitsAt;
     return slot.blind &&
