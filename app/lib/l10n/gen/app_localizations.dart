@@ -2357,7 +2357,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsReduceMotionHint.
   ///
   /// In en, this message translates to:
-  /// **'Less motion and flicker: no pulsing, shakes or flashes, a calmer Frenzy'**
+  /// **'Less motion and flicker, a calmer Frenzy'**
   String get settingsReduceMotionHint;
 
   /// No description provided for @settingsSave.

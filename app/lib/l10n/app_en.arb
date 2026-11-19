@@ -1097,7 +1097,7 @@
   "notationShort": "Short (12.4M)",
   "notationScientific": "Scientific (1.24e7)",
   "settingsReduceMotion": "Calm mode",
-  "settingsReduceMotionHint": "Less motion and flicker: no pulsing, shakes or flashes, a calmer Frenzy",
+  "settingsReduceMotionHint": "Less motion and flicker, a calmer Frenzy",
   "settingsSave": "Save",
   "settingsExport": "Export",
   "settingsExportDone": "Save copied to the clipboard. Keep it somewhere safe.",

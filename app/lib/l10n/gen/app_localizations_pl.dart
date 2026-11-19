@@ -1364,7 +1364,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get settingsReduceMotionHint =>
-      'Mniej ruchu i migania: bez pulsowania, wstrząsów i błysków, spokojniejszy Szał';
+      'Mniej ruchu i migania, spokojniejszy Szał';
 
   @override
   String get settingsSave => 'Zapis gry';

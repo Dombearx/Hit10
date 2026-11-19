@@ -1367,7 +1367,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsReduceMotionHint =>
-      'Less motion and flicker: no pulsing, shakes or flashes, a calmer Frenzy';
+      'Less motion and flicker, a calmer Frenzy';
 
   @override
   String get settingsSave => 'Save';
