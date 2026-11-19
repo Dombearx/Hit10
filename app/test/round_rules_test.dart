@@ -50,17 +50,27 @@ void main() {
       expect(miss.comboBroken, isTrue);
     });
 
-    test('capped at 5 + 2·level; multiplier 1 + 0.05·streak', () {
+    test('multiplier capped at 5 + 2·level; the streak counts on', () {
       for (var i = 0; i < 10; i++) {
         e.resolveRound(perfect);
       }
-      expect(s.comboStreak, 5);
+      expect(s.comboStreak, 30);
+      expect(e.comboMultiplier(), closeTo(1 + 0.05 * 5, 1e-12));
       s.skills['combo'] = 3;
-      for (var i = 0; i < 10; i++) {
+      final o = e.resolveRound(perfect);
+      expect(o.streak, 33);
+      expect(o.combo, closeTo(1 + 0.05 * 11, 1e-12));
+      expect(e.nextHitPayout(Tier.good), greaterThan(0));
+      expect(s.lifetime.bestCombo, 33);
+    });
+
+    test('a streak of 110 is reachable at cap 23', () {
+      s.skills['combo'] = 9; // cap 23
+      for (var i = 0; i < 37; i++) {
         e.resolveRound(perfect);
       }
-      expect(s.comboStreak, 11);
-      expect(e.resolveRound(perfect).combo, closeTo(1 + 0.05 * 11, 1e-12));
+      expect(s.comboStreak, greaterThanOrEqualTo(110));
+      expect(e.comboMultiplier(), closeTo(1 + 0.05 * 23, 1e-12));
     });
 
     test('combo multiplies the whole payout including echo (R-COMBO-3)', () {
@@ -85,6 +95,22 @@ void main() {
         e.resolveRound(perfect); // 10 steps
       }
       expect(s.shieldCharges, 1);
+    });
+
+    test('a used shield restarts the count to the next charge', () {
+      s.skills['shield'] = 2;
+      s.shieldCharges = 2;
+      s.comboStreak = 4;
+      s.shieldProgress = 9; // one step short of a charge
+      e.resolveRound(early);
+      expect(s.shieldCharges, 1);
+      expect(s.shieldProgress, 0);
+      e.resolveRound(good); // +1: no charge back yet
+      expect(s.shieldCharges, 1);
+      for (var i = 0; i < 3; i++) {
+        e.resolveRound(perfect); // 10 steps in all
+      }
+      expect(s.shieldCharges, 2);
     });
 
     test('Quick shield perk: a charge every 7 steps', () {

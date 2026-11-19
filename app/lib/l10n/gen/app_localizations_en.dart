@@ -1277,7 +1277,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_combo =>
-      'Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. It has a cap.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it.';
+      'Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. The multiplier has a cap, but the streak itself keeps counting.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it — counting from zero once it is used.';
 
   @override
   String get help_golden_t => 'Golden Second';
@@ -2365,7 +2365,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_shield_info =>
-      'Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps.';
+      'Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps; using a charge restarts that count.';
 
   @override
   String get skill_goldenTouch_info =>
@@ -3315,7 +3315,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get challengesRerollHint =>
-      'Sized to your aim. Don\'t like one? ↻ swaps it — once a day.';
+      'Don\'t like one? ↻ swaps it — once a day.';
 
   @override
   String get challengesNewTomorrow => 'New ones at midnight.';
@@ -3450,7 +3450,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tip_challenges =>
-      'New: three challenges a day, sized to your aim. Tap to see them!';
+      'New: three challenges a day and one a week. Tap to see them!';
 
   @override
   String get help_challenges_t => 'Challenges';

@@ -1274,7 +1274,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_combo =>
-      'Każde trafienie dokłada kroki serii: PERFEKT +3, ŚWIETNIE +2, DOBRZE +1. Seria mnoży wszystkie twoje wypłaty — mnożnik widać przy napisie COMBO. Ma górny limit.\nBLISKO albo pudło zeruje serię. Wyjątek: ładunek Tarczy (umiejętność) pochłania jedno zerowanie, a kolejne kroki serii go odnawiają.';
+      'Każde trafienie dokłada kroki serii: PERFEKT +3, ŚWIETNIE +2, DOBRZE +1. Seria mnoży wszystkie twoje wypłaty — mnożnik widać przy napisie COMBO. Mnożnik ma górny limit, ale sama seria liczy się dalej.\nBLISKO albo pudło zeruje serię. Wyjątek: ładunek Tarczy (umiejętność) pochłania jedno zerowanie, a kolejne kroki serii go odnawiają — licząc od zera od chwili zużycia.';
 
   @override
   String get help_golden_t => 'Złota Sekunda';
@@ -2364,7 +2364,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_shield_info =>
-      'Każdy poziom to jeden ładunek. Pudło zużywa ładunek, a seria zostaje. Zużyte ładunki wracają po jednym co 10 kroków serii.';
+      'Każdy poziom to jeden ładunek. Pudło zużywa ładunek, a seria zostaje. Zużyte ładunki wracają po jednym co 10 kroków serii; po zużyciu ładunku odliczanie zaczyna się od nowa.';
 
   @override
   String get skill_goldenTouch_info =>
@@ -3319,7 +3319,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get challengesRerollHint =>
-      'Dopasowane do twojej celności. Któreś nie pasuje? ↻ wymienia je — raz dziennie.';
+      'Któreś nie pasuje? ↻ wymienia je — raz dziennie.';
 
   @override
   String get challengesNewTomorrow => 'Nowe o północy.';
@@ -3460,7 +3460,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tip_challenges =>
-      'Nowość: trzy wyzwania dziennie, dopasowane do twojej celności. Dotknij, by zobaczyć!';
+      'Nowość: trzy wyzwania dziennie i jedno tygodniowe. Dotknij, by zobaczyć!';
 
   @override
   String get help_challenges_t => 'Wyzwania';

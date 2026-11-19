@@ -281,7 +281,7 @@ class GameEngine {
         goldenRound = false;
         golden = _resolveGolden(Tier.miss);
       }
-      final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
+      final combo = comboMultiplier();
       return RoundOutcome(
         raw: g,
         tier: Tier.miss,
@@ -318,6 +318,9 @@ class GameEngine {
         s.shieldCharges--;
         s.lifetime.shieldSaves++;
         shieldUsed = true;
+        // The next charge starts from zero: a used Shield does not come
+        // back with the very next hit (playtest).
+        s.shieldProgress = 0;
       } else {
         final floor = s.perks.contains('comboFloor')
             ? b.perk('comboFloor').params['floor']!.round()
@@ -327,7 +330,9 @@ class GameEngine {
       }
     } else {
       final step = b.tier(tier.name).comboStep;
-      s.comboStreak = math.min(econ.comboCap(), before + step);
+      // The streak itself keeps counting; only its multiplier stops at
+      // the cap (R-COMBO-2).
+      s.comboStreak = before + step;
       s.shieldProgress += step;
       final perCharge = shieldRechargeSteps();
       while (s.shieldProgress >= perCharge) {
@@ -335,7 +340,7 @@ class GameEngine {
         s.shieldCharges = math.min(maxShieldCharges(), s.shieldCharges + 1);
       }
     }
-    final combo = 1 + b.combo.multiplierPerStep * s.comboStreak;
+    final combo = comboMultiplier();
     // The 10.00 jackpot goes by the raw tap: Luck and Hot hand don't win it.
     final jackpot = isJackpot(g) ? jackpotAmount() * combo * mode : 0.0;
     // Hot hand also multiplies what the hit pays (playtest 25: turning
@@ -391,6 +396,13 @@ class GameEngine {
       j.perfectMultiple * perfect,
     );
   }
+
+  /// `combo = 1 + step · min(streak, cap)` (R-COMBO-2): the streak counts
+  /// on past the cap, the multiplier does not.
+  double comboMultiplier([int? streak]) =>
+      1 +
+      b.combo.multiplierPerStep *
+          math.min(streak ?? s.comboStreak, econ.comboCap());
 
   /// Shield level plus the "shield at start" perk (docs/02 §9.1).
   int maxShieldCharges() => econ.shieldCharges();
@@ -466,8 +478,7 @@ class GameEngine {
   /// jackpot included (the header's "10.00 = +X").
   double nextHitPayout(Tier tier) {
     final step = b.tier(tier.name).comboStep;
-    final streak = math.min(econ.comboCap(), s.comboStreak + step);
-    final combo = 1 + b.combo.multiplierPerStep * streak;
+    final combo = comboMultiplier(s.comboStreak + step);
     final mode = modeMultiplier();
     final jackpot = tier == Tier.perfect ? jackpotAmount() * combo * mode : 0;
     return hitPayout(Grade(tier, 0), combo: combo, mode: mode) + jackpot;
@@ -1062,7 +1073,42 @@ class GameEngine {
       );
       s.challengeWeek = week;
     }
+    // A weekly one that can no longer move — Golden Seconds stopped by
+    // "Cloudy day", a full Mainspring with nothing to spend it on — is
+    // swapped rather than left stuck for the rest of the week.
+    final w = weeklyChallenge;
+    if (w != null &&
+        !w.done &&
+        !w.claimed &&
+        (w.kind == ChallengeKind.goldenWeek ||
+            w.kind == ChallengeKind.springWeek)) {
+      final p = player();
+      if (!ChallengePlanner.available(weeklySlot, p).contains(w.kind)) {
+        s.challenges
+          ..remove(w)
+          ..add(ChallengePlanner.pick(weeklySlot, p, rng, avoid: w.kind));
+      }
+    }
     return ChallengePay(tiki: tiki, springs: springs, bonus: bonus);
+  }
+
+  /// After a paradox or a new loop hits pay far less than when today's
+  /// "earn N Tiki from hits" was set: its target is set again for the new
+  /// run, keeping the share already done.
+  void replanAfterReset(ChallengePlayer player, math.Random rng) {
+    for (var i = 0; i < s.challenges.length; i++) {
+      final c = s.challenges[i];
+      if (c.kind != ChallengeKind.hitEarnings || c.done || c.claimed) {
+        continue;
+      }
+      final target = ChallengePlanner.target(c.kind, player, rng);
+      if (target >= c.target) continue;
+      s.challenges[i] = Challenge(
+        c.kind,
+        target,
+        progress: c.fraction * target,
+      );
+    }
   }
 
   /// What a challenge pays: minutes of passive income (at least a floor),

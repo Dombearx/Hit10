@@ -1063,7 +1063,7 @@
   "help_skills_t": "Skills",
   "help_skills": "Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and longer streaks.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.",
   "help_combo_t": "Streak (combo)",
-  "help_combo": "Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. It has a cap.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it.",
+  "help_combo": "Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. The multiplier has a cap, but the streak itself keeps counting.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it — counting from zero once it is used.",
   "help_golden_t": "Golden Second",
   "help_golden": "About every 10 minutes a golden clock flies across the screen. Tapping it turns the next round golden.\nA hit in a golden round gives a random reward:\n• Frenzy (45%) — all income ×7 for 77 s\n• Lucky (45%) — Ticks worth 10 minutes of your clocks, right away\n• Hot hand (10%) — for 60 s every hit counts as PERFECT and pays ×10\nThe reward's strength depends on the grade: PERFECT 100%, GREAT 60%, GOOD 30%, a miss nothing.",
   "help_modes_t": "Toggles",
@@ -1599,7 +1599,7 @@
   "skill_echo_info": "A hit adds as many Ticks as your clocks make in the given time. Per level: PERFECT 0.2 s, GREAT about 0.11 s, GOOD about 0.03 s.",
   "skill_bulletTime_info": "The PERFECT, GREAT, GOOD and CLOSE windows grow up to ×2.5 at the top level (e.g. GOOD: ±50 → ±125 ms). The 5.00 window stays. Near the target the screen pulses and you hear a heartbeat. Doesn't work on clocks.",
   "skill_luck_info": "At each level 2 hits in 100 jump a tier: GREAT → PERFECT, GOOD → GREAT. A PERFECT never becomes a 5.00.",
-  "skill_shield_info": "Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps.",
+  "skill_shield_info": "Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps; using a charge restarts that count.",
   "skill_goldenTouch_info": "A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.",
   "master_grandpa_5": "Retired Watchmaker",
   "master_grandpa_5_desc": "Fixes the neighbours' watches. Free, with a lecture.",
@@ -2202,7 +2202,7 @@
   "challengesTitle": "Challenges",
   "challengesToday": "Today",
   "challengesWeek": "This week",
-  "challengesRerollHint": "Sized to your aim. Don't like one? ↻ swaps it — once a day.",
+  "challengesRerollHint": "Don't like one? ↻ swaps it — once a day.",
   "challengesNewTomorrow": "New ones at midnight.",
   "challengesDaysLeft": "{days, plural, =1{Last day} other{{days} days left}}",
   "@challengesDaysLeft": {
@@ -2339,7 +2339,7 @@
       }
     }
   },
-  "tip_challenges": "New: three challenges a day, sized to your aim. Tap to see them!",
+  "tip_challenges": "New: three challenges a day and one a week. Tap to see them!",
   "help_challenges_t": "Challenges",
   "help_challenges": "Every day three challenges, every week one more — the target shows on the badge at the top. Their numbers come from your own last taps, so they are a stretch whatever your aim, and a few minutes of play usually does it.\n• Each daily one pays 10 minutes of your clocks' income, all three together another 30.\n• The weekly one pays 1 Mainspring (before the first paradox: an hour of income).\n• Don't like one? ↻ swaps a daily challenge, once a day.\n• Finished but not claimed? It is paid when the new ones come — nothing is lost.",
   "chPerfect": "Hit PERFECT {n} times",

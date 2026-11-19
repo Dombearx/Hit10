@@ -2195,7 +2195,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_combo.
   ///
   /// In en, this message translates to:
-  /// **'Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. It has a cap.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it.'**
+  /// **'Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. The multiplier has a cap, but the streak itself keeps counting.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it — counting from zero once it is used.'**
   String get help_combo;
 
   /// No description provided for @help_golden_t.
@@ -4217,7 +4217,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_shield_info.
   ///
   /// In en, this message translates to:
-  /// **'Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps.'**
+  /// **'Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps; using a charge restarts that count.'**
   String get skill_shield_info;
 
   /// No description provided for @skill_goldenTouch_info.
@@ -5818,7 +5818,7 @@ abstract class AppLocalizations {
   /// No description provided for @challengesRerollHint.
   ///
   /// In en, this message translates to:
-  /// **'Sized to your aim. Don\'t like one? ↻ swaps it — once a day.'**
+  /// **'Don\'t like one? ↻ swaps it — once a day.'**
   String get challengesRerollHint;
 
   /// No description provided for @challengesNewTomorrow.
@@ -5950,7 +5950,7 @@ abstract class AppLocalizations {
   /// No description provided for @tip_challenges.
   ///
   /// In en, this message translates to:
-  /// **'New: three challenges a day, sized to your aim. Tap to see them!'**
+  /// **'New: three challenges a day and one a week. Tap to see them!'**
   String get tip_challenges;
 
   /// No description provided for @help_challenges_t.

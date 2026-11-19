@@ -60,9 +60,9 @@ class _ComboMeterState extends State<ComboMeter>
     final l = AppLocalizations.of(context);
     final streak = c.state.comboStreak;
     final cap = c.econ.comboCap();
-    final mult = 1 + c.balance.combo.multiplierPerStep * streak;
-    // A streak above the cap (a loop rule that lowers it) is full heat,
-    // not a flame that outgrows its box.
+    final mult = c.engine.comboMultiplier();
+    // A streak above the cap (it counts on, only the multiplier stops) is
+    // full heat, not a flame that outgrows its box.
     final heat = cap == 0 ? 0.0 : (streak / cap).clamp(0.0, 1.0);
     final shields = c.engine.maxShieldCharges();
     return AnimatedBuilder(

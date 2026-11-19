@@ -119,6 +119,26 @@ Zestaw: celność (A1, A2, A3), wyczyn (A5, N× PERFEKT, D4), rozwój
 (D1, D2, D3), tydzień (ŚWIETNIE+, równe 5.00, seria, Złote Sekundy,
 Sprężyny). Nagrody jak w §3.
 
+### 4.1 Każde zadanie musi być osiągalne (playtest 11.2026)
+
+Zadanie tygodniowe „seria 110” stanęło na 23: silnik ucinał samą serię na
+limicie combo, a planer liczył ją bez limitu. Przegląd wszystkich rodzajów:
+
+- **Seria (A2, tydzień):** limit dotyczy tylko mnożnika (R-COMBO-2), seria
+  liczy się dalej — także przy „Krótkim loncie”.
+- **Tiki z trafień (D4):** cel nie liczy chwilowego Szału, Turbo ani
+  trybu na ślepo, który gracz może wyłączyć (tylko wymuszony przez pętlę).
+  Po paradoksie albo nowej pętli trafienia płacą o rzędy mniej, więc cel
+  liczy się na nowo, z zachowaniem zrobionej części.
+- **Złote Sekundy (tydzień):** gdy w trakcie tygodnia zaczyna się pętla
+  z „Pochmurnym dniem”, zadanie wymienia się na inne.
+- **Sprężyny (tydzień):** pełny zapas nie nakręca nic (R-SPR-4). Zadanie
+  nie trafia się wtedy, a trwające wymienia się, jeśli zapasu nie ma na co
+  wydać (żaden zegar nie wejdzie poziom wyżej).
+- Reszta (ŚWIETNIE+, równe 5.00, PERFEKTY, okno PERFEKTÓW, zakupy zegarów,
+  premie, poziomy umiejętności) liczy się z tych samych reguł co gra albo
+  ma cel ograniczony tym, co gracz ma w zasięgu.
+
 ## 5. Trudność — symulacja (`tool/challenge_report.dart`)
 
 Cele liczy się z własnych dotknięć gracza (02 R-WYZ-2). Narzędzie gra za
