@@ -985,7 +985,7 @@
   "challengesTitle": "Wyzwania",
   "challengesToday": "Dzisiaj",
   "challengesWeek": "Ten tydzień",
-  "challengesRerollHint": "Dopasowane do twojej celności. Któreś nie pasuje? ↻ wymienia je — raz dziennie.",
+  "challengesRerollHint": "Któreś nie pasuje? ↻ wymienia je — raz dziennie.",
   "challengesNewTomorrow": "Nowe o północy.",
   "challengesDaysLeft": "{days, plural, =1{Ostatni dzień} few{Zostały {days} dni} other{Zostało {days} dni}}",
   "chGreat": "Traf ŚWIETNIE lub lepiej {n} razy",
@@ -1007,7 +1007,7 @@
   "challengeOpen": "Odbierz",
   "challengeCarry": "Nagrody za wczorajsze ukończone wyzwania: {what}",
   "challengeCarrySprings": "+{n} Sprężyna",
-  "tip_challenges": "Nowość: trzy wyzwania dziennie, dopasowane do twojej celności. Dotknij, by zobaczyć!",
+  "tip_challenges": "Nowość: trzy wyzwania dziennie i jedno tygodniowe. Dotknij, by zobaczyć!",
   "help_challenges_t": "Wyzwania",
   "help_challenges": "Codziennie trzy wyzwania, co tydzień jeszcze jedno — postęp widać na plakietce u góry. Liczby biorą się z twoich ostatnich dotknięć, więc są wyzwaniem przy każdej celności, a zwykle wystarczy kilka minut gry.\n• Każde dzienne płaci 10 minut dochodu zegarów, wszystkie trzy razem jeszcze 30.\n• Tygodniowe daje 1 Sprężynę (przed pierwszym paradoksem: godzinę dochodu).\n• Któreś nie pasuje? ↻ wymienia dzienne wyzwanie, raz dziennie.\n• Ukończone, ale nieodebrane? Wypłaca się samo, gdy przychodzą nowe — nic nie przepada.",
   "chPerfect": "Traf PERFEKT {n} razy"

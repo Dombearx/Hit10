@@ -5818,7 +5818,7 @@ abstract class AppLocalizations {
   /// No description provided for @challengesRerollHint.
   ///
   /// In en, this message translates to:
-  /// **'Sized to your aim. Don\'t like one? ↻ swaps it — once a day.'**
+  /// **'Don\'t like one? ↻ swaps it — once a day.'**
   String get challengesRerollHint;
 
   /// No description provided for @challengesNewTomorrow.
@@ -5950,7 +5950,7 @@ abstract class AppLocalizations {
   /// No description provided for @tip_challenges.
   ///
   /// In en, this message translates to:
-  /// **'New: three challenges a day, sized to your aim. Tap to see them!'**
+  /// **'New: three challenges a day and one a week. Tap to see them!'**
   String get tip_challenges;
 
   /// No description provided for @help_challenges_t.

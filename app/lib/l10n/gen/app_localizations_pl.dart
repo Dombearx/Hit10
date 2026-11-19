@@ -3319,7 +3319,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get challengesRerollHint =>
-      'Dopasowane do twojej celności. Któreś nie pasuje? ↻ wymienia je — raz dziennie.';
+      'Któreś nie pasuje? ↻ wymienia je — raz dziennie.';
 
   @override
   String get challengesNewTomorrow => 'Nowe o północy.';
@@ -3460,7 +3460,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tip_challenges =>
-      'Nowość: trzy wyzwania dziennie, dopasowane do twojej celności. Dotknij, by zobaczyć!';
+      'Nowość: trzy wyzwania dziennie i jedno tygodniowe. Dotknij, by zobaczyć!';
 
   @override
   String get help_challenges_t => 'Wyzwania';

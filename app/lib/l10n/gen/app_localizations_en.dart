@@ -3315,7 +3315,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get challengesRerollHint =>
-      'Sized to your aim. Don\'t like one? ↻ swaps it — once a day.';
+      'Don\'t like one? ↻ swaps it — once a day.';
 
   @override
   String get challengesNewTomorrow => 'New ones at midnight.';
@@ -3450,7 +3450,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tip_challenges =>
-      'New: three challenges a day, sized to your aim. Tap to see them!';
+      'New: three challenges a day and one a week. Tap to see them!';
 
   @override
   String get help_challenges_t => 'Challenges';
