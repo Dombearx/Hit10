@@ -27,6 +27,10 @@ class PopText extends PositionComponent {
   /// Misses fall in from above instead of bouncing (docs/04 §3).
   final bool dropIn;
 
+  /// Calm mode (docs/04 U-6): no bounce or drop; the label fades in and
+  /// out where it is, rising slowly.
+  bool still = false;
+
   double _t = 0;
 
   @override
@@ -36,7 +40,7 @@ class PopText extends PositionComponent {
   }
 
   double get _scale {
-    if (dropIn) return 1;
+    if (dropIn || still) return 1;
     const inT = 0.12, settleT = 0.22;
     if (_t < inT) return Curves.easeOut.transform(_t / inT) * 1.3;
     if (_t < settleT) return 1.3 - 0.3 * ((_t - inT) / (settleT - inT));
@@ -44,13 +48,14 @@ class PopText extends PositionComponent {
   }
 
   double get _alpha {
+    if (still && _t < 0.15) return _t / 0.15;
     final fadeStart = life * 0.65;
     if (_t < fadeStart) return 1;
     return (1 - (_t - fadeStart) / (life - fadeStart)).clamp(0.0, 1.0);
   }
 
   double get _dy {
-    if (dropIn) {
+    if (dropIn && !still) {
       const fall = 0.25;
       if (_t < fall) {
         return -30 * (1 - Curves.bounceOut.transform(_t / fall));

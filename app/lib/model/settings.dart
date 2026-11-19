@@ -9,6 +9,8 @@ class Settings {
   /// null = follow the system language.
   String? language;
   Notation notation = Notation.short;
+  /// Calm mode ("Tryb spokojny", docs/04 U-6): less motion and flicker.
+  /// Kept under its old name, also in saves.
   bool reduceMotion = false;
   bool notifications = true;
 

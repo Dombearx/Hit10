@@ -2351,13 +2351,13 @@ abstract class AppLocalizations {
   /// No description provided for @settingsReduceMotion.
   ///
   /// In en, this message translates to:
-  /// **'Reduce motion'**
+  /// **'Calm mode'**
   String get settingsReduceMotion;
 
   /// No description provided for @settingsReduceMotionHint.
   ///
   /// In en, this message translates to:
-  /// **'No shakes or flashes, fewer particles'**
+  /// **'Less motion and flicker: no pulsing, shakes or flashes, a calmer Frenzy'**
   String get settingsReduceMotionHint;
 
   /// No description provided for @settingsSave.

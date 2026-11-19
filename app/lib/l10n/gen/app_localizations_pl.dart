@@ -1360,11 +1360,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get notationScientific => 'Naukowy (1,24e7)';
 
   @override
-  String get settingsReduceMotion => 'Ogranicz ruch';
+  String get settingsReduceMotion => 'Tryb spokojny';
 
   @override
   String get settingsReduceMotionHint =>
-      'Bez wstrząsów i błysków, mniej cząsteczek';
+      'Mniej ruchu i migania: bez pulsowania, wstrząsów i błysków, spokojniejszy Szał';
 
   @override
   String get settingsSave => 'Zapis gry';

@@ -66,7 +66,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | **M-4** | Cykl życia: wyjście w połowie rundy, rozmowa, obrót telefonu, ubicie procesu | brak utraty postępu > 10 s, runda anulowana, offline naliczony |
 | **M-5** | Zmiana daty w telefonie w przód i w tył | offline przycięty do limitu, przy cofnięciu 0, brak crasha |
 | **M-6** | Dźwięk i wibracje | dźwięk trafienia bez odczuwalnego opóźnienia (U-14), wyłączniki działają |
-| **M-7** | Ogranicz ruch | brak wstrząsów i błysków (U-6) |
+| **M-7** | Tryb spokojny | w Szale tło nie pulsuje, brak wstrząsów, błysków, fal i odbić napisów (U-6, test `calm_mode_test.dart`) |
 | **M-8** | „Czy to wciąga?” — 3 osoby spoza projektu grają 15 min bez instrukcji | każda rozumie zasadę w < 1 min, ≥2 z 3 chcą grać dalej; notujemy, co było niejasne |
 | **M-9** | Małe i duże ekrany (≈5" i tablet), tryb ciemny systemu, największa czcionka systemowa | nic nie wychodzi poza ekran, cyfry czytelne; na tablecie układ telefonu powiększony na cały ekran (`TabletScale`), bez pustych pasów po bokach; tekst rośnie najwyżej ×1.3 (U-35, test `text_scale_test.dart`) |
 | **M-10** | Reklamy na telefonie (M6): testowe jednostki, zgoda UMP z adresu w UE (VPN albo ustawienia debug UMP), brak sieci, przerwanie reklamy w połowie, reklama załadowana ponad godzinę temu | nagroda tylko po pełnym obejrzeniu; okno zgody **dopiero po samouczku** (nie przy starcie), po pytaniu o statystyki, i da się je zmienić z ustawień; gra działa bez sieci; błąd wyświetlenia mówi „nie udało się wyświetlić”, a nie „nie obejrzana do końca” |

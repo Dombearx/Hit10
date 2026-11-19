@@ -12,6 +12,7 @@ class AnimatedCounter extends StatefulWidget {
     required this.decimalSeparator,
     this.notation = Notation.short,
     this.whole = false,
+    this.bump = true,
     this.style,
   });
 
@@ -21,6 +22,9 @@ class AnimatedCounter extends StatefulWidget {
 
   /// Show whole numbers only (the balance; fractions stay in "0.1/s").
   final bool whole;
+
+  /// Bounce on gains; off in calm mode (docs/04 U-6).
+  final bool bump;
   final TextStyle? style;
 
   @override
@@ -76,7 +80,8 @@ class _AnimatedCounterState extends State<AnimatedCounter>
     return AnimatedBuilder(
       animation: Listenable.merge([_roll, _bump]),
       builder: (context, _) {
-        final b = _bump.value;
+        // Calm mode: the number rolls but doesn't throb with every income.
+        final b = widget.bump ? _bump.value : 0.0;
         final scale = 1 + 0.12 * (b < 0.4 ? b / 0.4 : (1 - b) / 0.6);
         return Transform.scale(
           scale: scale,

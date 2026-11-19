@@ -178,6 +178,7 @@ class ArenaGame extends FlameGame {
         radius: stage.radius * 0.2,
         life: controller.engine.goldenVisibleLeft,
         fromLeft: _goldenFromLeft,
+        calm: stage.reduceMotion,
         item: _emoji[seasonLooks[controller.season?.id]?.item],
       );
       _golden = g;
@@ -280,8 +281,10 @@ class ArenaGame extends FlameGame {
       }
     }
     _updateGolden();
+    // Calm mode: a third of the bubbles beside the dial.
     controller.showcase.maxPerSecond =
-        controller.balance.ui.generatorPopupsPerSecond;
+        controller.balance.ui.generatorPopupsPerSecond *
+        (stage.reduceMotion ? 1 / 3 : 1);
     for (final hit in controller.showcase.update(dt, controller.econ)) {
       _spawnPopup(hit);
     }
@@ -394,8 +397,18 @@ class Stage extends Component {
     }
   }
 
-  /// "Reduce motion" (U-6): no shakes or flashes, a third of the particles.
+  /// Calm mode (U-6): no shakes, flashes, shockwaves or pulsing; a third
+  /// of the particles, slower; labels fade in without bouncing.
   bool get reduceMotion => game.controller.settings.reduceMotion;
+
+  /// Adds a shockwave ring unless calm mode is on: a ring growing to over
+  /// twice the dial is the arena's biggest moving area.
+  void wave(Shockwave s) {
+    if (!reduceMotion) add(s);
+  }
+
+  /// Adds a label; in calm mode it fades in place instead of bouncing.
+  void pop(PopText p) => add(p..still = reduceMotion);
 
   void shake(double amplitude, double seconds) {
     if (reduceMotion) return;
@@ -411,7 +424,9 @@ class Stage extends Component {
   @override
   void update(double dt) {
     if (dials.length != _count) _syncDials();
-    particles.density = reduceMotion ? 1 / 3 : 1;
+    particles
+      ..density = reduceMotion ? 1 / 3 : 1
+      ..speed = reduceMotion ? 0.6 : 1;
     if (_shake > 0) _shake = math.max(0, _shake - dt);
     if (_wobble > 0) _wobble = math.max(0, _wobble - dt);
   }
@@ -459,7 +474,7 @@ class Stage extends Component {
         sizeMax: 20,
         life: 1.6,
       );
-      add(
+      wave(
         Shockwave(
           center: c,
           from: r * 0.6,
@@ -498,9 +513,11 @@ class Stage extends Component {
             gravity: 0,
             shape: ParticleShape.spark,
           );
-        add(Shockwave(center: c, from: r, to: r * 1.9, color: Palette.perfect));
+        wave(
+          Shockwave(center: c, from: r, to: r * 1.9, color: Palette.perfect),
+        );
         shake(8, 0.25);
-        add(
+        pop(
           PopText(
             text: jackpot
                 ? '${game.controller.balance.round.target.toStringAsFixed(2)}!'
@@ -520,9 +537,9 @@ class Stage extends Component {
           sizeMin: 5,
           sizeMax: 11,
         );
-        add(Shockwave(center: c, from: r, to: r * 1.5, color: Palette.great));
+        wave(Shockwave(center: c, from: r, to: r * 1.5, color: Palette.great));
         shake(4, 0.18);
-        add(
+        pop(
           PopText(
             text: l.great,
             style: label(Palette.great, r * 0.22),
@@ -540,7 +557,7 @@ class Stage extends Component {
           shape: ParticleShape.circle,
           sizeMax: 7,
         );
-        add(
+        pop(
           PopText(
             text: l.good,
             style: label(Palette.good, r * 0.2),
@@ -549,14 +566,14 @@ class Stage extends Component {
           ),
         );
       case Tier.miss:
-        _wobble = 0.35;
+        if (!reduceMotion) _wobble = 0.35;
         // BLISKO pays a little: say so in a friendlier colour.
         final text = g.close
             ? l.close
             : g.missKind == MissKind.early
             ? l.early
             : l.late;
-        add(
+        pop(
           PopText(
             text: text,
             style: label(
@@ -572,7 +589,7 @@ class Stage extends Component {
     final o = f.outcome;
     final small = label(Palette.dial, r * 0.13);
     if (o.bumpedByLuck) {
-      add(
+      pop(
         PopText(
           text: l.luckyBump,
           style: small,
@@ -582,7 +599,7 @@ class Stage extends Component {
       );
     }
     if (o.shieldUsed) {
-      add(
+      pop(
         PopText(
           text: l.shieldSaved,
           style: label(Palette.good, r * 0.15),
@@ -596,7 +613,7 @@ class Stage extends Component {
         ? wound('${(f.springSeconds / 60).round()}')
         : (f.springEmpty ? l.springEmpty : null);
     if (springText != null) {
-      add(
+      pop(
         PopText(
           text: springText,
           style: label(const Color(0xFFFFE9A8), r * 0.13),
@@ -620,7 +637,7 @@ class Stage extends Component {
         ),
         GoldenEffect.hotHand => l.hotHand,
       };
-      add(
+      pop(
         PopText(
           text: text,
           style: gs,
@@ -649,7 +666,7 @@ class Stage extends Component {
       }
     }
     if (f.reward > 0) {
-      add(
+      pop(
         PopText(
           text:
               '+${formatNumber(f.reward, decimalSeparator: l.decimalSeparator)}',
@@ -673,7 +690,7 @@ extension on Stage {
     if (!golden) return;
     final c = centerOf(clock);
     final r = radiusOf(clock);
-    add(
+    pop(
       PopText(
         text: game.labels.goldenRound,
         style: TextStyle(
@@ -829,6 +846,7 @@ class Dial extends Component {
     final ring = r * 0.085;
 
     final engine = ctrl.engine;
+    final calm = stage.reduceMotion;
     final running = round.phase == RoundPhase.running;
     final map = round.phase == RoundPhase.waiting ? null : round.timeMap;
     final hidden = ctrl.blindHidden(slot, t);
@@ -864,8 +882,9 @@ class Dial extends Component {
 
     // Frenzy: neon halo pulsing behind the dial.
     if (engine.frenzy > 1) {
-      // Gradient halo: a blur filter would be redrawn every frame.
-      final p = 0.5 + 0.5 * math.sin(_time * 7);
+      // Gradient halo: a blur filter would be redrawn every frame. Calm
+      // mode: a still, fainter halo (no colour cycling, no throbbing).
+      final p = calm ? 0.5 : 0.5 + 0.5 * math.sin(_time * 7);
       final halo = r * (1.22 + 0.06 * p);
       final col = Color.lerp(Palette.neonCyan, Palette.neonMagenta, p)!;
       canvas.drawCircle(
@@ -873,7 +892,10 @@ class Dial extends Component {
         halo,
         Paint()
           ..shader = RadialGradient(
-            colors: [col.withValues(alpha: 0.75), col.withValues(alpha: 0)],
+            colors: [
+              col.withValues(alpha: calm ? 0.35 : 0.75),
+              col.withValues(alpha: 0),
+            ],
             stops: const [0.78, 1],
           ).createShader(Rect.fromCircle(center: c, radius: halo)),
       );
@@ -890,7 +912,8 @@ class Dial extends Component {
           : _zone > 0
           ? skin.zoneTint(_zone)
           : null,
-      time: _time,
+      // Calm mode: the face's decorations stand still.
+      time: calm ? 0 : _time,
     );
 
     // Progress arc: blue, turning gold in the last second.
@@ -962,7 +985,9 @@ class Dial extends Component {
           });
     // Zimna krew makes the digits throb near the target.
     final digitSize = r * 0.44;
-    final throb = _zone > 0 ? 1 + 0.05 * _zone * math.sin(_time * 14) : 1.0;
+    final throb = _zone > 0 && !calm
+        ? 1 + 0.05 * _zone * math.sin(_time * 14)
+        : 1.0;
     // Drawn later by the digits layer, above every particle (U-7).
     digits = (canvas) {
       _drawDigits(
@@ -972,11 +997,11 @@ class Dial extends Component {
         c,
         digitSize,
         hidden ? Palette.miss : digitColor,
-        scale: hidden ? 1 + 0.06 * math.sin(_time * 6) : throb,
+        scale: hidden && !calm ? 1 + 0.06 * math.sin(_time * 6) : throb,
       );
     };
     if (golden && running) {
-      final p = 0.5 + 0.5 * math.sin(_time * 6);
+      final p = calm ? 0.5 : 0.5 + 0.5 * math.sin(_time * 6);
       _outline.color = Palette.perfect.withValues(alpha: 0.6 + 0.4 * p);
       canvas.drawCircle(c, r * 1.04, _outline);
       _outline.color = skin.rim;
@@ -989,8 +1014,10 @@ class Dial extends Component {
           ? stage.game.labels.paused
           : stage.game.labels.tapToStart;
       // Quantised so the cached painter is rebuilt a few times a second.
-      alpha =
-          ((0.55 + 0.45 * (0.5 + 0.5 * math.sin(_time * 4))) * 20).round() / 20;
+      alpha = calm
+          ? 0.8
+          : ((0.55 + 0.45 * (0.5 + 0.5 * math.sin(_time * 4))) * 20).round() /
+                20;
     } else if (inResult && grade.missKind != MissKind.noTap) {
       line = formatError(grade.error);
     }
