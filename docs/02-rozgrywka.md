@@ -138,9 +138,9 @@ symulatorem (PERFEKT 10 → 6, Echo PERFEKTU 100% → 60%, jackpot 8 s → 5 s).
   - `G` to globalny mnożnik (osiągnięcia, Chronony, Szał), patrz 03;
   - `P` to aktualny dochód pasywny na sekundę (już z `G`).
 - **R-COMBO-1:** `seria` rośnie o krok combo progu (tabela wyżej). Pudło
-  (dotknięcie za wcześnie lub za późno, R-RUNDA-6a) zeruje serię, chyba że gracz ma ładunek Tarczy (zużywa go wtedy, a seria zostaje).
+  (dotknięcie za wcześnie lub za późno, R-RUNDA-6a) zeruje serię, chyba że gracz ma ładunek Tarczy (zużywa go wtedy, a seria zostaje). Zużycie ładunku zeruje odliczanie do następnego: kolejny wraca dopiero po pełnych 10 krokach (playtest: wcześniej wracał przy pierwszym trafieniu).
 - **R-COMBO-2:** `combo = 1 + 0.05 · min(seria, limit)`, a
-  `limit = 5 + 2·L_combo`, czyli od 5 do 25 (×1.25 do ×2.25).
+  `limit = 5 + 2·L_combo`, czyli od 5 do 35 (×1.25 do ×2.75). Limit dotyczy tylko mnożnika — sama seria liczy się dalej (zadania „Seria N” i rekord serii idą powyżej limitu).
 - **R-COMBO-3:** Combo mnoży **całą** wypłatę, razem z Echem. Bez tego
   w późnej grze combo przestaje się liczyć (wyszło w symulacji).
 - **R-COMBO-4:** Licznik combo jest stale widoczny i rośnie wizualnie (kolor,

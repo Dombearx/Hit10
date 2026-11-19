@@ -1274,7 +1274,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_combo =>
-      'Każde trafienie dokłada kroki serii: PERFEKT +3, ŚWIETNIE +2, DOBRZE +1. Seria mnoży wszystkie twoje wypłaty — mnożnik widać przy napisie COMBO. Ma górny limit.\nBLISKO albo pudło zeruje serię. Wyjątek: ładunek Tarczy (umiejętność) pochłania jedno zerowanie, a kolejne kroki serii go odnawiają.';
+      'Każde trafienie dokłada kroki serii: PERFEKT +3, ŚWIETNIE +2, DOBRZE +1. Seria mnoży wszystkie twoje wypłaty — mnożnik widać przy napisie COMBO. Mnożnik ma górny limit, ale sama seria liczy się dalej.\nBLISKO albo pudło zeruje serię. Wyjątek: ładunek Tarczy (umiejętność) pochłania jedno zerowanie, a kolejne kroki serii go odnawiają — licząc od zera od chwili zużycia.';
 
   @override
   String get help_golden_t => 'Złota Sekunda';
@@ -2364,7 +2364,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_shield_info =>
-      'Każdy poziom to jeden ładunek. Pudło zużywa ładunek, a seria zostaje. Zużyte ładunki wracają po jednym co 10 kroków serii.';
+      'Każdy poziom to jeden ładunek. Pudło zużywa ładunek, a seria zostaje. Zużyte ładunki wracają po jednym co 10 kroków serii; po zużyciu ładunku odliczanie zaczyna się od nowa.';
 
   @override
   String get skill_goldenTouch_info =>
