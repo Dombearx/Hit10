@@ -120,4 +120,5 @@ void main() {
     expect(ids, isNot(contains('owned_grandpa_225')));
     expect(ids, isNot(contains('owned_pulsar_160')));
     expect(ids, isNot(contains('owned_chronos_150')));
-  });}
+  });
+}
