@@ -16,6 +16,8 @@ import '../game_controller.dart';
 import '../providers.dart';
 import '../seasons_ui.dart';
 import '../theme.dart';
+import '../widgets/choice_dialog.dart';
+import '../widgets/game_snack.dart';
 import 'calibration_sheet.dart';
 import 'sheet.dart';
 
@@ -207,7 +209,7 @@ class _Settings extends ConsumerWidget {
     final l = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: c.exportText()));
-    messenger.showSnackBar(SnackBar(content: Text(l.settingsExportDone)));
+    showGameSnack(messenger, text: l.settingsExportDone);
   }
 
   Future<void> _import(
@@ -227,8 +229,7 @@ class _Settings extends ConsumerWidget {
     try {
       importSave(text); // validate before touching anything
     } on SaveFormatException {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(l.settingsImportBad)));
+      showGameSnack(ScaffoldMessenger.of(context), text: l.settingsImportBad);
       return;
     }
     await c.importText(text);
@@ -298,41 +299,42 @@ class _AskDialogState extends State<_AskDialog> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final field = widget.field;
-    return AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(widget.body),
-          if (field != null) ...[
-            const SizedBox(height: 12),
-            TextField(
+    return ChoiceDialogFrame(
+      body: widget.body,
+      extra: field == null
+          ? null
+          : TextField(
               key: const Key('dialog-field'),
               controller: _text,
               autofocus: true,
               maxLines: field == l.resetWord ? 1 : 4,
               decoration: InputDecoration(
                 hintText: field,
-                border: const OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white,
+                border: _fieldBorder,
+                enabledBorder: _fieldBorder,
+                focusedBorder: _fieldBorder.copyWith(
+                  borderSide: const BorderSide(
+                    color: Palette.accent,
+                    width: 2.5,
+                  ),
+                ),
               ),
             ),
-          ],
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text(l.cancel),
-        ),
-        TextButton(
-          key: const Key('dialog-ok'),
-          onPressed: () => Navigator.pop(context, _text.text),
-          child: Text(widget.ok),
-        ),
-      ],
+      yes: widget.ok,
+      no: l.cancel,
+      yesKey: const Key('dialog-ok'),
+      onYes: () => Navigator.pop(context, _text.text),
+      onNo: () => Navigator.pop(context),
     );
   }
 }
+
+const _fieldBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.all(Radius.circular(14)),
+  borderSide: BorderSide(color: Palette.outline, width: 2.5),
+);
 
 /// The privacy policy on the game's site (docs/05 T-26).
 const privacyPolicyUrl = 'https://dombearx.github.io/hit5/privacy.html';
@@ -388,7 +390,7 @@ class _CloudRow extends ConsumerWidget {
     final offer = await c.checkCloud(manual: true);
     if (!context.mounted) return;
     if (offer == null) {
-      messenger.showSnackBar(SnackBar(content: Text(l.settingsCloudNothing)));
+      showGameSnack(messenger, text: l.settingsCloudNothing);
       return;
     }
     final load = await showCloudOffer(context, c, offer);

@@ -1001,7 +1001,7 @@
   "challengeBonus": "Wszystkie trzy dzisiaj: {done}/{total}",
   "challengeBonusDone": "Dziś wszystkie trzy — brawo!",
   "challengeBonusPaid": "Wszystkie trzy dzisiaj! Premia +{amount} Tików",
-  "challengeDone": "Wyzwanie ukończone: {what}",
+  "challengeDone": "Wyzwanie ukończone!",
   "challengeOpen": "Odbierz",
   "challengeCarry": "Nagrody za wczorajsze ukończone wyzwania: {what}",
   "challengeCarrySprings": "+{n} Sprężyna",
