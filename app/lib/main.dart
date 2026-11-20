@@ -17,11 +17,12 @@ import 'ui/audio.dart';
 import 'ui/cloud_save_platform.dart';
 import 'ui/game_controller.dart';
 import 'ui/notifications.dart';
+import 'ui/orientation.dart';
 import 'ui/providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await OrientationPolicy.instance.start();
   final balance = Balance.fromJsonString(
     await rootBundle.loadString('assets/balance.json'),
   );

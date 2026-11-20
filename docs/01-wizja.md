@@ -28,7 +28,8 @@ szybkość klikania.
   posiedzenia.
 - **Android (Google Play)** jako cel pierwszego wydania. Kod nie może blokować
   późniejszego iOS.
-- Tylko orientacja pionowa. Obsługa ekranów od ok. 5" do tabletów, 60 i 120 Hz.
+- Na telefonie tylko orientacja pionowa; tablet i rozłożony składak mogą
+  się obracać (05 T-36). Obsługa ekranów od ok. 5" do tabletów, 60 i 120 Hz.
 - **Języki: polski i angielski** od pierwszej wersji. Domyślnie język
   systemu, z przełącznikiem w ustawieniach.
 

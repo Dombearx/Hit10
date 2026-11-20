@@ -34,11 +34,12 @@
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false"/>
+        <!-- No fixed orientation (Play's large-screen guidance): phones are
+             held upright from Dart, tablets may turn (lib/ui/orientation.dart). -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

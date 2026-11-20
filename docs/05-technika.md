@@ -212,6 +212,20 @@ liczenie wyniku „w klatce” byłoby niesprawiedliwe.
   liczy R-OFF-1). Gry idle często leżą otwarte na stole.
 - **T-22:** Zimny start do ekranu gry poniżej 2 s na tym samym urządzeniu.
 - **T-23:** Rozmiar pobieranego AAB/APK poniżej 40 MB.
+- **T-36 (duże ekrany, Android 15/16):** zalecenia Google Play.
+  - Orientacja: manifest jej nie blokuje (Android 16 i tak ignoruje blokadę
+    na ekranach ≥600 dp). Pion ustawia Dart (`lib/ui/orientation.dart`), tylko
+    gdy krótszy bok **całego wyświetlacza** ma <600 dp, czyli na telefonie,
+    także w podzielonym ekranie. Tablet i rozłożony składak obracają się
+    swobodnie. Reguła działa od nowa przy zmianie ekranu (składanie).
+    W poziomie gra ma proporcje telefonu, wyśrodkowana (max 560 dp), a tło
+    wypełnia ekran.
+  - Bez ramki (edge-to-edge): `MainActivity` to `FlutterFragmentActivity`
+    i woła `enableEdgeToEdge()` (AndroidX), więc gra rysuje się pod paskami
+    systemu na każdej wersji Androida, nie tylko od 15. Treść trzyma się
+    z dala od pasków dzięki `SafeArea` (ekran gry i arkusze).
+  - Test: `large_screen_test.dart` (tablet pionowo i poziomo, 7" poziomo,
+    rozłożony składak w obu orientacjach).
 - **T-24:** `flutter analyze` bez ostrzeżeń, `dart format`, wszystkie testy
   zielone (06). Do repo dochodzi `Makefile` z `make check`.
 - **T-31:** **CI w GitHub Actions** (darmowe minuty, bez stałych kosztów):
