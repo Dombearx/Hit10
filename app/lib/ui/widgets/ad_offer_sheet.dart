@@ -9,6 +9,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 import 'ad_buttons.dart';
 import 'emoji_card.dart';
+import 'game_snack.dart';
 import 'res_text.dart';
 
 /// The offer before a rewarded ad (docs/02 §13, AdMob policy): what the
@@ -70,15 +71,11 @@ void confirmAdResultWith(
           AdOffer.offline => l.adDoneOffline,
           AdOffer.spring => l.adDoneSpring,
         };
-  messenger
-    ..hideCurrentSnackBar()
-    ..showSnackBar(
-      SnackBar(
-        content: Text(text),
-        duration: Duration(seconds: ok ? 3 : 4),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+  showGameSnack(
+    messenger,
+    text: text,
+    duration: Duration(seconds: ok ? 3 : 4),
+  );
 }
 
 class _OfferDialog extends StatelessWidget {

@@ -5914,8 +5914,8 @@ abstract class AppLocalizations {
   /// No description provided for @challengeDone.
   ///
   /// In en, this message translates to:
-  /// **'Challenge done: {what}'**
-  String challengeDone(String what);
+  /// **'Challenge done!'**
+  String get challengeDone;
 
   /// No description provided for @challengeOpen.
   ///

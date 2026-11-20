@@ -3419,9 +3419,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String challengeDone(String what) {
-    return 'Challenge done: $what';
-  }
+  String get challengeDone => 'Challenge done!';
 
   @override
   String get challengeOpen => 'Claim';

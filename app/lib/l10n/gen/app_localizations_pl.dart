@@ -3429,9 +3429,7 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String challengeDone(String what) {
-    return 'Wyzwanie ukończone: $what';
-  }
+  String get challengeDone => 'Wyzwanie ukończone!';
 
   @override
   String get challengeOpen => 'Odbierz';

@@ -2285,14 +2285,7 @@
       }
     }
   },
-  "challengeDone": "Challenge done: {what}",
-  "@challengeDone": {
-    "placeholders": {
-      "what": {
-        "type": "String"
-      }
-    }
-  },
+  "challengeDone": "Challenge done!",
   "challengeOpen": "Claim",
   "challengeCarry": "Yesterday's finished challenges paid out: {what}",
   "@challengeCarry": {

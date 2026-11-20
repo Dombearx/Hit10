@@ -9,6 +9,7 @@ import 'screens/sheet.dart';
 import 'theme.dart';
 import 'widgets/buy_button.dart';
 import 'widgets/emoji_card.dart';
+import 'widgets/game_snack.dart';
 import 'widgets/res_text.dart';
 
 /// Daily and weekly challenges (docs/02 §18): three for today, one for the
@@ -40,6 +41,9 @@ const _art = {
   ChallengeKind.goldenWeek: EmojiArt('sparkles', Color(0xFFFFE6A7)),
   ChallengeKind.springWeek: EmojiArt('gear', Color(0xFFD7C4FF)),
 };
+
+/// The icon of [c]'s kind.
+EmojiArt challengeArt(Challenge c) => _art[c.kind]!;
 
 /// What the challenge asks, in words, with its number.
 String challengeText(AppLocalizations l, Fmt f, Challenge c) {
@@ -243,11 +247,10 @@ class _Card extends StatelessWidget {
     final f = Fmt.of(context, controller);
     final pay = controller.claimChallenge(ch);
     if (pay.bonus <= 0) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l.challengeBonusPaid(f.n(pay.bonus))),
-        behavior: SnackBarBehavior.floating,
-      ),
+    showGameSnack(
+      ScaffoldMessenger.of(context),
+      text: l.challengeBonusPaid(f.n(pay.bonus)),
+      art: const EmojiArt('trophy', Color(0xFFFFE29A)),
     );
   }
 }

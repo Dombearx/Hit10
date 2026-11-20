@@ -47,6 +47,7 @@ import 'widgets/toasts.dart';
 import 'widgets/frenzy_background.dart';
 import 'widgets/alert_dot.dart';
 import 'widgets/choice_dialog.dart';
+import 'widgets/game_snack.dart';
 import 'widgets/coach.dart';
 import 'widgets/next_goal.dart';
 
@@ -141,8 +142,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _maybeShowOffline();
       if (controller.saveWasCorrupt && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).saveCorrupt)),
+        showGameSnack(
+          ScaffoldMessenger.of(context),
+          text: AppLocalizations.of(context).saveCorrupt,
         );
       }
       // A newer version on Google Play: download in the background, then
@@ -156,16 +158,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   void _offerUpdateRestart() {
     if (!mounted) return;
     final l = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        key: const Key('update-ready'),
-        content: Text(l.updateReady),
-        duration: const Duration(days: 1),
-        action: SnackBarAction(
-          label: l.updateRestart,
-          onPressed: () => unawaited(completeAppUpdate()),
-        ),
-      ),
+    showGameSnack(
+      ScaffoldMessenger.of(context),
+      key: const Key('update-ready'),
+      text: l.updateReady,
+      duration: const Duration(days: 1),
+      actionLabel: l.updateRestart,
+      onAction: () => unawaited(completeAppUpdate()),
     );
   }
 
@@ -327,20 +326,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     if (!mounted) return;
     final l = AppLocalizations.of(context);
     final f = Fmt.of(context, controller);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          key: const Key('challenge-done'),
-          content: Text(l.challengeDone(challengeText(l, f, ch))),
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 4),
-          action: SnackBarAction(
-            label: l.challengeOpen,
-            onPressed: () => showChallenges(context, controller),
-          ),
-        ),
-      );
+    showGameSnack(
+      ScaffoldMessenger.of(context),
+      key: const Key('challenge-done'),
+      title: l.challengeDone,
+      text: challengeText(l, f, ch),
+      art: challengeArt(ch),
+      actionLabel: l.challengeOpen,
+      onAction: () => showChallenges(context, controller),
+    );
   }
 
   /// Rewards for challenges finished but not claimed before a new day.
@@ -355,11 +349,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         '+${f.n(paid.tiki + paid.bonus)} ${l.tikiLabel}',
       if (paid.springs > 0) l.challengeCarrySprings(paid.springs),
     ];
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l.challengeCarry(parts.join(' · '))),
-        behavior: SnackBarBehavior.floating,
-      ),
+    showGameSnack(
+      ScaffoldMessenger.of(context),
+      text: l.challengeCarry(parts.join(' · ')),
+      art: const EmojiArt('trophy', Color(0xFFFFE29A)),
     );
   }
 
@@ -367,16 +360,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final s = controller.season;
     if (!mounted || s == null) return;
     final l = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          l.seasonCompleted(
-            seasonName(l, s.id),
-            Fmt.of(context, controller).n(amount),
-          ),
-        ),
-        behavior: SnackBarBehavior.floating,
+    showGameSnack(
+      ScaffoldMessenger.of(context),
+      text: l.seasonCompleted(
+        seasonName(l, s.id),
+        Fmt.of(context, controller).n(amount),
       ),
+      art: seasonLooks[s.id]?.art,
     );
   }
 

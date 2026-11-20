@@ -7,6 +7,7 @@ import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 import '../widgets/buy_button.dart';
+import '../widgets/choice_dialog.dart';
 import '../widgets/emoji_card.dart';
 import '../widgets/res_text.dart';
 import 'sheet.dart';
@@ -122,58 +123,23 @@ Widget _nextLoopCard(BuildContext context, GameController c) {
 /// Returns whether a new loop started.
 Future<bool> confirmNewLoop(BuildContext context, GameController c) async {
   final l = AppLocalizations.of(context);
-  final yes = await showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
-      key: const Key('loop-confirm'),
-      backgroundColor: _paper,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(26),
-        side: const BorderSide(color: Palette.outline, width: 3),
-      ),
-      title: Text(
-        l.loopConfirmTitle,
-        style: const TextStyle(fontFamily: Fonts.display, fontSize: 22),
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ResText(l.loopConfirmResets, style: const TextStyle(fontSize: 15)),
-          const SizedBox(height: 10),
-          ResText(
-            l.loopConfirmKeeps,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          key: const Key('loop-confirm-no'),
-          style: TextButton.styleFrom(minimumSize: const Size(64, 48)),
-          onPressed: () => Navigator.pop(context, false),
-          child: Text(
-            l.loopConfirmNo,
-            style: const TextStyle(color: Palette.outline, fontSize: 15),
-          ),
-        ),
-        TextButton(
-          key: const Key('loop-confirm-yes'),
-          style: TextButton.styleFrom(minimumSize: const Size(64, 48)),
-          onPressed: () => Navigator.pop(context, true),
-          child: Text(
-            l.loopConfirmYes,
-            style: const TextStyle(
-              fontFamily: Fonts.display,
-              color: Palette.accent,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ],
+  final yes = await showChoiceDialog(
+    context,
+    dialogKey: const Key('loop-confirm'),
+    art: generatorArt[c.balance.loops.goal],
+    title: l.loopConfirmTitle,
+    body: l.loopConfirmResets,
+    extra: ResText(
+      l.loopConfirmKeeps,
+      textAlign: TextAlign.center,
+      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
     ),
+    yes: l.loopConfirmYes,
+    no: l.loopConfirmNo,
+    yesKey: const Key('loop-confirm-yes'),
+    noKey: const Key('loop-confirm-no'),
   );
-  if (yes != true) return false;
+  if (!yes) return false;
   c.rewindEffects();
   return c.startLoop();
 }
