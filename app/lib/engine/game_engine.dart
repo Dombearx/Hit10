@@ -313,7 +313,10 @@ class GameEngine {
     final before = s.comboStreak;
     var broken = false;
     var shieldUsed = false;
-    if (tier == Tier.miss) {
+    final ladder = b.combo.ladder;
+    if (ladder != null) {
+      (broken, shieldUsed) = _climbLadder(ladder, g, tier);
+    } else if (tier == Tier.miss) {
       if (s.shieldCharges > 0 && before > 0) {
         s.shieldCharges--;
         s.lifetime.shieldSaves++;
@@ -375,6 +378,48 @@ class GameEngine {
       golden: golden,
       jackpot: jackpot,
     );
+  }
+
+  /// The multiplier ladder (combo redesign, design/combo_sim.py). Under
+  /// "Fragile combo" the step comes from the raw tap on the base windows:
+  /// skills, Luck and Hot hand widen what a hit pays, not the multiplier.
+  (bool, bool) _climbLadder(ComboLadder ladder, Grade raw, Tier tier) {
+    final fragile = econ.ruleOn('fragileCombo');
+    final t = fragile ? grade(raw.error, econ.baseWindows()).tier : tier;
+    final before = s.comboStreak;
+    if (t == Tier.miss) {
+      if (s.shieldCharges > 0 && before > 0) {
+        s.shieldCharges--;
+        s.lifetime.shieldSaves++;
+        s.shieldProgress = 0;
+        return (false, true);
+      }
+      var keep = s.perks.contains('comboFloor')
+          ? b.perk('comboFloor').params['floor']!.round()
+          : 0;
+      // The seal of "Fragile combo": a miss takes half (R-PETLA-4).
+      if (econ.sealed('fragileCombo')) {
+        final share = b.loops.rule('fragileCombo').seal['missKeeps']!;
+        keep = math.max(keep, (before * share).floor());
+      }
+      s.comboStreak = math.min(before, keep);
+      return (before > s.comboStreak, false);
+    }
+    var step = ladder.steps[t.name]!;
+    if (fragile && t == Tier.good) {
+      step = b.loops.rule('fragileCombo').params['good']!.round();
+    }
+    if (isJackpot(raw)) step += ladder.jackpot;
+    s.comboStreak = (before + step).clamp(0, econ.comboCap());
+    s.shieldProgress++;
+    final perCharge = s.perks.contains('shieldRecharge')
+        ? b.perk('shieldRecharge').params['steps']!.round()
+        : ladder.rechargeHits;
+    if (s.shieldProgress >= perCharge) {
+      s.shieldProgress = 0;
+      s.shieldCharges = math.min(maxShieldCharges(), s.shieldCharges + 1);
+    }
+    return (false, false);
   }
 
   /// A tap that shows 10.00 on the dial (docs/02 §2): within the jackpot
@@ -477,7 +522,11 @@ class GameEngine {
   /// hit's step and the risk mode on now. A PERFECT is priced as a 10.00,
   /// jackpot included (the header's "10.00 = +X").
   double nextHitPayout(Tier tier) {
-    final step = b.tier(tier.name).comboStep;
+    final ladder = b.combo.ladder;
+    final step = ladder == null
+        ? b.tier(tier.name).comboStep
+        : ladder.steps[tier.name]! +
+              (tier == Tier.perfect ? ladder.jackpot : 0);
     final combo = comboMultiplier(s.comboStreak + step);
     final mode = modeMultiplier();
     final jackpot = tier == Tier.perfect ? jackpotAmount() * combo * mode : 0;

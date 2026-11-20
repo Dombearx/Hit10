@@ -287,10 +287,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc => 'Wyższy limit mnożnika serii.';
+  String get skill_combo_desc => 'Wyższy limit mnożnika.';
 
   @override
-  String get skill_combo_label => 'Seria mnoży do';
+  String get skill_combo_label => 'Mnożnik do';
 
   @override
   String get skill_magnet => 'Magnes';
@@ -334,7 +334,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get skill_shield => 'Tarcza';
 
   @override
-  String get skill_shield_desc => 'Pudło zużywa ładunek zamiast zerować serię.';
+  String get skill_shield_desc =>
+      'Pudło zużywa ładunek zamiast zerować mnożnik.';
 
   @override
   String get skill_shield_label => 'Ładunki';
@@ -464,8 +465,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get comboLabel => 'COMBO';
 
   @override
-  String streakLabel(int count) {
-    return 'seria $count';
+  String streakLabel(int count, int target) {
+    return 'seria $count/$target';
   }
 
   @override
@@ -521,7 +522,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String ach_combo_desc(String count) {
-    return 'Osiągnij serię $count';
+    return 'Dojdź do mnożnika $count';
   }
 
   @override
@@ -554,13 +555,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get ach_mode_fast => 'Czuję rytm';
 
   @override
-  String get ach_mode_fast_desc => 'PERFEKT na ślepo przy serii 10+';
+  String get ach_mode_fast_desc =>
+      'PERFEKT na ślepo przy mnożniku ×1,5 lub wyższym';
 
   @override
   String get ach_mode_both => 'Metronom w głowie';
 
   @override
-  String get ach_mode_both_desc => 'PERFEKT na ślepo przy serii 25+';
+  String get ach_mode_both_desc => 'PERFEKT na ślepo przy pełnym mnożniku';
 
   @override
   String get ach_hidden_impatient => 'Niecierpliwy';
@@ -707,7 +709,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String ach_shield_desc(String count) {
-    return 'Tarcza obroniła serię $count razy';
+    return 'Tarcza obroniła mnożnik $count razy';
   }
 
   @override
@@ -849,13 +851,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get perk_shieldRecharge_desc =>
-      'Ładunek Tarczy co 7 kroków serii zamiast co 10';
+      'Ładunek Tarczy co 7 trafień zamiast co 10';
 
   @override
   String get perk_comboFloor => 'Twarde lądowanie';
 
   @override
-  String get perk_comboFloor_desc => 'Pudło zrzuca serię do 5, nie do 0';
+  String get perk_comboFloor_desc => 'Pudło zrzuca mnożnik do ×1,25, nie do ×1';
 
   @override
   String get perk_autoBuyer => 'Automatyczny kupiec';
@@ -945,7 +947,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get statBestStreak => 'Najlepsza seria PERFEKT';
 
   @override
-  String get statBestCombo => 'Najwyższe combo';
+  String get statBestCombo => 'Najwyższy mnożnik';
 
   @override
   String get statGolden => 'Złapane Złote Sekundy';
@@ -1071,8 +1073,8 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String adRescue(int count) {
-    return 'Seria $count przepadła! ▶ Przywróć za reklamę';
+  String adRescue(String count) {
+    return 'Mnożnik $count przepadł! ▶ Przywróć za reklamę';
   }
 
   @override
@@ -1093,7 +1095,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tip_golden => 'Złap złoty zegarek — będzie złota runda!';
 
   @override
-  String get tip_combo => 'Seria! Trafiaj dalej, mnożnik rośnie.';
+  String get tip_combo =>
+      'PERFEKT podnosi mnożnik! Równe 5.00 od razu do limitu.';
 
   @override
   String get tip_prestige =>
@@ -1270,14 +1273,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_skills =>
-      'Umiejętności wzmacniają twoje własne trafienia — nie zegary. Dają m.in. wyższą nagrodę, szersze okna ocen i dłuższą serię.\n• Każda ma poziomy, np. „Poziom 2/10”; kolejny poziom kosztuje więcej Tików.\n• Nowa karta pojawia się, gdy zbliżasz się do jej ceny.\n• Dotknij karty, by zobaczyć dokładny efekt.';
+      'Umiejętności wzmacniają twoje własne trafienia — nie zegary. Dają m.in. wyższą nagrodę, szersze okna ocen i wyższy mnożnik.\n• Każda ma poziomy, np. „Poziom 2/10”; kolejny poziom kosztuje więcej Tików.\n• Nowa karta pojawia się, gdy zbliżasz się do jej ceny.\n• Dotknij karty, by zobaczyć dokładny efekt.';
 
   @override
-  String get help_combo_t => 'Seria (combo)';
+  String get help_combo_t => 'Mnożnik (combo)';
 
   @override
   String get help_combo =>
-      'Każde trafienie dokłada kroki serii: PERFEKT +3, ŚWIETNIE +2, DOBRZE +1. Seria mnoży wszystkie twoje wypłaty — mnożnik widać przy napisie COMBO. Mnożnik ma górny limit, ale sama seria liczy się dalej.\nBLISKO albo pudło zeruje serię. Wyjątek: ładunek Tarczy (umiejętność) pochłania jedno zerowanie, a kolejne kroki serii go odnawiają — licząc od zera od chwili zużycia.';
+      'Mnożnik przy napisie COMBO mnoży wszystkie twoje wypłaty. PERFEKT podnosi go o 0,05, równe 5.00 od razu do limitu (limit podnosi umiejętność Combo). ŚWIETNIE i DOBRZE go nie ruszają.\nBLISKO albo pudło zeruje mnożnik. Wyjątek: ładunek Tarczy (umiejętność) pochłania jedno pudło; ładunki wracają co 10 trafień, licząc od zera od chwili zużycia.\nSeria — trafienia z rzędu — liczy się tylko przy wyzwaniu „seria”: od zera i do pierwszego pudła, także takiego, które Tarcza obroniła.';
 
   @override
   String get help_golden_t => 'Złota Sekunda';
@@ -2171,7 +2174,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get adDoneBag => 'Worek Tików odebrany!';
 
   @override
-  String get adDoneRescue => 'Seria przywrócona!';
+  String get adDoneRescue => 'Mnożnik przywrócony!';
 
   @override
   String get adDoneOffline => 'Dochód offline podwojony!';
@@ -2347,7 +2350,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_combo_info =>
-      'Każde trafienie bez pudła podnosi mnożnik serii: PERFEKT o 0,15, ŚWIETNIE o 0,10, DOBRZE o 0,05. Bez ulepszeń mnożnik kończy się na ×1,25; każdy poziom podnosi ten limit o 0,10. Mnoży całą wypłatę za trafienie, także 5.00 i Echo.';
+      'PERFEKT podnosi mnożnik o 0,05, a równe 5.00 od razu do limitu. ŚWIETNIE i DOBRZE go nie ruszają, pudło zeruje. Bez ulepszeń limit to ×1,25; każdy poziom podnosi go o 0,10. Mnoży całą wypłatę za trafienie, także 5.00 i Echo.';
 
   @override
   String get skill_magnet_info =>
@@ -2367,7 +2370,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get skill_shield_info =>
-      'Każdy poziom to jeden ładunek. Pudło zużywa ładunek, a seria zostaje. Zużyte ładunki wracają po jednym co 10 kroków serii; po zużyciu ładunku odliczanie zaczyna się od nowa.';
+      'Każdy poziom to jeden ładunek. Pudło zużywa ładunek, a mnożnik zostaje. Zużyte ładunki wracają po jednym co 10 trafień; po zużyciu ładunku odliczanie zaczyna się od nowa.';
 
   @override
   String get skill_goldenTouch_info =>
@@ -2988,8 +2991,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get rule_shortFuse => 'Krótki lont';
 
   @override
-  String get rule_shortFuse_desc =>
-      'Combo liczy się najwyżej do 5 i nie ma Tarczy.';
+  String get rule_shortFuse_desc => 'Mnożnik najwyżej ×1,25 i nie ma Tarczy.';
 
   @override
   String get rule_shortFuse_quote =>
@@ -3035,6 +3037,24 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get seal_insomnia_desc =>
       'Dochód offline liczy się o 12 godzin dłużej.';
+
+  @override
+  String get rule_fragileCombo => 'Kruche combo';
+
+  @override
+  String get rule_fragileCombo_desc =>
+      'Mnożnik liczy się z gołych okien: umiejętności, Szczęście i Gorąca ręka ich nie poszerzają. DOBRZE zabiera 0,05.';
+
+  @override
+  String get rule_fragileCombo_quote =>
+      '„Szerokie okna? Proszę bardzo. Ale mnożnik zobaczy prawdę.”';
+
+  @override
+  String get seal_fragileCombo => 'Hartowane combo';
+
+  @override
+  String get seal_fragileCombo_desc =>
+      'Pudło zabiera połowę mnożnika zamiast całego.';
 
   @override
   String get chapter_1_t => 'Kupiony';
@@ -3090,7 +3110,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_round =>
-      'Stoper liczy od zera. Dotknij ekranu, gdy pokaże 5.00 — od tego, jak blisko trafisz, zależy ocena:\n• równo 5.00 (±0,010 s) — PERFEKT i premia: Tiki za kilka sekund pracy zegarów\n• PERFEKT (±0,015 s) — 6 Tików, seria +3\n• ŚWIETNIE (±0,030 s) — 3 Tiki, seria +2\n• DOBRZE (±0,050 s) — 1 Tik, seria +1\n• BLISKO (±0,150 s) — drobna pociecha, seria przepada\nDalej to pudło. Dotknięcie wcześniej niż sekundę przed 5.00 się nie liczy. Umiejętności poszerzają okna ocen (poza „równo 5.00”).';
+      'Stoper liczy od zera. Dotknij ekranu, gdy pokaże 5.00 — od tego, jak blisko trafisz, zależy ocena:\n• równo 5.00 (±0,010 s) — PERFEKT, premia: Tiki za kilka sekund pracy zegarów, i pełny mnożnik\n• PERFEKT (±0,015 s) — 6 Tików, mnożnik +0,05\n• ŚWIETNIE (±0,030 s) — 3 Tiki\n• DOBRZE (±0,050 s) — 1 Tik\n• BLISKO (±0,150 s) — drobna pociecha, mnożnik przepada\nDalej to pudło. Dotknięcie wcześniej niż sekundę przed 5.00 się nie liczy. Umiejętności poszerzają okna ocen (poza „równo 5.00”).';
 
   @override
   String get help_res_t => 'Zasoby';
@@ -3331,7 +3351,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String chStreak(int n) {
-    return 'Dojdź do serii $n';
+    return '$n trafień z rzędu';
   }
 
   @override

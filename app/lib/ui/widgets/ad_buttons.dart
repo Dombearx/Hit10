@@ -7,6 +7,7 @@ import '../../ads/rewarded_ads.dart';
 import '../../engine/ad_offers.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../catalog.dart';
+import '../format.dart';
 import '../game_controller.dart';
 import '../providers.dart';
 import '../theme.dart';
@@ -195,7 +196,7 @@ class RescuePopup extends ConsumerWidget {
             // Narrow phones: wraps rather than running off the screen.
             Flexible(
               child: Text(
-                '${l.adRescue(r.streak)} · ${left.ceil()}',
+                '${l.adRescue(Fmt.of(context, c).mult(c.engine.comboMultiplier(r.streak)))} · ${left.ceil()}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontFamily: Fonts.display,

@@ -37,7 +37,8 @@
   "combo": {
     "multiplierPerStep": 0.05,
     "baseCap": 5,
-    "shieldRechargeSteps": 10
+    "shieldRechargeSteps": 10,
+    "ladder": {"steps": {"perfect": 1, "great": 0, "good": 0}, "jackpot": 99, "rechargeHits": 10}
   },
   "skills": [
     {
@@ -307,9 +308,9 @@
   "achievements": {
     "bonusEach": 0.01,
     "earnedThresholds": [1000.0, 1000000.0, 1000000000.0, 1000000000000.0, 1000000000000000.0, 1e+18, 1e+20, 1e+21],
-    "ownedThresholds": [1, 50, 100, 150],
-    "ownedThresholdsLate": {"fromGenerator": 6, "thresholds": [1, 25, 50, 80]},
-    "ownedThresholdsLast": {"fromGenerator": 11, "thresholds": [1, 10, 25, 50]},
+    "ownedThresholds": [1, 50, 100, 180],
+    "ownedThresholdsLate": {"fromGenerator": 6, "thresholds": [1, 25, 60, 120]},
+    "ownedThresholdsLast": {"fromGenerator": 11, "thresholds": [1, 25, 50, 100]},
     "perfectThresholds": [
       1,
       10,
@@ -325,8 +326,8 @@
     ],
     "comboThresholds": [
       10,
-      15,
-      25
+      20,
+      35
     ],
     "goldenThresholds": [
       1,
@@ -343,7 +344,7 @@
     "exactThresholds": [1, 100, 1000, 10000],
     "roundThresholds": [100, 1000, 10000, 100000],
     "incomeThresholds": [1000.0, 1000000.0, 1000000000.0, 1000000000000.0, 100000000000000.0, 1000000000000000.0],
-    "clocksThresholds": [100, 500, 1000, 1500],
+    "clocksThresholds": [100, 500, 1000, 2000],
     "skillLevelThresholds": [25, 50, 100],
     "blindPerfectThresholds": [10, 100, 1000],
     "playHoursThresholds": [1, 10, 100],
@@ -625,7 +626,8 @@
       {"id": "noGold", "seal": {"awaySeconds": 3600, "goldenWithin": 30}},
       {"id": "shortFuse", "params": {"comboCap": 5}, "seal": {"shieldCharges": 1}},
       {"id": "precision", "seal": {"perfectWindow": 0.001}},
-      {"id": "insomnia", "params": {"offlineEfficiency": 0.25}, "seal": {"offlineCapHours": 12}}
+      {"id": "insomnia", "params": {"offlineEfficiency": 0.25}, "seal": {"offlineCapHours": 12}},
+      {"id": "fragileCombo", "story": false, "params": {"good": -1}, "seal": {"missKeeps": 0.5}}
     ]
   },
   "dials": [

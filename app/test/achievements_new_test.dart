@@ -105,12 +105,19 @@ void main() {
     expect(unlock(), contains('hidden_atomic'));
   });
 
-  test('later clocks count fewer pieces (playtest 25 report)', () {
+  test('later clocks count fewer pieces (R-OSIAG-2c)', () {
     final ids = all.map((a) => a.id).toSet();
-    expect(ids, containsAll(['owned_grandpa_150', 'owned_chronos_50']));
-    expect(ids, isNot(contains('owned_chronos_200')));
-    expect(ids, contains('owned_quartz_80'));
-    // The bot owns at most ~100 pulsars in 400 h (playtest 27 report).
-    expect(ids, isNot(contains('owned_pulsar_100')));
-  });
-}
+    expect(
+      ids,
+      containsAll([
+        'owned_grandpa_180',
+        'owned_quartz_120',
+        'owned_chronos_100',
+        'clocks_2000',
+      ]),
+    );
+    // Past these the player waits days for each piece (achievement_timeline).
+    expect(ids, isNot(contains('owned_grandpa_225')));
+    expect(ids, isNot(contains('owned_pulsar_160')));
+    expect(ids, isNot(contains('owned_chronos_150')));
+  });}

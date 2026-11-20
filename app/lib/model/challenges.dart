@@ -11,7 +11,7 @@ import 'grading.dart';
 enum ChallengeKind {
   // Daily, slot 0: aim.
   great, // N hits GREAT or better
-  streak, // reach a streak of N
+  streak, // N hits in a row since it was handed out
   jackpot, // N exact 5.00s
   // Daily, slot 1: a feat.
   perfectWindow, // N PERFECTs within 10 rounds in a row
@@ -24,7 +24,7 @@ enum ChallengeKind {
   // Weekly.
   greatWeek, // N GREAT+ hits this week
   jackpotWeek, // N exact 5.00s this week
-  streakWeek, // reach a streak of N this week
+  streakWeek, // N hits in a row this week
   goldenWeek, // catch N Golden Seconds this week
   springWeek, // wind N minutes of Mainspring with exact hits this week
 }
@@ -58,6 +58,10 @@ class Challenge {
   /// The last tiers, for [ChallengeKind.perfectWindow] (1 = PERFECT).
   final List<int> recent = [];
 
+  /// Hits in a row since it was handed out, for the streak kinds: every
+  /// miss starts it over, a Shield's too (docs/15).
+  int run = 0;
+
   bool claimed = false;
 
   int get slot => slotOf(kind);
@@ -72,6 +76,7 @@ class Challenge {
     'target': target,
     'progress': progress,
     'recent': recent,
+    'run': run,
     'claimed': claimed,
   };
 
@@ -82,11 +87,24 @@ class Challenge {
     if (kind.isEmpty) return null;
     double d(Object? v) => v is num && v.isFinite ? v.toDouble() : 0;
     final c = Challenge(kind.first, d(j['target']), progress: d(j['progress']))
-      ..claimed = j['claimed'] == true;
+      ..claimed = j['claimed'] == true
+      ..run = d(j['run']).toInt();
     final r = j['recent'];
     if (r is List) c.recent.addAll(r.whereType<num>().map((e) => e.toInt()));
     return c;
   }
+}
+
+/// The "streak" challenge whose count the combo row shows: the daily one
+/// first, only while it is on (not done, not claimed).
+Challenge? streakChallenge(Iterable<Challenge> list) {
+  Challenge? weekly;
+  for (final c in list) {
+    if (c.claimed || c.done) continue;
+    if (c.kind == ChallengeKind.streak) return c;
+    if (c.kind == ChallengeKind.streakWeek) weekly = c;
+  }
+  return weekly;
 }
 
 /// A graded round of the player, as challenges see it.
@@ -96,15 +114,13 @@ class ChallengeRound {
     required this.error,
     required this.jackpot,
     required this.payout,
-    required this.streak,
   });
   final Tier tier;
   final double error;
   final bool jackpot;
   final double payout;
 
-  /// The streak after this round.
-  final int streak;
+  bool get hit => tier != Tier.miss;
 }
 
 /// Moves challenges forward. Returns the challenges that just got done.
@@ -120,7 +136,8 @@ abstract final class ChallengeProgress {
         case ChallengeKind.great || ChallengeKind.greatWeek:
           if (greatPlus) c.progress++;
         case ChallengeKind.streak || ChallengeKind.streakWeek:
-          c.progress = math.max(c.progress, r.streak.toDouble());
+          c.run = r.hit ? c.run + 1 : 0;
+          c.progress = math.max(c.progress, c.run.toDouble());
         case ChallengeKind.jackpot || ChallengeKind.jackpotWeek:
           if (r.jackpot) c.progress++;
         case ChallengeKind.perfectWindow:
@@ -375,6 +392,7 @@ class _Session {
         ? p.recentErrors
         : null;
     var streak = 0;
+    var ladder = 0;
     final window = <int>[];
     for (var i = 0; i < rounds; i++) {
       final e = errors != null
@@ -386,12 +404,7 @@ class _Session {
       if (greatPlus) s.great++;
       if (g.tier == Tier.perfect) s.perfects++;
       if (jackpot) s.jackpots++;
-      streak = switch (g.tier) {
-        Tier.perfect => streak + 3,
-        Tier.great => streak + 2,
-        Tier.good => streak + 1,
-        Tier.miss => 0,
-      };
+      streak = g.tier == Tier.miss ? 0 : streak + 1;
       s.bestStreak = math.max(s.bestStreak, streak.toDouble());
       window.add(g.tier == Tier.perfect ? 1 : 0);
       if (window.length > ChallengeProgress.window) window.removeAt(0);
@@ -399,7 +412,14 @@ class _Session {
         s.bestWindow,
         window.fold<int>(0, (a, b) => a + b).toDouble(),
       );
-      final combo = 1 + p.comboStep * math.min(streak, p.comboCap);
+      // The multiplier ladder (docs/15): PERFECT +1, 5.00 fills it, a
+      // miss empties it (Shields left out: the target comes out lower).
+      ladder = g.tier == Tier.miss
+          ? 0
+          : jackpot
+          ? p.comboCap
+          : math.min(p.comboCap, ladder + (g.tier == Tier.perfect ? 1 : 0));
+      final combo = 1 + p.comboStep * ladder;
       s.earned +=
           ((p.payout[g.tier] ?? 0) + (jackpot ? p.jackpotPayout : 0)) * combo;
     }

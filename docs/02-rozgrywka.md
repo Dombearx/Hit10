@@ -86,10 +86,10 @@ start i nagłe hamowanie przy 9.0 psuły to liczenie. Dlatego stoper
 
 | Próg | Okno bazowe `|e|` | Nagroda bazowa (Tiki) | Udział Echa | Krok combo |
 |---|---|---|---|---|
-| **5.00** (jackpot) | < 0.010 s | PERFEKT + 5 s dochodu zegarów | – | jak PERFEKT |
-| **PERFEKT** | < 0.015 s | 6 | 60% | +3 |
-| **ŚWIETNIE** | < 0.030 s | 3 | 33% | +2 |
-| **DOBRZE** | < 0.050 s | 1 | 10% | +1 |
+| **5.00** (jackpot) | < 0.010 s | PERFEKT + 5 s dochodu zegarów | – | mnożnik od razu do limitu |
+| **PERFEKT** | < 0.015 s | 6 | 60% | +1 |
+| **ŚWIETNIE** | < 0.030 s | 3 | 33% | 0 |
+| **DOBRZE** | < 0.050 s | 1 | 10% | 0 |
 | **BLISKO** | < 0.150 s (tylko dotknięcia gracza) | 0.3 | 0 | reset do 0 |
 | **PUDŁO** | reszta, ZA WCZEŚNIE, ZA PÓŹNO | 0 | 0 | reset do 0 |
 
@@ -128,23 +128,32 @@ symulatorem (PERFEKT 10 → 6, Echo PERFEKTU 100% → 60%, jackpot 8 s → 5 s).
   60%. Szczegóły w 03. Okno PERFEKT (10 ms) jest węższe niż jedna klatka
   ekranu 60 Hz (16,7 ms) i niż najostrzejsze oceny gier rytmicznych — ma
   zostać wyczynem (playtest na telefonie: ok. 1 PERFEKT na 20 prób).
-- Kroki combo (playtest na telefonie): każde trafienie, także DOBRZE,
-  podnosi serię (+1/+2/+3), bo przy przeciętnym rozrzucie PERFEKT pod rząd
-  praktycznie się nie zdarza; serię dalej zeruje BLISKO i pudło.
+- Kroki combo (docs/15, 11.2026): mnożnik podnosi tylko PERFEKT, a równe
+  5.00 od razu do limitu (okno 5.00 nie rośnie z umiejętnościami, więc to
+  zawsze wyczyn, a słabszy gracz ma czym wrócić). Dawne +3/+2/+1 za każde
+  trafienie trzymało dobrego gracza stale na maksimum.
 
 ## 3. Wypłata za trafienie i combo
 
 - **R-WYPLATA-1:** wypłata = `(nagroda_progu · (1 + 1.5·L_siła) · G + ⅓ s · L_echo · udział_echa · P) · combo · mnożnik_trybu`
   - `G` to globalny mnożnik (osiągnięcia, Chronony, Szał), patrz 03;
   - `P` to aktualny dochód pasywny na sekundę (już z `G`).
-- **R-COMBO-1:** `seria` rośnie o krok combo progu (tabela wyżej). Pudło
-  (dotknięcie za wcześnie lub za późno, R-RUNDA-6a) zeruje serię, chyba że gracz ma ładunek Tarczy (zużywa go wtedy, a seria zostaje). Zużycie ładunku zeruje odliczanie do następnego: kolejny wraca dopiero po pełnych 10 krokach (playtest: wcześniej wracał przy pierwszym trafieniu).
-- **R-COMBO-2:** `combo = 1 + 0.05 · min(seria, limit)`, a
-  `limit = 5 + 2·L_combo`, czyli od 5 do 35 (×1.25 do ×2.75). Limit dotyczy tylko mnożnika — sama seria liczy się dalej (zadania „Seria N” i rekord serii idą powyżej limitu).
+- **R-COMBO-1:** `kroki` mnożnika rosną o krok combo progu (tabela wyżej)
+  i nigdy nie przekraczają limitu; równe 5.00 ustawia je na limit. Pudło
+  (także BLISKO; dotknięcie za wcześnie lub za późno, R-RUNDA-6a) zeruje
+  kroki, chyba że gracz ma ładunek Tarczy (zużywa go wtedy, a mnożnik
+  zostaje). Tarcza chroni tylko przed pudłem. Ładunek wraca co 10 trafień
+  (`combo.ladder.rechargeHits`); zużycie ładunku zeruje odliczanie.
+- **R-COMBO-2:** `combo = 1 + 0.05 · kroki`, a `limit = 5 + 2·L_combo`,
+  czyli od 5 do 35 (×1.25 do ×2.75).
+- **R-COMBO-2a (seria):** seria — trafienia z rzędu — liczy się tylko dla
+  wyzwania „seria” (R-WYZ-3): od zera od wydania wyzwania, każde pudło ją
+  zeruje, także obronione Tarczą. Bez takiego wyzwania nie jest pokazywana.
 - **R-COMBO-3:** Combo mnoży **całą** wypłatę, razem z Echem. Bez tego
   w późnej grze combo przestaje się liczyć (wyszło w symulacji).
-- **R-COMBO-4:** Licznik combo jest stale widoczny i rośnie wizualnie (kolor,
-  płomień, rozmiar). Utrata combo ma swój efekt („rozbicie”).
+- **R-COMBO-4:** Mnożnik jest stale widoczny i rośnie wizualnie (kolor,
+  płomień, rozmiar — względem limitu). Utrata mnożnika ma swój efekt
+  („rozbicie”). Obok, tylko przy wyzwaniu „seria”: „seria 12/40”.
 
 ## 4. Umiejętności gracza (sklep „Umiejętności”)
 
@@ -157,12 +166,12 @@ Każda umiejętność ma poziomy. Cena poziomu to `koszt_bazowy · wzrost^L`, gd
 | `fastForward` | Start później / Late Start | 15 | 150 | ×3.66 | stoper rusza od 0.1333·L, max 2.0 |
 | `ticking` | Tykanie / Ticking | 1 | 200 | – | dźwięk i wibracja co 0.1 s w ostatniej sekundzie |
 | `wideEye` | Sokole oko / Hawk Eye | 15 | 600 | ×2.6 | okna ŚWIETNIE i DOBRZE ×(1+0.0533L), max ×1.8 |
-| `combo` | Combo / Combo | 15 | 500 | ×8 | limit combo +2 na poziom (5 → 35) |
+| `combo` | Combo / Combo | 15 | 500 | ×8 | limit mnożnika +2 kroki (+0.10) na poziom (×1.25 → ×2.75) |
 | `magnet` | Magnes / Magnet | 15 | 2 000 | ×3.66 | okno PERFEKT +0.00067 s na poziom, ±0.015 → ±0.025 |
 | `echo` | Echo / Echo | 15 | 5 000 | ×9 | trafienie płaci dodatkowo ⅓·L s dochodu pasywnego × udział echa (max 5 s) |
 | `bulletTime` | Zimna krew / Cold Blood | 15 | 5 000 | ×3.66 | okna gracza ×1/(1−0.04L), max ×2.5 |
 | `luck` | Szczęście / Luck | 15 | 10 000 | ×8 | szansa 2%·L, że ŚWIETNIE→PERFEKT, a DOBRZE→ŚWIETNIE |
-| `shield` | Tarcza / Shield | 5 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować combo; +1 ładunek co 10 kroków serii |
+| `shield` | Tarcza / Shield | 5 | 2 000 | ×50 | L ładunków; pudło zużywa ładunek zamiast zerować mnożnik; +1 ładunek co 10 trafień |
 | `goldenTouch` | Złoty dotyk / Golden Touch | 8 | 1 000 000 | ×50 | odstęp między Złotymi Sekundami ×(1−0.05L), czyli pojawia się częściej; jej efekt jest ×(1+0.05L) silniejszy |
 
 Więcej poziomów (zmiana po playteście, razem z R-PRES-5a): umiejętności
@@ -324,24 +333,24 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Kategoria | Progi | Liczba |
 |---|---|---|
 | Zarobione łącznie | 1K, 1M, 1B, 1T, 1aa, 1ab, 100ab, 1ac | 8 |
-| Posiadane sztuki generatora | zegary 1–6: 1, 50, 100, 150; zegary 7–11: 1, 25, 50, 80; zegary 12–14: 1, 10, 25, 50 | 56 |
+| Posiadane sztuki generatora | zegary 1–6: 1, 50, 100, 180; zegary 7–11: 1, 25, 60, 120; zegary 12–14: 1, 25, 50, 100 | 56 |
 | PERFEKTY łącznie | 1, 10, 100, 1K, 10K, 100K | 6 |
 | PERFEKTY z rzędu | 3, 5, 10 | 3 |
-| Najwyższe combo | 10, 15, 25 (max) | 3 |
+| Najwyższy mnożnik | ×1.50, ×2.00, ×2.75 (pełne Combo) | 3 |
 | Złapane Złote Sekundy | 1, 10, 50, 200, 500 | 5 |
 | Prestiże | 1, 5, 10, 25, 50 | 5 |
-| Tryby | PERFEKT na ślepo; PERFEKT na ślepo przy serii 10+; przy serii 25+ (wystarczy PERFEKT, nie równe 5.00) | 3 |
+| Tryby | PERFEKT na ślepo; PERFEKT na ślepo przy mnożniku ×1.50+; przy pełnym mnożniku (wystarczy PERFEKT, nie równe 5.00) | 3 |
 | Wydarzenia sezonowe | po jednym na wydarzenie (§14) | 7 |
 | Równo 5.00 na tarczy (PERFEKT w oknie jackpotu, błąd < 0.010 s) | 1, 100, 1K, 10K | 4 |
 | Zagrane rundy | 100, 1K, 10K, 100K | 4 |
 | Dochód pasywny na sekundę (bez Szału i Turbo) | 1K, 1M, 1B, 1T, 100T, 1aa | 6 |
-| Zegary łącznie | 100, 500, 1000, 1500 | 4 |
+| Zegary łącznie | 100, 500, 1000, 2000 | 4 |
 | Poziomy umiejętności łącznie | 25, 50, 100 | 3 |
 | PERFEKTY na ślepo łącznie | 10, 100, 1K | 3 |
 | Czas gry | 1 h, 10 h, 100 h | 3 |
 | Zdobyte osiągnięcia | 25, 50, 100 | 3 |
 | Odebrane dzienne premie | 7, 30, 100 | 3 |
-| Seria uratowana Tarczą | 10, 100 | 2 |
+| Mnożnik uratowany Tarczą | 10, 100 | 2 |
 | Wyczyny | „Refleks” (Złota Sekunda złapana do 1 s od pojawienia się), „Złoto do złota” (w trakcie Szału), „Pełny tydzień” (7. dzień premii), „Sen zimowy” (powrót po przerwie dłuższej niż limit offline), „Obie ręce” (PERFEKT na jednym zegarze zaraz po PERFEKCIE na drugim), „Władca czasu” (wszystkie perki), „Bez rąk” (1M Tików w jednym przejściu przy najwyżej 15 trafieniach, wzór: Neverclick z Cookie Clickera) | 7 |
 | Tytuły mistrzowskie (§15) | poziom 5 i 10 każdego zegara, nazwa i żart na każdy | 28 |
 | Ukryte / śmieszne | „Niecierpliwy” (100× ZA WCZEŚNIE), „Drzemka” (10 rund z rzędu bez dotknięcia), „Prawie” (4.99, a potem 5.01), „Punktualny” (PERFEKT o 5:00 albo 17:00, czas lokalny), „Piątka” (10× PERFEKT 5. dnia miesiąca), „Pełna kolekcja” (wszystkie umiejętności na max), „Muzeum” (1 sztuka każdego generatora), „Jajko na miękko” (100 babć), „Kopciuszek” (PERFEKT o północy), „Uparty” (1000 pudeł), „Zegar atomowy” (połowa z ostatnich 100 trafień w granicach 15 ms, czyli w oknie PERFEKT; liczy dopiero przy pełnych 100 trafieniach) | 11 |
@@ -366,12 +375,35 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   1aa/s (~240 h bota), 1500 zegarów (~230 h), 1ac zarobione (~255 h).
   Raport wypisuje też, ile sztuk każdego zegara bot miał naraz: po 400 h
   co najmniej 165 z zegarów 1–6, 106 z 7–11 i 79 z 12–14, więc ostatnie
-  progi bonusów i osiągnięć (150 / 80 / 50) padają. Dawne 200 sztuk
-  zegarów 1–6 i 100 sztuk zegarów 7–11 nie padały.
+  progi bonusów (150 / 80 / 50) padają. Ten bot gra bez dochodu offline,
+  więc mocno zaniża późną grę: progi sztuk i zegarów łącznie ustawia
+  teraz R-OSIAG-2c na realistycznym graczu.
   Dawne 1ab/s, 2000 zegarów, 1e24–1e30 zarobionych i 200 sztuk ostatnich
   zegarów były nieosiągalne i zostały obniżone. Mediana błędu bota wynosi
   ok. 21 ms przy σ = 30 ms i 11.5 ms przy σ = 15 ms, stąd 15 ms dla Zegara
   atomowego.
+- **R-OSIAG-2c (wyzwanie, nie czekanie; 11.2026):** najwyższe progi
+  sztuk i zegarów łącznie mają wymagać zostania w jednej pętli ok. tydzień
+  po Chronosie, ale nie dni czekania na jedną sztukę. Sprawdza to
+  `tool/achievement_timeline.dart` (gracz z `late_game_report.dart`: sesje,
+  offline, paradoksy, perki, Sprężyny, pętle). Dzień, w którym gracz
+  zostający w pętli pierwszy raz ma tyle sztuk (3 × 11 min / 4 × 25 min /
+  2 × 5 min dziennie):
+
+  | Zegary | dawny próg | nowy próg | zaczyna się czekanie |
+  |---|---|---|---|
+  | 1–6 | 150: dzień 15 / 11 / 23 | **180: 19–23 / 13–18 / 26–31** | 210: 50 / 36 / 55; 225: 80–140 |
+  | 7–11 | 80: 12–15 / 8–11 / 17–23 | **120: 14–20 / 10–16 / 20–30** | 144: 15–46; 160: 17–66 |
+  | 12–14 | 50: 14–15 / 10 / 20–22 | **100: 20 / 14–16 / 26–29** | 125: 34–49 |
+  | łącznie | 1500: 15 / 11 / 23 | **2000: 19 / 13 / 26** | 2500: 52 / 41 / 59 |
+
+  Pierwszy Chronos pada ok. 13.–15. dnia (3 × 11 min), więc dawne górne
+  progi padały razem z nim, w pierwszej pętli. Gracz, który po bonusach
+  Chronosa od razu zaczyna nową pętlę, nie przekracza ok. 142 / 96 / 61
+  sztuk — górne progi wymagają decyzji, żeby zostać. Progi bonusów zegarów
+  (R-ULEP-1: 150 / 80 / 50) zostają: to ekonomia, nie osiągnięcia.
+  Zdobyte osiągnięcia ze zmienionych progów znikają przy wczytaniu (jak
+  przy poprzedniej zmianie progów).
 - **R-OSIAG-2a:** Razem osiągnięcia mogą dać do ok. +150% do `G`.
   Symulator tempa ich nie liczy (03), więc prawdziwa gra jest nieco
   szybsza niż cele B-x. Nowe dotyczą głównie późnej gry.
@@ -444,8 +476,8 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | `deepSleep1` | Głęboki sen I | 20 | offline 75% wydajności | – |
 | `deepSleep2` | Głęboki sen II | 80 | offline 100% wydajności | I |
 | `goldRush` | Gorączka złota | 15 | Złota Sekunda pojawia się częściej (interwał ×0.85) | – |
-| `shieldRecharge` | Szybka Tarcza | 20 | ładunek Tarczy co 7 kroków serii zamiast co 10 (playtest 25; zastąpił „Tarczę na start”, która nic nie dawała przy Pamięci mięśniowej) | – |
-| `comboFloor` | Twarde lądowanie | 40 | pudło zrzuca serię do 5, nie do 0 | – |
+| `shieldRecharge` | Szybka Tarcza | 20 | ładunek Tarczy co 7 trafień zamiast co 10 (playtest 25; zastąpił „Tarczę na start”, która nic nie dawała przy Pamięci mięśniowej) | – |
+| `comboFloor` | Twarde lądowanie | 40 | pudło zrzuca mnożnik do 5 kroków (×1.25), nie do 0 | – |
 | `autoBuyer` | Automatyczny kupiec | 30 | przełącznik: automatycznie kupuje najtańszy generator co 5 s | – |
 | `daredevil` | Śmiałek | 10 | Na ślepo płaci ×4 zamiast ×3 (playtest 25; wcześniej odblokowywał tryb, który i tak był odblokowany przed pierwszym paradoksem) | – |
 | `unlockSchrodinger` | Pudełko z kotem | 25 | odblokowuje generator 13 | – |
@@ -695,7 +727,7 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 | `adOffline` | Podwój / Double it | okno „Gdy cię nie było…” | ×2 dochodu offline | tylko przy nieobecności ≥ 30 min |
 | `adTurbo` | Turbo / Turbo | przycisk przy zegarze | **×2 całego dochodu** na 30 min | zapas najwyżej 4 h; czas Turbo płynie tylko podczas gry; kolejna reklama Turbo najwcześniej po 5 min (08) |
 | `adBag` | Worek Tików / Bag of Ticks | sklep, gdy na coś brakuje | 5 min dochodu pasywnego od razu, bez Turbo i Szału; okno oferty pokazuje dokładnie tę kwotę | raz na 30 min |
-| `adRescue` | Ratunek combo / Combo Rescue | wyskakuje od razu po utracie serii ≥ 15 | przywraca serię sprzed pudła | raz na 15 min; okno znika po 5 s albo przy następnym dotknięciu |
+| `adRescue` | Ratunek combo / Combo Rescue | wyskakuje od razu po utracie mnożnika ×1.75 lub wyższego (15 kroków) | przywraca mnożnik sprzed pudła | raz na 15 min; okno znika po 5 s albo przy następnym dotknięciu |
 | `adGolden` | Złota Sekunda / Golden Second | przycisk przy zegarze | Złota Sekunda pojawia się od razu | raz na 30 min |
 | `adSpring` | Napełnij / Refill | warsztat Sprężyn, gdy zapas dokręcania jest pusty | zapas dokręcania znów pełny (2 h, R-SPR-3b); po reklamie trzeba jeszcze trafić „równo 5.00” | 2 razy na lokalną dobę; po pierwszym paradoksie |
 
@@ -894,9 +926,10 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   | `blindfold` | Zepsuty stoper / Broken Stopwatch | Na ślepo jest zawsze włączone (płaci jak zwykle); przełącznika nie da się wyłączyć | Wyczucie: Na ślepo płaci o 1 więcej (×4, ze Śmiałkiem ×5) |
   | `inflation` | Drożyzna / Price Hike | cena zegara rośnie ×1.20 za sztukę zamiast ×1.15 | Stały klient: pierwsze 10 sztuk każdego zegara za pół ceny |
   | `noGold` | Pochmurny dzień / Cloudy Day | Złota Sekunda nie przylatuje, oferta `adGolden` jest wyłączona; przedmioty sezonowe latają dalej (R-SEZ-3) | Promyk: po powrocie po co najmniej 1 h Złota Sekunda przylatuje w 30 s |
-  | `shortFuse` | Krótki lont / Short Fuse | combo najwyżej 5, Tarcza nie działa | Zapasowa Tarcza: +1 ładunek od początku każdego przejścia |
-  | `precision` | Szwajcarska precyzja / Swiss Precision | DOBRZE nic nie płaci graczowi (seria rośnie) | Pewna ręka: okno PERFEKT +0.001 s (nigdy szersze niż ŚWIETNIE) |
+  | `shortFuse` | Krótki lont / Short Fuse | mnożnik najwyżej ×1.25, Tarcza nie działa | Zapasowa Tarcza: +1 ładunek od początku każdego przejścia |
+  | `precision` | Szwajcarska precyzja / Swiss Precision | DOBRZE nic nie płaci graczowi | Pewna ręka: okno PERFEKT +0.001 s (nigdy szersze niż ŚWIETNIE) |
   | `insomnia` | Bezsenność / Insomnia | dochód offline najwyżej 25% | Dobry sen: limit offline +12 h |
+  | `fragileCombo` | Kruche combo / Fragile Combo (**poza historią**, do wyboru po niej, R-PETLA-8) | mnożnik liczy się z okien bazowych (umiejętności, Szczęście, Gorąca ręka poszerzają wypłatę, nie mnożnik); DOBRZE −1 krok | Hartowane combo: pudło zabiera połowę kroków zamiast wszystkich |
 
 - **R-PETLA-5 (co daje ukończenie):** rozdział Kroniki, pieczęć zasady
   tej pętli, tarcza zegara przypisana do tej pieczęci (R-TARCZA-1)
@@ -914,7 +947,8 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   Dziadek; ostatni rozdział mówi, dlaczego akurat 5.00.
 - **R-PETLA-8 (po historii):** po zdobyciu sześciu pieczęci gracz sam
   wybiera w Kronice zasady następnej pętli: dowolne, kilka naraz albo
-  żadną. Kronika pamięta najkrótszy czas gry każdej zasady.
+  żadną. Dochodzi wtedy zasada spoza historii, Kruche combo (docs/15):
+  pieczęć bez tarczy zegara. Kronika pamięta najkrótszy czas gry każdej zasady.
 
 ## 17. Ocena w sklepie
 
@@ -949,7 +983,7 @@ Skąd i dlaczego: [14-wyzwania.md](14-wyzwania.md). Liczby w pliku balansu
 
   | Grupa | Rodzaje |
   |---|---|
-  | celność | N× ŚWIETNIE lub lepiej; seria N; N× równe 5.00 |
+  | celność | N× ŚWIETNIE lub lepiej; N trafień z rzędu; N× równe 5.00 |
   | wyczyn | N PERFEKTÓW w 10 kolejnych rundach; N× PERFEKT; zarób trafieniami N Tików |
   | rozwój | kup N zegarów; zdobądź N bonusów zegarów (tylko gdy któryś jest w zasięgu 10 sztuk); kup N poziomów umiejętności (gdy jeszcze są) |
   | tydzień | N× ŚWIETNIE+; N× równe 5.00; seria N; złap N Złotych Sekund (nie w pętli „Pochmurny dzień”); nakręć trafieniami N h Sprężyny (po pierwszym paradoksie) |
@@ -969,7 +1003,8 @@ Skąd i dlaczego: [14-wyzwania.md](14-wyzwania.md). Liczby w pliku balansu
   (80% graczy) przy każdej celności od 20 do 150 ms.
 - **R-WYZ-3 (postęp):** liczą się dotknięcia gracza na obu zegarach (runda
   bez dotknięcia nie), także w Gorącej ręce i na ślepo. „Seria” to
-  najwyższa seria osiągnięta od wydania wyzwania. Zakupy automatycznego
+  najwięcej trafień z rzędu od wydania wyzwania; każde pudło, także
+  obronione Tarczą, zaczyna ją od zera (R-COMBO-2a, docs/15). Zakupy automatycznego
   kupca też są zakupami.
 - **R-WYZ-4 (nagrody):** dzienne — 10 min dochodu pasywnego (co najmniej
   200 Tików); wszystkie trzy jednego dnia — dodatkowo 30 min (co najmniej

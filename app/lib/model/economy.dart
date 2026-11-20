@@ -28,7 +28,7 @@ class Economy {
   /// The rules of the next loop: in the story the first one not beaten
   /// yet, after it whatever the player picked (R-PETLA-4, R-PETLA-8).
   List<String> nextLoopRules() {
-    for (final r in b.loops.rules) {
+    for (final r in b.loops.storyRules) {
       if (!sealed(r.id)) return [r.id];
     }
     return [
@@ -38,7 +38,7 @@ class Economy {
   }
 
   /// Every rule is beaten: the player picks the rules now (R-PETLA-8).
-  bool get storyDone => b.loops.rules.every((r) => sealed(r.id));
+  bool get storyDone => b.loops.storyRules.every((r) => sealed(r.id));
 
   /// Chapters of the Chronicle open (R-PETLA-7).
   int get chaptersOpen => math.min(s.loopsDone, b.loops.storyChapters);
@@ -100,6 +100,13 @@ class Economy {
 
   /// The payout factor from beginner's luck (×3 → ×1).
   double beginnerPay() => 1 + (b.beginner.rewardMultiplier - 1) * beginnerShare;
+
+  /// The windows with no skill at all ("Fragile combo" grades by these).
+  Windows baseWindows() => Windows(
+    perfect: b.tier('perfect').window,
+    great: b.tier('great').window,
+    good: b.tier('good').window,
+  );
 
   Windows windowsAt({int magnet = 0, int wideEye = 0}) {
     final we = 1 + _per('wideEye') * wideEye;

@@ -311,19 +311,21 @@ void main() {
       );
     });
 
-    test('blind perfects, then on a 10+ and a 25+ streak', () {
-      Iterable<String> at(int streak) => unlockAchievements(
+    test('blind perfects, then at ×1.50+ and at the full multiplier', () {
+      Iterable<String> at(int steps, {bool full = false}) => unlockAchievements(
         all,
         s,
         AchievementContext(
           lastHitPerfect: true,
           lastHitBlind: true,
-          streak: streak,
+          streak: steps,
+          comboFull: full,
         ),
       ).map((a) => a.id);
       expect(at(3), ['mode_blind']);
       expect(at(12), ['mode_fast']); // mode_blind is already unlocked
-      expect(at(25), ['mode_both']);
+      expect(at(25), isEmpty);
+      expect(at(5, full: true), ['mode_both']);
     });
   });
 }

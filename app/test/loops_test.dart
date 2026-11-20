@@ -16,7 +16,7 @@ import 'helpers.dart';
 /// and the seals.
 void main() {
   final b = loadBalance();
-  final rules = b.loops.rules.map((r) => r.id).toList();
+  final rules = b.loops.storyRules.map((r) => r.id).toList();
   late GameState s;
   late GameEngine e;
 
@@ -149,6 +149,10 @@ void main() {
       e.startLoop(0);
       expect(s.loopRules, [rules[0], rules[3]]);
       expect(s.nextRules, isEmpty);
+      // A rule outside the story only comes picked (docs/15).
+      expect(rules, isNot(contains('fragileCombo')));
+      s.nextRules.add('fragileCombo');
+      expect(e.econ.nextLoopRules(), ['fragileCombo']);
     });
 
     test('the best time of a rule is kept', () {

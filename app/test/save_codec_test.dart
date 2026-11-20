@@ -81,6 +81,22 @@ void main() {
     expect(back.state.perks, {'shieldRecharge', 'daredevil', 'goldRush'});
   });
 
+  test('v2 → v3: the old streak is cut to the multiplier cap (docs/15)', () {
+    final d = saveFromJsonString(
+      '{"saveVersion":2,"skills":{"combo":3},"comboStreak":250,'
+      '"lifetime":{"bestCombo":250,"perfects":7}}',
+    );
+    expect(d.state.comboStreak, 11);
+    expect(d.state.lifetime.bestCombo, 11);
+    expect(d.state.lifetime.perfects, 7);
+    final fuse = saveFromJsonString(
+      '{"saveVersion":2,"skills":{"combo":3},"loopRules":["shortFuse"],'
+      '"comboStreak":3,"lifetime":{"bestCombo":40}}',
+    );
+    expect(fuse.state.comboStreak, 3);
+    expect(fuse.state.lifetime.bestCombo, 5);
+  });
+
   test('tolerates missing optional fields', () {
     final d = saveFromJsonString('{"saveVersion":1,"tiki":5}');
     expect(d.state.tiki, 5);

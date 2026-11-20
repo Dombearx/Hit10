@@ -17,12 +17,12 @@ class SaveFormatException implements Exception {
 }
 
 /// Current save format; bump and add a migration for every change (T-17).
-const saveVersion = 2;
+const saveVersion = 3;
 
 /// One migration per version step: `migrations[n]` turns a vN map into
 /// v(n+1).
 final Map<int, Map<String, Object?> Function(Map<String, Object?>)> migrations =
-    {1: _toV2};
+    {1: _toV2, 2: _toV3};
 
 /// Faces that were unlocked by Tiki earned before they became the seals'
 /// trophies (docs/13 §5.5): whoever had one keeps it.
@@ -62,6 +62,21 @@ Map<String, Object?> _toV2(Map<String, Object?> j) {
     ..['dialsSeen'] = seen
     ..['loopPlaySeconds'] = _d(lifetime['secondsPlayed'])
     ..['loopPrestiges'] = _i(j['prestiges']);
+}
+
+/// v2 → v3 (docs/15): the combo became a multiplier that stops at its cap
+/// (5 + 2 per Combo level, 5 under "Short fuse"); the old streak counted
+/// on past it. The streak and its record are cut to the cap.
+Map<String, Object?> _toV3(Map<String, Object?> j) {
+  final out = Map<String, Object?>.of(j);
+  final shortFuse = _sl(j['loopRules']).contains('shortFuse');
+  final cap = shortFuse ? 5 : 5 + 2 * _i(_m(j['skills'])['combo']);
+  final lifetime = Map<String, Object?>.of(_m(j['lifetime']));
+  if (_i(lifetime['bestCombo']) > cap) lifetime['bestCombo'] = cap;
+  return out
+    ..['saveVersion'] = 3
+    ..['comboStreak'] = math.min(_i(j['comboStreak']), cap)
+    ..['lifetime'] = lifetime;
 }
 
 class SaveData {

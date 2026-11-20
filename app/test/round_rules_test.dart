@@ -39,51 +39,52 @@ void main() {
     e = make([0.99]);
   });
 
-  group('combo (R-COMBO-1…3)', () {
-    test('steps: perfect +3, great +2, good +1, miss resets', () {
+  group('combo (R-COMBO-1…3, docs/15)', () {
+    // A PERFECT outside the 5.00 window (|error| ≥ 0.010 s).
+    const perfect1 = Grade(Tier.perfect, 0.012);
+
+    test('steps: PERFECT +1, GREAT and GOOD 0, a miss resets', () {
       s.skills['combo'] = 1; // cap 7
-      expect(e.resolveRound(perfect).streak, 3);
-      expect(e.resolveRound(great).streak, 5);
-      expect(e.resolveRound(good).streak, 6);
+      expect(e.resolveRound(perfect1).streak, 1);
+      expect(e.resolveRound(great).streak, 1);
+      expect(e.resolveRound(good).streak, 1);
+      expect(e.resolveRound(perfect1).streak, 2);
       final miss = e.resolveRound(early);
       expect(miss.streak, 0);
       expect(miss.comboBroken, isTrue);
     });
 
-    test('multiplier capped at 5 + 2·level; the streak counts on', () {
-      for (var i = 0; i < 10; i++) {
-        e.resolveRound(perfect);
-      }
-      expect(s.comboStreak, 30);
-      expect(e.comboMultiplier(), closeTo(1 + 0.05 * 5, 1e-12));
-      s.skills['combo'] = 3;
-      final o = e.resolveRound(perfect);
-      expect(o.streak, 33);
+    test('an exact 5.00 fills the multiplier', () {
+      s.skills['combo'] = 3; // cap 11
+      final o = e.resolveRound(perfect); // error 0: the 5.00 window
+      expect(o.streak, 11);
       expect(o.combo, closeTo(1 + 0.05 * 11, 1e-12));
-      expect(e.nextHitPayout(Tier.good), greaterThan(0));
-      expect(s.lifetime.bestCombo, 33);
+      expect(s.lifetime.bestCombo, 11);
     });
 
-    test('a streak of 110 is reachable at cap 23', () {
-      s.skills['combo'] = 9; // cap 23
-      for (var i = 0; i < 37; i++) {
-        e.resolveRound(perfect);
+    test('the multiplier stops at its cap: 5 + 2·level', () {
+      for (var i = 0; i < 10; i++) {
+        e.resolveRound(perfect1);
       }
-      expect(s.comboStreak, greaterThanOrEqualTo(110));
-      expect(e.comboMultiplier(), closeTo(1 + 0.05 * 23, 1e-12));
+      expect(s.comboStreak, 5);
+      expect(e.comboMultiplier(), closeTo(1.25, 1e-12));
+      s.skills['combo'] = 3;
+      final o = e.resolveRound(perfect1);
+      expect(o.streak, 6);
+      expect(e.nextHitPayout(Tier.good), greaterThan(0));
     });
 
     test('combo multiplies the whole payout including echo (R-COMBO-3)', () {
       s.stats.rounds = 30; // past beginner's luck
       s.owned['grandma'] = 5; // 5/s
       s.skills.addAll({'echo': 2, 'combo': 10});
-      s.comboStreak = 7; // → 10 after this perfect
-      final o = e.resolveRound(perfect);
+      s.comboStreak = 9; // → 10 after this PERFECT
+      final o = e.resolveRound(perfect1);
       final echo = 2 * b.skill('echo').perLevel; // seconds of clock work
-      expect(o.payout - o.jackpot, closeTo((6 + echo * 0.6 * 5) * 1.5, 1e-9));
+      expect(o.payout, closeTo((6 + echo * 0.6 * 5) * 1.5, 1e-9));
     });
 
-    test('shield absorbs a miss and recharges every 10 steps', () {
+    test('a Shield takes a miss and comes back every 10 hits', () {
       s.skills['shield'] = 1;
       s.shieldCharges = 1;
       s.comboStreak = 4;
@@ -91,45 +92,58 @@ void main() {
       expect(o.shieldUsed, isTrue);
       expect(s.comboStreak, 4);
       expect(s.shieldCharges, 0);
-      for (var i = 0; i < 5; i++) {
-        e.resolveRound(perfect); // 10 steps
+      for (var i = 0; i < 9; i++) {
+        e.resolveRound(good);
       }
+      expect(s.shieldCharges, 0);
+      e.resolveRound(good); // the 10th hit
       expect(s.shieldCharges, 1);
     });
 
-    test('a used shield restarts the count to the next charge', () {
-      s.skills['shield'] = 2;
-      s.shieldCharges = 2;
+    test('a GOOD does not use a Shield', () {
+      s.skills['shield'] = 1;
+      s.shieldCharges = 1;
       s.comboStreak = 4;
-      s.shieldProgress = 9; // one step short of a charge
-      e.resolveRound(early);
+      expect(e.resolveRound(good).shieldUsed, isFalse);
       expect(s.shieldCharges, 1);
-      expect(s.shieldProgress, 0);
-      e.resolveRound(good); // +1: no charge back yet
-      expect(s.shieldCharges, 1);
-      for (var i = 0; i < 3; i++) {
-        e.resolveRound(perfect); // 10 steps in all
-      }
-      expect(s.shieldCharges, 2);
     });
 
-    test('Quick shield perk: a charge every 7 steps', () {
+    test('Quick shield perk: a charge every 7 hits', () {
       s.perks.add('shieldRecharge');
       s.skills['shield'] = 1;
       for (var i = 0; i < 6; i++) {
-        e.resolveRound(good); // 1 step each
+        e.resolveRound(good);
       }
       expect(s.shieldCharges, 0);
       e.resolveRound(good);
       expect(s.shieldCharges, 1);
     });
 
-    test('combo floor perk keeps 5 after a miss', () {
+    test('combo floor perk keeps 5 steps after a miss', () {
       s.perks.add('comboFloor');
       s.skills['combo'] = 5;
       s.comboStreak = 12;
       e.resolveRound(early);
       expect(s.comboStreak, 5);
+    });
+
+    test('Fragile combo: bare windows, GOOD −1; its seal halves a miss', () {
+      s.loopRules.add('fragileCombo');
+      s.skills.addAll({'combo': 5, 'wideEye': 15, 'magnet': 15});
+      s.comboStreak = 6;
+      // A GREAT on the widened windows, but 0.040 s is a GOOD bare.
+      final wide = grade(0.040, e.econ.playerWindows());
+      expect(wide.tier, isNot(Tier.good));
+      expect(e.resolveRound(wide).streak, 5);
+      // 0.070 s pays as a hit here, but bare it is a miss.
+      final far = grade(0.070, e.econ.playerWindows());
+      expect(far.isHit, isTrue);
+      expect(e.resolveRound(far).streak, 0);
+      s.loopRules.clear();
+      s.seals.add('fragileCombo');
+      s.comboStreak = 9;
+      e.resolveRound(early);
+      expect(s.comboStreak, 4);
     });
   });
 
