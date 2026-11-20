@@ -86,13 +86,13 @@ void main(List<String> args) {
           rounds++;
           final e = bias + _gauss(rng) * sigma;
           final g = grade(e, windows);
-          streak = switch (g.tier) {
-            Tier.perfect => streak + 3,
-            Tier.great => streak + 2,
-            Tier.good => streak + 1,
-            Tier.miss => 0,
-          };
           final jackpot = e.abs() < b.jackpot.window;
+          // The multiplier ladder (docs/15), cap 5.
+          streak = g.tier == Tier.miss
+              ? 0
+              : jackpot
+              ? 5
+              : math.min(5, streak + (g.tier == Tier.perfect ? 1 : 0));
           final combo = 1 + b.combo.multiplierPerStep * math.min(streak, 5);
           ChallengeProgress.round(
             [ch],
@@ -109,7 +109,6 @@ void main(List<String> args) {
                           0) +
                       (jackpot ? 30 : 0)) *
                   combo,
-              streak: streak,
             ),
           );
         }

@@ -23,7 +23,8 @@ import 'seasons_ui.dart';
     case AchievementCategory.perfectStreak:
       return (l.ach_perfectStreak(count), l.ach_perfectStreak_desc(count));
     case AchievementCategory.combo:
-      return (l.ach_combo(count), l.ach_combo_desc(count));
+      final m = f.mult(n);
+      return (l.ach_combo(m), l.ach_combo_desc(m));
     case AchievementCategory.golden:
       return (l.ach_golden(count), l.ach_golden_desc(count));
     case AchievementCategory.prestige:

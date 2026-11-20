@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../catalog.dart';
+import '../../model/challenges.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 import 'burst.dart';
 
-/// Always-visible combo (R-COMBO-4): multiplier, flame that grows with the
-/// streak, shield charges. Shakes red when the streak breaks.
+/// Always-visible combo (R-COMBO-4): multiplier, flame that grows with it,
+/// shield charges. Shakes red when the multiplier breaks. The streak shows
+/// only while a "streak" challenge is on, counted from zero (docs/15).
 class ComboMeter extends StatefulWidget {
   const ComboMeter({super.key, required this.controller});
   final GameController controller;
@@ -59,12 +61,11 @@ class _ComboMeterState extends State<ComboMeter>
   Widget build(BuildContext context) {
     final c = widget.controller;
     final l = AppLocalizations.of(context);
-    final streak = c.state.comboStreak;
+    final steps = c.state.comboStreak;
     final cap = c.econ.comboCap();
     final mult = c.engine.comboMultiplier();
-    // A streak above the cap (it counts on, only the multiplier stops) is
-    // full heat, not a flame that outgrows its box.
-    final heat = cap == 0 ? 0.0 : (streak / cap).clamp(0.0, 1.0);
+    final heat = cap == 0 ? 0.0 : (steps / cap).clamp(0.0, 1.0);
+    final challenge = streakChallenge(c.state.challenges);
     final shields = c.engine.maxShieldCharges();
     return AnimatedBuilder(
       animation: _break,
@@ -106,7 +107,7 @@ class _ComboMeterState extends State<ComboMeter>
                     scale: 0.5 + 0.5 * heat,
                     duration: const Duration(milliseconds: 200),
                     child: Opacity(
-                      opacity: streak > 0 ? 1 : 0.3,
+                      opacity: steps > 0 ? 1 : 0.3,
                       child: Image.asset(
                         EmojiArt.path('fire'),
                         width: _flame,
@@ -116,15 +117,18 @@ class _ComboMeterState extends State<ComboMeter>
                   ),
                 ),
               ),
-              const SizedBox(width: 4),
-              Text(
-                l.streakLabel(streak),
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: Palette.outline.withValues(alpha: 0.7),
+              if (challenge != null) ...[
+                const SizedBox(width: 4),
+                Text(
+                  l.streakLabel(challenge.run, challenge.target.round()),
+                  key: const Key('challenge-streak'),
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Palette.outline.withValues(alpha: 0.7),
+                  ),
                 ),
-              ),
+              ],
               for (var i = 0; i < shields; i++)
                 Padding(
                   padding: const EdgeInsets.only(left: 4),

@@ -46,7 +46,10 @@ class _Stats extends StatelessWidget {
       ('${l.statMeanError} (${l.statMeanHint})', ms(st.meanError)),
       (l.statAccidental, '${st.accidental}'),
       (l.statBestStreak, '${s.lifetime.bestPerfectStreak}'),
-      (l.statBestCombo, '${s.lifetime.bestCombo}'),
+      (
+        l.statBestCombo,
+        f.mult(1 + c.balance.combo.multiplierPerStep * s.lifetime.bestCombo),
+      ),
       (l.statGolden, '${s.lifetime.goldenCaught}'),
       (l.statPlayTime, f.duration(s.lifetime.secondsPlayed)),
       (l.statPrestiges, '${s.prestiges}'),

@@ -165,8 +165,8 @@
   "skill_wideEye_desc": "Wider GREAT and GOOD windows. Yours and your clocks'.",
   "skill_wideEye_label": "GREAT / GOOD",
   "skill_combo": "Combo",
-  "skill_combo_desc": "A higher cap on the streak multiplier.",
-  "skill_combo_label": "Streak multiplies up to",
+  "skill_combo_desc": "A higher cap on the multiplier.",
+  "skill_combo_label": "Multiplier up to",
   "skill_magnet": "Magnet",
   "skill_magnet_desc": "A wider PERFECT window. Yours and your clocks'.",
   "skill_magnet_label": "PERFECT window",
@@ -180,7 +180,7 @@
   "skill_luck_desc": "Some hits land a tier higher.",
   "skill_luck_label": "Hits bumped a tier up",
   "skill_shield": "Shield",
-  "skill_shield_desc": "A miss uses a charge instead of resetting the streak.",
+  "skill_shield_desc": "A miss uses a charge instead of resetting the multiplier.",
   "skill_shield_label": "Charges",
   "skill_goldenTouch": "Golden Touch",
   "skill_goldenTouch_desc": "Golden Second more often, with a stronger effect.",
@@ -341,10 +341,13 @@
   },
   "chipHotHand": "Hot hand",
   "comboLabel": "COMBO",
-  "streakLabel": "streak {count}",
+  "streakLabel": "streak {count}/{target}",
   "@streakLabel": {
     "placeholders": {
       "count": {
+        "type": "int"
+      },
+      "target": {
         "type": "int"
       }
     }
@@ -429,7 +432,7 @@
       }
     }
   },
-  "ach_combo_desc": "Reach a streak of {count}",
+  "ach_combo_desc": "Reach a multiplier of {count}",
   "@ach_combo_desc": {
     "placeholders": {
       "count": {
@@ -472,9 +475,9 @@
   "ach_mode_blind": "Blindfolded",
   "ach_mode_blind_desc": "PERFECT in blind mode",
   "ach_mode_fast": "Feel the beat",
-  "ach_mode_fast_desc": "PERFECT in Blind mode on a 10+ streak",
+  "ach_mode_fast_desc": "PERFECT in Blind mode at a multiplier of ×1.5 or more",
   "ach_mode_both": "Metronome inside",
-  "ach_mode_both_desc": "PERFECT in Blind mode on a 25+ streak",
+  "ach_mode_both_desc": "PERFECT in Blind mode at the full multiplier",
   "ach_hidden_impatient": "Impatient",
   "ach_hidden_impatient_desc": "TOO EARLY 100 times",
   "ach_hidden_nap": "Nap time",
@@ -643,7 +646,7 @@
       }
     }
   },
-  "ach_shield_desc": "Your Shield saved the combo {count} times",
+  "ach_shield_desc": "Your Shield saved the multiplier {count} times",
   "@ach_shield_desc": {
     "placeholders": {
       "count": {
@@ -694,9 +697,9 @@
   "perk_goldRush": "Gold rush",
   "perk_goldRush_desc": "Golden seconds 15 % more often",
   "perk_shieldRecharge": "Quick shield",
-  "perk_shieldRecharge_desc": "A Shield charge every 7 streak steps instead of 10",
+  "perk_shieldRecharge_desc": "A Shield charge every 7 hits instead of 10",
   "perk_comboFloor": "Soft landing",
-  "perk_comboFloor_desc": "A miss drops the streak to 5, not 0",
+  "perk_comboFloor_desc": "A miss drops the multiplier to ×1.25, not ×1",
   "perk_autoBuyer": "Auto buyer",
   "perk_autoBuyer_desc": "A switch that buys the cheapest clock every 5 s",
   "perk_daredevil": "Daredevil",
@@ -744,7 +747,7 @@
   "statMeanError": "Average error",
   "statMeanHint": "negative = you tap early",
   "statBestStreak": "Best PERFECT streak",
-  "statBestCombo": "Highest combo",
+  "statBestCombo": "Highest multiplier",
   "statGolden": "Golden seconds caught",
   "statPlayTime": "Time played",
   "statPrestiges": "Paradoxes",
@@ -861,11 +864,11 @@
       }
     }
   },
-  "adRescue": "Streak {count} lost! ▶ Restore for an ad",
+  "adRescue": "Multiplier {count} lost! ▶ Restore for an ad",
   "@adRescue": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -881,7 +884,7 @@
   },
   "adFull": "Full",
   "tip_golden": "Catch the golden clock for a golden round!",
-  "tip_combo": "A streak! Keep hitting to grow the multiplier.",
+  "tip_combo": "A PERFECT raises the multiplier! An exact 5.00 fills it.",
   "tip_prestige": "You can turn back time! You start over, but with Chronons that permanently speed up your income. Shards ✦ buy perks that stay through every reset. The swirl up top: you choose when.",
   "tip_milestone": "The bar under the name: at {need} owned, the clock earns ×2!",
   "@tip_milestone": {
@@ -1062,9 +1065,9 @@
   "help_upgrades_t": "Clock bonuses",
   "help_upgrades": "The bar under a clock shows how many more you need for the next step, e.g. \"20/40 → ×2\". At each step all clocks of that kind earn that many times more, for good.\n• First clocks: steps at 10, 20, 40… and ×2.\n• Pricier clocks: lower steps, smaller multipliers.\nSynergy: 25 each of two matching clocks (e.g. Grandpa and Grandma) boosts both.",
   "help_skills_t": "Skills",
-  "help_skills": "Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and longer streaks.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.",
-  "help_combo_t": "Streak (combo)",
-  "help_combo": "Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. The multiplier has a cap, but the streak itself keeps counting.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it — counting from zero once it is used.",
+  "help_skills": "Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and a higher multiplier.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.",
+  "help_combo_t": "Multiplier (combo)",
+  "help_combo": "The multiplier next to COMBO multiplies all your payouts. A PERFECT raises it by 0.05, an exact 5.00 straight to the cap (the Combo skill raises the cap). GREAT and GOOD leave it alone.\nA CLOSE or a miss resets the multiplier. Except: a Shield charge (a skill) takes one miss; charges come back every 10 hits, counting from zero once one is used.\nThe streak — hits in a row — counts only during a \"streak\" challenge: from zero until the first miss, even one a Shield took.",
   "help_golden_t": "Golden Second",
   "help_golden": "About every 10 minutes a golden clock flies across the screen. Tapping it turns the next round golden.\nA hit in a golden round gives a random reward:\n• Frenzy (45%) — all income ×7 for 77 s\n• Lucky (45%) — Ticks worth 10 minutes of your clocks, right away\n• Hot hand (10%) — for 60 s every hit counts as PERFECT and pays ×10\nThe reward's strength depends on the grade: PERFECT 100%, GREAT 60%, GOOD 30%, a miss nothing.",
   "help_modes_t": "Toggles",
@@ -1419,7 +1422,7 @@
   },
   "adDoneGolden": "The golden clock is coming — catch it!",
   "adDoneBag": "Bag of Ticks collected!",
-  "adDoneRescue": "Streak restored!",
+  "adDoneRescue": "Multiplier restored!",
   "adDoneOffline": "Offline income doubled!",
   "season_valentine": "Valentine's",
   "season_valentine_items": "Hearts",
@@ -1595,12 +1598,12 @@
   "skill_fastForward_info": "Each level moves the stopwatch's start by about 0.13 s, up to 2.00 s at the top level. The stopwatch runs at normal speed and the target is still 5.00.",
   "skill_ticking_info": "From 4.00 to 5.00 you hear a tick every 0.1 s (with vibration if it's on).",
   "skill_wideEye_info": "The GREAT (±30 ms) and GOOD (±50 ms) windows grow by about 5% a level, up to ×1.8 at the top level (±54 and ±90 ms). Works on clocks too.",
-  "skill_combo_info": "Every hit without a miss raises the streak multiplier: PERFECT by 0.15, GREAT by 0.10, GOOD by 0.05. Without upgrades it stops at ×1.25; each level raises that cap by 0.10. It multiplies the whole payout for a hit, 5.00 and Echo included.",
+  "skill_combo_info": "A PERFECT raises the multiplier by 0.05, an exact 5.00 straight to the cap. GREAT and GOOD leave it alone, a miss resets it. Without upgrades the cap is ×1.25; each level raises it by 0.10. It multiplies the whole payout for a hit, 5.00 and Echo included.",
   "skill_magnet_info": "The PERFECT window (±15 ms) grows by about 0.7 ms a level, up to ±25 ms. The 5.00 window (±10 ms) stays. Works on clocks too.",
   "skill_echo_info": "A hit adds as many Ticks as your clocks make in the given time. Per level: PERFECT 0.2 s, GREAT about 0.11 s, GOOD about 0.03 s.",
   "skill_bulletTime_info": "The PERFECT, GREAT, GOOD and CLOSE windows grow up to ×2.5 at the top level (e.g. GOOD: ±50 → ±125 ms). The 5.00 window stays. Near the target the screen pulses and you hear a heartbeat. Doesn't work on clocks.",
   "skill_luck_info": "At each level 2 hits in 100 jump a tier: GREAT → PERFECT, GOOD → GREAT. A PERFECT never becomes a 5.00.",
-  "skill_shield_info": "Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps; using a charge restarts that count.",
+  "skill_shield_info": "Each level is one charge. A miss uses a charge and the multiplier stays. Used charges come back one per 10 hits; using a charge restarts that count.",
   "skill_goldenTouch_info": "A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.",
   "master_grandpa_5": "Retired Watchmaker",
   "master_grandpa_5_desc": "Fixes the neighbours' watches. Free, with a lecture.",
@@ -2003,7 +2006,7 @@
   "seal_noGold": "Ray of Sun",
   "seal_noGold_desc": "Back after an hour or more: a Golden Second flies in within 30 seconds.",
   "rule_shortFuse": "Short Fuse",
-  "rule_shortFuse_desc": "The combo counts up to 5 at most, and there is no Shield.",
+  "rule_shortFuse_desc": "The multiplier stops at ×1.25, and there is no Shield.",
   "rule_shortFuse_quote": "“No more long streaks. And hand over that Shield.”",
   "seal_shortFuse": "Spare Shield",
   "seal_shortFuse_desc": "+1 Shield charge from the start of every run.",
@@ -2017,6 +2020,11 @@
   "rule_insomnia_quote": "“Those who sleep run late. Clocks too.”",
   "seal_insomnia": "Sound Sleep",
   "seal_insomnia_desc": "Offline income counts for 12 more hours.",
+  "rule_fragileCombo": "Fragile Combo",
+  "rule_fragileCombo_desc": "The multiplier goes by the bare windows: skills, Luck and Hot Hand don't widen them. A GOOD takes 0.05 away.",
+  "rule_fragileCombo_quote": "“Wide windows? Fine. But the multiplier sees the truth.”",
+  "seal_fragileCombo": "Tempered Combo",
+  "seal_fragileCombo_desc": "A miss takes half the multiplier instead of all of it.",
   "chapter_1_t": "Bought",
   "chapter_1": "“You bought me? ME? The god of time, for Ticks?” Chronos straightened his toga and counted to five. “Fine. I'm rewinding everything. And I'm taking your digits.”\n“Don't mind him,” Grandpa muttered. “He's always like this before five.”",
   "chapter_2_t": "Blind",
@@ -2032,7 +2040,7 @@
   "chapter_7_t": "Five Sharp",
   "chapter_7": "5.00 sharp. Chronos stands at Grandma's door, on time for the first time in ages.\n“Come in, watchmaker,” he says to you. “The cheesecake is for two, but Grandma always cuts it in five. From today you set the rules. I'm off to tea.”",
   "help_round_t": "The round",
-  "help_round": "The stopwatch counts up from zero. Tap the screen when it shows 5.00 — how close you get sets the grade:\n• exactly 5.00 (±0.010 s) — a PERFECT plus a bonus: Ticks worth a few seconds of your clocks\n• PERFECT (±0.015 s) — 6 Ticks, streak +3\n• GREAT (±0.030 s) — 3 Ticks, streak +2\n• GOOD (±0.050 s) — 1 Tick, streak +1\n• CLOSE (±0.150 s) — a small consolation, the streak is lost\nAnything further is a miss. A tap more than a second before 5.00 doesn't count. Skills widen the grade windows (except \"exactly 5.00\").",
+  "help_round": "The stopwatch counts up from zero. Tap the screen when it shows 5.00 — how close you get sets the grade:\n• exactly 5.00 (±0.010 s) — a PERFECT, a bonus of Ticks worth a few seconds of your clocks, and the full multiplier\n• PERFECT (±0.015 s) — 6 Ticks, multiplier +0.05\n• GREAT (±0.030 s) — 3 Ticks\n• GOOD (±0.050 s) — 1 Tick\n• CLOSE (±0.150 s) — a small consolation, the multiplier is lost\nAnything further is a miss. A tap more than a second before 5.00 doesn't count. Skills widen the grade windows (except \"exactly 5.00\").",
   "help_res_t": "Resources",
   "help_res_tiki": "Ticks — currency: clocks and skills",
   "help_res_chronon": "Chronons — a permanent income multiplier from the paradox",
@@ -2191,7 +2199,7 @@
       }
     }
   },
-  "chStreak": "Reach a streak of {n}",
+  "chStreak": "{n} hits in a row",
   "@chStreak": {
     "placeholders": {
       "n": {

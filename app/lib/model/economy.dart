@@ -28,7 +28,7 @@ class Economy {
   /// The rules of the next loop: in the story the first one not beaten
   /// yet, after it whatever the player picked (R-PETLA-4, R-PETLA-8).
   List<String> nextLoopRules() {
-    for (final r in b.loops.rules) {
+    for (final r in b.loops.storyRules) {
       if (!sealed(r.id)) return [r.id];
     }
     return [
@@ -38,7 +38,7 @@ class Economy {
   }
 
   /// Every rule is beaten: the player picks the rules now (R-PETLA-8).
-  bool get storyDone => b.loops.rules.every((r) => sealed(r.id));
+  bool get storyDone => b.loops.storyRules.every((r) => sealed(r.id));
 
   /// Chapters of the Chronicle open (R-PETLA-7).
   int get chaptersOpen => math.min(s.loopsDone, b.loops.storyChapters);

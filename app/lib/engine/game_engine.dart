@@ -394,10 +394,15 @@ class GameEngine {
         s.shieldProgress = 0;
         return (false, true);
       }
-      final floor = s.perks.contains('comboFloor')
+      var keep = s.perks.contains('comboFloor')
           ? b.perk('comboFloor').params['floor']!.round()
           : 0;
-      s.comboStreak = math.min(before, floor);
+      // The seal of "Fragile combo": a miss takes half (R-PETLA-4).
+      if (econ.sealed('fragileCombo')) {
+        final share = b.loops.rule('fragileCombo').seal['missKeeps']!;
+        keep = math.max(keep, (before * share).floor());
+      }
+      s.comboStreak = math.min(before, keep);
       return (before > s.comboStreak, false);
     }
     var step = ladder.steps[t.name]!;

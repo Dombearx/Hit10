@@ -130,6 +130,9 @@ class Player {
 
   final Balance b;
   final GameState s;
+
+  /// Called after every session (its purchases done), with the day.
+  void Function(GameState s, double day, double passive)? onSession;
   final int sessions;
   final double minutes;
   final double sigma;
@@ -269,6 +272,7 @@ class Player {
           if (b.springs.titleLevels.contains(e.econ.clockLevel(id))) titles++;
         }
       }
+      onSession?.call(s, day - 1 + (k + 1) / sessions, sim.econ.passive());
       if (unlock) {
         unlockAchievements(
           all,

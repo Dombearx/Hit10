@@ -603,8 +603,13 @@ class LoopRuleConfig {
       params = j['params'] == null
           ? const {}
           : _m(j['params']).map((k, v) => MapEntry(k, _d(v))),
-      seal = _m(j['seal']).map((k, v) => MapEntry(k, _d(v)));
+      seal = _m(j['seal']).map((k, v) => MapEntry(k, _d(v))),
+      story = j['story'] != false;
   final String id;
+
+  /// Part of the story (brought in order, R-PETLA-4); false: only to pick
+  /// once the story is done (R-PETLA-8).
+  final bool story;
   final Map<String, double> params;
   final Map<String, double> seal;
 }
@@ -627,6 +632,9 @@ class LoopsConfig {
   final List<LoopRuleConfig> rules;
 
   LoopRuleConfig rule(String id) => rules.firstWhere((r) => r.id == id);
+
+  /// The rules the story brings, in order.
+  Iterable<LoopRuleConfig> get storyRules => rules.where((r) => r.story);
 }
 
 class UiConfig {

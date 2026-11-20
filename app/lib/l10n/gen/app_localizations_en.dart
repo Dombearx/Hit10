@@ -285,10 +285,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skill_combo => 'Combo';
 
   @override
-  String get skill_combo_desc => 'A higher cap on the streak multiplier.';
+  String get skill_combo_desc => 'A higher cap on the multiplier.';
 
   @override
-  String get skill_combo_label => 'Streak multiplies up to';
+  String get skill_combo_label => 'Multiplier up to';
 
   @override
   String get skill_magnet => 'Magnet';
@@ -334,7 +334,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_shield_desc =>
-      'A miss uses a charge instead of resetting the streak.';
+      'A miss uses a charge instead of resetting the multiplier.';
 
   @override
   String get skill_shield_label => 'Charges';
@@ -464,8 +464,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get comboLabel => 'COMBO';
 
   @override
-  String streakLabel(int count) {
-    return 'streak $count';
+  String streakLabel(int count, int target) {
+    return 'streak $count/$target';
   }
 
   @override
@@ -521,7 +521,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String ach_combo_desc(String count) {
-    return 'Reach a streak of $count';
+    return 'Reach a multiplier of $count';
   }
 
   @override
@@ -554,13 +554,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ach_mode_fast => 'Feel the beat';
 
   @override
-  String get ach_mode_fast_desc => 'PERFECT in Blind mode on a 10+ streak';
+  String get ach_mode_fast_desc =>
+      'PERFECT in Blind mode at a multiplier of ×1.5 or more';
 
   @override
   String get ach_mode_both => 'Metronome inside';
 
   @override
-  String get ach_mode_both_desc => 'PERFECT in Blind mode on a 25+ streak';
+  String get ach_mode_both_desc =>
+      'PERFECT in Blind mode at the full multiplier';
 
   @override
   String get ach_hidden_impatient => 'Impatient';
@@ -708,7 +710,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String ach_shield_desc(String count) {
-    return 'Your Shield saved the combo $count times';
+    return 'Your Shield saved the multiplier $count times';
   }
 
   @override
@@ -851,13 +853,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get perk_shieldRecharge_desc =>
-      'A Shield charge every 7 streak steps instead of 10';
+      'A Shield charge every 7 hits instead of 10';
 
   @override
   String get perk_comboFloor => 'Soft landing';
 
   @override
-  String get perk_comboFloor_desc => 'A miss drops the streak to 5, not 0';
+  String get perk_comboFloor_desc =>
+      'A miss drops the multiplier to ×1.25, not ×1';
 
   @override
   String get perk_autoBuyer => 'Auto buyer';
@@ -947,7 +950,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statBestStreak => 'Best PERFECT streak';
 
   @override
-  String get statBestCombo => 'Highest combo';
+  String get statBestCombo => 'Highest multiplier';
 
   @override
   String get statGolden => 'Golden seconds caught';
@@ -1073,8 +1076,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String adRescue(int count) {
-    return 'Streak $count lost! ▶ Restore for an ad';
+  String adRescue(String count) {
+    return 'Multiplier $count lost! ▶ Restore for an ad';
   }
 
   @override
@@ -1095,7 +1098,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tip_golden => 'Catch the golden clock for a golden round!';
 
   @override
-  String get tip_combo => 'A streak! Keep hitting to grow the multiplier.';
+  String get tip_combo =>
+      'A PERFECT raises the multiplier! An exact 5.00 fills it.';
 
   @override
   String get tip_prestige =>
@@ -1273,14 +1277,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_skills =>
-      'Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and longer streaks.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.';
+      'Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and a higher multiplier.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.';
 
   @override
-  String get help_combo_t => 'Streak (combo)';
+  String get help_combo_t => 'Multiplier (combo)';
 
   @override
   String get help_combo =>
-      'Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. The multiplier has a cap, but the streak itself keeps counting.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it — counting from zero once it is used.';
+      'The multiplier next to COMBO multiplies all your payouts. A PERFECT raises it by 0.05, an exact 5.00 straight to the cap (the Combo skill raises the cap). GREAT and GOOD leave it alone.\nA CLOSE or a miss resets the multiplier. Except: a Shield charge (a skill) takes one miss; charges come back every 10 hits, counting from zero once one is used.\nThe streak — hits in a row — counts only during a \"streak\" challenge: from zero until the first miss, even one a Shield took.';
 
   @override
   String get help_golden_t => 'Golden Second';
@@ -2172,7 +2176,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adDoneBag => 'Bag of Ticks collected!';
 
   @override
-  String get adDoneRescue => 'Streak restored!';
+  String get adDoneRescue => 'Multiplier restored!';
 
   @override
   String get adDoneOffline => 'Offline income doubled!';
@@ -2348,7 +2352,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_combo_info =>
-      'Every hit without a miss raises the streak multiplier: PERFECT by 0.15, GREAT by 0.10, GOOD by 0.05. Without upgrades it stops at ×1.25; each level raises that cap by 0.10. It multiplies the whole payout for a hit, 5.00 and Echo included.';
+      'A PERFECT raises the multiplier by 0.05, an exact 5.00 straight to the cap. GREAT and GOOD leave it alone, a miss resets it. Without upgrades the cap is ×1.25; each level raises it by 0.10. It multiplies the whole payout for a hit, 5.00 and Echo included.';
 
   @override
   String get skill_magnet_info =>
@@ -2368,7 +2372,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skill_shield_info =>
-      'Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps; using a charge restarts that count.';
+      'Each level is one charge. A miss uses a charge and the multiplier stays. Used charges come back one per 10 hits; using a charge restarts that count.';
 
   @override
   String get skill_goldenTouch_info =>
@@ -2986,7 +2990,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rule_shortFuse_desc =>
-      'The combo counts up to 5 at most, and there is no Shield.';
+      'The multiplier stops at ×1.25, and there is no Shield.';
 
   @override
   String get rule_shortFuse_quote =>
@@ -3030,6 +3034,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seal_insomnia_desc => 'Offline income counts for 12 more hours.';
+
+  @override
+  String get rule_fragileCombo => 'Fragile Combo';
+
+  @override
+  String get rule_fragileCombo_desc =>
+      'The multiplier goes by the bare windows: skills, Luck and Hot Hand don\'t widen them. A GOOD takes 0.05 away.';
+
+  @override
+  String get rule_fragileCombo_quote =>
+      '“Wide windows? Fine. But the multiplier sees the truth.”';
+
+  @override
+  String get seal_fragileCombo => 'Tempered Combo';
+
+  @override
+  String get seal_fragileCombo_desc =>
+      'A miss takes half the multiplier instead of all of it.';
 
   @override
   String get chapter_1_t => 'Bought';
@@ -3085,7 +3107,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_round =>
-      'The stopwatch counts up from zero. Tap the screen when it shows 5.00 — how close you get sets the grade:\n• exactly 5.00 (±0.010 s) — a PERFECT plus a bonus: Ticks worth a few seconds of your clocks\n• PERFECT (±0.015 s) — 6 Ticks, streak +3\n• GREAT (±0.030 s) — 3 Ticks, streak +2\n• GOOD (±0.050 s) — 1 Tick, streak +1\n• CLOSE (±0.150 s) — a small consolation, the streak is lost\nAnything further is a miss. A tap more than a second before 5.00 doesn\'t count. Skills widen the grade windows (except \"exactly 5.00\").';
+      'The stopwatch counts up from zero. Tap the screen when it shows 5.00 — how close you get sets the grade:\n• exactly 5.00 (±0.010 s) — a PERFECT, a bonus of Ticks worth a few seconds of your clocks, and the full multiplier\n• PERFECT (±0.015 s) — 6 Ticks, multiplier +0.05\n• GREAT (±0.030 s) — 3 Ticks\n• GOOD (±0.050 s) — 1 Tick\n• CLOSE (±0.150 s) — a small consolation, the multiplier is lost\nAnything further is a miss. A tap more than a second before 5.00 doesn\'t count. Skills widen the grade windows (except \"exactly 5.00\").';
 
   @override
   String get help_res_t => 'Resources';
@@ -3326,7 +3348,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String chStreak(int n) {
-    return 'Reach a streak of $n';
+    return '$n hits in a row';
   }
 
   @override

@@ -808,6 +808,7 @@ class GameController extends ChangeNotifier {
             lastHitPerfect: o.tier == Tier.perfect,
             lastHitBlind: slot.blind,
             streak: state.comboStreak,
+            comboFull: state.comboStreak >= econ.comboCap(),
           ),
         );
         notifyListeners();
@@ -1021,7 +1022,6 @@ class GameController extends ChangeNotifier {
           error: error,
           jackpot: o.jackpot > 0,
           payout: o.payout,
-          streak: state.comboStreak,
         ),
       ),
     );

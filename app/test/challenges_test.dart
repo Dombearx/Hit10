@@ -110,29 +110,44 @@ void main() {
   });
 
   group('progress', () {
-    ChallengeRound r(Tier t, {double e = 0, int streak = 0}) => ChallengeRound(
+    ChallengeRound r(Tier t, {double e = 0}) => ChallengeRound(
       tier: t,
       error: e,
       jackpot: t == Tier.perfect && e.abs() < 0.01,
       payout: 10,
-      streak: streak,
     );
+
+    test('a streak counts hits in a row from zero; any miss restarts it', () {
+      final c = Challenge(ChallengeKind.streak, 3);
+      ChallengeProgress.round([c], r(Tier.good));
+      ChallengeProgress.round([c], r(Tier.great));
+      // A miss a Shield took is still a miss for the challenge (docs/15).
+      ChallengeProgress.round([c], r(Tier.miss));
+      expect(c.run, 0);
+      expect(c.progress, 2);
+      ChallengeProgress.round([c], r(Tier.good));
+      ChallengeProgress.round([c], r(Tier.good));
+      expect(c.done, isFalse);
+      ChallengeProgress.round([c], r(Tier.good));
+      expect(c.done, isTrue);
+      final back = Challenge.fromJson(
+        Challenge(ChallengeKind.streakWeek, 9).toJson()..['run'] = 4,
+      )!;
+      expect(back.run, 4);
+    });
 
     test('each kind counts what it says', () {
       final great = Challenge(ChallengeKind.great, 2);
-      final streak = Challenge(ChallengeKind.streak, 5);
+      final streak = Challenge(ChallengeKind.streak, 3);
       final perfect = Challenge(ChallengeKind.perfect, 1);
       final window = Challenge(ChallengeKind.perfectWindow, 2);
       final money = Challenge(ChallengeKind.hitEarnings, 25);
       final all = [great, streak, perfect, window, money];
-      ChallengeProgress.round(all, r(Tier.great, e: -0.02, streak: 2));
-      ChallengeProgress.round(all, r(Tier.good, e: 0.04, streak: 3));
+      ChallengeProgress.round(all, r(Tier.great, e: -0.02));
+      ChallengeProgress.round(all, r(Tier.good, e: 0.04));
       expect(great.progress, 1);
       expect(perfect.done, isFalse);
-      final done = ChallengeProgress.round(
-        all,
-        r(Tier.perfect, e: 0.012, streak: 6),
-      );
+      final done = ChallengeProgress.round(all, r(Tier.perfect, e: 0.012));
       expect(done, containsAll([great, streak, perfect, money]));
       expect(window.progress, 1);
       for (var i = 0; i < 9; i++) {

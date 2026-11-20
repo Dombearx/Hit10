@@ -599,13 +599,13 @@ abstract class AppLocalizations {
   /// No description provided for @skill_combo_desc.
   ///
   /// In en, this message translates to:
-  /// **'A higher cap on the streak multiplier.'**
+  /// **'A higher cap on the multiplier.'**
   String get skill_combo_desc;
 
   /// No description provided for @skill_combo_label.
   ///
   /// In en, this message translates to:
-  /// **'Streak multiplies up to'**
+  /// **'Multiplier up to'**
   String get skill_combo_label;
 
   /// No description provided for @skill_magnet.
@@ -689,7 +689,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_shield_desc.
   ///
   /// In en, this message translates to:
-  /// **'A miss uses a charge instead of resetting the streak.'**
+  /// **'A miss uses a charge instead of resetting the multiplier.'**
   String get skill_shield_desc;
 
   /// No description provided for @skill_shield_label.
@@ -887,8 +887,8 @@ abstract class AppLocalizations {
   /// No description provided for @streakLabel.
   ///
   /// In en, this message translates to:
-  /// **'streak {count}'**
-  String streakLabel(int count);
+  /// **'streak {count}/{target}'**
+  String streakLabel(int count, int target);
 
   /// No description provided for @luckyBump.
   ///
@@ -959,7 +959,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_combo_desc.
   ///
   /// In en, this message translates to:
-  /// **'Reach a streak of {count}'**
+  /// **'Reach a multiplier of {count}'**
   String ach_combo_desc(String count);
 
   /// No description provided for @ach_golden.
@@ -1007,7 +1007,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_mode_fast_desc.
   ///
   /// In en, this message translates to:
-  /// **'PERFECT in Blind mode on a 10+ streak'**
+  /// **'PERFECT in Blind mode at a multiplier of ×1.5 or more'**
   String get ach_mode_fast_desc;
 
   /// No description provided for @ach_mode_both.
@@ -1019,7 +1019,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_mode_both_desc.
   ///
   /// In en, this message translates to:
-  /// **'PERFECT in Blind mode on a 25+ streak'**
+  /// **'PERFECT in Blind mode at the full multiplier'**
   String get ach_mode_both_desc;
 
   /// No description provided for @ach_hidden_impatient.
@@ -1235,7 +1235,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_shield_desc.
   ///
   /// In en, this message translates to:
-  /// **'Your Shield saved the combo {count} times'**
+  /// **'Your Shield saved the multiplier {count} times'**
   String ach_shield_desc(String count);
 
   /// No description provided for @ach_feat_goldenFast.
@@ -1499,7 +1499,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_shieldRecharge_desc.
   ///
   /// In en, this message translates to:
-  /// **'A Shield charge every 7 streak steps instead of 10'**
+  /// **'A Shield charge every 7 hits instead of 10'**
   String get perk_shieldRecharge_desc;
 
   /// No description provided for @perk_comboFloor.
@@ -1511,7 +1511,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_comboFloor_desc.
   ///
   /// In en, this message translates to:
-  /// **'A miss drops the streak to 5, not 0'**
+  /// **'A miss drops the multiplier to ×1.25, not ×1'**
   String get perk_comboFloor_desc;
 
   /// No description provided for @perk_autoBuyer.
@@ -1679,7 +1679,7 @@ abstract class AppLocalizations {
   /// No description provided for @statBestCombo.
   ///
   /// In en, this message translates to:
-  /// **'Highest combo'**
+  /// **'Highest multiplier'**
   String get statBestCombo;
 
   /// No description provided for @statGolden.
@@ -1883,8 +1883,8 @@ abstract class AppLocalizations {
   /// No description provided for @adRescue.
   ///
   /// In en, this message translates to:
-  /// **'Streak {count} lost! ▶ Restore for an ad'**
-  String adRescue(int count);
+  /// **'Multiplier {count} lost! ▶ Restore for an ad'**
+  String adRescue(String count);
 
   /// No description provided for @adDouble.
   ///
@@ -1919,7 +1919,7 @@ abstract class AppLocalizations {
   /// No description provided for @tip_combo.
   ///
   /// In en, this message translates to:
-  /// **'A streak! Keep hitting to grow the multiplier.'**
+  /// **'A PERFECT raises the multiplier! An exact 5.00 fills it.'**
   String get tip_combo;
 
   /// No description provided for @tip_prestige.
@@ -2189,19 +2189,19 @@ abstract class AppLocalizations {
   /// No description provided for @help_skills.
   ///
   /// In en, this message translates to:
-  /// **'Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and longer streaks.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.'**
+  /// **'Skills boost your own hits — not the clocks. Among others: bigger rewards, wider grade windows and a higher multiplier.\n• Each has levels, e.g. \"Level 2/10\"; the next level costs more Ticks.\n• A new card appears as you get close to its price.\n• Tap a card to see its exact effect.'**
   String get help_skills;
 
   /// No description provided for @help_combo_t.
   ///
   /// In en, this message translates to:
-  /// **'Streak (combo)'**
+  /// **'Multiplier (combo)'**
   String get help_combo_t;
 
   /// No description provided for @help_combo.
   ///
   /// In en, this message translates to:
-  /// **'Every hit adds streak steps: PERFECT +3, GREAT +2, GOOD +1. The streak multiplies all your payouts — the multiplier is shown next to COMBO. The multiplier has a cap, but the streak itself keeps counting.\nA CLOSE or a miss resets the streak. Except: a Shield charge (a skill) absorbs one reset, and further streak steps recharge it — counting from zero once it is used.'**
+  /// **'The multiplier next to COMBO multiplies all your payouts. A PERFECT raises it by 0.05, an exact 5.00 straight to the cap (the Combo skill raises the cap). GREAT and GOOD leave it alone.\nA CLOSE or a miss resets the multiplier. Except: a Shield charge (a skill) takes one miss; charges come back every 10 hits, counting from zero once one is used.\nThe streak — hits in a row — counts only during a \"streak\" challenge: from zero until the first miss, even one a Shield took.'**
   String get help_combo;
 
   /// No description provided for @help_golden_t.
@@ -3917,7 +3917,7 @@ abstract class AppLocalizations {
   /// No description provided for @adDoneRescue.
   ///
   /// In en, this message translates to:
-  /// **'Streak restored!'**
+  /// **'Multiplier restored!'**
   String get adDoneRescue;
 
   /// No description provided for @adDoneOffline.
@@ -4193,7 +4193,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_combo_info.
   ///
   /// In en, this message translates to:
-  /// **'Every hit without a miss raises the streak multiplier: PERFECT by 0.15, GREAT by 0.10, GOOD by 0.05. Without upgrades it stops at ×1.25; each level raises that cap by 0.10. It multiplies the whole payout for a hit, 5.00 and Echo included.'**
+  /// **'A PERFECT raises the multiplier by 0.05, an exact 5.00 straight to the cap. GREAT and GOOD leave it alone, a miss resets it. Without upgrades the cap is ×1.25; each level raises it by 0.10. It multiplies the whole payout for a hit, 5.00 and Echo included.'**
   String get skill_combo_info;
 
   /// No description provided for @skill_magnet_info.
@@ -4223,7 +4223,7 @@ abstract class AppLocalizations {
   /// No description provided for @skill_shield_info.
   ///
   /// In en, this message translates to:
-  /// **'Each level is one charge. A miss uses a charge and the streak stays. Used charges come back one per 10 streak steps; using a charge restarts that count.'**
+  /// **'Each level is one charge. A miss uses a charge and the multiplier stays. Used charges come back one per 10 hits; using a charge restarts that count.'**
   String get skill_shield_info;
 
   /// No description provided for @skill_goldenTouch_info.
@@ -5273,7 +5273,7 @@ abstract class AppLocalizations {
   /// No description provided for @rule_shortFuse_desc.
   ///
   /// In en, this message translates to:
-  /// **'The combo counts up to 5 at most, and there is no Shield.'**
+  /// **'The multiplier stops at ×1.25, and there is no Shield.'**
   String get rule_shortFuse_desc;
 
   /// No description provided for @rule_shortFuse_quote.
@@ -5353,6 +5353,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offline income counts for 12 more hours.'**
   String get seal_insomnia_desc;
+
+  /// No description provided for @rule_fragileCombo.
+  ///
+  /// In en, this message translates to:
+  /// **'Fragile Combo'**
+  String get rule_fragileCombo;
+
+  /// No description provided for @rule_fragileCombo_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'The multiplier goes by the bare windows: skills, Luck and Hot Hand don\'t widen them. A GOOD takes 0.05 away.'**
+  String get rule_fragileCombo_desc;
+
+  /// No description provided for @rule_fragileCombo_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'“Wide windows? Fine. But the multiplier sees the truth.”'**
+  String get rule_fragileCombo_quote;
+
+  /// No description provided for @seal_fragileCombo.
+  ///
+  /// In en, this message translates to:
+  /// **'Tempered Combo'**
+  String get seal_fragileCombo;
+
+  /// No description provided for @seal_fragileCombo_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A miss takes half the multiplier instead of all of it.'**
+  String get seal_fragileCombo_desc;
 
   /// No description provided for @chapter_1_t.
   ///
@@ -5447,7 +5477,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_round.
   ///
   /// In en, this message translates to:
-  /// **'The stopwatch counts up from zero. Tap the screen when it shows 5.00 — how close you get sets the grade:\n• exactly 5.00 (±0.010 s) — a PERFECT plus a bonus: Ticks worth a few seconds of your clocks\n• PERFECT (±0.015 s) — 6 Ticks, streak +3\n• GREAT (±0.030 s) — 3 Ticks, streak +2\n• GOOD (±0.050 s) — 1 Tick, streak +1\n• CLOSE (±0.150 s) — a small consolation, the streak is lost\nAnything further is a miss. A tap more than a second before 5.00 doesn\'t count. Skills widen the grade windows (except \"exactly 5.00\").'**
+  /// **'The stopwatch counts up from zero. Tap the screen when it shows 5.00 — how close you get sets the grade:\n• exactly 5.00 (±0.010 s) — a PERFECT, a bonus of Ticks worth a few seconds of your clocks, and the full multiplier\n• PERFECT (±0.015 s) — 6 Ticks, multiplier +0.05\n• GREAT (±0.030 s) — 3 Ticks\n• GOOD (±0.050 s) — 1 Tick\n• CLOSE (±0.150 s) — a small consolation, the multiplier is lost\nAnything further is a miss. A tap more than a second before 5.00 doesn\'t count. Skills widen the grade windows (except \"exactly 5.00\").'**
   String get help_round;
 
   /// No description provided for @help_res_t.
@@ -5830,7 +5860,7 @@ abstract class AppLocalizations {
   /// No description provided for @chStreak.
   ///
   /// In en, this message translates to:
-  /// **'Reach a streak of {n}'**
+  /// **'{n} hits in a row'**
   String chStreak(int n);
 
   /// No description provided for @chJackpot.

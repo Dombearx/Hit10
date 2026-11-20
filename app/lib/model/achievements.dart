@@ -38,6 +38,7 @@ class AchievementContext {
     this.now,
     this.lastHitBlind = false,
     this.streak = 0,
+    this.comboFull = false,
     this.lastHitPerfect = false,
     this.passive,
   });
@@ -46,8 +47,11 @@ class AchievementContext {
   final DateTime? now;
   final bool lastHitBlind;
 
-  /// The combo streak right after the hit.
+  /// Multiplier steps right after the hit (docs/15).
   final int streak;
+
+  /// The multiplier is at its cap.
+  final bool comboFull;
   final bool lastHitPerfect;
 
   /// Passive income per second without temporary boosts, when known
@@ -143,12 +147,18 @@ List<AchievementDef> buildAchievements(Balance b) {
     a.perfectStreakThresholds,
     (s) => s.lifetime.bestPerfectStreak,
   );
-  counts(
-    'combo',
-    AchievementCategory.combo,
-    a.comboThresholds,
-    (s) => s.lifetime.bestCombo,
-  );
+  // The multiplier reached (docs/15): the id keeps the steps, the
+  // threshold is the multiplier the texts show.
+  for (final n in a.comboThresholds) {
+    list.add(
+      AchievementDef(
+        'combo_$n',
+        AchievementCategory.combo,
+        (s, _) => s.lifetime.bestCombo >= n,
+        threshold: 1 + b.combo.multiplierPerStep * n,
+      ),
+    );
+  }
   counts(
     'golden',
     AchievementCategory.golden,
@@ -271,7 +281,7 @@ List<AchievementDef> buildAchievements(Balance b) {
     AchievementDef(
       'mode_both',
       AchievementCategory.mode,
-      (s, c) => c.lastHitPerfect && c.lastHitBlind && c.streak >= 25,
+      (s, c) => c.lastHitPerfect && c.lastHitBlind && c.comboFull,
     ),
     // One per calendar event, for reaching its goal in any year (§14).
     for (final se in b.seasons.list)

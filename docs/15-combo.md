@@ -1,8 +1,7 @@
 # 15 — Nowe combo: mnożnik osobno, seria tylko do wyzwań
 
-Stan: **propozycja przyjęta w rozmowie, symulacje zrobione (11.2026),
-jeszcze nie w grze.** Silnik i symulator umieją już nowe zasady za
-przełącznikiem `combo.ladder` w pliku balansu (domyślnie wyłączony).
+Stan: **w grze (11.2026).** Zasady w 02 (R-COMBO-1…4, R-COMBO-2a,
+R-WYZ-3, R-PETLA-8), liczby w `combo.ladder` w pliku balansu.
 
 ## 1. Problem
 
@@ -69,11 +68,17 @@ Pod koniec gry wyzwaniem dla dobrego gracza jest Kruche combo.
   tyle co „Szwajcarska precyzja” — długość pętli zależy od dochodu
   offline, zasada zmienia przeżycie, nie tempo.
 
-## 4. Do zrobienia przy wdrożeniu
+## 4. Wdrożenie
 
-- UI: mnożnik zamiast licznika serii; licznik serii przy wyzwaniu.
-- Wyzwania: postęp i planer (`_Session`) na trafieniach z rzędu.
-- Przepiąć na mnożnik: „Najwyższe combo”, „PERFEKT na ślepo przy serii
-  10+/25+”, Ratunek combo (dziś „po utracie serii ≥ 15”), Twarde lądowanie.
-- Kruche combo: pieczęć (nagroda) i miejsce w kolejności pętli.
-- Docs 02 (R-COMBO-1…4, R-WYZ-3, R-PETLA-4) po decyzji.
+- Belka combo: ten sam mnożnik w tym samym miejscu, płomień względem
+  limitu; „seria 12/40” tylko przy wyzwaniu „seria” (liczba trafień
+  z rzędu od wydania, każde pudło zeruje, także obronione Tarczą).
+- Wyzwania: postęp (`Challenge.run`) i planer na trafieniach z rzędu.
+- Osiągnięcia: „Najwyższy mnożnik” ×1.50 / ×2.00 / ×2.75 (id `combo_10`,
+  `combo_20`, `combo_35`), tryby: PERFEKT na ślepo przy ×1.50+ i przy
+  pełnym mnożniku. Zapis v3 obcina dawny rekord serii do limitu.
+- Ratunek combo: po utracie ×1.75+ (15 kroków), przywraca mnożnik.
+- Twarde lądowanie: 5 kroków (×1.25). Szybka Tarcza: co 7 trafień.
+- Kruche combo: zasada spoza historii (`story: false`), do wyboru po niej;
+  pieczęć „Hartowane combo” — pudło zabiera połowę kroków. Bez tarczy
+  zegara.

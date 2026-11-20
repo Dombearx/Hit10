@@ -522,33 +522,35 @@ class _Chronicle extends StatelessWidget {
                   ),
           ),
         heading(l.chronicleSeals),
+        // Rules outside the story show once it is done (R-PETLA-8).
         for (final r in rules)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: s.seals.contains(r.id)
-                ? _RuleTile(
-                    key: Key('seal-${r.id}'),
-                    art: ruleArt(r.id, seal: true),
-                    title: sealName(l, r.id),
-                    body: sealDescription(l, r.id),
-                    footer: s.loopBest[r.id] == null
-                        ? null
-                        : '${ruleName(l, r.id)} · ${l.chronicleBest(f.duration(s.loopBest[r.id]!))}',
-                    color: const Color(0xFFFFF1C4),
-                  )
-                // The rule of this loop is known; the ones after it are a
-                // mystery.
-                : _RuleTile(
-                    key: Key('seal-${r.id}'),
-                    art: ruleArt(r.id),
-                    locked: !s.loopRules.contains(r.id),
-                    title: '???',
-                    body: s.loopRules.contains(r.id)
-                        ? l.chronicleSealLocked
-                        : '',
-                    color: _paper,
-                  ),
-          ),
+          if (r.story || c.econ.storyDone)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: s.seals.contains(r.id)
+                  ? _RuleTile(
+                      key: Key('seal-${r.id}'),
+                      art: ruleArt(r.id, seal: true),
+                      title: sealName(l, r.id),
+                      body: sealDescription(l, r.id),
+                      footer: s.loopBest[r.id] == null
+                          ? null
+                          : '${ruleName(l, r.id)} · ${l.chronicleBest(f.duration(s.loopBest[r.id]!))}',
+                      color: const Color(0xFFFFF1C4),
+                    )
+                  // The rule of this loop is known; the ones after it are a
+                  // mystery.
+                  : _RuleTile(
+                      key: Key('seal-${r.id}'),
+                      art: ruleArt(r.id),
+                      locked: !s.loopRules.contains(r.id),
+                      title: '???',
+                      body: s.loopRules.contains(r.id)
+                          ? l.chronicleSealLocked
+                          : '',
+                      color: _paper,
+                    ),
+            ),
       ],
     );
   }
