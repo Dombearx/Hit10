@@ -101,6 +101,13 @@ class Economy {
   /// The payout factor from beginner's luck (×3 → ×1).
   double beginnerPay() => 1 + (b.beginner.rewardMultiplier - 1) * beginnerShare;
 
+  /// The windows with no skill at all ("Fragile combo" grades by these).
+  Windows baseWindows() => Windows(
+    perfect: b.tier('perfect').window,
+    great: b.tier('great').window,
+    good: b.tier('good').window,
+  );
+
   Windows windowsAt({int magnet = 0, int wideEye = 0}) {
     final we = 1 + _per('wideEye') * wideEye;
     return Windows(

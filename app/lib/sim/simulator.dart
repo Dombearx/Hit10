@@ -49,7 +49,14 @@ class SimConfig {
     this.seed = 10,
     this.ads,
     this.skillFutureWeight = 0,
+    this.blind = false,
+    this.blindSpread = 1.5,
   });
+
+  /// Plays every round blind (docs/02 §10): pays the mode's multiplier,
+  /// timing spread ×[blindSpread] (docs/13 assumes ×1.5).
+  final bool blind;
+  final double blindSpread;
 
   /// How much more than its in-run payback the bot values a skill that
   /// survives the paradox (0: only this run counts).
@@ -139,8 +146,66 @@ class Simulator {
     return pMiss * total;
   }
 
+  bool get _blind => cfg.blind && e.blindUnlocked();
+
+  double get _sigma => _blind ? cfg.sigma * cfg.blindSpread : cfg.sigma;
+
+  double get _mode => _blind ? e.blindMultiplier() : 1;
+
   TierOdds _playerOdds() =>
-      econ.odds(cfg.sigma, econ.playerWindows(), luck: econ.luckChance());
+      econ.odds(_sigma, econ.playerWindows(), luck: econ.luckChance());
+
+  static final _ladderCache = <String, double>{};
+
+  /// Mean multiplier steps under the ladder: the stationary state of the
+  /// climb (0…cap), a Shield charge taking a miss as often as the hits
+  /// refill one.
+  double _ladderSteps(ComboLadder l, TierOdds paid) {
+    final fragile = econ.ruleOn('fragileCombo');
+    final o = fragile ? econ.odds(_sigma, econ.baseWindows()) : paid;
+    final cap = econ.comboCap();
+    final pJ = math.min(o.perfect, pWithin(b.jackpot.window, _sigma));
+    final pM = 1 - o.hit;
+    final recharge = s.perks.contains('shieldRecharge')
+        ? b.perk('shieldRecharge').params['steps']!
+        : l.rechargeHits.toDouble();
+    final pReset = econ.shieldCharges() > 0
+        ? math.max(0.0, pM - o.hit / recharge)
+        : pM;
+    final floor = s.perks.contains('comboFloor')
+        ? b.perk('comboFloor').params['floor']!.round()
+        : 0;
+    final good = fragile
+        ? b.loops.rule('fragileCombo').params['good']!.round()
+        : l.steps['good']!;
+    String r(double x) => x.toStringAsFixed(4);
+    final key =
+        '$cap ${r(o.perfect)} ${r(o.great)} ${r(o.good)} ${r(pJ)} '
+        '${r(pReset)} $floor $good';
+    return _ladderCache.putIfAbsent(key, () {
+      var dist = List<double>.filled(cap + 1, 1 / (cap + 1));
+      for (var it = 0; it < 400; it++) {
+        final next = List<double>.filled(cap + 1, 0);
+        for (var c = 0; c <= cap; c++) {
+          final m = dist[c];
+          if (m == 0) continue;
+          int to(int d) => (c + d).clamp(0, cap);
+          next[to(l.steps['perfect']!)] += m * (o.perfect - pJ);
+          next[to(l.steps['perfect']! + l.jackpot)] += m * pJ;
+          next[to(l.steps['great']!)] += m * o.great;
+          next[to(good)] += m * o.good;
+          next[math.min(c, floor)] += m * pReset;
+          next[c] += m * (pM - pReset);
+        }
+        dist = next;
+      }
+      var mean = 0.0;
+      for (var c = 0; c <= cap; c++) {
+        mean += c * dist[c];
+      }
+      return mean;
+    });
+  }
 
   double _activeIncome(double passive) {
     final o = _playerOdds();
@@ -153,8 +218,13 @@ class Simulator {
     if (econ.shieldCharges() > 0) {
       pMiss = pMiss * math.max(0.0, 1 - (inc / 10) / math.max(1e-9, pMiss));
     }
+    final ladder = b.combo.ladder;
     final combo =
-        1 + b.combo.multiplierPerStep * avgStreak(inc, pMiss, econ.comboCap());
+        1 +
+        b.combo.multiplierPerStep *
+            (ladder != null
+                ? _ladderSteps(ladder, o)
+                : avgStreak(inc, pMiss, econ.comboCap()));
     final flat =
         econ.expectedReward(o) *
         econ.strikePower() *
@@ -167,10 +237,10 @@ class Simulator {
         passive;
     // The 10.00 jackpot: its own window, never widened (docs/02 §2).
     final jackpot =
-        pWithin(b.jackpot.window, cfg.sigma) *
+        pWithin(b.jackpot.window, _sigma) *
         b.jackpot.productionSeconds *
         passive;
-    return (flat + echo + jackpot) * combo / econ.roundSeconds();
+    return (flat + echo + jackpot) * combo * _mode / econ.roundSeconds();
   }
 
   double _goldenStrength() {
@@ -317,8 +387,8 @@ class Simulator {
         // The bot catches every golden clock; the next round is golden.
         e.claimGolden();
         e.onRoundStart();
-        final err = _gauss() * cfg.sigma;
-        final o = e.resolveRound(grade(err, econ.playerWindows()));
+        final err = _gauss() * _sigma;
+        final o = e.resolveRound(grade(err, econ.playerWindows()), mode: _mode);
         if (ads != null &&
             o.comboBroken &&
             o.streakBefore >= ads.rescueMinStreak &&

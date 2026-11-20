@@ -208,10 +208,31 @@ class ComboConfig {
   ComboConfig(Map<String, Object?> j)
     : multiplierPerStep = _d(j['multiplierPerStep']),
       baseCap = _i(j['baseCap']),
-      shieldRechargeSteps = _i(j['shieldRechargeSteps']);
+      shieldRechargeSteps = _i(j['shieldRechargeSteps']),
+      ladder = j['ladder'] == null ? null : ComboLadder(_m(j['ladder']));
   final double multiplierPerStep;
   final int baseCap;
   final int shieldRechargeSteps;
+
+  /// The multiplier ladder (combo redesign); null = the streak rules.
+  final ComboLadder? ladder;
+}
+
+/// Combo redesign (design/combo_sim.py): the multiplier climbs by
+/// [steps] per tier, never past the cap; a miss resets it (a Shield
+/// charge takes the miss); an exact 5.00 adds [jackpot] more. A Shield
+/// charge comes back every [rechargeHits] hits.
+class ComboLadder {
+  ComboLadder(Map<String, Object?> j)
+    : steps = {
+        for (final t in const ['perfect', 'great', 'good'])
+          t: _i(_m(j['steps'])[t]),
+      },
+      jackpot = _i(j['jackpot']),
+      rechargeHits = _i(j['rechargeHits']);
+  final Map<String, int> steps;
+  final int jackpot;
+  final int rechargeHits;
 }
 
 class SkillConfig {

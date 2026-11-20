@@ -219,10 +219,38 @@ def odds(st, sigma, bias, n=200000, seed=2):
     return {k: v / n for k, v in cnt.items()}, j / n
 
 
+BLIND_RULES = ["teraz (+3/+2/+1, pudło 0)", "B: P+1 Ś0 D0 pudło 0", "G: A okna bazowe, 5.00 = max"]
+
+
+def blind_table(trials, rounds, seed=3):
+    """Mid and late game: the same players with and without Blind."""
+    rng = random.Random(seed)
+    rules = {r.name: r for r in RULES}
+    for st in STAGES[2:]:
+        print(f"### {st.name}: rundy na maksimum (zwykła gra → na ślepo ×1.5 → ×2)\n")
+        print("| reguła | " + " | ".join(f"σ {s*1000:.0f}" for s, _ in PLAYERS) + " |")
+        print("|---" * (len(PLAYERS) + 1) + "|")
+        for name in BLIND_RULES:
+            cells = []
+            for sigma, bias in PLAYERS:
+                v = []
+                for k in (1, 1.5, 2):
+                    at = sum(play(rules[name], st, sigma * k, bias * k, rounds, rng)[1]
+                             for _ in range(trials)) / trials
+                    v.append(f"{at:.0%}")
+                cells.append(" → ".join(v))
+            print(f"| {name} | " + " | ".join(cells) + " |")
+        print()
+        print("PERFEKTY: " + ", ".join(
+            f"σ {s*1000:.0f}: {odds(st, s, b)[0]['P']:.0%} → {odds(st, s*1.5, b*1.5)[0]['P']:.0%} → {odds(st, s*2, b*2)[0]['P']:.0%}"
+            for s, b in PLAYERS) + "\n")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--trials", type=int, default=200)
     ap.add_argument("--rounds", type=int, default=360)  # ~30 min of play
+    ap.add_argument("--blind", action="store_true", help="Blind mode: spread ×1.5 and ×2")
     a = ap.parse_args()
 
     print("## Okna i szanse (PERFEKT / ŚWIETNIE / DOBRZE / pudło, 5.00)\n")
@@ -235,6 +263,10 @@ def main():
             o, j = odds(st, s, b)
             print(f"| {s*1000:.0f} ms | {o['P']:.0%} | {o['G']:.0%} | {o['D']:.0%} | {o['M']:.0%} | {j:.0%} |")
         print()
+
+    if a.blind:
+        blind_table(a.trials, a.rounds)
+        return
 
     res = run(a.trials, a.rounds)
     print("## Czas na maksymalnym mnożniku (% rund) · średni mnożnik względem dziś\n")
