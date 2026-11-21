@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hit5 · teksty PL</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="/assets/art/stopwatch.png" alt=""> Hit5 <span>teksty po polsku</span></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="Szukaj tekstu albo klucza…  (Ctrl+K)" autocomplete="off">
+    <div id="results" class="results" hidden></div>
+  </div>
+  <div class="actions">
+    <span id="status" class="status"></span>
+    <span id="progress" class="progress"></span>
+    <button id="btnChanges" class="ghost">Zmiany <b id="cnt">0</b></button>
+    <button id="btnSave" class="primary" disabled>Zapisz do kodu</button>
+  </div>
+</header>
+<div class="shell">
+  <nav id="nav" class="nav"></nav>
+  <main id="stage" class="stage"></main>
+  <aside id="editor" class="editor"></aside>
+</div>
+<div id="modal" class="modal" hidden></div>
+<script src="core.js"></script>
+<script src="ekrany.js"></script>
+<script>boot();</script>
+</body>
+</html>
