@@ -730,7 +730,7 @@ class GameController extends ChangeNotifier {
     if (_sinceAchievementCheck >= 1) {
       _sinceAchievementCheck = 0;
       _checkAchievements(AchievementContext(passive: econ.passive()));
-      if (paradoxHintOpen) _tip('prestige');
+      if (engine.canPrestige()) _tip('prestige');
       _checkLoop();
       _windSprings();
       _announceDials();
@@ -1564,15 +1564,12 @@ class GameController extends ChangeNotifier {
 
   /// Every clock the player can buy in this run is bought. The first time
   /// that is everything up to the Time Machine (the cat needs a perk).
-  /// Until then nothing points at a paradox (R-TUT-7b): when to take it is
-  /// the player's call, the game does not say when it pays best.
+  /// Until then the goal bar does not point at a paradox (R-TUT-7b): it
+  /// does not say when one pays best. The paradox tip still shows as soon
+  /// as a paradox is possible.
   bool get allClocksBought => balance.generators.every(
     (g) => !econ.generatorUnlocked(g.id) || econ.owned(g.id) > 0,
   );
-
-  /// The paradox tip may show: a paradox is possible and every clock
-  /// within reach is bought (R-TUT-7b).
-  bool get paradoxHintOpen => engine.canPrestige() && allClocksBought;
 
   /// The one thing to aim for next, shown over the shop (R-TUT-7). Until
   /// the first paradox: the first clock's first bonus, then each new

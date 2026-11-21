@@ -648,11 +648,12 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   otwarcie ekranu paradoksu.
 - **R-TUT-7b (bez podpowiadania momentu paradoksu):** dopóki w tym
   przejściu jest zegar, który gracz mógłby kupić, a jeszcze go nie ma,
-  gra nie wskazuje paradoksu: nie ma dymka przy wirze ani celu „cofnij
-  czas”. Za pierwszym razem dymek pojawia się więc dopiero po kupnie
-  Maszyny czasu, ostatniego zegara przed kotem Schrödingera, który
-  wymaga perku. Gracz sam decyduje, kiedy paradoks się opłaca; gra nie
-  prowadzi go za rękę.
+  pasek celu nie wskazuje paradoksu („cofnij czas”). Za pierwszym razem
+  taki cel może się więc pojawić dopiero po kupnie Maszyny czasu,
+  ostatniego zegara przed kotem Schrödingera, który wymaga perku. Gracz
+  sam decyduje, kiedy paradoks się opłaca; gra nie prowadzi go za rękę.
+  Dymek przy wirze (R-TUT-7) zostaje bez zmian: pojawia się, gdy tylko
+  paradoks jest możliwy, bo uczy, że taka opcja istnieje.
 - **R-TUT-7a (cel po pierwszym paradoksie):** pasek zostaje na całą grę
   (13 §5.5; wcześniej znikał i gracz po paradoksie nie miał żadnego
   wskazanego celu). Zawsze jeden cel, w tej kolejności:

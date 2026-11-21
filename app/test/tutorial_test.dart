@@ -167,23 +167,19 @@ void main() {
     expect(c.nextGoal?.kind, isNot(GoalKind.prestige));
   });
 
-  test('paradox tip waits for the clocks within reach (R-TUT-7b)', () {
+  test('all clocks within reach: up to the Time Machine (R-TUT-7b)', () {
     final s = GameState()
       ..tutorialDone = true
-      ..earnedTotal = 1e8
       ..owned['grandpa'] = 10;
     final c = controller(s);
-    expect(c.engine.canPrestige(), isTrue);
     expect(c.allClocksBought, isFalse);
-    expect(c.paradoxHintOpen, isFalse);
-    // The first time: every clock up to the Time Machine (the cat and
-    // Chronos need perks).
+    // The first time the cat and Chronos need perks.
     for (final gen in balance.generators) {
       if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
     }
     expect(c.econ.generatorUnlocked('schrodinger'), isFalse);
     expect(c.econ.owned('timeMachine'), 1);
-    expect(c.paradoxHintOpen, isTrue);
+    expect(c.allClocksBought, isTrue);
   });
 
   test('a doubling paradox waits for the clocks (R-TUT-7b)', () {
