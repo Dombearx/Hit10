@@ -730,7 +730,7 @@ class GameController extends ChangeNotifier {
     if (_sinceAchievementCheck >= 1) {
       _sinceAchievementCheck = 0;
       _checkAchievements(AchievementContext(passive: econ.passive()));
-      if (engine.canPrestige()) _tip('prestige');
+      if (paradoxHintOpen) _tip('prestige');
       _checkLoop();
       _windSprings();
       _announceDials();
@@ -1562,6 +1562,18 @@ class GameController extends ChangeNotifier {
 
   // --------------------------------------------------------- next goal --
 
+  /// Every clock the player can buy in this run is bought. The first time
+  /// that is everything up to the Time Machine (the cat needs a perk).
+  /// Until then nothing points at a paradox (R-TUT-7b): when to take it is
+  /// the player's call, the game does not say when it pays best.
+  bool get allClocksBought => balance.generators.every(
+    (g) => !econ.generatorUnlocked(g.id) || econ.owned(g.id) > 0,
+  );
+
+  /// The paradox tip may show: a paradox is possible and every clock
+  /// within reach is bought (R-TUT-7b).
+  bool get paradoxHintOpen => engine.canPrestige() && allClocksBought;
+
   /// The one thing to aim for next, shown over the shop (R-TUT-7). Until
   /// the first paradox: the first clock's first bonus, then each new
   /// clock (the first paradox is the player's call: a coach tip says it
@@ -1583,7 +1595,10 @@ class GameController extends ChangeNotifier {
           need: bonus.toDouble(),
         );
       }
-    } else if (!state.rewindPending && gain >= 5 && gain >= state.chronons) {
+    } else if (!state.rewindPending &&
+        gain >= 5 &&
+        gain >= state.chronons &&
+        allClocksBought) {
       return const NextGoal(GoalKind.prestige);
     }
     for (final g in balance.generators) {
