@@ -308,7 +308,7 @@ zyskiem.
 | 2 | Zepsuty stoper | 8.0 | 4.4 | 10.0 | 8 | 15 |
 | 3 | Drożyzna | 8.3 | 4.6 | 10.3 | 9 | 22 |
 | 4 | Pochmurny dzień | 5.3 | 2.9 | 6.7 | 7 | 28 |
-| 5 | Krótki lont | 4.0 | 2.2 | 5.3 | 7 | 31 |
+| 5 | Krótki lont (stara zasada, do przeliczenia) | 4.0 | 2.2 | 5.3 | 7 | 31 |
 | 6 | Szwajcarska precyzja | 3.7 | 2.0 | 4.7 | 7 | 34 |
 | 7 | Bezsenność | 4.0 | 2.2 | 5.0 | 6 | 40 |
 | 8 | (dowolna, tu bez zasady) | 3.0 | 1.6 | 3.7 | 5 | 43 |

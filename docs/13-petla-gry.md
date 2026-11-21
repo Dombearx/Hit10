@@ -281,7 +281,7 @@ z 12 §3.2 po przesianiu symulacją):
 | `blindfold` | Zepsuty stoper | Na ślepo jest zawsze włączone | Na ślepo płaci +1 (×4, ze Śmiałkiem ×5) |
 | `inflation` | Drożyzna | cena zegara rośnie ×1.20 za sztukę zamiast ×1.15 | pierwsze 10 sztuk każdego zegara za pół ceny |
 | `noGold` | Pochmurny dzień | brak Złotej Sekundy | Złota Sekunda przylatuje w 30 s po powrocie po co najmniej 1 h (11 §3.3) |
-| `shortFuse` | Krótki lont | combo najwyżej 5, bez Tarczy | +1 ładunek Tarczy od początku przejścia |
+| `shortFuse` | Krótki lont | limit mnożnika +10 kroków, ale wszystko poza PERFEKTEM go zeruje; bez Tarczy (11.2026, wcześniej: combo najwyżej 5) | limit mnożnika +4 kroki (wcześniej +1 ładunek Tarczy) |
 | `precision` | Szwajcarska precyzja | DOBRZE nic nie płaci graczowi | okno PERFEKT +0.001 s |
 | `insomnia` | Bezsenność | dochód offline 25% | limit offline +12 h |
 

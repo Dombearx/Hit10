@@ -293,7 +293,6 @@ const _ruleIcons = <String, String>{
   'shortFuse': 'fire',
   'precision': 'bullseye',
   'insomnia': 'sleeping_face',
-  'fragileCombo': 'high_voltage',
 };
 
 /// A loop rule's icon; its seal is the same icon on gold.
@@ -307,7 +306,6 @@ String ruleName(AppLocalizations l, String id) => switch (id) {
   'shortFuse' => l.rule_shortFuse,
   'precision' => l.rule_precision,
   'insomnia' => l.rule_insomnia,
-  'fragileCombo' => l.rule_fragileCombo,
   _ => id,
 };
 
@@ -318,7 +316,6 @@ String ruleDescription(AppLocalizations l, String id) => switch (id) {
   'shortFuse' => l.rule_shortFuse_desc,
   'precision' => l.rule_precision_desc,
   'insomnia' => l.rule_insomnia_desc,
-  'fragileCombo' => l.rule_fragileCombo_desc,
   _ => '',
 };
 
@@ -330,7 +327,6 @@ String ruleQuote(AppLocalizations l, String id) => switch (id) {
   'shortFuse' => l.rule_shortFuse_quote,
   'precision' => l.rule_precision_quote,
   'insomnia' => l.rule_insomnia_quote,
-  'fragileCombo' => l.rule_fragileCombo_quote,
   _ => '',
 };
 
@@ -341,7 +337,6 @@ String sealName(AppLocalizations l, String id) => switch (id) {
   'shortFuse' => l.seal_shortFuse,
   'precision' => l.seal_precision,
   'insomnia' => l.seal_insomnia,
-  'fragileCombo' => l.seal_fragileCombo,
   _ => id,
 };
 
@@ -352,7 +347,6 @@ String sealDescription(AppLocalizations l, String id) => switch (id) {
   'shortFuse' => l.seal_shortFuse_desc,
   'precision' => l.seal_precision_desc,
   'insomnia' => l.seal_insomnia_desc,
-  'fragileCombo' => l.seal_fragileCombo_desc,
   _ => '',
 };
 

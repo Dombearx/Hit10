@@ -79,6 +79,7 @@ Pod koniec gry wyzwaniem dla dobrego gracza jest Kruche combo.
   pełnym mnożniku. Zapis v3 obcina dawny rekord serii do limitu.
 - Ratunek combo: po utracie ×1.75+ (15 kroków), przywraca mnożnik.
 - Twarde lądowanie: 5 kroków (×1.25). Szybka Tarcza: co 7 trafień.
-- Kruche combo: zasada spoza historii (`story: false`), do wyboru po niej;
-  pieczęć „Hartowane combo” — pudło zabiera połowę kroków. Bez tarczy
-  zegara.
+- Kruche combo: **usunięte (11.2026).** Było zasadą spoza historii
+  (`story: false`) z pieczęcią „Hartowane combo”. PERFEKT na ekranie,
+  który nie podnosi mnożnika, wyglądał jak błąd. Stare zapisy gubią tę
+  zasadę i jej pieczęć przy wczytaniu.

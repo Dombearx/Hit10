@@ -381,34 +381,24 @@ class GameEngine {
   }
 
   /// The multiplier ladder (combo redesign, design/combo_sim.py). Under
-  /// "Fragile combo" the step comes from the raw tap on the base windows:
-  /// skills, Luck and Hot hand widen what a hit pays, not the multiplier.
-  (bool, bool) _climbLadder(ComboLadder ladder, Grade raw, Tier tier) {
-    final fragile = econ.ruleOn('fragileCombo');
-    final t = fragile ? grade(raw.error, econ.baseWindows()).tier : tier;
+  /// "Short fuse" anything short of a PERFECT breaks it like a miss.
+  (bool, bool) _climbLadder(ComboLadder ladder, Grade raw, Tier t) {
     final before = s.comboStreak;
-    if (t == Tier.miss) {
+    final fuse = econ.ruleOn('shortFuse') && t != Tier.perfect;
+    if (t == Tier.miss || fuse) {
       if (s.shieldCharges > 0 && before > 0) {
         s.shieldCharges--;
         s.lifetime.shieldSaves++;
         s.shieldProgress = 0;
         return (false, true);
       }
-      var keep = s.perks.contains('comboFloor')
+      final keep = s.perks.contains('comboFloor')
           ? b.perk('comboFloor').params['floor']!.round()
           : 0;
-      // The seal of "Fragile combo": a miss takes half (R-PETLA-4).
-      if (econ.sealed('fragileCombo')) {
-        final share = b.loops.rule('fragileCombo').seal['missKeeps']!;
-        keep = math.max(keep, (before * share).floor());
-      }
       s.comboStreak = math.min(before, keep);
       return (before > s.comboStreak, false);
     }
     var step = ladder.steps[t.name]!;
-    if (fragile && t == Tier.good) {
-      step = b.loops.rule('fragileCombo').params['good']!.round();
-    }
     if (isJackpot(raw)) step += ladder.jackpot;
     s.comboStreak = (before + step).clamp(0, econ.comboCap());
     s.shieldProgress++;

@@ -149,10 +149,6 @@ void main() {
       e.startLoop(0);
       expect(s.loopRules, [rules[0], rules[3]]);
       expect(s.nextRules, isEmpty);
-      // A rule outside the story only comes picked (docs/15).
-      expect(rules, isNot(contains('fragileCombo')));
-      s.nextRules.add('fragileCombo');
-      expect(e.econ.nextLoopRules(), ['fragileCombo']);
     });
 
     test('the best time of a rule is kept', () {
@@ -211,13 +207,13 @@ void main() {
       expect(e.updateEffects(1), isTrue);
     });
 
-    test('short fuse: the combo stops at 5, no Shield', () {
+    test('short fuse: the cap 10 steps higher, no Shield', () {
       s
         ..skills['combo'] = 10
         ..skills['shield'] = 3;
-      expect(e.econ.comboCap(), greaterThan(5));
+      expect(e.econ.comboCap(), 25);
       s.loopRules.add('shortFuse');
-      expect(e.econ.comboCap(), 5);
+      expect(e.econ.comboCap(), 35);
       expect(e.econ.shieldCharges(), 0);
       expect(e.maxShieldCharges(), 0);
     });
@@ -283,12 +279,13 @@ void main() {
       expect(s.goldenNextAt, inInclusiveRange(100, 130));
     });
 
-    test('short fuse: one more Shield charge, from the start', () {
+    test('short fuse: the cap 4 steps higher for good', () {
+      expect(e.econ.comboCap(), 5);
       s.seals.add('shortFuse');
-      expect(e.econ.shieldCharges(), 1);
-      s.earnedTotal = 1e12;
-      e.prestige();
-      expect(s.shieldCharges, 1);
+      expect(e.econ.comboCap(), 9);
+      expect(e.econ.shieldCharges(), 0);
+      s.skills['combo'] = 15;
+      expect(e.econ.comboCap(), 39);
     });
 
     test('Swiss precision: PERFECT 1 ms wider, never past GREAT', () {

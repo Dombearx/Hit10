@@ -97,6 +97,18 @@ void main() {
     expect(fuse.state.lifetime.bestCombo, 5);
   });
 
+  test('a rule taken out of the game drops out of the save', () {
+    final d = saveFromJsonString(
+      '{"saveVersion":3,"loopRules":["fragileCombo","noGold"],'
+      '"seals":["blindfold","fragileCombo"],"nextRules":["fragileCombo"],'
+      '"loopBest":{"fragileCombo":100,"blindfold":200,"":300}}',
+    );
+    expect(d.state.loopRules, ['noGold']);
+    expect(d.state.seals, ['blindfold']);
+    expect(d.state.nextRules, isEmpty);
+    expect(d.state.loopBest, {'blindfold': 200, '': 300});
+  });
+
   test('tolerates missing optional fields', () {
     final d = saveFromJsonString('{"saveVersion":1,"tiki":5}');
     expect(d.state.tiki, 5);

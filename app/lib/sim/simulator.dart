@@ -159,10 +159,9 @@ class Simulator {
 
   /// Mean multiplier steps under the ladder: the stationary state of the
   /// climb (0…cap), a Shield charge taking a miss as often as the hits
-  /// refill one.
-  double _ladderSteps(ComboLadder l, TierOdds paid) {
-    final fragile = econ.ruleOn('fragileCombo');
-    final o = fragile ? econ.odds(_sigma, econ.baseWindows()) : paid;
+  /// refill one. Under "Short fuse" a GREAT or GOOD breaks it like a miss.
+  double _ladderSteps(ComboLadder l, TierOdds o) {
+    final fuse = econ.ruleOn('shortFuse');
     final cap = econ.comboCap();
     final pJ = math.min(o.perfect, pWithin(b.jackpot.window, _sigma));
     final pM = 1 - o.hit;
@@ -175,13 +174,11 @@ class Simulator {
     final floor = s.perks.contains('comboFloor')
         ? b.perk('comboFloor').params['floor']!.round()
         : 0;
-    final good = fragile
-        ? b.loops.rule('fragileCombo').params['good']!.round()
-        : l.steps['good']!;
+    final good = l.steps['good']!;
     String r(double x) => x.toStringAsFixed(4);
     final key =
         '$cap ${r(o.perfect)} ${r(o.great)} ${r(o.good)} ${r(pJ)} '
-        '${r(pReset)} $floor $good';
+        '${r(pReset)} $floor $good $fuse';
     return _ladderCache.putIfAbsent(key, () {
       var dist = List<double>.filled(cap + 1, 1 / (cap + 1));
       for (var it = 0; it < 400; it++) {
@@ -192,8 +189,12 @@ class Simulator {
           int to(int d) => (c + d).clamp(0, cap);
           next[to(l.steps['perfect']!)] += m * (o.perfect - pJ);
           next[to(l.steps['perfect']! + l.jackpot)] += m * pJ;
-          next[to(l.steps['great']!)] += m * o.great;
-          next[to(good)] += m * o.good;
+          if (fuse) {
+            next[math.min(c, floor)] += m * (o.great + o.good);
+          } else {
+            next[to(l.steps['great']!)] += m * o.great;
+            next[to(good)] += m * o.good;
+          }
           next[math.min(c, floor)] += m * pReset;
           next[c] += m * (pM - pReset);
         }

@@ -127,23 +127,18 @@ void main() {
       expect(s.comboStreak, 5);
     });
 
-    test('Fragile combo: bare windows, GOOD −1; its seal halves a miss', () {
-      s.loopRules.add('fragileCombo');
-      s.skills.addAll({'combo': 5, 'wideEye': 15, 'magnet': 15});
-      s.comboStreak = 6;
-      // A GREAT on the widened windows, but 0.040 s is a GOOD bare.
-      final wide = grade(0.040, e.econ.playerWindows());
-      expect(wide.tier, isNot(Tier.good));
-      expect(e.resolveRound(wide).streak, 5);
-      // 0.070 s pays as a hit here, but bare it is a miss.
-      final far = grade(0.070, e.econ.playerWindows());
-      expect(far.isHit, isTrue);
-      expect(e.resolveRound(far).streak, 0);
-      s.loopRules.clear();
-      s.seals.add('fragileCombo');
-      s.comboStreak = 9;
-      e.resolveRound(early);
-      expect(s.comboStreak, 4);
+    test('Short fuse: a higher cap, but only PERFECTs keep it', () {
+      s.loopRules.add('shortFuse');
+      s.skills['combo'] = 5; // cap 15, here 25
+      expect(e.econ.comboCap(), 25);
+      e.resolveRound(perfect); // 5.00: straight to the cap
+      expect(s.comboStreak, 25);
+      expect(e.resolveRound(great).comboBroken, isTrue);
+      expect(s.comboStreak, 0);
+      e.resolveRound(const Grade(Tier.perfect, 0.012));
+      expect(s.comboStreak, 1);
+      e.resolveRound(good);
+      expect(s.comboStreak, 0);
     });
   });
 

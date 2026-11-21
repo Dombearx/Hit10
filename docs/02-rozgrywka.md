@@ -940,10 +940,9 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   | `blindfold` | Zepsuty stoper / Broken Stopwatch | Na ślepo jest zawsze włączone (płaci jak zwykle); przełącznika nie da się wyłączyć | Wyczucie: Na ślepo płaci o 1 więcej (×4, ze Śmiałkiem ×5) |
   | `inflation` | Drożyzna / Price Hike | cena zegara rośnie ×1.20 za sztukę zamiast ×1.15 | Stały klient: pierwsze 10 sztuk każdego zegara za pół ceny |
   | `noGold` | Pochmurny dzień / Cloudy Day | Złota Sekunda nie przylatuje, oferta `adGolden` jest wyłączona; przedmioty sezonowe latają dalej (R-SEZ-3) | Promyk: po powrocie po co najmniej 1 h Złota Sekunda przylatuje w 30 s |
-  | `shortFuse` | Krótki lont / Short Fuse | mnożnik najwyżej ×1.25, Tarcza nie działa | Zapasowa Tarcza: +1 ładunek od początku każdego przejścia |
+  | `shortFuse` | Krótki lont / Short Fuse | limit mnożnika +10 kroków (+0.50), ale każde trafienie słabsze niż PERFEKT zeruje go jak pudło (Fart i Gorąca ręka liczą się, Twarde lądowanie też); Tarcza nie działa | Długi lont: limit mnożnika +4 kroki (+0.20) |
   | `precision` | Szwajcarska precyzja / Swiss Precision | DOBRZE nic nie płaci graczowi | Pewna ręka: okno PERFEKT +0.001 s (nigdy szersze niż ŚWIETNIE) |
   | `insomnia` | Bezsenność / Insomnia | dochód offline najwyżej 25% | Dobry sen: limit offline +12 h |
-  | `fragileCombo` | Kruche combo / Fragile Combo (**poza historią**, do wyboru po niej, R-PETLA-8) | mnożnik liczy się z okien bazowych (umiejętności, Szczęście, Gorąca ręka poszerzają wypłatę, nie mnożnik); DOBRZE −1 krok | Hartowane combo: pudło zabiera połowę kroków zamiast wszystkich |
 
 - **R-PETLA-5 (co daje ukończenie):** rozdział Kroniki, pieczęć zasady
   tej pętli, tarcza zegara przypisana do tej pieczęci (R-TARCZA-1)
@@ -961,8 +960,9 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   Dziadek; ostatni rozdział mówi, dlaczego akurat 5.00.
 - **R-PETLA-8 (po historii):** po zdobyciu sześciu pieczęci gracz sam
   wybiera w Kronice zasady następnej pętli: dowolne, kilka naraz albo
-  żadną. Dochodzi wtedy zasada spoza historii, Kruche combo (docs/15):
-  pieczęć bez tarczy zegara. Kronika pamięta najkrótszy czas gry każdej zasady.
+  żadną. Kronika pamięta najkrótszy czas gry każdej zasady. (Kruche combo
+  z docs/15 usunięte 11.2026: PERFEKT na ekranie, który nie podnosi
+  mnożnika, wyglądał jak błąd.)
 
 ## 17. Ocena w sklepie
 
