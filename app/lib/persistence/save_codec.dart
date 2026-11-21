@@ -316,10 +316,14 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
   s.achievements.addAll(_sl(j['achievements']));
   _m(j['clockLevels']).forEach((k, v) => s.clockLevels[k] = _i(v));
   s.dialsSeen.addAll(_sl(j['dialsSeen']));
-  s.loopRules.addAll(_sl(j['loopRules']));
-  s.seals.addAll(_sl(j['seals']));
-  s.nextRules.addAll(_sl(j['nextRules']));
-  _m(j['loopBest']).forEach((k, v) => s.loopBest[k] = _d(v));
+  // Rules taken out of the game drop out, with their seals and records.
+  bool kept(String id) => !_retiredRules.contains(id);
+  s.loopRules.addAll(_sl(j['loopRules']).where(kept));
+  s.seals.addAll(_sl(j['seals']).where(kept));
+  s.nextRules.addAll(_sl(j['nextRules']).where(kept));
+  _m(j['loopBest']).forEach((k, v) {
+    if (k.split('+').every(kept)) s.loopBest[k] = _d(v);
+  });
   // Saves from before Mainsprings: clocks owned now or ever (their first
   // "own 1" badge) count as bought.
   s.everOwned.addAll(_sl(j['everOwned']));
@@ -420,6 +424,9 @@ SaveData importSave(String text) {
 
 /// Old perk ids → their replacements (playtest 25): Shield at start and
 /// the early Blind unlock never did anything a player could notice.
+/// Loop rules no longer in the game (docs/15: Fragile combo, 11.2026).
+const _retiredRules = {'fragileCombo'};
+
 const _renamedPerks = {
   'startShield': 'shieldRecharge',
   'earlyModes': 'daredevil',

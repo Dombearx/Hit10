@@ -2991,18 +2991,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get rule_shortFuse => 'Krótki lont';
 
   @override
-  String get rule_shortFuse_desc => 'Mnożnik najwyżej ×1,25 i nie ma Tarczy.';
+  String get rule_shortFuse_desc =>
+      'Mnożnik może urosnąć o 0,50 wyżej niż zwykle, ale zeruje go wszystko poza PERFEKTEM. Nie ma Tarczy.';
 
   @override
   String get rule_shortFuse_quote =>
-      '„Koniec z długimi seriami. I oddaj tę Tarczę.”';
+      '„Lont dłuższy, ale się pali. Jedno krzywe trafienie i bum. A Tarczę oddaj.”';
 
   @override
-  String get seal_shortFuse => 'Zapasowa Tarcza';
+  String get seal_shortFuse => 'Długi lont';
 
   @override
-  String get seal_shortFuse_desc =>
-      '+1 ładunek Tarczy od początku każdego przejścia.';
+  String get seal_shortFuse_desc => 'Mnożnik może urosnąć o 0,20 wyżej.';
 
   @override
   String get rule_precision => 'Szwajcarska precyzja';
@@ -3039,24 +3039,6 @@ class AppLocalizationsPl extends AppLocalizations {
       'Dochód offline liczy się o 12 godzin dłużej.';
 
   @override
-  String get rule_fragileCombo => 'Kruche combo';
-
-  @override
-  String get rule_fragileCombo_desc =>
-      'Mnożnik liczy się z gołych okien: umiejętności, Szczęście i Gorąca ręka ich nie poszerzają. DOBRZE zabiera 0,05.';
-
-  @override
-  String get rule_fragileCombo_quote =>
-      '„Szerokie okna? Proszę bardzo. Ale mnożnik zobaczy prawdę.”';
-
-  @override
-  String get seal_fragileCombo => 'Hartowane combo';
-
-  @override
-  String get seal_fragileCombo_desc =>
-      'Pudło zabiera połowę mnożnika zamiast całego.';
-
-  @override
   String get chapter_1_t => 'Kupiony';
 
   @override
@@ -3089,7 +3071,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get chapter_5 =>
-      '— Bez serii, bez Tarczy, a ty dalej tu jesteś. — Chronos pierwszy raz się uśmiechnął. — Coś ci powiem. Raz w życiu się spóźniłem. Raz!\n— Na co?\n— Nie twoja sprawa. Od teraz liczy się tylko idealnie.';
+      '— Seria pękała od byle czego, Tarczy nie było, a ty dalej tu jesteś. — Chronos pierwszy raz się uśmiechnął. — Coś ci powiem. Raz w życiu się spóźniłem. Raz!\n— Na co?\n— Nie twoja sprawa. Od teraz liczy się tylko idealnie.';
 
   @override
   String get chapter_6_t => 'Co do sekundy';

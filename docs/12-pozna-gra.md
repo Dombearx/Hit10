@@ -149,7 +149,7 @@ Wyzwania na start (6). Każde korzysta z mechaniki, którą gracz już zna:
 | `noGold` | Pochmurny dzień / Cloudy Day | brak Złotej Sekundy | efekty Złotej Sekundy +10% |
 | `amnesia` | Amnezja / Amnesia | Pamięć mięśniowa i Nawyk nie działają | Pamięć mięśniowa zachowuje +5% poziomów |
 | `oldSchool` | Po staremu / Old School | tylko zegary 1–6 | zegary 1–6 ×3 |
-| `shortFuse` | Krótki lont / Short Fuse | combo najwyżej 5, bez Tarczy | +1 ładunek Tarczy |
+| `shortFuse` | Krótki lont / Short Fuse | limit mnożnika +10 kroków, ale wszystko poza PERFEKTEM go zeruje; bez Tarczy | limit mnożnika +4 kroki |
 | `precision` | Szwajcarska precyzja / Swiss Precision | DOBRZE nic nie płaci (gracz i zegary) | okno PERFEKT +0.001 s |
 
 **Dlaczego tak.**

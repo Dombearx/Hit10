@@ -2990,18 +2990,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rule_shortFuse_desc =>
-      'The multiplier stops at ×1.25, and there is no Shield.';
+      'The multiplier can climb 0.50 higher than usual, but anything short of a PERFECT resets it. No Shield.';
 
   @override
   String get rule_shortFuse_quote =>
-      '“No more long streaks. And hand over that Shield.”';
+      '“A longer fuse, but it burns. One crooked hit and boom. And hand over that Shield.”';
 
   @override
-  String get seal_shortFuse => 'Spare Shield';
+  String get seal_shortFuse => 'Long Fuse';
 
   @override
-  String get seal_shortFuse_desc =>
-      '+1 Shield charge from the start of every run.';
+  String get seal_shortFuse_desc => 'The multiplier can climb 0.20 higher.';
 
   @override
   String get rule_precision => 'Swiss Precision';
@@ -3036,24 +3035,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seal_insomnia_desc => 'Offline income counts for 12 more hours.';
 
   @override
-  String get rule_fragileCombo => 'Fragile Combo';
-
-  @override
-  String get rule_fragileCombo_desc =>
-      'The multiplier goes by the bare windows: skills, Luck and Hot Hand don\'t widen them. A GOOD takes 0.05 away.';
-
-  @override
-  String get rule_fragileCombo_quote =>
-      '“Wide windows? Fine. But the multiplier sees the truth.”';
-
-  @override
-  String get seal_fragileCombo => 'Tempered Combo';
-
-  @override
-  String get seal_fragileCombo_desc =>
-      'A miss takes half the multiplier instead of all of it.';
-
-  @override
   String get chapter_1_t => 'Bought';
 
   @override
@@ -3086,7 +3067,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chapter_5 =>
-      '“No streaks, no Shield, and you\'re still here.” For the first time Chronos smiled. “I\'ll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”';
+      '“Your streak snapped at every slip, no Shield either, and you\'re still here.” For the first time Chronos smiled. “I\'ll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”';
 
   @override
   String get chapter_6_t => 'To the Second';

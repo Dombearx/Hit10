@@ -599,10 +599,9 @@
       {"id": "blindfold", "seal": {"blindBonus": 1}},
       {"id": "inflation", "params": {"costGrowth": 1.2}, "seal": {"halfPriceUnits": 10, "halfPrice": 0.5}},
       {"id": "noGold", "seal": {"awaySeconds": 3600, "goldenWithin": 30}},
-      {"id": "shortFuse", "params": {"comboCap": 5}, "seal": {"shieldCharges": 1}},
+      {"id": "shortFuse", "params": {"capBonus": 10}, "seal": {"capBonus": 4}},
       {"id": "precision", "seal": {"perfectWindow": 0.001}},
-      {"id": "insomnia", "params": {"offlineEfficiency": 0.25}, "seal": {"offlineCapHours": 12}},
-      {"id": "fragileCombo", "story": false, "params": {"good": -1}, "seal": {"missKeeps": 0.5}}
+      {"id": "insomnia", "params": {"offlineEfficiency": 0.25}, "seal": {"offlineCapHours": 12}}
     ]
   },
   "dials": [

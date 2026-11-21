@@ -5273,25 +5273,25 @@ abstract class AppLocalizations {
   /// No description provided for @rule_shortFuse_desc.
   ///
   /// In en, this message translates to:
-  /// **'The multiplier stops at ×1.25, and there is no Shield.'**
+  /// **'The multiplier can climb 0.50 higher than usual, but anything short of a PERFECT resets it. No Shield.'**
   String get rule_shortFuse_desc;
 
   /// No description provided for @rule_shortFuse_quote.
   ///
   /// In en, this message translates to:
-  /// **'“No more long streaks. And hand over that Shield.”'**
+  /// **'“A longer fuse, but it burns. One crooked hit and boom. And hand over that Shield.”'**
   String get rule_shortFuse_quote;
 
   /// No description provided for @seal_shortFuse.
   ///
   /// In en, this message translates to:
-  /// **'Spare Shield'**
+  /// **'Long Fuse'**
   String get seal_shortFuse;
 
   /// No description provided for @seal_shortFuse_desc.
   ///
   /// In en, this message translates to:
-  /// **'+1 Shield charge from the start of every run.'**
+  /// **'The multiplier can climb 0.20 higher.'**
   String get seal_shortFuse_desc;
 
   /// No description provided for @rule_precision.
@@ -5354,36 +5354,6 @@ abstract class AppLocalizations {
   /// **'Offline income counts for 12 more hours.'**
   String get seal_insomnia_desc;
 
-  /// No description provided for @rule_fragileCombo.
-  ///
-  /// In en, this message translates to:
-  /// **'Fragile Combo'**
-  String get rule_fragileCombo;
-
-  /// No description provided for @rule_fragileCombo_desc.
-  ///
-  /// In en, this message translates to:
-  /// **'The multiplier goes by the bare windows: skills, Luck and Hot Hand don\'t widen them. A GOOD takes 0.05 away.'**
-  String get rule_fragileCombo_desc;
-
-  /// No description provided for @rule_fragileCombo_quote.
-  ///
-  /// In en, this message translates to:
-  /// **'“Wide windows? Fine. But the multiplier sees the truth.”'**
-  String get rule_fragileCombo_quote;
-
-  /// No description provided for @seal_fragileCombo.
-  ///
-  /// In en, this message translates to:
-  /// **'Tempered Combo'**
-  String get seal_fragileCombo;
-
-  /// No description provided for @seal_fragileCombo_desc.
-  ///
-  /// In en, this message translates to:
-  /// **'A miss takes half the multiplier instead of all of it.'**
-  String get seal_fragileCombo_desc;
-
   /// No description provided for @chapter_1_t.
   ///
   /// In en, this message translates to:
@@ -5441,7 +5411,7 @@ abstract class AppLocalizations {
   /// No description provided for @chapter_5.
   ///
   /// In en, this message translates to:
-  /// **'“No streaks, no Shield, and you\'re still here.” For the first time Chronos smiled. “I\'ll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”'**
+  /// **'“Your streak snapped at every slip, no Shield either, and you\'re still here.” For the first time Chronos smiled. “I\'ll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”'**
   String get chapter_5;
 
   /// No description provided for @chapter_6_t.

@@ -101,13 +101,6 @@ class Economy {
   /// The payout factor from beginner's luck (×3 → ×1).
   double beginnerPay() => 1 + (b.beginner.rewardMultiplier - 1) * beginnerShare;
 
-  /// The windows with no skill at all ("Fragile combo" grades by these).
-  Windows baseWindows() => Windows(
-    perfect: b.tier('perfect').window,
-    great: b.tier('great').window,
-    good: b.tier('good').window,
-  );
-
   Windows windowsAt({int magnet = 0, int wideEye = 0}) {
     final we = 1 + _per('wideEye') * wideEye;
     return Windows(
@@ -158,23 +151,20 @@ class Economy {
   double coldBlood([int? lvl]) =>
       1 / (1 - _per('bulletTime') * (lvl ?? level('bulletTime')));
 
-  /// The most the streak counts. "Short fuse" keeps it at its own cap.
-  int comboCap([int? lvl]) => ruleOn('shortFuse')
-      ? _rule('shortFuse', 'comboCap').round()
-      : b.combo.baseCap + (_per('combo') * (lvl ?? level('combo'))).round();
+  /// The most the streak counts. "Short fuse" lifts the cap for its loop
+  /// and its seal a little for good (R-PETLA-4).
+  int comboCap([int? lvl]) =>
+      b.combo.baseCap +
+      (_per('combo') * (lvl ?? level('combo'))).round() +
+      (ruleOn('shortFuse') ? _rule('shortFuse', 'capBonus').round() : 0) +
+      (sealed('shortFuse') ? _seal('shortFuse', 'capBonus').round() : 0);
 
   double strikePower() => 1 + _per('power') * level('power');
 
   double echoSeconds() => _per('echo') * level('echo');
 
-  /// Shield charges held at most: none under "short fuse", one more with
-  /// its seal.
-  int shieldCharges() => ruleOn('shortFuse')
-      ? 0
-      : level('shield') +
-            (sealed('shortFuse')
-                ? _seal('shortFuse', 'shieldCharges').round()
-                : 0);
+  /// Shield charges held at most: none under "short fuse".
+  int shieldCharges() => ruleOn('shortFuse') ? 0 : level('shield');
 
   /// Golden Touch: interval multiplier (<1 = more often) and strength.
   double goldenIntervalFactor() =>
