@@ -22,13 +22,18 @@ void main() {
     });
 
     test('the running season by local date', () {
-      expect(seasonAt(cfg, DateTime(2026, 10, 29, 23))!.key, 'halloween-2026');
-      expect(seasonAt(cfg, DateTime(2026, 11, 2))!.id, 'halloween');
-      expect(seasonAt(cfg, DateTime(2026, 11, 3)), isNull);
-      expect(seasonAt(cfg, DateTime(2027, 5, 5))!.id, 'fiveDay');
+      expect(seasonAt(cfg, DateTime(2026, 12, 18, 0))!.key, 'christmas-2026');
       expect(seasonAt(cfg, DateTime(2026, 12, 24))!.id, 'christmas');
-      expect(seasonAt(cfg, DateTime(2027, 3, 21))!.id, 'easter');
-      expect(seasonAt(cfg, DateTime(2027, 3, 20)), isNull);
+      expect(seasonAt(cfg, DateTime(2026, 12, 27, 23))!.id, 'christmas');
+      expect(seasonAt(cfg, DateTime(2026, 12, 17)), isNull);
+    });
+
+    test('for now only the winter holidays run', () {
+      expect(cfg.list.map((s) => s.id), ['christmas', 'newYear']);
+      expect(seasonAt(cfg, DateTime(2026, 10, 29)), isNull);
+      expect(seasonAt(cfg, DateTime(2027, 2, 14)), isNull);
+      expect(seasonAt(cfg, DateTime(2027, 5, 5)), isNull);
+      expect(seasonAt(cfg, DateTime(2027, 7, 5)), isNull);
     });
 
     test('New Year runs into January and belongs to the year it began', () {
@@ -41,11 +46,11 @@ void main() {
   group('the goal', () {
     late GameState s;
     late GameEngine e;
-    final halloween = seasonAt(cfg, DateTime(2026, 10, 30))!;
+    final christmas = seasonAt(cfg, DateTime(2026, 12, 20))!;
 
     setUp(() {
       s = GameState()..stats.rounds = 100; // past beginner's luck
-      e = GameEngine(b, s)..setSeason(halloween);
+      e = GameEngine(b, s)..setSeason(christmas);
     });
 
     void catchOne() {
@@ -70,7 +75,7 @@ void main() {
       e.resolveRound(const Grade(Tier.good, 0.04));
       expect(e.seasonRewardPaid, greaterThanOrEqualTo(cfg.rewardFloor));
       expect(s.tiki, greaterThan(before));
-      expect(s.seasonsDone, {'halloween-2026'});
+      expect(s.seasonsDone, {'christmas-2026'});
       expect(e.seasonDone, isTrue);
       // Done: nothing more counts and nothing is paid again.
       e.seasonRewardPaid = null;
@@ -83,26 +88,26 @@ void main() {
         s,
         const AchievementContext(),
       ).map((a) => a.id);
-      expect(unlocked, contains('season_halloween'));
+      expect(unlocked, contains('season_christmas'));
     });
 
     test('no season, no counting; next year starts from zero', () {
       e.setSeason(null);
       e.resolveRound(const Grade(Tier.good, 0.04));
       expect(s.seasonHits, 0);
-      e.setSeason(halloween);
+      e.setSeason(christmas);
       e.resolveRound(const Grade(Tier.good, 0.04));
       expect(s.seasonHits, 1);
-      e.setSeason(seasonAt(cfg, DateTime(2027, 10, 30)));
-      expect(s.seasonKey, 'halloween-2027');
+      e.setSeason(seasonAt(cfg, DateTime(2027, 12, 20)));
+      expect(s.seasonKey, 'christmas-2027');
       expect(s.seasonHits, 0);
     });
 
     test('a preview of another season keeps this one\'s progress', () {
       e.resolveRound(const Grade(Tier.good, 0.04));
-      e.setSeason(seasonIn(cfg, 'christmas', 2026));
+      e.setSeason(seasonIn(cfg, 'newYear', 2026));
       expect(s.seasonHits, 0);
-      e.setSeason(halloween);
+      e.setSeason(christmas);
       expect(s.seasonHits, 1);
     });
 

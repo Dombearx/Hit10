@@ -203,9 +203,9 @@ void main() {
       e.summonGolden();
       expect(e.goldenVisibleLeft, 0);
       expect(AdOffers(e).available(AdOffer.golden, 0), isFalse);
-      final cfg = b.seasons.list.firstWhere((x) => x.id == 'halloween');
+      final cfg = b.seasons.list.firstWhere((x) => x.id == 'christmas');
       e.setSeason(
-        Season(cfg, 2026, DateTime(2026, 10, 24), DateTime(2026, 11, 2)),
+        Season(cfg, 2026, DateTime(2026, 12, 18), DateTime(2026, 12, 27)),
       );
       expect(e.goldenBlocked, isFalse);
       expect(e.updateEffects(1), isTrue);

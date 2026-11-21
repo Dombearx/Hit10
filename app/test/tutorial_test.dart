@@ -167,6 +167,39 @@ void main() {
     expect(c.nextGoal?.kind, isNot(GoalKind.prestige));
   });
 
+  test('all clocks within reach: up to the Time Machine (R-TUT-7b)', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..owned['grandpa'] = 10;
+    final c = controller(s);
+    expect(c.allClocksBought, isFalse);
+    // The first time the cat and Chronos need perks.
+    for (final gen in balance.generators) {
+      if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
+    }
+    expect(c.econ.generatorUnlocked('schrodinger'), isFalse);
+    expect(c.econ.owned('timeMachine'), 1);
+    expect(c.allClocksBought, isTrue);
+  });
+
+  test('a doubling paradox waits for the clocks (R-TUT-7b)', () {
+    final s = GameState()
+      ..tutorialDone = true
+      ..prestiges = 1
+      ..chronons = 5
+      ..earnedTotal = 1e8 * 40 * 40 * 40
+      ..owned['grandpa'] = 10;
+    final c = controller(s);
+    var g = c.nextGoal!;
+    expect(g.kind, GoalKind.newClock);
+    for (final gen in balance.generators) {
+      if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
+    }
+    g = c.nextGoal!;
+    expect(g.kind, GoalKind.prestige);
+    expect(g.perk, isNull);
+  });
+
   test('after the first paradox the goal bar stays (R-TUT-7)', () {
     final s = GameState()
       ..tutorialDone = true

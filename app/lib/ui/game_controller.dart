@@ -1562,6 +1562,15 @@ class GameController extends ChangeNotifier {
 
   // --------------------------------------------------------- next goal --
 
+  /// Every clock the player can buy in this run is bought. The first time
+  /// that is everything up to the Time Machine (the cat needs a perk).
+  /// Until then the goal bar does not point at a paradox (R-TUT-7b): it
+  /// does not say when one pays best. The paradox tip still shows as soon
+  /// as a paradox is possible.
+  bool get allClocksBought => balance.generators.every(
+    (g) => !econ.generatorUnlocked(g.id) || econ.owned(g.id) > 0,
+  );
+
   /// The one thing to aim for next, shown over the shop (R-TUT-7). Until
   /// the first paradox: the first clock's first bonus, then each new
   /// clock (the first paradox is the player's call: a coach tip says it
@@ -1583,7 +1592,10 @@ class GameController extends ChangeNotifier {
           need: bonus.toDouble(),
         );
       }
-    } else if (!state.rewindPending && gain >= 5 && gain >= state.chronons) {
+    } else if (!state.rewindPending &&
+        gain >= 5 &&
+        gain >= state.chronons &&
+        allClocksBought) {
       return const NextGoal(GoalKind.prestige);
     }
     for (final g in balance.generators) {

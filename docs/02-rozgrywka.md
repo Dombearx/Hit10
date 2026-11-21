@@ -340,7 +340,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | Złapane Złote Sekundy | 1, 10, 50, 200, 500 | 5 |
 | Prestiże | 1, 5, 10, 25, 50 | 5 |
 | Tryby | PERFEKT na ślepo; PERFEKT na ślepo przy mnożniku ×1.50+; przy pełnym mnożniku (wystarczy PERFEKT, nie równe 5.00) | 3 |
-| Wydarzenia sezonowe | po jednym na wydarzenie (§14) | 7 |
+| Wydarzenia sezonowe | po jednym na włączone wydarzenie (§14) | 2 |
 | Równo 5.00 na tarczy (PERFEKT w oknie jackpotu, błąd < 0.010 s) | 1, 100, 1K, 10K | 4 |
 | Zagrane rundy | 100, 1K, 10K, 100K | 4 |
 | Dochód pasywny na sekundę (bez Szału i Turbo) | 1K, 1M, 1B, 1T, 100T, 1aa | 6 |
@@ -646,11 +646,20 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   że Chronony na stałe przyspieszają dochód, a perki za Okruchy zostają
   po każdym resecie. Ten dymek nie znika sam — czeka na zamknięcie albo
   otwarcie ekranu paradoksu.
+- **R-TUT-7b (bez podpowiadania momentu paradoksu):** dopóki w tym
+  przejściu jest zegar, który gracz mógłby kupić, a jeszcze go nie ma,
+  pasek celu nie wskazuje paradoksu („cofnij czas”). Za pierwszym razem
+  taki cel może się więc pojawić dopiero po kupnie Maszyny czasu,
+  ostatniego zegara przed kotem Schrödingera, który wymaga perku. Gracz
+  sam decyduje, kiedy paradoks się opłaca; gra nie prowadzi go za rękę.
+  Dymek przy wirze (R-TUT-7) zostaje bez zmian: pojawia się, gdy tylko
+  paradoks jest możliwy, bo uczy, że taka opcja istnieje.
 - **R-TUT-7a (cel po pierwszym paradoksie):** pasek zostaje na całą grę
   (13 §5.5; wcześniej znikał i gracz po paradoksie nie miał żadnego
   wskazanego celu). Zawsze jeden cel, w tej kolejności:
   1. paradoks, gdy co najmniej podwaja Chronony („Cel: cofnij czas —
-     podwoisz Chronony”);
+     podwoisz Chronony”), ale dopiero gdy gracz ma już każdy zegar
+     dostępny w tym przejściu (R-TUT-7b);
   2. następny zegar, którego gracz w tym przejściu jeszcze nie ma;
   3. najtańszy dostępny perk: „Cel: perk Szybki start — 2/5 Okruchów”
      (liczą się też Okruchy, które dałby paradoks teraz); gdy starczy
@@ -772,6 +781,11 @@ pauzuje rundę tak jak otwarcie panelu (R-RUNDA-8).
 Wzór: sezony Cookie Clickera. Gra sama włącza wydarzenie według lokalnej
 daty telefonu — bez serwera i bez stałych kosztów — i każde wraca co roku.
 Daty i cel są w `balance.json` (`seasons`).
+
+**Na razie włączone są tylko `christmas` i `newYear`** (decyzja z listopada
+2026). Pozostałe wydarzenia z tabeli są wyjęte z `balance.json`, ale ich
+wygląd i teksty zostały w kodzie: żeby je przywrócić, wystarczy dopisać
+ich wpisy (daty poniżej) z powrotem do `seasons.list`.
 
 | id | Wydarzenie | Daty (włącznie) | Zamiast złotego zegarka |
 |---|---|---|---|
