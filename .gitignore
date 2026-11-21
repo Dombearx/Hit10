@@ -10,3 +10,6 @@ hit5-aab*
 # Text editor (tools/teksty): local state
 tools/teksty/kopie/
 tools/teksty/sprawdzone.json
+
+# Local secrets
+.env

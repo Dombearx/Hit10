@@ -43,6 +43,44 @@ tools/art/.venv/bin/python tools/art/process.py [id] # wycięcie tła + 160 px �
 - `process.py` uruchamiać **po jednej ikonie** (`process.py <id>`) — przy
   wielu naraz BiRefNet wyczerpuje 7 GB RAM i proces znika bez komunikatu.
 
+## Stan (21.11.2026): drugi dostawca — OpenRouter
+
+`generate.py` obsługuje też modele obrazkowe z **OpenRouter** (klucz
+**`OPENROUTER_API_KEY`** w env albo w `.env` w katalogu repo; `.env` jest w
+`.gitignore`). Model podaje się jako `or:<id modelu z OpenRoutera>`, można
+mieszać z modelami RunPod:
+
+```
+python3 tools/art/generate.py --only trophy --model qwen,or:google/gemini-3.1-flash-image
+# → tools/art/out/or_google_gemini-3.1-flash-image/trophy_s1010.png (+ .json)
+python3 tools/art/sheet.py or_google_gemini-3.1-flash-image /tmp/cand.png
+```
+
+- Wywołanie: `POST /api/v1/chat/completions` z `modalities: ["image","text"]`;
+  obraz wraca jako base64 w `choices[0].message.images`. Koszt z
+  `usage.cost`, w `.json` zapisujemy też id generacji (`job`).
+- **Seed** jest wysyłany, ale modele Google/OpenAI nie gwarantują
+  identycznego wyniku — odtwarzalność słabsza niż w Qwen na RunPod. Dlatego
+  wybrane obrazki z `out/` trzeba traktować jako jedyną kopię (picks).
+- **Rozmiar:** OpenRouter przyjmuje proporcje, nie piksele. Skrypt bierze
+  `aspect_ratio` z pliku promptów albo dobiera najbliższe do `size`
+  (`1024*1024` → `1:1`, `1664*928` → `16:9`). Wynik ma ~1024 px na krótszym
+  boku — `process.py`/`story.py` i tak skalują w dół.
+- `negative` z pliku promptów jest doklejane do promptu jako „Avoid: …”
+  (te modele nie mają osobnego negative prompt).
+- `refs` z pozycji w pliku promptów idą jako obrazy (URL raw.githubusercontent,
+  max 3), wtedy używany jest `edit_prompt`, jeśli jest.
+- Lista modeli z wyjściem obrazkowym:
+  `curl -s https://openrouter.ai/api/v1/models` → `architecture.output_modalities`
+  zawiera `image` (m.in. `google/gemini-2.5-flash-image`,
+  `google/gemini-3.1-flash-image`, `google/gemini-3-pro-image`,
+  `openai/gpt-5-image-mini`, `openai/gpt-5-image`).
+- Test 21.11: `google/gemini-2.5-flash-image`, puchar, 2 seedy —
+  ~$0.039/obraz, styl zgodny z obecnymi ikonami.
+- **Licencja:** to modele zamknięte (patrz „Nie używamy” niżej). Zanim
+  grafika z OpenRoutera trafi do gry, sprawdzić warunki danego dostawcy
+  dotyczące komercyjnego użycia wyników i wpisać model do `CREDITS.md`.
+
 ## Cel
 
 Zastąpić gotowe ikony Fluent Emoji (Microsoft, MIT) własnymi, spójnymi
