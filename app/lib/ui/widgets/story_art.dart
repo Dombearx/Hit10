@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -56,23 +58,26 @@ class StoryArt extends StatelessWidget {
 
 /// Who appears in each scene, and the colour of its sky.
 const _scenes = <String, (List<String>, List<Color>)>{
-  'prologue': (['grandpa', 'chronos'], [Color(0xFFFFE6A7), Color(0xFFFFB38A)]),
+  'prologue': (['grandpa', 'grandma'], [Color(0xFFFFE6A7), Color(0xFFFFB38A)]),
   'chapter_1': (['chronos', 'grandpa'], [Color(0xFFFFE29A), Color(0xFFFF9F7A)]),
   'chapter_2': (
     ['chronos', 'see_no_evil_monkey'],
     [Color(0xFFC8F2FF), Color(0xFFB9A7FF)],
   ),
-  'chapter_3': (
-    ['grandma', 'chronos', 'grandpa'],
-    [Color(0xFFFFD36E), Color(0xFFFF8A5B)],
-  ),
+  'chapter_3': (['chronos', 'grandpa'], [Color(0xFFFFD36E), Color(0xFFFF8A5B)]),
   'chapter_4': (['chronos', 'grandpa'], [Color(0xFFDCE3EE), Color(0xFF9DAAC2)]),
-  'chapter_5': (['chronos', 'fire'], [Color(0xFFFFC2A8), Color(0xFFFF6F61)]),
+  'chapter_5': (
+    ['chronos', 'stopwatch'],
+    [Color(0xFFFFC2A8), Color(0xFFFF6F61)],
+  ),
   'chapter_6': (
-    ['grandpa', 'chronos', 'grandma'],
+    ['grandpa', 'grandma', 'chronos'],
     [Color(0xFFFFC9DE), Color(0xFFE2D2FF)],
   ),
-  'chapter_7': (['chronos', 'grandma'], [Color(0xFFFFE6A7), Color(0xFFFFC9DE)]),
+  'chapter_7': (
+    ['grandpa', 'chronos', 'grandma'],
+    [Color(0xFFFFE6A7), Color(0xFFFFC9DE)],
+  ),
 };
 
 /// A stand-in until the picture is drawn: the chapter's characters on a
@@ -84,7 +89,7 @@ class _Placeholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (who, sky) = _scenes[id] ?? _scenes['prologue']!;
-    final lead = who.length == 3 ? 1 : who.indexOf('chronos');
+    final lead = who.length == 3 ? 1 : math.max(0, who.indexOf('chronos'));
     return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(

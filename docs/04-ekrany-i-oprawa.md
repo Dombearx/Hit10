@@ -249,6 +249,17 @@ zostały te same (`trophy`, `fire`…).
   Dopóki pliku nie ma, w tym miejscu stoi placeholder: postacie rozdziału
   (karty z ikonami) na miękkim gradiencie w kolorze sceny. Dodanie
   obrazka nie wymaga zmian w kodzie (docs/10, „Ilustracje fabuły”).
+- **U-33a:** **Scena fabuły** (docs/16): jedna kwestia naraz — portret
+  mówiącego, dymek z jego imieniem na kolorowym chipie (Dziadek
+  turkusowy, Babcia różowy, Chronos złoty), didaskalia kursywą; podpis
+  pod kadrem (`*`) w ciemnej ramce bez portretu. Dotknięcie gdziekolwiek
+  — następna kwestia, „Pomiń” — do końca; kropki postępu i „Dotknij, żeby
+  dalej”. Po ostatniej kwestii cała scena zostaje do przeczytania (portrety
+  w miniaturze), pod nią to, co ma być na końcu (w prologu cel i
+  „Do dzieła!”). Tak grają: prolog, rozdział w oknie końca pętli i rzadkie
+  sceny pierwszej pętli (osobne okno, zamyka się po ostatniej kwestii).
+  Kronika pokazuje sceny w całości. Opisy zegarów to dwie kwestie
+  „Dziadek: … / Babcia: …”.
 
 - **U-34:** **„Witaj z powrotem”** (02 R-OFF-2, R-DZIEN-1): dochód offline
   i dzienna premia w jednym oknie — kwota offline (z ×2 za reklamę),
@@ -256,7 +267,8 @@ zostały te same (`trophy`, `fire`…).
   linijka o nowym wydarzeniu, jeden przycisk „Odbierz wszystko”. Gdy jest
   tylko jedno z dwojga, okno ma jego tytuł („Gdy cię nie było…” albo
   „Dzienna premia”). Kolejność okien przy starcie: zapis w chmurze
-  (05 T-35), prolog, „Witaj z powrotem”, wydarzenie (gdy nie było linijki),
+  (05 T-35), prolog, rzadka scena fabuły (docs/16 §4), „Witaj z powrotem”
+  (z kwestią dnia Dziadka albo Babci, gdy jest dzienna premia), wydarzenie (gdy nie było linijki),
   koniec pętli, pytanie o statystyki i zgoda na reklamy (05 T-33, T-26),
   prośba o ocenę (02 R-OCENA-1).
 - **U-36:** **Wyzwania** (02 §18): plakietka z tarczą strzelniczą w rzędzie

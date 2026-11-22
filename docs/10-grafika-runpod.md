@@ -222,7 +222,8 @@ Jeśli wydatki przekroczą ~$50, zatrzymać się i zapytać.
 ## Ilustracje fabuły (U-33) — do zrobienia
 
 Na razie w grze są placeholdery. Prompty scen (prolog i rozdziały 1–7,
-16:9, z opisem postaci wspólnym dla wszystkich scen) są w
+16:9, z opisem postaci wspólnym dla wszystkich scen; miejsce akcji:
+kuchnia Babci i garaż Dziadka, docs/16) są w
 `tools/art/story_prompts.json`:
 
 ```

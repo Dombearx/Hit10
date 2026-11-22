@@ -15,6 +15,7 @@ import 'game_controller.dart';
 import 'cloud_dialog.dart';
 import 'prologue_dialog.dart';
 import 'welcome_dialog.dart';
+import 'widgets/story_scene.dart';
 import 'season_dialog.dart';
 import 'seasons_ui.dart';
 import 'providers.dart';
@@ -198,6 +199,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         !c.replaying;
     if (c.cloudOffer == null &&
         !c.prologuePending &&
+        c.storyScenePending == null &&
         c.pendingOffline == null &&
         c.pendingDaily == null &&
         !c.seasonIntroPending &&
@@ -229,6 +231,22 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         hold();
         c.prologueShown();
         await showPrologue(context, c);
+      }
+      // A rare scene of the first loop (docs/16-fabula.md §4).
+      final scene = c.storyScenePending;
+      if (mounted && scene != null) {
+        hold();
+        c.storySceneShown(scene);
+        final (title, script) = storySceneTexts(
+          AppLocalizations.of(context),
+          scene,
+        );
+        await showStoryScene(
+          context,
+          title: title,
+          script: script,
+          key: Key('story-scene-$scene'),
+        );
       }
       if (mounted && (c.pendingOffline != null || c.pendingDaily != null)) {
         hold();

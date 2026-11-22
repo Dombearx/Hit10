@@ -610,9 +610,10 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   to teraz zegar i pierwsze dotknięcie, a historia czyta się lepiej
   z pierwszym Tikiem w kieszeni. Przed pierwszym dotknięciem nie ma
   żadnego okna — także zgody na reklamy ani statystyki: o nie gra pyta
-  dopiero po samouczku (05 T-26, T-33). Prolog: Chronos tyka na
-  najwyższej półce sklepu z metką z ceną, Dziadek proponuje go kupić za
-  Tiki. Pod tekstem cel jednym zdaniem: „Cel: kup Chronosa”. Pokazuje się
+  dopiero po samouczku (05 T-26, T-33). Prolog: Dziadek spóźnia się
+  siedem minut na podwieczorek u Babci i postanawia zdobyć zegar, który
+  się nie myli — Chronosa (docs/16). Scena gra dymek po dymku (04 U-33a),
+  na końcu cel jednym zdaniem: „Cel: zdobądź Chronosa”. Pokazuje się
   raz; prolog jest też pierwszym wpisem rozdziałów w Kronice (zawsze
   otwarty). Playtest: fabuła zaczynała się dopiero po pierwszej pętli, więc
   nic nie mówiło, do czego gra prowadzi.
@@ -955,9 +956,11 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   (zasada, cel, czas), zapowiedź następnej i przycisk „Nowa pętla” (gdy
   cel osiągnięty), 7 rozdziałów (niezdobyte jako „Rozdział n: ???”,
   tylko następny mówi „Ukończ pętlę n”), 6 pieczęci (niezdobyte jako
-  „???”, z rekordem czasu po zdobyciu). Fabuła: Chronos obraża się, że
-  kupiono go za Tiki, i w każdej pętli psuje jedną zasadę; opowiada
-  Dziadek; ostatni rozdział mówi, dlaczego akurat 5.00.
+  „???”, z rekordem czasu po zdobyciu). Fabuła (docs/16): Dziadek wzywa
+  Chronosa, żeby zdążać na podwieczorek; Chronos cofa czas do tamtego
+  podwieczorku i w każdej pętli daje lekcję punktualności (zasadę);
+  ostatni rozdział mówi, dlaczego akurat 5.00. W pierwszej pętli cztery
+  rzadkie sceny (docs/16 §4), w oknie „Witaj z powrotem” kwestia dnia.
 - **R-PETLA-8 (po historii):** po zdobyciu sześciu pieczęci gracz sam
   wybiera w Kronice zasady następnej pętli: dowolne, kilka naraz albo
   żadną. Kronika pamięta najkrótszy czas gry każdej zasady. (Kruche combo

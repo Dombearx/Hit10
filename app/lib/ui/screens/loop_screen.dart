@@ -12,6 +12,7 @@ import '../widgets/emoji_card.dart';
 import '../widgets/res_text.dart';
 import 'sheet.dart';
 import '../widgets/story_art.dart';
+import '../widgets/story_scene.dart';
 
 /// Time Loops (docs/13 §5.2): the ending of a loop, the confirmation of a
 /// new one, and the Chronicle (chapters, seals, the rules).
@@ -230,13 +231,8 @@ class _LoopEnd extends StatelessWidget {
                             const SizedBox(height: 8),
                             StoryArt('chapter_${s.loop}'),
                             const SizedBox(height: 8),
-                            ResText(
-                              chapter.$2,
-                              style: const TextStyle(
-                                fontSize: 14.5,
-                                height: 1.35,
-                              ),
-                            ),
+                            // Played line by line; read again in the Chronicle.
+                            StoryPlayer(script: chapter.$2),
                           ],
                         ),
                       ),
@@ -470,10 +466,7 @@ class _Chronicle extends StatelessWidget {
               const SizedBox(height: 8),
               const StoryArt('prologue'),
               const SizedBox(height: 8),
-              ResText(
-                l.prologue,
-                style: const TextStyle(fontSize: 14.5, height: 1.35),
-              ),
+              StoryTranscript(script: l.prologue),
             ],
           ),
         ),
@@ -497,10 +490,7 @@ class _Chronicle extends StatelessWidget {
                       const SizedBox(height: 8),
                       StoryArt('chapter_$n'),
                       const SizedBox(height: 8),
-                      ResText(
-                        chapterTexts(l, n)!.$2,
-                        style: const TextStyle(fontSize: 14.5, height: 1.35),
-                      ),
+                      StoryTranscript(script: chapterTexts(l, n)!.$2),
                     ],
                   )
                 : Row(

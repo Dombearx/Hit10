@@ -22,6 +22,7 @@ void main() {
 
   GameState played() => GameState()
     ..tutorialDone = true
+    ..tipsSeen.addAll(storyScenesSeen)
     ..playSeconds = 1000
     // Today's bonus already collected: no daily dialog in the way.
     ..dailyKey = dateKey(DateTime.fromMillisecondsSinceEpoch(now))

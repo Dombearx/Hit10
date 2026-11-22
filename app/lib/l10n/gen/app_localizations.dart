@@ -197,7 +197,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_grandpa_desc.
   ///
   /// In en, this message translates to:
-  /// **'“Back in my day a second lasted longer.”'**
+  /// **'Grandpa: “My father\'s watch. Runs like a dream.”\nGrandma: “Dreams don\'t run on time.”'**
   String get gen_grandpa_desc;
 
   /// No description provided for @gen_grandma.
@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_grandma_desc.
   ///
   /// In en, this message translates to:
-  /// **'Soft-boiled eggs since 1974. Five seconds? Child\'s play.'**
+  /// **'Grandma: “Egg timer from seventy-four. Never late once.”\nGrandpa: “It never has to go anywhere.”'**
   String get gen_grandma_desc;
 
   /// No description provided for @gen_cuckoo.
@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_cuckoo_desc.
   ///
   /// In en, this message translates to:
-  /// **'Cuckoos every five seconds. Usually.'**
+  /// **'Grandpa: “Cuckoos every five seconds exactly.”\nGrandma: “It did. Before you fixed it.”'**
   String get gen_cuckoo_desc;
 
   /// No description provided for @gen_metronome.
@@ -233,7 +233,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_metronome_desc.
   ///
   /// In en, this message translates to:
-  /// **'Tick. Tock. Tick. Tock. Never gets bored.'**
+  /// **'Grandpa: “I learned to dance with this.”\nGrandma: “You didn\'t, though.”'**
   String get gen_metronome_desc;
 
   /// No description provided for @gen_watchmaker.
@@ -245,7 +245,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_watchmaker_desc.
   ///
   /// In en, this message translates to:
-  /// **'Loupe in the eye, peace in the soul.'**
+  /// **'Grandpa: “Mr Henry. He can fix any watch.”\nGrandma: “He hands yours back without a word.”'**
   String get gen_watchmaker_desc;
 
   /// No description provided for @gen_sprintJudge.
@@ -257,7 +257,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_sprintJudge_desc.
   ///
   /// In en, this message translates to:
-  /// **'False start! Then a perfect 5.00.'**
+  /// **'Grandpa: “Knows what a hundredth of a second is.”\nGrandma: “Do you know what five p.m. is?”'**
   String get gen_sprintJudge_desc;
 
   /// No description provided for @gen_stationClock.
@@ -269,7 +269,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_stationClock_desc.
   ///
   /// In en, this message translates to:
-  /// **'Delays may vary. Still tries a lot.'**
+  /// **'Grandpa: “Always late, but it always gets there.”\nGrandma: “So do you. That\'s why you like it.”'**
   String get gen_stationClock_desc;
 
   /// No description provided for @gen_quartz.
@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_quartz_desc.
   ///
   /// In en, this message translates to:
-  /// **'32,768 wiggles a second, not one too many.'**
+  /// **'Grandpa: “32,768 vibrations a second.”\nGrandma: “And you don\'t budge until I call you for dinner.”'**
   String get gen_quartz_desc;
 
   /// No description provided for @gen_atomic.
@@ -293,7 +293,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_atomic_desc.
   ///
   /// In en, this message translates to:
-  /// **'Off by a second every hundred million years.'**
+  /// **'Grandpa: “Off by a second every hundred million years. Now I\'ll make it.”\nGrandma: “You said that about the cuckoo.”'**
   String get gen_atomic_desc;
 
   /// No description provided for @gen_gps.
@@ -305,7 +305,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_gps_desc.
   ///
   /// In en, this message translates to:
-  /// **'Knows where you are. And exactly what time it is.'**
+  /// **'Grandpa: “Knows where I am to the metre.”\nGrandma: “So do I. The garage.”'**
   String get gen_gps_desc;
 
   /// No description provided for @gen_pulsar.
@@ -317,7 +317,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_pulsar_desc.
   ///
   /// In en, this message translates to:
-  /// **'A neutron star that ticks like clockwork.'**
+  /// **'Grandpa: “A star that ticks. Borrowed from space.”\nGrandma: “You\'ll return it like my drill.”'**
   String get gen_pulsar_desc;
 
   /// No description provided for @gen_timeMachine.
@@ -329,7 +329,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_timeMachine_desc.
   ///
   /// In en, this message translates to:
-  /// **'Hits before it taps.'**
+  /// **'Grandpa: “If only I\'d had this in seventy-four… But I made it anyway!”\nGrandma: “Mm-hm.”'**
   String get gen_timeMachine_desc;
 
   /// No description provided for @gen_schrodinger.
@@ -341,7 +341,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_schrodinger_desc.
   ///
   /// In en, this message translates to:
-  /// **'Hit and missed. Until you open the box.'**
+  /// **'Grandpa: “Hit and missed at the same time.”\nGrandma: “Like you with anniversary flowers.”'**
   String get gen_schrodinger_desc;
 
   /// No description provided for @gen_chronos.
@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @gen_chronos_desc.
   ///
   /// In en, this message translates to:
-  /// **'God of time. Never misses. Ever.'**
+  /// **'Grandpa: “Time itself. The most accurate clock in the world.”\nGrandma: “You don\'t buy time. You invite it.”'**
   String get gen_chronos_desc;
 
   /// No description provided for @syn_grandparents.
@@ -2141,7 +2141,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_goal.
   ///
   /// In en, this message translates to:
-  /// **'On the top shelf of the clock shop ticks Chronos, the god of time — the last and most expensive clock in the game. Buy him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.'**
+  /// **'Grandpa is always late for Grandma\'s afternoon tea, and he wants the one clock that is never wrong: Chronos, the god of time — the last and most expensive clock in the game. Buy him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.'**
   String get help_goal;
 
   /// No description provided for @help_tiki_t.
@@ -5189,7 +5189,7 @@ abstract class AppLocalizations {
   /// No description provided for @rule_blindfold_quote.
   ///
   /// In en, this message translates to:
-  /// **'“I\'m taking your digits. Let\'s see what you can do without peeking.”'**
+  /// **'“Want to be on time? Learn to feel time. No digits.”'**
   String get rule_blindfold_quote;
 
   /// No description provided for @seal_blindfold.
@@ -5219,7 +5219,7 @@ abstract class AppLocalizations {
   /// No description provided for @rule_inflation_quote.
   ///
   /// In en, this message translates to:
-  /// **'“Time is money. And money just lost its value.”'**
+  /// **'“Time costs. From now on every second costs more.”'**
   String get rule_inflation_quote;
 
   /// No description provided for @seal_inflation.
@@ -5249,7 +5249,7 @@ abstract class AppLocalizations {
   /// No description provided for @rule_noGold_quote.
   ///
   /// In en, this message translates to:
-  /// **'“I\'m covering the sun. No golden seconds.”'**
+  /// **'“The sun stays behind a cloud. You don\'t get lucky with tea. You turn up for it.”'**
   String get rule_noGold_quote;
 
   /// No description provided for @seal_noGold.
@@ -5279,7 +5279,7 @@ abstract class AppLocalizations {
   /// No description provided for @rule_shortFuse_quote.
   ///
   /// In en, this message translates to:
-  /// **'“A longer fuse, but it burns. One crooked hit and boom. And hand over that Shield.”'**
+  /// **'“One sloppy hit and you start over. That\'s how it is with dates.”'**
   String get rule_shortFuse_quote;
 
   /// No description provided for @seal_shortFuse.
@@ -5309,7 +5309,7 @@ abstract class AppLocalizations {
   /// No description provided for @rule_precision_quote.
   ///
   /// In en, this message translates to:
-  /// **'“From now on only a proper hit counts.”'**
+  /// **'“A sloppy hit doesn\'t count.”'**
   String get rule_precision_quote;
 
   /// No description provided for @seal_precision.
@@ -5357,85 +5357,85 @@ abstract class AppLocalizations {
   /// No description provided for @chapter_1_t.
   ///
   /// In en, this message translates to:
-  /// **'Bought'**
+  /// **'Summoned'**
   String get chapter_1_t;
 
-  /// No description provided for @chapter_1.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'“You bought me? ME? The god of time, for Ticks?” Chronos straightened his toga and counted to five. “Fine. I\'m rewinding everything. And I\'m taking your digits.”\n“Don\'t mind him,” Grandpa muttered. “He\'s always like this before five.”'**
+  /// **'*: Grandpa\'s garage. An altar, smoke, and the smell of cheesecake.\nchronos: Who summons me?\ngrandpa: Me. Small favour. Every day at five I need to be in the kitchen.\nchronos: You summoned the god of time to make it to tea.\ngrandpa: Afternoon tea. There\'s cheesecake.\ngrandma (from the kitchen): The cake\'s getting cold!\nchronos (freezes): Who was that?\ngrandpa: The wife.\nchronos: I\'m turning time back. To that afternoon tea.\ngrandpa: And the clocks?\nchronos: The clocks won\'t remember. You will. And this time, no digits.'**
   String get chapter_1;
 
   /// No description provided for @chapter_2_t.
   ///
   /// In en, this message translates to:
-  /// **'Blind'**
+  /// **'No digits'**
   String get chapter_2_t;
 
-  /// No description provided for @chapter_2.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'You hit 5.00 without looking. Chronos pretended not to see.\n“Luck,” he grumbled, and handed over a seal. “Let\'s see if you can afford time when time gets expensive.”\nGrandpa only shrugged: in his day a second cost a penny.'**
+  /// **'*: The garage. The altar. Again.\nchronos: No digits, and still on five. You can feel time.\ngrandpa: Why did you run off last time?\nchronos: Gods don\'t run off. Gods withdraw.\ngrandpa: Grandma asks if you\'d drop by for tea.\nchronos: Gods don\'t drop by.\nchronos: Next lesson: time costs. From now on every second costs more.'**
   String get chapter_2;
 
   /// No description provided for @chapter_3_t.
   ///
   /// In en, this message translates to:
-  /// **'Price Hike'**
+  /// **'Price hike'**
   String get chapter_3_t;
 
-  /// No description provided for @chapter_3.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'“Everything got dearer and you still bought me,” Chronos sighed.\n“Grandma says it\'s the eggs,” said Grandpa.\nChronos flinched at the word “Grandma” and quickly changed the subject: “I\'m covering the sun. No golden seconds.”'**
+  /// **'chronos: Expensive?\ngrandpa: Less than anniversary flowers. I forgot those, so it came out cheaper.\nchronos (quietly): The fourteenth of May.\ngrandpa: How do you know?\nchronos: I don\'t. Lucky guess.\nchronos: Next lesson: the sun stays behind a cloud. You don\'t get lucky with tea. You turn up for it.'**
   String get chapter_3;
 
   /// No description provided for @chapter_4_t.
   ///
   /// In en, this message translates to:
-  /// **'Overcast'**
+  /// **'The fourth cup'**
   String get chapter_4_t;
 
-  /// No description provided for @chapter_4.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'You managed without gold, too. Chronos kept glancing at the watch he doesn\'t wear.\n“In a hurry?” asked Grandpa.\n“Me? Never. I have all the time in the world.” And, more quietly: “Just not after five.”'**
+  /// **'chronos: No sun, and you still made it.\nchronos: Who\'s the fourth cup for?\ngrandpa: Grandma always sets one too many. I don\'t ask. Fifty years, I don\'t ask.\nchronos: …\nchronos: Next lesson: one sloppy hit and you start over. That\'s how it is with dates.\ngrandpa: With what?\nchronos: Nothing. Turning time back.'**
   String get chapter_4;
 
   /// No description provided for @chapter_5_t.
   ///
   /// In en, this message translates to:
-  /// **'Short Fuse'**
+  /// **'Five seconds'**
   String get chapter_5_t;
 
-  /// No description provided for @chapter_5.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'“Your streak snapped at every slip, no Shield either, and you\'re still here.” For the first time Chronos smiled. “I\'ll tell you something. I was late once in my life. Once!”\n“For what?”\n“None of your business. From now on only perfect counts.”'**
+  /// **'chronos: Once in my life I stopped time for a human.\ngrandpa: For long?\nchronos: Five seconds.\ngrandpa: For whom?\nchronos: Someone running late. Running with flowers. Losing petals.\ngrandpa: What an idiot.\nchronos: Mm-hm.\nchronos: Next lesson: a sloppy hit doesn\'t count.'**
   String get chapter_5;
 
   /// No description provided for @chapter_6_t.
   ///
   /// In en, this message translates to:
-  /// **'To the Second'**
+  /// **'Behind the door'**
   String get chapter_6_t;
 
-  /// No description provided for @chapter_6.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'“He was late for tea,” Grandpa let slip. “At Grandma\'s. At five. We\'d already eaten the cheesecake.”\nChronos turned red. “One loop. The last one. And no sleeping: those who sleep run late.”'**
+  /// **'*: The kitchen. The garage door is shut.\ngrandma (to the door): I know you\'re in there.\nchronos (behind the door): I\'m not here.\ngrandma: You haven\'t been here for fifty years. I still cut the cheesecake in four.\ngrandpa (whispering, to you): Who\'s she talking to?\nchronos: Last lesson. No sleeping. Those who sleep run late.'**
   String get chapter_6;
 
   /// No description provided for @chapter_7_t.
   ///
   /// In en, this message translates to:
-  /// **'Five Sharp'**
+  /// **'Five sharp'**
   String get chapter_7_t;
 
-  /// No description provided for @chapter_7.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'5.00 sharp. Chronos stands at Grandma\'s door, on time for the first time in ages.\n“Come in, watchmaker,” he says to you. “The cheesecake is for two, but Grandma always cuts it in five. From today you set the rules. I\'m off to tea.”'**
+  /// **'*: Grandma\'s kitchen. The clock says 4:59.\n*: The door. Grandpa. Early, for the first time ever.\ngrandma: A minute early.\ngrandpa: All by myself. No clocks.\n*: A knock. Five o\'clock sharp.\nchronos: On time.\ngrandma (pours the fourth cup): Sit down.\nchronos: I don\'t do tea.\ngrandma: I know. Fifty years you haven\'t.\ngrandpa: You two know each other?\ngrandma: For five seconds. Back in seventy-four.\nchronos (sits down): …Cheesecake?'**
   String get chapter_7;
 
   /// No description provided for @help_round_t.
@@ -5507,19 +5507,19 @@ abstract class AppLocalizations {
   /// No description provided for @prologue_t.
   ///
   /// In en, this message translates to:
-  /// **'Prologue: The top shelf'**
+  /// **'Prologue: Seven minutes'**
   String get prologue_t;
 
-  /// No description provided for @prologue.
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
   ///
   /// In en, this message translates to:
-  /// **'In an old clock shop, on the very top shelf, ticks Chronos — the god of time. Someone stuck a price tag on him by mistake. The price has so many zeros that nobody has ever tried.\n\"We will,\" says Grandpa, tapping his pocket watch. \"Whoever buys Chronos learns his secret.\"\n\"And what do we pay with?\"\n\"Ticks. Stop the stopwatch on exactly 5.00 and the Ticks fall into your pocket. Ticks buy clocks, and clocks earn the next ones. Until one day we take Chronos off the shelf.\"'**
+  /// **'*: Grandma\'s kitchen. The table is set for four.\n*: Five o\'clock. Grandpa\'s chair is empty.\ngrandma (hands you a stopwatch): Time him, dear.\n*: Seven minutes later.\ngrandma: Seven minutes.\ngrandpa: Impossible. My watch says five.\ngrandma: Your watch has said five for fifty years.\ngrandpa (whispering, to you): You\'ve got a hand for the stopwatch. Takes after Grandma.\ngrandpa: Tomorrow I\'ll be on the dot. I just need a better clock.\ngrandma: There\'s only one clock that\'s never wrong.\ngrandpa: Chronos. I know. I\'ve read about him.\ngrandma (looks at the fourth cup): We don\'t talk about him at the table.\ngrandpa (whispering, to you): But we can get him. We\'ll start with smaller clocks.'**
   String get prologue;
 
   /// No description provided for @prologueGoal.
   ///
   /// In en, this message translates to:
-  /// **'Goal: buy Chronos'**
+  /// **'Goal: get Chronos'**
   String get prologueGoal;
 
   /// No description provided for @prologueGo.
@@ -5958,6 +5958,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hit PERFECT {n} times'**
   String chPerfect(int n);
+
+  /// No description provided for @story_atomic_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Atomic clock'**
+  String get story_atomic_t;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandpa: An atomic clock. Off by a second every hundred million years.\ngrandpa: Tomorrow I\'m in the kitchen at five sharp.\ngrandma: You said that about the cuckoo.\ngrandpa: The cuckoo was from a fair.\ngrandma: And the lateness?\ngrandpa: …Force of habit.'**
+  String get story_atomic;
+
+  /// No description provided for @story_paradox_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Backwards'**
+  String get story_paradox_t;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'*: Every clock in the garage spins backwards.\ngrandpa: It worked! We turned time back!\ngrandma (from the kitchen): Did you blow a fuse again?\nchronos (from very far away): Who\'s fiddling with my clocks?\ngrandpa (whispering, to you): We act like nothing happened.'**
+  String get story_paradox;
+
+  /// No description provided for @story_timeMachine_t.
+  ///
+  /// In en, this message translates to:
+  /// **'Seventy-four'**
+  String get story_timeMachine_t;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandpa: A time machine. I\'d go back to seventy-four.\ngrandma: What for?\ngrandpa: To turn up for our first date on time.\ngrandma: You did turn up on time.\ngrandpa: I ran like mad. I was sure I\'d be late.\ngrandma (quietly): Someone helped you.'**
+  String get story_timeMachine;
+
+  /// No description provided for @story_altar_t.
+  ///
+  /// In en, this message translates to:
+  /// **'The altar'**
+  String get story_altar_t;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandpa: The altar\'s ready. A few more Ticks and we summon Chronos.\ngrandma: Then at least comb your hair.\ngrandpa: What for?\ngrandma: You don\'t greet guests looking like that.\ngrandpa (whispering, to you): What guests?'**
+  String get story_altar;
+
+  /// No description provided for @storyNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get storyNext;
+
+  /// No description provided for @storySkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get storySkip;
+
+  /// No description provided for @storyTapHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to continue'**
+  String get storyTapHint;
+
+  /// No description provided for @who_grandpa.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandpa'**
+  String get who_grandpa;
+
+  /// No description provided for @who_grandma.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandma'**
+  String get who_grandma;
+
+  /// No description provided for @who_chronos.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronos'**
+  String get who_chronos;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandpa: There you are! Grandma\'s set the table. One cup too many, as usual.'**
+  String get welcomeLine_1;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandma: Sit down, dear. Grandpa\'s still in the garage. \"Calibrating\".'**
+  String get welcomeLine_2;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandpa: The clocks worked all night. So did I. Grandma says it shows.'**
+  String get welcomeLine_3;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandma: Cheesecake\'s here. The clock\'s here. Grandpa isn\'t. A normal day.'**
+  String get welcomeLine_4;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandpa: I set every clock to five. Now they all chime at once. Grandma is not thrilled.'**
+  String get welcomeLine_5;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandma: Leave that fourth cup alone. It\'s waiting for someone.'**
+  String get welcomeLine_6;
+
+  /// Story script: one line per row, 'speaker (stage direction): text'. Speakers: grandpa, grandma, chronos, or * for a caption. Keep the speaker ids and the colon; translate the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'grandpa: Grandma has never once been late. Fifty years. It\'s not normal.'**
+  String get welcomeLine_7;
 }
 
 class _AppLocalizationsDelegate

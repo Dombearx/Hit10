@@ -1127,7 +1127,7 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// The prologue (Chronos on the top shelf) is due: once, right after a
+  /// The prologue (Grandpa late for tea) is due: once, right after a
   /// new player's first Tiki, when that round's result is over. Not
   /// before the first round: the first touch of the clock comes first
   /// (R-TUT-0), and the story reads better once a Tik is in the pocket.
@@ -1140,6 +1140,34 @@ class GameController extends ChangeNotifier {
       clocks.every((c) => c.round.phase == RoundPhase.waiting);
 
   void prologueShown() => state.tipsSeen.add('prologue');
+
+  /// The rare story scenes of the first loop (docs/16-fabula.md §4), in
+  /// story order: the first Atomic Clock, the first paradox, the first
+  /// Time Machine, Chronos' altar. One per break, each once, only in the
+  /// first loop (a later loop has the chapters), never mid-round.
+  static const storyScenes = ['atomic', 'paradox', 'timeMachine', 'altar'];
+
+  String? get storyScenePending {
+    if (!state.tutorialDone || state.loopsDone > 0 || replaying) return null;
+    if (!clocks.every((c) => c.round.phase == RoundPhase.waiting)) return null;
+    for (final id in storyScenes) {
+      if (state.tipsSeen.contains('story_$id')) continue;
+      final due = switch (id) {
+        'atomic' => (state.owned['atomic'] ?? 0) > 0,
+        'paradox' => state.prestiges > 0,
+        'timeMachine' => (state.owned['timeMachine'] ?? 0) > 0,
+        'altar' => state.perks.contains('unlockChronos'),
+        _ => false,
+      };
+      if (due) return id;
+    }
+    return null;
+  }
+
+  void storySceneShown(String id) {
+    state.tipsSeen.add('story_$id');
+    unawaited(save());
+  }
 
   /// The season's intro dialog is due: once per season run, checked with
   /// the offline income and the daily bonus.

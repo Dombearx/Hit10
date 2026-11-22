@@ -37,6 +37,7 @@ void main() {
     }
     s.perks.addAll(balance.prestige.perks.map((p) => p.id));
     s.tipsSeen.addAll(['golden', 'prestige', 'skills', 'combo', 'modes']);
+    s.tipsSeen.addAll(storyScenesSeen);
     return s;
   }
 
@@ -77,7 +78,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('loop-end')), findsOneWidget);
     expect(find.text('Czas pokonany!'), findsOneWidget);
-    expect(find.text('Rozdział 1: Kupiony'), findsOneWidget);
+    expect(find.text('Rozdział 1: Wezwany'), findsOneWidget);
     // What Chronos brings next, its seal still a mystery.
     expect(find.text('Zepsuty stoper'), findsOneWidget);
     expect(find.text('Pieczęć za jej ukończenie: ???'), findsOneWidget);
@@ -115,7 +116,7 @@ void main() {
       200,
       scrollable: list,
     );
-    expect(find.text('Rozdział 1: Kupiony'), findsOneWidget);
+    expect(find.text('Rozdział 1: Wezwany'), findsOneWidget);
     expect(find.text('Ukończ pętlę 2'), findsOneWidget);
     await tester.drag(
       find.byKey(const Key('chronicle')),
@@ -170,7 +171,7 @@ void main() {
     final c = await pumpGame(tester, s);
     c.buyGenerators('chronos', 1);
     await tester.pumpAndSettle();
-    expect(find.text('Rozdział 2: Na ślepo'), findsOneWidget);
+    expect(find.text('Rozdział 2: Bez cyferek'), findsOneWidget);
     expect(find.byKey(const Key('loop-end-seal-blindfold')), findsOneWidget);
     expect(find.text('Wyczucie'), findsOneWidget);
     expect(find.textContaining('Tarcza zegara:'), findsOneWidget);

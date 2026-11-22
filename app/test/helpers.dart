@@ -15,3 +15,12 @@ final testReminderTexts = ReminderTexts(
   reserveTitle: 'reserve',
   reserveBody: (f) => 'reserve $f',
 );
+
+/// The rare story scenes of the first loop, all seen: for tests about
+/// something else, so a scene's window does not cover the screen.
+const storyScenesSeen = [
+  'story_atomic',
+  'story_paradox',
+  'story_timeMachine',
+  'story_altar',
+];

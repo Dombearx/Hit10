@@ -21,7 +21,9 @@ void main() {
     int Function()? wallMs,
   }) async {
     // The prologue before the first round has its own test.
-    state = (state ?? GameState())..tipsSeen.add('prologue');
+    state = (state ?? GameState())
+      ..tipsSeen.add('prologue')
+      ..tipsSeen.addAll(storyScenesSeen);
     final c = GameController(
       balance: balance,
       state: state,
@@ -192,15 +194,20 @@ void main() {
     await tester.scrollUntilVisible(desc, 200, scrollable: list);
     final text = tester.widget<ResText>(desc);
     expect(text.maxLines, isNull); // never cut
-    expect(text.text, 'Myli się o sekundę na sto milionów lat.');
+    const joke =
+        'Dziadek: „Myli się o sekundę na sto milionów lat. Teraz zdążę.”\n'
+        'Babcia: „Mówiłeś to przy kukułce.”';
+    expect(text.text, joke);
 
+    await tester.ensureVisible(find.byKey(const Key('gen-info-atomic')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('gen-info-atomic')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('gen-info-sheet')), findsOneWidget);
     expect(
       find.descendant(
         of: find.byKey(const Key('gen-info-sheet')),
-        matching: find.text('Myli się o sekundę na sto milionów lat.'),
+        matching: find.text(joke),
       ),
       findsOneWidget,
     );

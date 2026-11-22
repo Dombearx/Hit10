@@ -58,90 +58,99 @@ class AppLocalizationsPl extends AppLocalizations {
   String get gen_grandpa => 'Dziadek z zegarkiem';
 
   @override
-  String get gen_grandpa_desc => '„Za moich czasów sekunda była dłuższa.”';
+  String get gen_grandpa_desc =>
+      'Dziadek: „Zegarek po ojcu. Chodzi jak złoto.”\nBabcia: „Złoto nie chodzi.”';
 
   @override
   String get gen_grandma => 'Babcia z minutnikiem';
 
   @override
   String get gen_grandma_desc =>
-      'Jajka na miękko od 1974. Pięć sekund to dla niej pestka.';
+      'Babcia: „Minutnik z siedemdziesiątego czwartego. Ani razu się nie spóźnił.”\nDziadek: „Bo nie musi nigdzie chodzić.”';
 
   @override
   String get gen_cuckoo => 'Kukułka';
 
   @override
-  String get gen_cuckoo_desc => 'Kuka co pięć sekund. Zwykle.';
+  String get gen_cuckoo_desc =>
+      'Dziadek: „Kuka równo co pięć sekund.”\nBabcia: „Kukała. Zanim ją naprawiłeś.”';
 
   @override
   String get gen_metronome => 'Metronom';
 
   @override
-  String get gen_metronome_desc => 'Tik. Tak. Tik. Tak. Nigdy się nie nudzi.';
+  String get gen_metronome_desc =>
+      'Dziadek: „Na nim się uczyłem tańczyć.”\nBabcia: „I się nie nauczyłeś.”';
 
   @override
   String get gen_watchmaker => 'Zegarmistrz';
 
   @override
-  String get gen_watchmaker_desc => 'Lupa w oku, spokój w duszy.';
+  String get gen_watchmaker_desc =>
+      'Dziadek: „Pan Henio. Naprawi każdy zegarek.”\nBabcia: „Twój oddaje bez słowa.”';
 
   @override
   String get gen_sprintJudge => 'Sędzia sprintu';
 
   @override
-  String get gen_sprintJudge_desc => 'Falstart! A potem idealne 5.00.';
+  String get gen_sprintJudge_desc =>
+      'Dziadek: „Wie, co to setna sekundy.”\nBabcia: „A ty wiesz, co to piąta po południu?”';
 
   @override
   String get gen_stationClock => 'Zegar dworcowy';
 
   @override
   String get gen_stationClock_desc =>
-      'Opóźnienie może ulec zmianie. Ale prób robi mnóstwo.';
+      'Dziadek: „Spóźnia się, ale zawsze przyjeżdża.”\nBabcia: „Ty też. Dlatego go lubisz.”';
 
   @override
   String get gen_quartz => 'Zegar kwarcowy';
 
   @override
   String get gen_quartz_desc =>
-      '32 768 drgań na sekundę i ani jednego za dużo.';
+      'Dziadek: „32 768 drgań na sekundę.”\nBabcia: „A ty drgniesz, dopiero jak zawołam na obiad.”';
 
   @override
   String get gen_atomic => 'Zegar atomowy';
 
   @override
-  String get gen_atomic_desc => 'Myli się o sekundę na sto milionów lat.';
+  String get gen_atomic_desc =>
+      'Dziadek: „Myli się o sekundę na sto milionów lat. Teraz zdążę.”\nBabcia: „Mówiłeś to przy kukułce.”';
 
   @override
   String get gen_gps => 'Satelita GPS';
 
   @override
   String get gen_gps_desc =>
-      'Wie, gdzie jesteś. I która dokładnie jest godzina.';
+      'Dziadek: „Wie, gdzie jestem, co do metra.”\nBabcia: „Ja też. W garażu.”';
 
   @override
   String get gen_pulsar => 'Pulsar';
 
   @override
-  String get gen_pulsar_desc => 'Gwiazda neutronowa, która stuka jak zegarek.';
+  String get gen_pulsar_desc =>
+      'Dziadek: „Gwiazda, która tyka. Pożyczona z kosmosu.”\nBabcia: „Oddasz jak moją wiertarkę.”';
 
   @override
   String get gen_timeMachine => 'Maszyna czasu';
 
   @override
-  String get gen_timeMachine_desc => 'Trafia, zanim kliknie.';
+  String get gen_timeMachine_desc =>
+      'Dziadek: „Gdybym ją miał w siedemdziesiątym czwartym… Ale przecież zdążyłem!”\nBabcia: „Mhm.”';
 
   @override
   String get gen_schrodinger => 'Kot Schrödingera';
 
   @override
   String get gen_schrodinger_desc =>
-      'Trafił i nie trafił. Dopóki nie otworzysz pudełka.';
+      'Dziadek: „Trafił i nie trafił naraz.”\nBabcia: „Jak ty z kwiatami na rocznicę.”';
 
   @override
   String get gen_chronos => 'Chronos';
 
   @override
-  String get gen_chronos_desc => 'Bóg czasu. Nie pudłuje. Nigdy.';
+  String get gen_chronos_desc =>
+      'Dziadek: „Sam Czas. Najdokładniejszy zegar na świecie.”\nBabcia: „Czasu się nie kupuje. Czas się zaprasza.”';
 
   @override
   String get syn_grandparents => 'Dziadkowie na randce';
@@ -1245,7 +1254,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_goal =>
-      'Na najwyższej półce sklepu z zegarami tyka Chronos, bóg czasu — ostatni i najdroższy zegar w grze. Kup go, a poznasz dalszą historię.\nDroga do niego: trafiaj w 5.00, zbieraj Tiki, kupuj za nie zegary, które zarabiają za ciebie.';
+      'Dziadek wiecznie spóźnia się na podwieczorek u Babci i chce zdobyć zegar, który się nie myli: Chronosa, boga czasu — ostatni i najdroższy zegar w grze. Kup go, a historia potoczy się dalej.\nDroga do niego: trafiaj w 5.00, zbieraj Tiki, kupuj za nie zegary, które zarabiają za ciebie.';
 
   @override
   String get help_tiki_t => 'Tiki';
@@ -2943,7 +2952,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get rule_blindfold_quote =>
-      '„Zabieram ci cyferki. Zobaczymy, co umiesz bez podglądania.”';
+      '„Chcesz być punktualny? Naucz się czuć czas. Bez cyferek.”';
 
   @override
   String get seal_blindfold => 'Wyczucie';
@@ -2961,7 +2970,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get rule_inflation_quote =>
-      '„Czas to pieniądz. A pieniądz właśnie stracił na wartości.”';
+      '„Czas kosztuje. Od dziś każda sekunda drożej.”';
 
   @override
   String get seal_inflation => 'Stały klient';
@@ -2978,7 +2987,8 @@ class AppLocalizationsPl extends AppLocalizations {
       'Złota Sekunda nie przylatuje (wydarzenia sezonowe działają dalej).';
 
   @override
-  String get rule_noGold_quote => '„Zasłaniam słońce. Żadnych złotych sekund.”';
+  String get rule_noGold_quote =>
+      '„Słońce zostaje za chmurą. Na herbatę się nie trafia. Na herbatę się przychodzi.”';
 
   @override
   String get seal_noGold => 'Promyk';
@@ -2996,7 +3006,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get rule_shortFuse_quote =>
-      '„Lont dłuższy, ale się pali. Jedno krzywe trafienie i bum. A Tarczę oddaj.”';
+      '„Jedno krzywe trafienie i od zera. Tak jest z randkami.”';
 
   @override
   String get seal_shortFuse => 'Długi lont';
@@ -3012,8 +3022,7 @@ class AppLocalizationsPl extends AppLocalizations {
       'DOBRZE nic ci nie płaci. Liczy się tylko ŚWIETNIE i PERFEKT.';
 
   @override
-  String get rule_precision_quote =>
-      '„Od teraz liczy się tylko porządne trafienie.”';
+  String get rule_precision_quote => '„Byle jakie trafienie się nie liczy.”';
 
   @override
   String get seal_precision => 'Pewna ręka';
@@ -3039,53 +3048,53 @@ class AppLocalizationsPl extends AppLocalizations {
       'Dochód offline liczy się o 12 godzin dłużej.';
 
   @override
-  String get chapter_1_t => 'Kupiony';
+  String get chapter_1_t => 'Wezwany';
 
   @override
   String get chapter_1 =>
-      '— Kupiłeś mnie? MNIE? Boga czasu, za Tiki? — Chronos poprawił togę i policzył do pięciu. — Dobrze. Cofam wszystko. I zabieram ci cyferki.\n— Nie przejmuj się — mruknął Dziadek. — On tak zawsze przed piątą.';
+      '*: Garaż Dziadka. Ołtarz, dym i zapach sernika.\nchronos: Kto mnie wzywa?\ngrandpa: Ja. Mam sprawę. Codziennie o piątej muszę być w kuchni.\nchronos: Wezwałeś boga czasu, żeby zdążyć na herbatę.\ngrandpa: Na podwieczorek. Jest sernik.\ngrandma (z kuchni): Ciasto stygnie!\nchronos (nieruchomieje): Kto to był?\ngrandpa: Żona.\nchronos: Cofam czas. Do tamtego podwieczorku.\ngrandpa: A zegary?\nchronos: Zegary nie będą pamiętać. Wy tak. I tym razem bez cyferek.';
 
   @override
-  String get chapter_2_t => 'Na ślepo';
+  String get chapter_2_t => 'Bez cyferek';
 
   @override
   String get chapter_2 =>
-      'Trafiłeś 5.00 bez patrzenia. Chronos udawał, że nie widzi.\n— Fart — burknął i oddał pieczęć. — Zobaczymy, czy stać cię na czas, kiedy czas drożeje.\nDziadek tylko wzruszył ramionami: za jego czasów sekunda była po złotówce.';
+      '*: Garaż. Ołtarz. Znowu.\nchronos: Bez cyferek, a dalej w piątkę. Czujecie czas.\ngrandpa: Czemu wtedy uciekłeś?\nchronos: Bogowie nie uciekają. Bogowie się oddalają.\ngrandpa: Babcia pyta, czy wpadniesz na podwieczorek.\nchronos: Bogowie nie wpadają.\nchronos: Następna lekcja: czas kosztuje. Od dziś każda sekunda drożej.';
 
   @override
   String get chapter_3_t => 'Drożyzna';
 
   @override
   String get chapter_3 =>
-      '— Wszystko podrożało, a ty i tak mnie kupiłeś — westchnął Chronos.\n— Babcia mówi, że to przez jajka — wtrącił Dziadek.\nNa słowo „Babcia” Chronos drgnął i szybko zmienił temat: — Zasłaniam słońce. Żadnych złotych sekund.';
+      'chronos: Drogo było?\ngrandpa: Mniej niż kwiaty na rocznicę. Zapomniałem o nich, to wyszło taniej.\nchronos (cicho): Czternastego maja.\ngrandpa: Skąd wiesz?\nchronos: Nie wiem. Zgadłem.\nchronos: Następna lekcja: słońce zostaje za chmurą. Na herbatę się nie trafia. Na herbatę się przychodzi.';
 
   @override
-  String get chapter_4_t => 'Pochmurno';
+  String get chapter_4_t => 'Czwarta filiżanka';
 
   @override
   String get chapter_4 =>
-      'Bez złota też się dało. Chronos zerkał na zegarek, którego nie nosi.\n— Spieszysz się gdzieś? — zapytał Dziadek.\n— Ja? Nigdzie. Mam cały czas świata. — I dodał ciszej: — Byle nie po piątej.';
+      'chronos: Bez słońca też daliście radę.\nchronos: Dla kogo ta czwarta filiżanka?\ngrandpa: Babcia zawsze nakrywa o jedną za dużo. Nie pytam. Pięćdziesiąt lat nie pytam.\nchronos: …\nchronos: Następna lekcja: jedno krzywe trafienie i od zera. Tak jest z randkami.\ngrandpa: Z czym?\nchronos: Z niczym. Cofam czas.';
 
   @override
-  String get chapter_5_t => 'Krótki lont';
+  String get chapter_5_t => 'Pięć sekund';
 
   @override
   String get chapter_5 =>
-      '— Seria pękała od byle czego, Tarczy nie było, a ty dalej tu jesteś. — Chronos pierwszy raz się uśmiechnął. — Coś ci powiem. Raz w życiu się spóźniłem. Raz!\n— Na co?\n— Nie twoja sprawa. Od teraz liczy się tylko idealnie.';
+      'chronos: Raz w życiu zatrzymałem czas dla człowieka.\ngrandpa: Na długo?\nchronos: Na pięć sekund.\ngrandpa: Dla kogo?\nchronos: Dla spóźnialskiego. Biegł z kwiatami. Gubił płatki.\ngrandpa: Głupek.\nchronos: Mhm.\nchronos: Następna lekcja: byle jakie trafienie się nie liczy.';
 
   @override
-  String get chapter_6_t => 'Co do sekundy';
+  String get chapter_6_t => 'Za drzwiami';
 
   @override
   String get chapter_6 =>
-      '— Spóźnił się na podwieczorek — zdradził Dziadek. — Do Babci. O piątej. Sernik już zjedliśmy.\nChronos poczerwieniał. — Jedna pętla. Ostatnia. I bez spania: kto śpi, ten się spóźnia.';
+      '*: Kuchnia. Drzwi do garażu zamknięte.\ngrandma (do drzwi): Wiem, że tam jesteś.\nchronos (zza drzwi): Nie ma mnie.\ngrandma: Pięćdziesiąt lat cię nie ma. Sernik i tak kroję na cztery.\ngrandpa (szeptem, do ciebie): Z kim ona rozmawia?\nchronos: Ostatnia lekcja. Bez spania. Kto śpi, ten się spóźnia.';
 
   @override
   String get chapter_7_t => 'Punkt piąta';
 
   @override
   String get chapter_7 =>
-      'Punkt 5.00. Chronos stoi pod drzwiami Babci, pierwszy raz od wieków o czasie.\n— Wejdź, zegarmistrzu — mówi do ciebie. — Sernik jest dla dwojga, ale Babcia zawsze kroi na pięć. Od dziś sam ustawiasz zasady. Ja idę na podwieczorek.';
+      '*: Kuchnia Babci. Na zegarze 16:59.\n*: Drzwi. Dziadek. Pierwszy raz przed czasem.\ngrandma: Minuta przed czasem.\ngrandpa: Sam. Bez żadnych zegarów.\n*: Ktoś puka. Równo o piątej.\nchronos: Punktualnie.\ngrandma (nalewa do czwartej filiżanki): Siadaj.\nchronos: Nie przychodzę na herbaty.\ngrandma: Wiem. Pięćdziesiąt lat nie przychodzisz.\ngrandpa: Wy się znacie?\ngrandma: Od pięciu sekund. W siedemdziesiątym czwartym.\nchronos (siada): …Sernik?';
 
   @override
   String get help_round_t => 'Runda';
@@ -3123,14 +3132,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get notificationAskNo => 'Nie, dziękuję';
 
   @override
-  String get prologue_t => 'Prolog: Najwyższa półka';
+  String get prologue_t => 'Prolog: Siedem minut';
 
   @override
   String get prologue =>
-      'W starym sklepie z zegarami, na najwyższej półce, tyka Chronos — bóg czasu. Ktoś przez pomyłkę przykleił mu metkę z ceną. Cena ma tyle zer, że nikt jeszcze nie próbował.\n— My spróbujemy — mówi Dziadek i stuka w swój zegarek. — Kto kupi Chronosa, ten pozna jego sekret.\n— A czym się płaci?\n— Tikami. Zatrzymaj stoper równo na 5.00, a Tiki same wpadną do kieszeni. Za Tiki kupisz zegary, a zegary zarobią na następne. Aż któregoś dnia zdejmiemy Chronosa z półki.';
+      '*: Kuchnia Babci. Stół nakryty na cztery filiżanki.\n*: Na zegarze piąta. Krzesło Dziadka stoi puste.\ngrandma (podaje ci stoper): Zmierz mu, dziecko.\n*: Siedem minut później.\ngrandma: Siedem minut.\ngrandpa: Niemożliwe. Mój zegarek pokazuje piątą.\ngrandma: Twój zegarek pokazuje piątą od pięćdziesięciu lat.\ngrandpa (szeptem, do ciebie): Masz rękę do stopera. Po Babci.\ngrandpa: Jutro będę co do sekundy. Potrzebuję tylko lepszego zegara.\ngrandma: Zegar, który się nie myli, jest tylko jeden.\ngrandpa: Chronos. Wiem. Czytałem.\ngrandma (patrzy na czwartą filiżankę): Przy stole się o nim nie mówi.\ngrandpa (szeptem, do ciebie): Ale zdobyć go można. Zaczniemy od mniejszych zegarów.';
 
   @override
-  String get prologueGoal => 'Cel: kup Chronosa';
+  String get prologueGoal => 'Cel: zdobądź Chronosa';
 
   @override
   String get prologueGo => 'Do dzieła!';
@@ -3461,4 +3470,78 @@ class AppLocalizationsPl extends AppLocalizations {
   String chPerfect(int n) {
     return 'Traf PERFEKT $n razy';
   }
+
+  @override
+  String get story_atomic_t => 'Zegar atomowy';
+
+  @override
+  String get story_atomic =>
+      'grandpa: Zegar atomowy. Myli się o sekundę na sto milionów lat.\ngrandpa: Jutro jestem w kuchni punkt piąta.\ngrandma: Mówiłeś to przy kukułce.\ngrandpa: Kukułka była z odpustu.\ngrandma: A spóźnienie?\ngrandpa: …Z przyzwyczajenia.';
+
+  @override
+  String get story_paradox_t => 'Do tyłu';
+
+  @override
+  String get story_paradox =>
+      '*: Wszystkie zegary w garażu kręcą się do tyłu.\ngrandpa: Udało się! Cofnęliśmy czas!\ngrandma (z kuchni): Znowu coś przepaliłeś?\nchronos (z bardzo daleka): Kto mi grzebie w zegarach?\ngrandpa (szeptem, do ciebie): Udajemy, że nic nie było.';
+
+  @override
+  String get story_timeMachine_t => 'Siedemdziesiąty czwarty';
+
+  @override
+  String get story_timeMachine =>
+      'grandpa: Maszyna czasu. Wróciłbym do siedemdziesiątego czwartego.\ngrandma: Po co?\ngrandpa: Przyjść na naszą pierwszą randkę punktualnie.\ngrandma: Przyszedłeś punktualnie.\ngrandpa: Biegłem jak głupi. Byłem pewny, że się spóźnię.\ngrandma (cicho): Ktoś ci pomógł.';
+
+  @override
+  String get story_altar_t => 'Ołtarz';
+
+  @override
+  String get story_altar =>
+      'grandpa: Ołtarz gotowy. Jeszcze trochę Tików i wezwiemy Chronosa.\ngrandma: To chociaż się uczesz.\ngrandpa: Po co?\ngrandma: Przy gościach nie chodzi się rozczochranym.\ngrandpa (szeptem, do ciebie): Jakich gościach?';
+
+  @override
+  String get storyNext => 'Dalej';
+
+  @override
+  String get storySkip => 'Pomiń';
+
+  @override
+  String get storyTapHint => 'Dotknij, żeby dalej';
+
+  @override
+  String get who_grandpa => 'Dziadek';
+
+  @override
+  String get who_grandma => 'Babcia';
+
+  @override
+  String get who_chronos => 'Chronos';
+
+  @override
+  String get welcomeLine_1 =>
+      'grandpa: Jesteś! Babcia już nakryła. Jak zwykle o jedną filiżankę za dużo.';
+
+  @override
+  String get welcomeLine_2 =>
+      'grandma: Siadaj, dziecko. Dziadek jeszcze w garażu. „Kalibruje”.';
+
+  @override
+  String get welcomeLine_3 =>
+      'grandpa: Zegary pracowały całą noc. Ja też. Babcia mówi, że to widać.';
+
+  @override
+  String get welcomeLine_4 =>
+      'grandma: Sernik jest. Zegar jest. Dziadka nie ma. Zwykły dzień.';
+
+  @override
+  String get welcomeLine_5 =>
+      'grandpa: Nastawiłem wszystkie zegary na piątą. Teraz biją naraz. Babcia nie jest zachwycona.';
+
+  @override
+  String get welcomeLine_6 =>
+      'grandma: Tej czwartej filiżanki nie ruszaj. Ona na kogoś czeka.';
+
+  @override
+  String get welcomeLine_7 =>
+      'grandpa: Babcia ani razu się nie spóźniła. Pięćdziesiąt lat. To nie jest normalne.';
 }
