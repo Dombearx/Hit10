@@ -674,7 +674,9 @@ class GameEngine {
       ..peakTiki = 0
       ..comboStreak = 0
       ..shieldProgress = 0
-      ..runTaps = 0;
+      ..runTaps = 0
+      ..autoTarget = null
+      ..autoUntil = 0;
     s.owned.clear();
     s.skills
       ..clear()
@@ -754,6 +756,8 @@ class GameEngine {
       ..rewindPending = false
       ..secondClockOn = false
       ..autoBuyerOn = false
+      ..autoTarget = null
+      ..autoUntil = 0
       ..loop = s.loop + 1
       ..loopGoal = false
       ..loopEndSeen = false
@@ -909,29 +913,50 @@ class GameEngine {
 
   double _autoBuyAcc = 0;
 
-  /// The "automatic buyer" perk buys the cheapest affordable generator
-  /// every few seconds when switched on. Returns the id bought, if any.
+  /// The "automatic buyer" perk (docs/02 §9.3): buys the clock the player
+  /// picked, one every few seconds while it can afford it, up to that
+  /// clock's next bonus, then waits for the next pick.
+  bool get autoBuyerActive => s.perks.contains('autoBuyer') && s.autoBuyerOn;
+
+  /// Switched on and standing still: no clock picked yet, or the picked one
+  /// reached its bonus.
+  bool get autoBuyerWaiting =>
+      autoBuyerActive &&
+      (s.autoTarget == null || econ.owned(s.autoTarget!) >= s.autoUntil);
+
+  /// The owned count the next pick of [id] buys up to: its next bonus, or
+  /// ten more once every bonus is reached.
+  int autoGoalFor(String id) => econ.nextMilestone(id) ?? econ.owned(id) + 10;
+
+  /// Clocks the shop shows: owned, or the next one in line (R-GEN-4).
+  bool shopShows(String id) {
+    if (!econ.generatorUnlocked(id)) return false;
+    final i = b.generators.indexWhere((g) => g.id == id);
+    return i == 0 ||
+        econ.owned(id) > 0 ||
+        econ.owned(b.generators[i - 1].id) > 0;
+  }
+
+  /// Points the auto buyer at [id], up to its next bonus.
+  bool setAutoTarget(String id) {
+    if (!shopShows(id)) return false;
+    s
+      ..autoTarget = id
+      ..autoUntil = autoGoalFor(id);
+    _autoBuyAcc = 0;
+    return true;
+  }
+
+  /// Returns the id bought, if any.
   String? autoBuy(double dt) {
-    if (!s.perks.contains('autoBuyer') || !s.autoBuyerOn) return null;
+    if (autoBuyerWaiting || !autoBuyerActive) return null;
     _autoBuyAcc += dt;
     final every = b.perk('autoBuyer').params['intervalSeconds']!;
     if (_autoBuyAcc < every) return null;
     _autoBuyAcc = 0;
-    String? best;
-    var bestCost = double.infinity;
-    for (var i = 0; i < b.generators.length; i++) {
-      final g = b.generators[i];
-      if (!econ.generatorUnlocked(g.id)) continue;
-      // Only what the shop shows: owned, or the next one in line.
-      if (i > 0 && econ.owned(b.generators[i - 1].id) == 0) break;
-      final c = econ.generatorCost(g.id);
-      if (c < bestCost) {
-        bestCost = c;
-        best = g.id;
-      }
-    }
-    if (best == null || bestCost > s.tiki) return null;
-    return buyGenerators(best, 1) == BuyResult.ok ? best : null;
+    final id = s.autoTarget!;
+    if (econ.generatorCost(id) > s.tiki) return null;
+    return buyGenerators(id, 1) == BuyResult.ok ? id : null;
   }
 
   // --------------------------------------------------------------- offline --

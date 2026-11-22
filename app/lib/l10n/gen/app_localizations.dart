@@ -1523,7 +1523,7 @@ abstract class AppLocalizations {
   /// No description provided for @perk_autoBuyer_desc.
   ///
   /// In en, this message translates to:
-  /// **'A switch that buys the cheapest clock every 5 s'**
+  /// **'A switch: buys the clock you pick up to its next bonus'**
   String get perk_autoBuyer_desc;
 
   /// No description provided for @perk_daredevil.
@@ -1855,6 +1855,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Auto buyer'**
   String get modeAuto;
+
+  /// No description provided for @autoBuying.
+  ///
+  /// In en, this message translates to:
+  /// **'{owned}/{until}'**
+  String autoBuying(String owned, String until);
+
+  /// No description provided for @autoDone.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ {until} · pick next'**
+  String autoDone(String until);
+
+  /// No description provided for @autoPick.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto buyer: pick a clock'**
+  String get autoPick;
+
+  /// No description provided for @autoSheetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buys the clock you pick, one every {seconds} s while the Tiki last, up to its next bonus. Then it waits for your next pick.'**
+  String autoSheetHint(String seconds);
+
+  /// No description provided for @autoContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {clock} → {until}'**
+  String autoContinue(String clock, String until);
+
+  /// No description provided for @autoOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch off'**
+  String get autoOff;
 
   /// No description provided for @adTurbo.
   ///
@@ -2225,7 +2261,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_modes.
   ///
   /// In en, this message translates to:
-  /// **'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys clocks for you'**
+  /// **'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys the clock you pick up to its next bonus, then turns orange and waits for your next pick'**
   String get help_modes;
 
   /// No description provided for @help_season_t.

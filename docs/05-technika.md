@@ -329,6 +329,7 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | `loop_start` | `loop`, `rule`, `springs` | ilu graczy po Chronosie zaczyna następną pętlę |
   | `dial_unlock` | `id` | tarcze (12 §3.3): kiedy padają w porównaniu z `idle_sim.dart` |
   | `mode_toggle` | `mode`, `on` | czy tryby są używane |
+  | `auto_target` | `clock`, `until` | jakie zegary gracze dają auto-kupcowi |
   | `review_prompt` | – | ile razy gra poprosiła o ocenę (02 R-OCENA-1) |
   | `challenges_unlocked` | – | kiedy gracze dostają pierwsze wyzwania (`play_min`); porównanie retencji D1/D7 (14 §7) |
   | `challenge_done` | `kind`, `weekly`, `target` | które wyzwania gracze kończą i przy jakich liczbach (02 §18) |

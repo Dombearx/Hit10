@@ -5,6 +5,7 @@ import '../catalog.dart';
 import '../game_controller.dart';
 import '../screens/loop_screen.dart';
 import '../theme.dart';
+import 'auto_buyer.dart';
 
 /// Risk modes, second clock and auto buyer, shown once unlocked
 /// (docs/02 §7, §9). Changes apply from the next round, Blind switched on
@@ -42,13 +43,7 @@ class ModeRow extends StatelessWidget {
           on: s.secondClockOn,
           onTap: () => c.setMode(secondClock: !s.secondClockOn),
         ),
-      if (s.perks.contains('autoBuyer'))
-        _Toggle(
-          key: const Key('mode-auto'),
-          label: l.modeAuto,
-          on: s.autoBuyerOn,
-          onTap: () => c.setMode(autoBuyer: !s.autoBuyerOn),
-        ),
+      if (s.perks.contains('autoBuyer')) AutoBuyerChip(controller: c),
       // The loop and its rule, after the switches: a tap says what it
       // changes (R-PETLA-4).
       if (s.loop > 1)

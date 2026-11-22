@@ -603,6 +603,41 @@ class GameController extends ChangeNotifier {
     unawaited(save());
   }
 
+  /// Points the auto buyer at clock [id], up to its next bonus, and
+  /// switches it on (docs/02 §9.3).
+  void setAutoTarget(String id) {
+    if (!engine.setAutoTarget(id)) return;
+    state.autoBuyerOn = true;
+    _log('auto_target', {'clock': id, 'until': state.autoUntil});
+    tipActed('modes');
+    sfx.play('tick');
+    notifyListeners();
+    unawaited(save());
+  }
+
+  /// How long the auto buyer has stood still, and whether it has nudged
+  /// the player about it yet: once per stop, never again (docs/02 §9.3).
+  double _autoWaitSecs = 0;
+  bool _autoNudged = false;
+
+  /// Goes up by one when the waiting auto buyer nudges (its chip pulses).
+  int autoNudge = 0;
+
+  @visibleForTesting
+  void autoWatch(double dt) {
+    if (!engine.autoBuyerWaiting) {
+      _autoWaitSecs = 0;
+      _autoNudged = false;
+      return;
+    }
+    _autoWaitSecs += dt;
+    final after = balance.perk('autoBuyer').params['remindAfterSeconds']!;
+    if (!_autoNudged && _autoWaitSecs >= after) {
+      _autoNudged = true;
+      autoNudge++;
+    }
+  }
+
   // --------------------------------------------------------------- input --
 
   /// Pointer-down on the arena; [clock] is the half that was touched.
@@ -723,6 +758,7 @@ class GameController extends ChangeNotifier {
         _announceBonuses(bonuses);
         _checkLoop();
       }
+      autoWatch(_econAcc);
       _econAcc = 0;
       notifyListeners();
     }

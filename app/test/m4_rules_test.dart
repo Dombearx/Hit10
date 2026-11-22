@@ -148,13 +148,60 @@ void main() {
     });
   });
 
-  test('auto buyer buys the cheapest visible generator when on', () {
-    s.perks.add('autoBuyer');
-    s.tiki = 1000;
-    expect(e.autoBuy(10), isNull); // switched off
-    s.autoBuyerOn = true;
-    expect(e.autoBuy(5), 'grandpa');
-    expect(e.autoBuy(1), isNull); // waits 5 s between buys
+  group('auto buyer (docs/02 §9.3)', () {
+    setUp(() {
+      s
+        ..perks.add('autoBuyer')
+        ..tiki = 1e6;
+    });
+
+    test('off, or on without a pick, it buys nothing', () {
+      expect(e.autoBuy(10), isNull);
+      expect(e.autoBuyerWaiting, isFalse); // off: nothing to wait for
+      s.autoBuyerOn = true;
+      expect(e.autoBuyerWaiting, isTrue); // on, no clock picked
+      expect(e.autoBuy(10), isNull);
+    });
+
+    test(
+      'buys the picked clock every 5 s up to its next bonus, then waits',
+      () {
+        s
+          ..autoBuyerOn = true
+          ..owned['grandpa'] = 8;
+        expect(e.setAutoTarget('grandpa'), isTrue);
+        expect(s.autoUntil, 10);
+        expect(e.autoBuy(4), isNull); // waits 5 s between buys
+        expect(e.autoBuy(1), 'grandpa');
+        expect(e.autoBuy(5), 'grandpa');
+        expect(s.owned['grandpa'], 10);
+        expect(e.autoBuyerWaiting, isTrue);
+        expect(e.autoBuy(5), isNull);
+        // Picked again: on to the next bonus.
+        e.setAutoTarget('grandpa');
+        expect(s.autoUntil, 20);
+        expect(e.autoBuyerWaiting, isFalse);
+      },
+    );
+
+    test('never buys what it cannot afford, nor a clock the shop hides', () {
+      s
+        ..autoBuyerOn = true
+        ..tiki = 1;
+      expect(e.setAutoTarget('cuckoo'), isFalse); // no Grandma yet
+      e.setAutoTarget('grandpa');
+      expect(e.autoBuy(5), isNull);
+      expect(s.owned['grandpa'], isNull);
+    });
+
+    test('a paradox forgets the pick', () {
+      s.autoBuyerOn = true;
+      e.setAutoTarget('grandpa');
+      s.earnedTotal = 1e8 * 27;
+      e.prestige();
+      expect(s.autoTarget, isNull);
+      expect(e.autoBuyerWaiting, isTrue);
+    });
   });
 
   group('rewarded offers (docs/02 §13)', () {

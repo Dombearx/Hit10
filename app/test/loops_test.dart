@@ -94,7 +94,9 @@ void main() {
         ..skills['power'] = 5
         ..habits.add('power')
         ..secondClockOn = true
-        ..autoBuyerOn = true;
+        ..autoBuyerOn = true
+        ..autoTarget = 'grandpa'
+        ..autoUntil = 10;
       s.achievements.add('x');
       final ever = s.lifetime.earnedEver;
       expect(e.startLoop(5000), isTrue);
@@ -114,6 +116,7 @@ void main() {
       expect(s.habits, isEmpty);
       expect(s.secondClockOn, isFalse);
       expect(s.autoBuyerOn, isFalse);
+      expect(s.autoTarget, isNull);
       // What stays.
       expect(s.springs, 4);
       expect(s.clockLevels['grandpa'], 2);
