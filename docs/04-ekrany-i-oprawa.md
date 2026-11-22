@@ -255,7 +255,7 @@ zostały te same (`trophy`, `fire`…).
   pod kadrem (`*`) w ciemnej ramce bez portretu. Dotknięcie gdziekolwiek
   — następna kwestia, „Pomiń” — do końca; kropki postępu i „Dotknij, żeby
   dalej”. Po ostatniej kwestii cała scena zostaje do przeczytania (portrety
-  w miniaturze), pod nią to, co ma być na końcu (w prologu cel i
+  w miniaturze), pod nią to, co ma być na końcu (w prologu cel „Zdobądź Chronosa” i
   „Do dzieła!”). Tak grają: prolog, rozdział w oknie końca pętli i rzadkie
   sceny pierwszej pętli (osobne okno, zamyka się po ostatniej kwestii).
   Kronika pokazuje sceny w całości. Opisy zegarów to dwie kwestie

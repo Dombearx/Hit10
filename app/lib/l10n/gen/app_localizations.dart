@@ -2141,7 +2141,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_goal.
   ///
   /// In en, this message translates to:
-  /// **'Grandpa is always late for Grandma\'s afternoon tea, and he wants the one clock that is never wrong: Chronos, the god of time — the last and most expensive clock in the game. Buy him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.'**
+  /// **'Grandpa is always late for Grandma\'s afternoon tea, and he wants the one clock that is never wrong: Chronos, the god of time — the last and most expensive clock in the game. Get him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.'**
   String get help_goal;
 
   /// No description provided for @help_tiki_t.
@@ -4949,7 +4949,7 @@ abstract class AppLocalizations {
   /// No description provided for @loopGoal.
   ///
   /// In en, this message translates to:
-  /// **'Loop goal: buy Chronos'**
+  /// **'Loop goal: get Chronos'**
   String get loopGoal;
 
   /// No description provided for @loopGoalDone.

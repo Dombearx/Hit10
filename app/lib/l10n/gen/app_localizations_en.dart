@@ -1261,7 +1261,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_goal =>
-      'Grandpa is always late for Grandma\'s afternoon tea, and he wants the one clock that is never wrong: Chronos, the god of time — the last and most expensive clock in the game. Buy him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.';
+      'Grandpa is always late for Grandma\'s afternoon tea, and he wants the one clock that is never wrong: Chronos, the god of time — the last and most expensive clock in the game. Get him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.';
 
   @override
   String get help_tiki_t => 'Ticks';
@@ -2810,7 +2810,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loopTitle => 'Time Loop';
 
   @override
-  String get loopGoal => 'Loop goal: buy Chronos';
+  String get loopGoal => 'Loop goal: get Chronos';
 
   @override
   String get loopGoalDone => 'Goal reached: Chronos is yours';

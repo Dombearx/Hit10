@@ -1057,7 +1057,7 @@
   "helpTitle": "How to play",
   "helpReplay": "Show the tutorial again",
   "help_goal_t": "Goal",
-  "help_goal": "Grandpa is always late for Grandma's afternoon tea, and he wants the one clock that is never wrong: Chronos, the god of time — the last and most expensive clock in the game. Buy him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.",
+  "help_goal": "Grandpa is always late for Grandma's afternoon tea, and he wants the one clock that is never wrong: Chronos, the god of time — the last and most expensive clock in the game. Get him and the story goes on.\nThe way there: hit 5.00, collect Ticks, and spend them on clocks that earn for you.",
   "help_tiki_t": "Ticks",
   "help_tiki": "Ticks are the game's currency. At the top of the screen:\n• the big number — your Ticks\n• below it — how many you gain per second\n• \"5.00 = +…\" — what a hit on exactly 5.00 pays\nYou spend Ticks in the shop at the bottom: on clocks and skills.",
   "help_clocks_t": "Clocks",
@@ -1877,7 +1877,7 @@
     }
   },
   "loopTitle": "Time Loop",
-  "loopGoal": "Loop goal: buy Chronos",
+  "loopGoal": "Loop goal: get Chronos",
   "loopGoalDone": "Goal reached: Chronos is yours",
   "loopNoRule": "No changed rule",
   "loopRuleLabel": "Chronos' rule",

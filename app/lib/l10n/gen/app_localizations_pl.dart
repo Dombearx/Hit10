@@ -1254,7 +1254,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_goal =>
-      'Dziadek wiecznie spóźnia się na podwieczorek u Babci i chce zdobyć zegar, który się nie myli: Chronosa, boga czasu — ostatni i najdroższy zegar w grze. Kup go, a historia potoczy się dalej.\nDroga do niego: trafiaj w 5.00, zbieraj Tiki, kupuj za nie zegary, które zarabiają za ciebie.';
+      'Dziadek wiecznie spóźnia się na podwieczorek u Babci i chce zdobyć zegar, który się nie myli: Chronosa, boga czasu — ostatni i najdroższy zegar w grze. Zdobądź go, a historia potoczy się dalej.\nDroga do niego: trafiaj w 5.00, zbieraj Tiki, kupuj za nie zegary, które zarabiają za ciebie.';
 
   @override
   String get help_tiki_t => 'Tiki';
@@ -2807,7 +2807,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get loopTitle => 'Pętla czasu';
 
   @override
-  String get loopGoal => 'Cel pętli: kup Chronosa';
+  String get loopGoal => 'Cel pętli: zdobądź Chronosa';
 
   @override
   String get loopGoalDone => 'Cel osiągnięty: Chronos jest twój';
