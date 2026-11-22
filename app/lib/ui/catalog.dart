@@ -351,6 +351,25 @@ String sealDescription(AppLocalizations l, String id) => switch (id) {
 };
 
 /// Title and text of chapter [n] (1-based) of the Chronicle.
+/// Title and script of a rare scene of the first loop (docs/16-fabula.md).
+(String, String) storySceneTexts(AppLocalizations l, String id) => switch (id) {
+  'atomic' => (l.story_atomic_t, l.story_atomic),
+  'paradox' => (l.story_paradox_t, l.story_paradox),
+  'timeMachine' => (l.story_timeMachine_t, l.story_timeMachine),
+  _ => (l.story_altar_t, l.story_altar),
+};
+
+/// Grandpa's or Grandma's line in "welcome back", one a day in turn.
+String welcomeLine(AppLocalizations l, int day) => switch (day % 7) {
+  0 => l.welcomeLine_1,
+  1 => l.welcomeLine_2,
+  2 => l.welcomeLine_3,
+  3 => l.welcomeLine_4,
+  4 => l.welcomeLine_5,
+  5 => l.welcomeLine_6,
+  _ => l.welcomeLine_7,
+};
+
 (String, String)? chapterTexts(AppLocalizations l, int n) => switch (n) {
   1 => (l.chapter_1_t, l.chapter_1),
   2 => (l.chapter_2_t, l.chapter_2),

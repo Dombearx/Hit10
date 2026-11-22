@@ -15,6 +15,7 @@ import 'widgets/buy_button.dart';
 import 'widgets/choice_dialog.dart';
 import 'widgets/emoji_card.dart';
 import 'widgets/res_text.dart';
+import 'widgets/story_scene.dart';
 
 /// "Welcome back" (R-OFF-2, R-DZIEN-1, docs/04 U-34): what the clocks
 /// earned while the player was away and today's daily bonus, in one
@@ -152,6 +153,15 @@ class _Welcome extends StatelessWidget {
                     if (both) const Divider(height: 22, thickness: 1.5),
                     if (daily != null)
                       _DailyPart(controller: c, bonus: daily, showTitle: both),
+                    // One line from Grandpa or Grandma, a new one each day
+                    // (docs/16-fabula.md §5).
+                    if (daily != null && c.state.tutorialDone) ...[
+                      const SizedBox(height: 12),
+                      StoryTranscript(
+                        key: const Key('welcome-story'),
+                        script: welcomeLine(l, c.state.lifetime.dailyClaims),
+                      ),
+                    ],
                     if (withSeason && season != null) ...[
                       const SizedBox(height: 10),
                       Text(

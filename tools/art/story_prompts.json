@@ -1,16 +1,16 @@
 {
   "size": "1664*928",
-  "style": "warm storybook illustration in the style of a glossy 3D cartoon, soft cinematic lighting, rounded chunky shapes, saturated friendly colors, cozy old clock shop atmosphere, wide 16:9 scene, characters large and readable, no text",
-  "negative": "text, letters, speech bubbles, watermark, logo, frame, border, photo, realistic, dark horror mood",
-  "characters": "Grandpa: cheerful bald old man with white mustache and round glasses, golden pocket watch on a chain. Grandma: sweet old woman with grey hair bun and glasses. Chronos: friendly bearded old titan god of time with a golden laurel wreath and a toga, golden hourglass",
+  "style": "warm storybook illustration in the style of a glossy 3D cartoon, soft cinematic lighting, rounded chunky shapes, saturated friendly colors, cozy grandparents' home atmosphere, wide 16:9 scene, characters large and readable, no text",
+  "negative": "text, letters, numbers on clocks, speech bubbles, watermark, logo, frame, border, photo, realistic, dark horror mood",
+  "characters": "Grandpa: cheerful bald old man with white mustache and round glasses, golden pocket watch on a chain. Grandma: sweet old woman with grey hair bun and glasses. Chronos: bearded old titan god of time with a golden laurel wreath and a toga, golden hourglass",
   "items": [
-    {"id": "prologue", "seeds": [1010, 2020], "prompt": "inside a cozy old clock shop full of ticking clocks, Chronos the god of time sits sulking on the very top shelf with a big paper price tag hanging from his toga, Grandpa below looks up at him with a determined grin and taps his pocket watch"},
-    {"id": "chapter_1", "seeds": [1010, 2020], "prompt": "Chronos the god of time, offended and dramatic, holding his own torn price tag, rewinding time with a swirling blue vortex, Grandpa shrugging calmly beside him"},
-    {"id": "chapter_2", "seeds": [1010, 2020], "prompt": "Chronos pretending not to look, covering his eyes with one hand, while a big stopwatch shows exactly 5.00 glowing gold, Grandpa smiling in the background"},
-    {"id": "chapter_3", "seeds": [1010, 2020], "prompt": "Chronos sighing over a long receipt of rising prices, Grandpa pointing at a basket of eggs, Chronos startled and blushing at the mention of Grandma, warm sunset light"},
-    {"id": "chapter_4", "seeds": [1010, 2020], "prompt": "Chronos covering the sun with a big grey cloud, the shop under soft overcast light, Grandpa asking him something, Chronos glancing at a wristwatch he does not wear"},
-    {"id": "chapter_5", "seeds": [1010, 2020], "prompt": "Chronos smiling for the first time, telling a secret, a short burning fuse sparkling on the counter, one perfect golden clock face glowing"},
-    {"id": "chapter_6", "seeds": [1010, 2020], "prompt": "Grandpa whispering a secret about an empty cheesecake plate at Grandma's tea table set for five o'clock, Chronos turning bright red with embarrassment"},
-    {"id": "chapter_7", "seeds": [1010, 2020], "prompt": "exactly five o'clock, Chronos standing at Grandma's front door holding flowers, Grandma opening the door with a cheesecake cut into five pieces, warm golden light"}
+    {"id": "prologue", "seeds": [1010, 2020], "prompt": "Grandma's cozy kitchen at five o'clock, a table set with four teacups and a cheesecake, Grandma sitting calmly holding a stopwatch, out-of-breath Grandpa bursting through the door checking his pocket watch, one empty chair with the fourth cup"},
+    {"id": "chapter_1", "seeds": [1010, 2020], "prompt": "a cluttered garage workshop full of clocks, a homemade altar with candles and smoke, Chronos the god of time appearing in a swirl of golden light, looking offended, Grandpa in a cardigan asking him a favour, a slice of cheesecake on a plate"},
+    {"id": "chapter_2", "seeds": [1010, 2020], "prompt": "Chronos pretending not to be impressed, arms crossed, while a big stopwatch with a blank face glows gold, Grandpa grinning beside a homemade altar in a garage"},
+    {"id": "chapter_3", "seeds": [1010, 2020], "prompt": "Chronos holding a very long receipt of rising prices, quietly looking at a calendar page showing a heart, Grandpa scratching his head, warm sunset light in a garage"},
+    {"id": "chapter_4", "seeds": [1010, 2020], "prompt": "grey clouds covering the sun outside a garage window, Chronos staring thoughtfully at a single empty teacup, Grandpa shrugging"},
+    {"id": "chapter_5", "seeds": [1010, 2020], "prompt": "flashback in soft sepia, a young man running down a 1970s street with a bouquet of flowers losing petals, time frozen around him, Chronos holding up his hand and stopping a giant clock, old Grandpa watching the memory without recognising himself"},
+    {"id": "chapter_6", "seeds": [1010, 2020], "prompt": "Grandma standing at a closed garage door, speaking to it gently, a golden glow leaking from under the door, Grandpa peeking from the kitchen confused, a cheesecake cut into four pieces on the table"},
+    {"id": "chapter_7", "seeds": [1010, 2020], "prompt": "Grandma's kitchen at exactly five o'clock, Chronos the god of time sitting awkwardly at the tea table in his toga, Grandma pouring tea into the fourth cup, proud Grandpa sitting on time, cheesecake, warm golden light"}
   ]
 }

@@ -5,12 +5,13 @@ import 'catalog.dart';
 import 'game_controller.dart';
 import 'theme.dart';
 import 'widgets/buy_button.dart';
-import 'widgets/res_text.dart';
 import 'widgets/story_art.dart';
+import 'widgets/story_scene.dart';
 
-/// The story before the first round (playtest: the Chronicle only started
+/// The story after the first Tik (playtest: the Chronicle only started
 /// after the first loop, so nothing said what the game was heading for).
-/// Chronos on the top shelf, Grandpa's plan, and the goal in one line.
+/// Grandpa seven minutes late for tea, his plan, and the goal in one line,
+/// played one line at a time (docs/16-fabula.md).
 Future<void> showPrologue(BuildContext context, GameController c) {
   return showDialog<void>(
     context: context,
@@ -32,32 +33,27 @@ Future<void> showPrologue(BuildContext context, GameController c) {
             borderRadius: BorderRadius.circular(26),
             border: Border.all(color: Palette.outline, width: 3),
           ),
-          // The story scrolls on a short screen; the button stays in view.
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+          // The story scrolls on a short screen.
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 22, 20, 14),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const StoryArt('prologue'),
+                const SizedBox(height: 12),
+                Text(
+                  l.prologue_t,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: Fonts.display,
+                    fontSize: 22,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                StoryPlayer(
+                  script: l.prologue,
+                  end: Column(
                     children: [
-                      const StoryArt('prologue'),
-                      const SizedBox(height: 12),
-                      Text(
-                        l.prologue_t,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: Fonts.display,
-                          fontSize: 22,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      ResText(
-                        l.prologue,
-                        style: const TextStyle(fontSize: 15, height: 1.4),
-                      ),
-                      const SizedBox(height: 14),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 14,
@@ -89,22 +85,20 @@ Future<void> showPrologue(BuildContext context, GameController c) {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 14),
+                      BuyButton(
+                        key: const Key('prologue-go'),
+                        price: l.prologueGo,
+                        enabled: true,
+                        celebrate: false,
+                        minWidth: 160,
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
                     ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 14, 20, 18),
-                child: BuyButton(
-                  key: const Key('prologue-go'),
-                  price: l.prologueGo,
-                  enabled: true,
-                  celebrate: false,
-                  minWidth: 160,
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

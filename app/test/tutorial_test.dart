@@ -381,7 +381,9 @@ void main() {
   });
 
   Future<GameController> pump(WidgetTester tester, GameState s) async {
-    s.tipsSeen.add('prologue'); // it has its own test
+    s.tipsSeen
+      ..add('prologue') // it has its own test
+      ..addAll(storyScenesSeen);
     final c = controller(s);
     tester.view.physicalSize = const Size(1170, 2532);
     tester.view.devicePixelRatio = 3;
@@ -523,11 +525,32 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 500));
     expect(find.byKey(const Key('prologue')), findsOneWidget);
-    expect(find.text('Cel: kup Chronosa'), findsOneWidget);
     // No picture drawn yet: the placeholder scene holds its place.
     expect(find.byKey(const Key('story-placeholder-prologue')), findsOneWidget);
+    // The scene plays one line at a time: a caption, then Grandma.
+    expect(
+      find.text('Kuchnia Babci. Stół nakryty na cztery filiżanki.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('prologue-go')), findsNothing);
+    await tester.tap(find.byKey(const Key('story-next')));
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.byKey(const Key('story-next')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Babcia'), findsOneWidget);
+    expect(find.text('Zmierz mu, dziecko.'), findsOneWidget);
+    // Skip: the whole scene to read, the goal and the button.
+    await tester.tap(find.byKey(const Key('story-skip')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.byKey(const Key('story-done')), findsOneWidget);
+    expect(find.text('Cel: zdobądź Chronosa'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('prologue-go')));
+    await tester.pump(const Duration(milliseconds: 300));
     await tester.tap(find.byKey(const Key('prologue-go')));
-    await tester.pump(const Duration(milliseconds: 500));
+    // The button's press, then the window's exit.
+    for (var i = 0; i < 10; i++) {
+      await tester.pump(const Duration(milliseconds: 200));
+    }
     expect(find.byKey(const Key('prologue')), findsNothing);
     expect(s.tipsSeen, contains('prologue'));
     expect(c.prologuePending, isFalse);

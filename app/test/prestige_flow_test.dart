@@ -22,6 +22,7 @@ void main() {
 
   GameState ready() => GameState()
     ..tutorialDone = true
+    ..tipsSeen.addAll(storyScenesSeen)
     ..playSeconds = 1000
     ..dailyKey = dateKey(DateTime.fromMillisecondsSinceEpoch(now))
     ..dailyStreak = 1
