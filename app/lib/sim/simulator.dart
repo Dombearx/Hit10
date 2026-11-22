@@ -51,7 +51,12 @@ class SimConfig {
     this.skillFutureWeight = 0,
     this.blind = false,
     this.blindSpread = 1.5,
+    this.buys = true,
   });
+
+  /// False: the bot never shops by itself, [Simulator.onStep] does
+  /// (tool/autobuyer_sim.dart models a player who looks in rarely).
+  final bool buys;
 
   /// Plays every round blind (docs/02 §10): pays the mode's multiplier,
   /// timing spread ×[blindSpread] (docs/13 assumes ×1.5).
@@ -404,7 +409,7 @@ class Simulator {
       final frenzyNow = e.frenzy;
       e.frenzy = 1;
       // Greedy: best payback first, while affordable.
-      while (true) {
+      while (cfg.buys) {
         (double, String, String, double)? best;
         final income = math.max(1e-9, totalIncome(idle));
         for (final (kind, key, cost) in _candidates()) {
