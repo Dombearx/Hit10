@@ -17,7 +17,9 @@ GameState sample() {
     ..rewindPending = true
     ..lastSeenMs = 1700000000000
     ..playSeconds = 321.5
-    ..tutorialDone = true;
+    ..tutorialDone = true
+    ..autoTarget = 'grandma'
+    ..autoUntil = 20;
   s.owned.addAll({'grandpa': 12, 'grandma': 3});
   s.skills.addAll({'magnet': 4});
   s.perks.add('headStart');
@@ -44,6 +46,8 @@ void main() {
     expect(back.state.owned['grandpa'], 12);
     expect(back.state.rewindPending, isTrue);
     expect(back.state.habits, ['magnet']);
+    expect(back.state.autoTarget, 'grandma');
+    expect(back.state.autoUntil, 20);
     expect(back.state.stats.byTier[Tier.perfect], 1);
     expect(back.settings.notation, Notation.scientific);
     expect(back.settings.haptics, isFalse);

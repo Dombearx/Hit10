@@ -463,7 +463,8 @@
         "id": "autoBuyer",
         "cost": 30,
         "params": {
-          "intervalSeconds": 5
+          "intervalSeconds": 5,
+          "remindAfterSeconds": 75
         }
       },
       {

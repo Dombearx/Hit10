@@ -873,7 +873,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get perk_autoBuyer_desc =>
-      'Przełącznik: kupuje najtańszy zegar co 5 s';
+      'Przełącznik: kupuje wskazany zegar do najbliższego progu';
 
   @override
   String get perk_daredevil => 'Śmiałek';
@@ -1064,6 +1064,32 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get modeAuto => 'Auto-kupiec';
+
+  @override
+  String autoBuying(String owned, String until) {
+    return '$owned/$until';
+  }
+
+  @override
+  String autoDone(String until) {
+    return '✓ $until · wybierz';
+  }
+
+  @override
+  String get autoPick => 'Auto-kupiec: wybierz zegar';
+
+  @override
+  String autoSheetHint(String seconds) {
+    return 'Kupuje wskazany zegar, jeden co $seconds s, póki starcza Tików, aż do jego najbliższego progu. Potem czeka na Twój wybór.';
+  }
+
+  @override
+  String autoContinue(String clock, String until) {
+    return 'Dalej: $clock → $until';
+  }
+
+  @override
+  String get autoOff => 'Wyłącz';
 
   @override
   String get adTurbo => 'Turbo ×2';
@@ -1303,7 +1329,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_modes =>
-      'Przełączniki nad sklepem zmieniają zasady rundy. Każdy pojawia się dopiero po odblokowaniu:\n• Na ślepo — od 4.00 cyfry i pasek znikają; trafienia płacą ×3 (z perkiem Śmiałek ×4)\n• Drugi zegar — dwa stopery naraz; lewa i prawa połowa ekranu to osobne zegary\n• Auto-kupiec — sam kupuje zegary';
+      'Przełączniki nad sklepem zmieniają zasady rundy. Każdy pojawia się dopiero po odblokowaniu:\n• Na ślepo — od 4.00 cyfry i pasek znikają; trafienia płacą ×3 (z perkiem Śmiałek ×4)\n• Drugi zegar — dwa stopery naraz; lewa i prawa połowa ekranu to osobne zegary\n• Auto-kupiec — kupuje wskazany zegar do najbliższego progu, potem robi się pomarańczowy i czeka na kolejny wybór';
 
   @override
   String get help_season_t => 'Wydarzenia';

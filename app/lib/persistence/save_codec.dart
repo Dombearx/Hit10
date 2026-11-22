@@ -121,6 +121,8 @@ Map<String, Object?> encodeSave(SaveData d) {
     'modeBlind': s.modeBlind,
     'secondClockOn': s.secondClockOn,
     'autoBuyerOn': s.autoBuyerOn,
+    'autoTarget': s.autoTarget,
+    'autoUntil': s.autoUntil,
     'tipsSeen': s.tipsSeen.toList(),
     'adCooldownUntil': s.adCooldownUntil,
     'turboLeft': s.turboLeft,
@@ -264,6 +266,8 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..modeBlind = j['modeBlind'] == true
     ..secondClockOn = j['secondClockOn'] == true
     ..autoBuyerOn = j['autoBuyerOn'] == true
+    ..autoTarget = j['autoTarget'] is String ? j['autoTarget'] as String : null
+    ..autoUntil = _i(j['autoUntil'])
     ..turboLeft = _d(j['turboLeft'])
     ..dailyKey = _i(j['dailyKey'])
     ..dailyStreak = _i(j['dailyStreak'])

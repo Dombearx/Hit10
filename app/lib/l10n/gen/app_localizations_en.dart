@@ -879,7 +879,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get perk_autoBuyer_desc =>
-      'A switch that buys the cheapest clock every 5 s';
+      'A switch: buys the clock you pick up to its next bonus';
 
   @override
   String get perk_daredevil => 'Daredevil';
@@ -1070,6 +1070,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modeAuto => 'Auto buyer';
+
+  @override
+  String autoBuying(String owned, String until) {
+    return '$owned/$until';
+  }
+
+  @override
+  String autoDone(String until) {
+    return '✓ $until · pick next';
+  }
+
+  @override
+  String get autoPick => 'Auto buyer: pick a clock';
+
+  @override
+  String autoSheetHint(String seconds) {
+    return 'Buys the clock you pick, one every $seconds s while the Tiki last, up to its next bonus. Then it waits for your next pick.';
+  }
+
+  @override
+  String autoContinue(String clock, String until) {
+    return 'Next: $clock → $until';
+  }
+
+  @override
+  String get autoOff => 'Switch off';
 
   @override
   String get adTurbo => 'Turbo ×2';
@@ -1310,7 +1336,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_modes =>
-      'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys clocks for you';
+      'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys the clock you pick up to its next bonus, then turns orange and waits for your next pick';
 
   @override
   String get help_season_t => 'Events';

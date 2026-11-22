@@ -478,7 +478,7 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
 | `goldRush` | Gorączka złota | 15 | Złota Sekunda pojawia się częściej (interwał ×0.85) | – |
 | `shieldRecharge` | Szybka Tarcza | 20 | ładunek Tarczy co 7 trafień zamiast co 10 (playtest 25; zastąpił „Tarczę na start”, która nic nie dawała przy Pamięci mięśniowej) | – |
 | `comboFloor` | Twarde lądowanie | 40 | pudło zrzuca mnożnik do 5 kroków (×1.25), nie do 0 | – |
-| `autoBuyer` | Automatyczny kupiec | 30 | przełącznik: automatycznie kupuje najtańszy generator co 5 s | – |
+| `autoBuyer` | Automatyczny kupiec | 30 | przełącznik: kupuje zegar wskazany przez gracza, jeden co 5 s, do jego najbliższego progu (§9.3) | – |
 | `daredevil` | Śmiałek | 10 | Na ślepo płaci ×4 zamiast ×3 (playtest 25; wcześniej odblokowywał tryb, który i tak był odblokowany przed pierwszym paradoksem) | – |
 | `unlockSchrodinger` | Pudełko z kotem | 25 | odblokowuje generator 13 | – |
 | `secondClock` | Drugi zegar | 100 | patrz 9.2 | – |
@@ -491,6 +491,33 @@ na stoperze ma zawsze być prawdziwą sekundą (zob. 1.1).
   pół rundy później.
 - **R-DRUGI-2:** Każda połowa oceniana jest osobno, według własnego czasu.
   Combo jest wspólne. Zimna krew i Start później działają na oba zegary.
+
+### 9.3 Automatyczny kupiec
+
+- **R-AUTO-1:** Z perkiem `autoBuyer` w pasku trybów jest przycisk
+  auto-kupca. Gracz wskazuje w arkuszu jeden zegar spośród tych, które
+  pokazuje sklep. Kupiec kupuje go po jednej sztuce co `intervalSeconds`
+  (5 s), póki starcza Tików, aż do najbliższego progu (R-ULEP-1); gdy
+  zegar ma już wszystkie progi — 10 sztuk więcej. Potem staje i czeka.
+- **R-AUTO-2:** Gra niczego nie podpowiada: wybór zegara należy do gracza.
+  Symulacja (`tool/autobuyer_sim.dart`): dawny kupiec „najtańszy zegar”
+  dawał mniej niż brak perka (wydawał Tiki na najgorsze zegary), a kupiec
+  „najbardziej opłacalny” grał za gracza (68–94% wyniku bez zaglądania do
+  sklepu). Kupiec bez zatrzymania na progu kupował dalej zegar, który już
+  się nie opłacał.
+- **R-AUTO-3 (przycisk):** wyłączony — „Auto-kupiec”; kupuje — zielony,
+  ikona zegara i postęp `34/40`; czeka — pomarańczowy, `✓ 40 · wybierz`,
+  z czerwoną kropką, aż gracz wybierze. Przy samym zatrzymaniu nie ma
+  osobnego komunikatu ani dźwięku: zatrzymania zdarzają się co 2–5 min.
+- **R-AUTO-4 (przypomnienie):** jeśli kupiec czeka `remindAfterSeconds`
+  (75 s), przycisk raz pulsuje (nie przy „Ogranicz ruch”), potem już nic
+  do następnego zatrzymania. Symulacja: reakcja w ciągu ~30 s daje
+  przy zaglądaniu co 2 min +60% zarobku, reakcja po 2 min — nic.
+- **R-AUTO-5:** Dotknięcie przycisku otwiera arkusz: gdy kupiec czeka,
+  pierwszy jest przycisk „Dalej: <zegar> → <następny próg>”; niżej lista
+  zegarów z `posiadane → cel` (wybrany podświetlony) i „Wyłącz”. W sklepie
+  pasek progu wybranego zegara ma ikonę wózka. Paradoks i nowa pętla
+  kasują wybór.
 
 ## 10. Dochód offline
 

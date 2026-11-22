@@ -701,7 +701,7 @@
   "perk_comboFloor": "Soft landing",
   "perk_comboFloor_desc": "A miss drops the multiplier to ×1.25, not ×1",
   "perk_autoBuyer": "Auto buyer",
-  "perk_autoBuyer_desc": "A switch that buys the cheapest clock every 5 s",
+  "perk_autoBuyer_desc": "A switch: buys the clock you pick up to its next bonus",
   "perk_daredevil": "Daredevil",
   "perk_daredevil_desc": "Blind mode pays ×4 instead of ×3",
   "perk_unlockSchrodinger": "The box",
@@ -846,6 +846,46 @@
   "modeNextRound": "from next round",
   "modeSecond": "Second clock",
   "modeAuto": "Auto buyer",
+  "autoBuying": "{owned}/{until}",
+  "@autoBuying": {
+    "placeholders": {
+      "owned": {
+        "type": "String"
+      },
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "autoDone": "✓ {until} · pick next",
+  "@autoDone": {
+    "placeholders": {
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "autoPick": "Auto buyer: pick a clock",
+  "autoSheetHint": "Buys the clock you pick, one every {seconds} s while the Tiki last, up to its next bonus. Then it waits for your next pick.",
+  "@autoSheetHint": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "autoContinue": "Next: {clock} → {until}",
+  "@autoContinue": {
+    "placeholders": {
+      "clock": {
+        "type": "String"
+      },
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "autoOff": "Switch off",
   "adTurbo": "Turbo ×2",
   "adTurboLeft": "×2 · {time}",
   "@adTurboLeft": {
@@ -1071,7 +1111,7 @@
   "help_golden_t": "Golden Second",
   "help_golden": "About every 10 minutes a golden clock flies across the screen. Tapping it turns the next round golden.\nA hit in a golden round gives a random reward:\n• Frenzy (45%) — all income ×7 for 77 s\n• Lucky (45%) — Ticks worth 10 minutes of your clocks, right away\n• Hot hand (10%) — for 60 s every hit counts as PERFECT and pays ×10\nThe reward's strength depends on the grade: PERFECT 100%, GREAT 60%, GOOD 30%, a miss nothing.",
   "help_modes_t": "Toggles",
-  "help_modes": "Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys clocks for you",
+  "help_modes": "Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys the clock you pick up to its next bonus, then turns orange and waits for your next pick",
   "help_season_t": "Events",
   "help_season": "On holidays the golden clock changes its look. The badge at the top counts two goals: holiday clocks caught (e.g. 0/5) and hits (e.g. 0/50). Both together earn a reward, and the holiday theme stays unlocked.",
   "help_prestige_t": "Time paradox",

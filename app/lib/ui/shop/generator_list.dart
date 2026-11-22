@@ -327,6 +327,16 @@ class _MilestoneBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 6),
+          // The auto buyer is filling this bar (docs/02 §9.3).
+          if (c.state.autoBuyerOn && c.state.autoTarget == id) ...[
+            Image.asset(
+              EmojiArt.path('shopping_cart'),
+              key: Key('auto-target-$id'),
+              width: 14,
+              height: 14,
+            ),
+            const SizedBox(width: 3),
+          ],
           // Shrinks rather than overflows on a narrow card.
           Flexible(
             child: FittedBox(

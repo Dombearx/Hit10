@@ -145,6 +145,13 @@ class GameState {
   bool secondClockOn = false;
   bool autoBuyerOn = false;
 
+  /// The clock the auto buyer buys, chosen by the player; null until one
+  /// is (docs/02 §9.3).
+  String? autoTarget;
+
+  /// It buys [autoTarget] up to this many owned, then waits.
+  int autoUntil = 0;
+
   /// One-time tips already shown (R-TUT-2).
   final Set<String> tipsSeen = {};
 
