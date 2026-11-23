@@ -164,105 +164,92 @@ void main() {
       ..owned['grandpa'] = 10;
     final c = controller(s);
     expect(c.engine.canPrestige(), isTrue);
-    expect(c.nextGoal?.kind, isNot(GoalKind.prestige));
+    expect(c.nextGoal!.kind, GoalKind.newClock); // not "turn back time"
   });
 
-  test('all clocks within reach: up to the Time Machine (R-TUT-7b)', () {
-    final s = GameState()
-      ..tutorialDone = true
-      ..owned['grandpa'] = 10;
-    final c = controller(s);
-    expect(c.allClocksBought, isFalse);
-    // The first time the cat and Chronos need perks.
-    for (final gen in balance.generators) {
-      if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
-    }
-    expect(c.econ.generatorUnlocked('schrodinger'), isFalse);
-    expect(c.econ.owned('timeMachine'), 1);
-    expect(c.allClocksBought, isTrue);
-  });
-
-  test('a doubling paradox waits for the clocks (R-TUT-7b)', () {
+  test('the goal bar never points at a paradox (R-TUT-7b)', () {
     final s = GameState()
       ..tutorialDone = true
       ..prestiges = 1
       ..chronons = 5
-      ..earnedTotal = 1e8 * 40 * 40 * 40
+      ..earnedTotal =
+          1e8 *
+          40 *
+          40 *
+          40 // a paradox would double them
       ..owned['grandpa'] = 10;
     final c = controller(s);
-    var g = c.nextGoal!;
-    expect(g.kind, GoalKind.newClock);
+    expect(c.nextGoal!.kind, GoalKind.newClock);
     for (final gen in balance.generators) {
       if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
     }
-    g = c.nextGoal!;
-    expect(g.kind, GoalKind.prestige);
-    expect(g.perk, isNull);
+    expect(c.nextGoal!.kind, GoalKind.unlockClock);
   });
 
-  test('after the first paradox the goal bar stays (R-TUT-7)', () {
+  test('the goal bar leads to Chronos, never to another perk (R-TUT-7a)', () {
     final s = GameState()
       ..tutorialDone = true
       ..prestiges = 1
       ..chronons = 20
       ..earnedTotal =
-          8e11 // exactly the 20 Chronons owned
+          8e11 // exactly the 20 Chronons owned: a paradox adds none
       ..owned['grandpa'] = 10;
     final c = controller(s);
     // The next clock not bought in this run.
     var g = c.nextGoal!;
     expect(g.kind, GoalKind.newClock);
     expect(g.generator, 'grandma');
-    // Every clock within reach bought: the cheapest perk, by Shards.
+    // Every clock within reach bought, up to the Time Machine: the
+    // Shards for the cat's key, cheaper perks or not.
     for (final gen in balance.generators) {
       if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
     }
+    expect(c.econ.owned('timeMachine'), 1);
     s.shards = 2;
     g = c.nextGoal!;
-    expect(g.kind, GoalKind.perk);
-    expect(g.perk, 'headStart');
+    expect(g.kind, GoalKind.unlockClock);
+    expect(g.generator, 'schrodinger');
+    expect(g.perk, 'unlockSchrodinger');
     expect(g.have, 2);
-    expect(g.need, 5);
-    // A paradox would pay for it: that is the goal.
-    s.earnedTotal = 1e8 * 23 * 23 * 23; // +3 Chronons and Shards
+    expect(g.need, 25);
+    // The Shards a paradox would add count too.
+    s.earnedTotal = 1e8 * 23 * 23 * 23; // +3
+    expect(c.nextGoal!.have, 5);
+    // The key bought: the cat is a new clock.
+    s.perks.add('unlockSchrodinger');
     g = c.nextGoal!;
-    expect(g.kind, GoalKind.prestige);
-    expect(g.perk, 'headStart');
-    // Enough Shards already: buy it.
-    s.shards = 5;
+    expect(g.kind, GoalKind.newClock);
+    expect(g.generator, 'schrodinger');
+    // The cat bought: the Shards for the Altar.
+    s.owned['schrodinger'] = 1;
     g = c.nextGoal!;
-    expect(g.kind, GoalKind.perk);
-    expect(g.have, greaterThanOrEqualTo(g.need));
-    // A paradox that doubles the Chronons comes first.
-    s.earnedTotal = 1e8 * 40 * 40 * 40;
+    expect(g.kind, GoalKind.unlockClock);
+    expect(g.generator, 'chronos');
+    expect(g.perk, 'unlockChronos');
+    expect(g.need, 500);
+    // The Altar bought: Chronos.
+    s.perks.add('unlockChronos');
     g = c.nextGoal!;
-    expect(g.kind, GoalKind.prestige);
-    expect(g.perk, isNull);
+    expect(g.kind, GoalKind.newClock);
+    expect(g.generator, 'chronos');
+    // Chronos bought: only a new loop.
+    s.owned['chronos'] = 1;
+    s.loopGoal = true;
+    expect(c.nextGoal!.kind, GoalKind.newLoop);
   });
 
-  test('everything unlocked: the clock bonus closest to done', () {
+  test('the first run also ends at the cat\'s key', () {
     final s = GameState()
       ..tutorialDone = true
-      ..prestiges = 3
-      ..chronons = 5000
-      ..earnedTotal = 1e8 * 5000.0 * 5000 * 5000;
-    for (final p in balance.prestige.perks) {
-      s.perks.add(p.id);
-    }
-    for (final gen in balance.generators) {
-      s.owned[gen.id] = 1;
-    }
-    s.owned['cuckoo'] = 9; // 9/10
+      ..owned['grandpa'] = 10;
     final c = controller(s);
-    final g = c.nextGoal!;
-    expect(g.kind, GoalKind.bonus);
-    expect(g.generator, 'cuckoo');
-    expect(g.need, 10);
-    // Every bonus reached: nothing to show.
+    expect(c.lockedClock, isNull); // clocks to buy first
     for (final gen in balance.generators) {
-      s.owned[gen.id] = 200;
+      if (c.econ.generatorUnlocked(gen.id)) s.owned[gen.id] = 1;
     }
-    expect(c.nextGoal, isNull);
+    s.owned['grandpa'] = 10; // past the first bonus
+    expect(c.lockedClock?.id, 'schrodinger');
+    expect(c.nextGoal!.kind, GoalKind.unlockClock);
   });
 
   test('skills and the bonus bar get a tip wherever the player looks', () {

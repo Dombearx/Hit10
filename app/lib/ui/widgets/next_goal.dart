@@ -32,23 +32,13 @@ class NextGoalBar extends StatelessWidget {
         f.round(c.econ.milestoneMultiplier(id)),
       ),
       GoalKind.newClock => l.goalNewClock(generatorName(l, id!)),
-      GoalKind.loopBonus => l.goalLoopBonus(
-        generatorName(l, id!),
+      GoalKind.unlockClock => l.goalUnlockClock(
+        c.balance.generators.indexWhere((g) => g.id == id) + 1,
         '${goal.have.round()}',
         '${goal.need.round()}',
       ),
-      GoalKind.prestige =>
-        goal.perk != null
-            ? l.goalPrestigePerk(perkName(l, goal.perk!))
-            : l.goalPrestigeDouble,
-      GoalKind.perk =>
-        goal.have >= goal.need
-            ? l.goalPerkBuy(perkName(l, goal.perk!))
-            : l.goalPerk(
-                perkName(l, goal.perk!),
-                '${goal.have.round()}',
-                '${goal.need.round()}',
-              ),
+      GoalKind.newLoop =>
+        c.econ.storyDone ? l.goalNewLoop : l.goalNewLoopChapter,
     };
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
@@ -70,7 +60,7 @@ class NextGoalBar extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              if (goal.kind != GoalKind.prestige)
+              if (goal.kind != GoalKind.newLoop)
                 Positioned.fill(
                   child: FractionallySizedBox(
                     alignment: Alignment.centerLeft,

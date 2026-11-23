@@ -440,6 +440,12 @@ abstract class AppLocalizations {
   /// **'Buy the previous clock to reveal'**
   String get lockedHint;
 
+  /// No description provided for @lockedKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked — the key is among the paradox perks'**
+  String get lockedKeyHint;
+
   /// No description provided for @upgradesTitle.
   ///
   /// In en, this message translates to:
@@ -2042,29 +2048,23 @@ abstract class AppLocalizations {
   /// **'Goal: a new clock — {name}'**
   String goalNewClock(String name);
 
-  /// No description provided for @goalPrestigeDouble.
+  /// No description provided for @goalUnlockClock.
   ///
   /// In en, this message translates to:
-  /// **'Goal: turn back time — it doubles your Chronons'**
-  String get goalPrestigeDouble;
+  /// **'Goal: unlock clock #{n} — {have}/{need} shards'**
+  String goalUnlockClock(int n, String have, String need);
 
-  /// No description provided for @goalPrestigePerk.
+  /// No description provided for @goalNewLoopChapter.
   ///
   /// In en, this message translates to:
-  /// **'Goal: turn back time — enough for {name}'**
-  String goalPrestigePerk(String name);
+  /// **'Goal: a new loop — the next chapter'**
+  String get goalNewLoopChapter;
 
-  /// No description provided for @goalPerk.
+  /// No description provided for @goalNewLoop.
   ///
   /// In en, this message translates to:
-  /// **'Goal: perk {name} — {have}/{need} shards'**
-  String goalPerk(String name, String have, String need);
-
-  /// No description provided for @goalPerkBuy.
-  ///
-  /// In en, this message translates to:
-  /// **'Goal: buy the perk — {name}'**
-  String goalPerkBuy(String name);
+  /// **'Goal: a new loop'**
+  String get goalNewLoop;
 
   /// No description provided for @statMultTitle.
   ///
@@ -5191,12 +5191,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In this loop: {time} of play, {count} paradoxes'**
   String chronicleLoopTime(String time, int count);
-
-  /// No description provided for @goalLoopBonus.
-  ///
-  /// In en, this message translates to:
-  /// **'Goal: {name} {have}/{need} → +1 Mainspring'**
-  String goalLoopBonus(String name, String have, String need);
 
   /// No description provided for @adBlockedRule.
   ///

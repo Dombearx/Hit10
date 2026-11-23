@@ -30,10 +30,14 @@ class GeneratorList extends StatefulWidget {
     super.key,
     required this.controller,
     required this.amount,
+    this.onOpenPerks,
   });
 
   final GameController controller;
   final BuyAmount amount;
+
+  /// Opens the paradox perks, where the key to a locked clock is.
+  final VoidCallback? onOpenPerks;
 
   @override
   State<GeneratorList> createState() => _GeneratorListState();
@@ -88,7 +92,15 @@ class _GeneratorListState extends State<GeneratorList> {
               offerBag: id == bagId,
             ),
           ),
-        if (silhouette != null) _LockedTile(controller: c, id: silhouette),
+        if (silhouette != null)
+          _LockedTile(controller: c, id: silhouette)
+        else if (c.lockedClock case final locked?)
+          // Behind a perk: locked, and where its key is (R-PETLA-1).
+          GestureDetector(
+            key: Key('locked-${locked.id}'),
+            onTap: widget.onOpenPerks,
+            child: _LockedTile(controller: c, id: locked.id, keyed: true),
+          ),
       ],
     );
   }
@@ -360,9 +372,16 @@ class _MilestoneBar extends StatelessWidget {
 }
 
 class _LockedTile extends StatelessWidget {
-  const _LockedTile({required this.controller, required this.id});
+  const _LockedTile({
+    required this.controller,
+    required this.id,
+    this.keyed = false,
+  });
   final GameController controller;
   final String id;
+
+  /// Behind a perk rather than the previous clock.
+  final bool keyed;
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +405,7 @@ class _LockedTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    l.lockedHint,
+                    keyed ? l.lockedKeyHint : l.lockedHint,
                     style: TextStyle(
                       fontSize: 12.5,
                       color: Palette.outline.withValues(alpha: 0.7),

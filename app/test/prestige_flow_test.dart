@@ -195,6 +195,57 @@ void main() {
     expect(find.text('???'), findsNothing);
   });
 
+  testWidgets('a clock behind a perk shows locked, with where its key is', (
+    tester,
+  ) async {
+    final s = ready()..prestiges = 1;
+    for (final g in balance.generators) {
+      if (g.requiresPerk == null) s.owned[g.id] = 1;
+    }
+    final c = controller(s);
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          balanceProvider.overrideWithValue(balance),
+          gameControllerProvider.overrideWithValue(c),
+          rewardedAdsProvider.overrideWithValue(
+            FakeRewardedAds(delay: Duration.zero),
+          ),
+        ],
+        child: const Hit5App(locale: Locale('pl')),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+    // The goal names the clock's number, not the perk.
+    expect(find.textContaining('Cel: odblokuj 13. zegar'), findsOneWidget);
+    expect(find.textContaining('Pudełko'), findsNothing);
+    // The shop ends with the cat, locked; Chronos stays out of sight.
+    final locked = find.byKey(const Key('locked-schrodinger'));
+    await tester.scrollUntilVisible(
+      locked,
+      300,
+      scrollable: find.byType(Scrollable).last,
+    );
+    expect(
+      find.text('Zamknięty — klucz znajdziesz wśród perków paradoksu'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('locked-chronos')), findsNothing);
+    // Tapping it opens the perks.
+    await tester.tap(locked);
+    await tester.pumpAndSettle();
+    final box = find.byKey(const Key('perk-unlockSchrodinger'));
+    await tester.scrollUntilVisible(
+      box,
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    expect(box, findsOneWidget);
+  });
+
   test('an app closed while choosing perks starts the new run on load', () {
     final s = ready()
       ..chronons = 10

@@ -97,11 +97,9 @@ screen('cel', 'Następny cel', () => {
   return frame('Pasek „Cel” pod licznikiem – wszystkie rodzaje', `<div class="ph-in">${topBar()}${balance()}
     ${goal('goalBonus', { name: genName('grandma'), have: 40, need: 50, mult: 2 })}
     ${goal('goalNewClock', { name: genName('cuckoo') })}
-    ${goal('goalLoopBonus', { name: genName('chronos'), have: 1, need: 10 })}
-    ${goal('goalPrestigeDouble')}
-    ${goal('goalPrestigePerk', { name: P('perk_headStart') })}
-    ${goal('goalPerk', { name: P('perk_goldRush'), have: 3, need: 5 })}
-    ${goal('goalPerkBuy', { name: P('perk_goldRush') })}</div>`);
+    ${goal('goalUnlockClock', { n: 13, have: 12, need: 25 })}
+    ${goal('goalNewLoopChapter')}
+    ${goal('goalNewLoop')}</div>`);
 }, 'Jeden z tych tekstów pokazuje się pod licznikiem Tików jako najbliższy cel.');
 
 screen('samouczek', 'Samouczek', () => {

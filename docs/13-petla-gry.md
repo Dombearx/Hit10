@@ -219,8 +219,10 @@ do następnej pętli.
 
 - **R-PETLA-1 (cel):** Pętla kończy się, gdy gracz kupi pierwszego
   Chronosa. To jest „przejście gry”. Pasek celu (§5.5) prowadzi do niego
-  od początku: następny zegar, perk „Pudełko z kotem”, „Ołtarz Chronosa”,
-  Chronos.
+  od początku: następny zegar, „odblokuj 13. zegar” (Okruchy na Pudełko
+  z kotem), kot, „odblokuj 14. zegar” (Ołtarz Chronosa), Chronos. Nazw
+  perków pasek nie podaje; zamknięty zegar widać w sklepie z kłódką
+  (02 R-TUT-7a, 7c).
 - **R-PETLA-2 (zakończenie):** Po zakupie Chronosa scena „Czas pokonany”:
   czas pętli, liczba paradoksów, celność, najlepsza seria. Potem przycisk
   „Nowa pętla”. Gracz może zostać w starej pętli, jak długo chce. Nic nie
@@ -232,7 +234,8 @@ do następnej pętli.
   która przechodzi dalej, i dają decyzję „wychodzę teraz czy zostaję po
   więcej”. W zwykłej pętli komplet to 1–2 dni dłużej, przy droższych
   zegarach 2–4 dni (§2.5), więc tam warto wyjść wcześniej. Pasek celu po
-  Chronosie pokazuje następny próg („Chronos 7/10 → +1 Sprężyna”).
+  Chronosie pokazuje już tylko nową pętlę (02 R-TUT-7a); o progach mówi
+  ekran zakończenia („Zostaję jeszcze”).
 - **R-PETLA-3 (reset):** Nowa pętla zeruje Tiki, zegary, umiejętności,
   Chronony, Okruchy i perki. **Zostają:** Sprężyny i mistrzostwo zegarów,
   pieczęcie, osiągnięcia, tarcze, motywy, statystyki. Ekran przed resetem
@@ -409,9 +412,9 @@ minutach gry i daje ok. 45 min paska zamiast ok. 18 min z premią
 ### 5.5 Porządki (małe, tanie)
 
 - **Pasek celu przez całą grę** (dziś R-TUT-7 znika po pierwszym
-  paradoksie). Zawsze jeden cel: następny zegar, perk, Chronos, stopień
-  mistrzostwa, na który stać gracza. To bezpośrednia odpowiedź na „nie
-  mam celu”.
+  paradoksie). Zawsze jeden cel na drodze do Chronosa: następny zegar,
+  Okruchy na odblokowanie zamkniętego zegara, po Chronosie nowa pętla
+  (02 R-TUT-7a). To bezpośrednia odpowiedź na „nie mam celu”.
 - **Ekran „Mnożniki”** w statystykach: Chronony ×21, osiągnięcia ×1.6,
   mistrzostwo zegara ×3.4, Turbo ×2. Wszystko jako mnożnik, żeby dało się
   porównać. Chronony na ekranie paradoksu też jako „×21 → ×38”.
