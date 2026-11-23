@@ -72,6 +72,8 @@ class GameEngine {
     : econ = Economy(b, s),
       rng = random ?? math.Random() {
     if (s.goldenNextAt <= s.playSeconds) _scheduleGolden();
+    // A Frenzy saved before a restart goes on where it was.
+    if (s.frenzyLeft > 0) frenzy = b.golden.effect('frenzy').multiplier;
   }
 
   final Balance b;
@@ -90,16 +92,22 @@ class GameEngine {
   bool goldenEnabled = true;
 
   /// Seconds left of the visible golden clock; 0 = none on screen.
-  double goldenVisibleLeft = 0;
+  double get goldenVisibleLeft => s.goldenVisibleLeft;
+  set goldenVisibleLeft(double v) => s.goldenVisibleLeft = v;
 
-  /// The player caught the clock: the next round is golden.
-  bool goldenArmed = false;
+  /// The player caught the clock: the next round is golden. Kept in the
+  /// save ([GameState.goldenArmed]) until the golden round is played out,
+  /// so an app update or restart does not lose it.
+  bool get goldenArmed => s.goldenArmed && !goldenRound;
 
-  /// The round in progress is golden.
+  /// The round in progress is golden (not saved: a round cut off by a
+  /// restart leaves the golden round armed for the next one).
   bool goldenRound = false;
 
-  double frenzyLeft = 0;
-  double hotHandLeft = 0;
+  double get frenzyLeft => s.frenzyLeft;
+  set frenzyLeft(double v) => s.frenzyLeft = v;
+  double get hotHandLeft => s.hotHandLeft;
+  set hotHandLeft(double v) => s.hotHandLeft = v;
 
   void _scheduleGolden() {
     final g = b.golden;
@@ -157,7 +165,7 @@ class GameEngine {
     if (b.golden.visibleFor - goldenVisibleLeft <= 1) l.goldenFast++;
     if (frenzyLeft > 0) l.goldenInFrenzy++;
     goldenVisibleLeft = 0;
-    goldenArmed = true;
+    s.goldenArmed = true;
     if (_seasonRunning) {
       s.seasonCatches++;
       _checkSeasonGoal();
@@ -218,21 +226,14 @@ class GameEngine {
   }
 
   void onRoundStart() {
-    if (goldenArmed) {
-      goldenArmed = false;
-      goldenRound = true;
-    }
+    if (goldenArmed) goldenRound = true;
   }
 
   /// A round was abandoned (pause): an armed golden round stays armed.
-  void onRoundCancelled() {
-    if (goldenRound) {
-      goldenRound = false;
-      goldenArmed = true;
-    }
-  }
+  void onRoundCancelled() => goldenRound = false;
 
   GoldenOutcome _resolveGolden(Tier tier) {
+    s.goldenArmed = false;
     _scheduleGolden();
     if (tier == Tier.miss) return const GoldenOutcome(null, 0, 0);
     s.lifetime.goldenCaught++;
@@ -690,7 +691,7 @@ class GameEngine {
     }
     s.shieldCharges = maxShieldCharges();
     goldenVisibleLeft = 0;
-    goldenArmed = false;
+    s.goldenArmed = false;
     goldenRound = false;
     frenzyLeft = 0;
     hotHandLeft = 0;
@@ -776,7 +777,7 @@ class GameEngine {
       ..addAll(rules);
     s.shieldCharges = maxShieldCharges();
     goldenVisibleLeft = 0;
-    goldenArmed = false;
+    s.goldenArmed = false;
     goldenRound = false;
     frenzyLeft = 0;
     hotHandLeft = 0;

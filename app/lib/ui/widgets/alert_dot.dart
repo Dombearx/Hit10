@@ -18,21 +18,26 @@ class AlertDot extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         KeyedSubtree(key: dotKey, child: child),
-        if (show)
-          Positioned(
-            right: -3,
-            top: -3,
-            child: Container(
-              width: 13,
-              height: 13,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE53935),
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
-              ),
-            ),
-          ),
+        if (show) const Positioned(right: -3, top: -3, child: RedDot()),
       ],
+    );
+  }
+}
+
+/// The red "something new here" dot on its own, for placing in a row.
+class RedDot extends StatelessWidget {
+  const RedDot({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 13,
+      height: 13,
+      decoration: BoxDecoration(
+        color: const Color(0xFFE53935),
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: 2),
+      ),
     );
   }
 }

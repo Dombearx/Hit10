@@ -101,5 +101,13 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     expect(find.byKey(const Key('set-update')), findsOneWidget);
     expect(find.text('Zainstaluj nową wersję'), findsOneWidget);
+    // The dot from the settings icon marks the button it is about.
+    final buttonDot = tester.widget<AlertDot>(
+      find.ancestor(
+        of: find.byKey(const Key('set-update')),
+        matching: find.byType(AlertDot),
+      ),
+    );
+    expect(buttonDot.show, isTrue);
   });
 }

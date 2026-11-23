@@ -303,6 +303,11 @@ Generator A dostaje +1% za każdą sztukę B, a B dostaje +0.1% za każdą sztuk
 - **R-ZLOTA-4:** Aktywny efekt ma licznik z czasem do końca, widoczny przy
   zegarze. Efekty różnego typu mogą działać naraz. Ten sam typ przedłuża czas.
 - **R-ZLOTA-5:** Złota Sekunda nie pojawia się offline ani w samouczku.
+- **R-ZLOTA-6:** Złapany zegarek, latający zegarek oraz czas Szału
+  i Gorącej ręki są w zapisie. Restart gry (aktualizacja, system zamknął
+  grę) ich nie zabiera: złota runda czeka na następną rundę, także gdy
+  restart przerwał ją w trakcie (playtest: po złapaniu zegarka
+  i aktualizacji złota runda przepadała).
 
 ## 7. Tryby ryzyka
 

@@ -118,6 +118,10 @@ Map<String, Object?> encodeSave(SaveData d) {
     'shieldCharges': s.shieldCharges,
     'shieldProgress': s.shieldProgress,
     'goldenNextAt': s.goldenNextAt,
+    'goldenVisibleLeft': s.goldenVisibleLeft,
+    'goldenArmed': s.goldenArmed,
+    'frenzyLeft': s.frenzyLeft,
+    'hotHandLeft': s.hotHandLeft,
     'modeBlind': s.modeBlind,
     'secondClockOn': s.secondClockOn,
     'autoBuyerOn': s.autoBuyerOn,
@@ -263,6 +267,10 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..shieldCharges = _i(j['shieldCharges'])
     ..shieldProgress = _i(j['shieldProgress'])
     ..goldenNextAt = _d(j['goldenNextAt'])
+    ..goldenVisibleLeft = _d(j['goldenVisibleLeft'])
+    ..goldenArmed = j['goldenArmed'] == true
+    ..frenzyLeft = _d(j['frenzyLeft'])
+    ..hotHandLeft = _d(j['hotHandLeft'])
     ..modeBlind = j['modeBlind'] == true
     ..secondClockOn = j['secondClockOn'] == true
     ..autoBuyerOn = j['autoBuyerOn'] == true

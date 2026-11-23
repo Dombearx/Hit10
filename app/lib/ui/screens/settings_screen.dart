@@ -17,6 +17,7 @@ import '../game_controller.dart';
 import '../providers.dart';
 import '../seasons_ui.dart';
 import '../theme.dart';
+import '../widgets/alert_dot.dart';
 import '../widgets/choice_dialog.dart';
 import '../widgets/game_snack.dart';
 import 'calibration_sheet.dart';
@@ -49,13 +50,16 @@ class _Settings extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
       children: [
         // A downloaded update the player has not installed yet: the dot on
-        // the settings icon leads here.
+        // the settings icon leads here, and the same red dot marks the
+        // section and its button (playtest: nobody knew what the dot on
+        // the settings icon was about).
         ValueListenableBuilder<bool>(
           valueListenable: appUpdateReady,
           builder: (context, ready, _) => !ready
               ? const SizedBox.shrink()
               : _Group(
                   title: l.updateReady,
+                  alert: true,
                   children: [
                     Text(
                       l.updateInstallHint,
@@ -65,10 +69,16 @@ class _Settings extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _Action(
-                      key: const Key('set-update'),
-                      label: l.updateInstall,
-                      onTap: () => unawaited(completeAppUpdate()),
+                    AlertDot(
+                      show: true,
+                      child: _Action(
+                        key: const Key('set-update'),
+                        label: l.updateInstall,
+                        // The save first: the install restarts the game.
+                        onTap: () => unawaited(
+                          c.save().then((_) => completeAppUpdate()),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -487,8 +497,11 @@ class _AdPrivacyButton extends StatelessWidget {
 }
 
 class _Group extends StatelessWidget {
-  const _Group({this.title, required this.children});
+  const _Group({this.title, this.alert = false, required this.children});
   final String? title;
+
+  /// A red dot by the title, like the one on the settings icon.
+  final bool alert;
   final List<Widget> children;
 
   @override
@@ -501,9 +514,19 @@ class _Group extends StatelessWidget {
           if (title != null)
             Padding(
               padding: const EdgeInsets.only(left: 4, bottom: 6),
-              child: Text(
-                title!,
-                style: const TextStyle(fontFamily: Fonts.display, fontSize: 18),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      title!,
+                      style: const TextStyle(
+                        fontFamily: Fonts.display,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  if (alert) ...[const SizedBox(width: 8), const RedDot()],
+                ],
               ),
             ),
           Container(

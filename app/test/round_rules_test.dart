@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/model/grading.dart';
+import 'package:hit10/model/settings.dart';
+import 'package:hit10/persistence/save_codec.dart';
 import 'package:test/test.dart';
 
 import 'helpers.dart';
@@ -232,6 +234,31 @@ void main() {
       e.onRoundCancelled();
       expect(e.goldenArmed, isTrue);
       expect(e.goldenRound, isFalse);
+    });
+
+    test('a caught clock survives a restart (app update)', () {
+      e.summonGolden();
+      e.claimGolden();
+      e.frenzyLeft = 30;
+      final back = saveFromJsonString(saveToJsonString(SaveData(s, Settings())))
+          .state;
+      final again = GameEngine(b, back, random: SeqRandom([0.99]));
+      expect(again.goldenArmed, isTrue);
+      expect(again.frenzyLeft, 30);
+      expect(again.frenzy, greaterThan(1));
+      again.onRoundStart();
+      expect(again.goldenRound, isTrue);
+      expect(again.resolveRound(perfect).golden, isNotNull);
+      expect(again.goldenArmed, isFalse);
+    });
+
+    test('restarted during the golden round: still armed', () {
+      e.summonGolden();
+      e.claimGolden();
+      e.onRoundStart();
+      final back = saveFromJsonString(saveToJsonString(SaveData(s, Settings())))
+          .state;
+      expect(GameEngine(b, back).goldenArmed, isTrue);
     });
 
     test('disabled during the tutorial', () {
