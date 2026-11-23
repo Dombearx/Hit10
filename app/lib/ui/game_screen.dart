@@ -175,7 +175,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         text: l.updateReady,
         duration: const Duration(days: 1),
         actionLabel: l.updateRestart,
-        onAction: () => unawaited(completeAppUpdate()),
+        // The save first: the install restarts the game.
+        onAction: () =>
+            unawaited(controller.save().then((_) => completeAppUpdate())),
       ),
     );
     unawaited(

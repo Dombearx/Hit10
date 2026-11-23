@@ -140,6 +140,18 @@ class GameState {
   /// Play time (s) at which the next golden second appears (R-ZLOTA-1).
   double goldenNextAt = 0;
 
+  /// Seconds left of the golden clock flying on screen; 0 = none.
+  double goldenVisibleLeft = 0;
+
+  /// A caught golden clock whose golden round has not been played out yet
+  /// (also while that round runs). Saved, so a restart (an app update, the
+  /// system killing the game) does not take the golden round away.
+  bool goldenArmed = false;
+
+  /// Seconds of play left of the Frenzy and Hot Hand effects (R-ZLOTA-4).
+  double frenzyLeft = 0;
+  double hotHandLeft = 0;
+
   // -------------------------------------------------------- toggles (M4) --
   bool modeBlind = false;
   bool secondClockOn = false;

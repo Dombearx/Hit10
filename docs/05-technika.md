@@ -22,7 +22,10 @@
   Google Play (najwyżej raz na uruchomienie), pobieranie w tle. Pobrana
   wersja czeka do instalacji: komunikat „Nowa wersja jest gotowa” z
   przyciskiem restartu (inny komunikat go nie kasuje, wraca po nim),
-  czerwona kropka na zębatce i wiersz w ustawieniach. Sprawdzenie
+  czerwona kropka na zębatce i sekcja w ustawieniach oznaczona tą samą
+  kropką (przy nagłówku i na przycisku instalacji, żeby było widać, czego
+  dotyczy kropka na zębatce). Przed instalacją z przycisku gra się
+  zapisuje. Sprawdzenie
   pobranej wersji także przy każdym powrocie do gry. Jeśli gracz nie
   kliknie, wersja instaluje się po cichu, gdy wyjdzie z gry (po
   zapisie), ale nie w trakcie reklamy, okna oceny ani otwartego okna
