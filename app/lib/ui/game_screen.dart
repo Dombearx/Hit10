@@ -83,6 +83,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         reserveBody: l.notificationReserveBody,
       ),
     );
+    _installOnExit();
   }
 
   /// The shop and the upgrade strip repaint at 4 Hz, not at every tick.
@@ -150,30 +151,69 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       }
       // A newer version on Google Play: download in the background, then
       // offer a restart (no-op on web and outside Play installs).
-      if (!qaEnabled) {
-        unawaited(checkForAppUpdate(onReady: _offerUpdateRestart));
-      }
+      if (!qaEnabled) unawaited(checkForAppUpdate());
+      _offerUpdateRestart(); // downloaded before this screen was built
     });
+    appUpdateReady.addListener(_offerUpdateRestart);
   }
 
+  /// The "new version is ready" message on screen or waiting in line.
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _updateSnack;
+
+  /// Offers the restart into the downloaded update. Queued behind any
+  /// message on screen rather than replacing it, and back in line when
+  /// another message pushes it off (playtest: the reward message after an
+  /// ad took it away until the next launch). Gone for good only when the
+  /// player swipes it away; then the dot on the settings icon stays, and
+  /// it comes back on the next return to the game.
   void _offerUpdateRestart() {
-    if (!mounted) return;
+    if (!mounted || !appUpdateReady.value || _updateSnack != null) return;
     final l = AppLocalizations.of(context);
-    showGameSnack(
-      ScaffoldMessenger.of(context),
-      key: const Key('update-ready'),
-      text: l.updateReady,
-      duration: const Duration(days: 1),
-      actionLabel: l.updateRestart,
-      onAction: () => unawaited(completeAppUpdate()),
+    final snack = _updateSnack = ScaffoldMessenger.of(context).showSnackBar(
+      gameSnack(
+        key: const Key('update-ready'),
+        text: l.updateReady,
+        duration: const Duration(days: 1),
+        actionLabel: l.updateRestart,
+        onAction: () => unawaited(completeAppUpdate()),
+      ),
+    );
+    unawaited(
+      snack.closed.then((reason) {
+        _updateSnack = null;
+        if (reason == SnackBarClosedReason.hide ||
+            reason == SnackBarClosedReason.remove) {
+          _offerUpdateRestart();
+        }
+      }),
     );
   }
+
+  /// A downloaded update the player did not install yet goes in when they
+  /// leave the game: Android installs it silently while the game is
+  /// hidden, and the next launch is the new version. Only from the bare
+  /// game screen, never in the middle of something that sends the game to
+  /// the background for a moment (an ad, Play's review card, a dialog or
+  /// sheet such as the cloud sign-in or pasting a save).
+  void _installOnExit() {
+    if (!appUpdateReady.value || controller.timeHeld || _reviewOpen) return;
+    if (ModalRoute.of(context)?.isCurrent == false) return;
+    // The save first: the install ends the process.
+    unawaited(controller.save().then((_) => completeAppUpdate()));
+  }
+
+  /// Play's review card is up (it pauses the game like leaving it).
+  bool _reviewOpen = false;
 
   void _onShow() {
     controller.sfx.mute(false);
     arena.wake();
     controller.resume();
     _maybeShowOffline();
+    // Downloaded while the game was away, or offered again after the
+    // player swiped the message off.
+    if (!qaEnabled) unawaited(checkForAppUpdate(offer: false));
+    _offerUpdateRestart();
   }
 
   /// Asked once per launch, after the tutorial: the ad network's consent
@@ -283,7 +323,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         // Never in the same break as a consent form.
         hold();
         c.reviewShown();
-        await requestReview();
+        _reviewOpen = true;
+        try {
+          await requestReview();
+        } finally {
+          _reviewOpen = false;
+        }
       }
     } finally {
       _offlineOpen = false;
@@ -390,6 +435,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   void dispose() {
+    appUpdateReady.removeListener(_offerUpdateRestart);
     unawaited(_seasonSub?.cancel());
     unawaited(_challengeSub?.cancel());
     controller.removeListener(_maybeShowOffline);
@@ -779,11 +825,18 @@ class _Header extends StatelessWidget {
                     onHelp,
                   ),
                   const SizedBox(width: 6),
-                  _icon(
-                    'gear',
-                    l.settingsTitle,
-                    const Key('open-settings'),
-                    onSettings,
+                  // A downloaded update waits in the settings (it outlives
+                  // the message about it).
+                  ValueListenableBuilder<bool>(
+                    valueListenable: appUpdateReady,
+                    builder: (context, ready, child) =>
+                        AlertDot(show: ready, child: child!),
+                    child: _icon(
+                      'gear',
+                      l.settingsTitle,
+                      const Key('open-settings'),
+                      onSettings,
+                    ),
                   ),
                   const SizedBox(width: 6),
                   KeyedSubtree(

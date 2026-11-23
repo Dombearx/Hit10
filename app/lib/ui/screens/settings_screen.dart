@@ -12,6 +12,7 @@ import '../../model/features.dart';
 import '../../model/number_format.dart';
 import '../../persistence/save_codec.dart';
 import '../cloud_dialog.dart';
+import '../app_updates.dart';
 import '../game_controller.dart';
 import '../providers.dart';
 import '../seasons_ui.dart';
@@ -47,6 +48,31 @@ class _Settings extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
       children: [
+        // A downloaded update the player has not installed yet: the dot on
+        // the settings icon leads here.
+        ValueListenableBuilder<bool>(
+          valueListenable: appUpdateReady,
+          builder: (context, ready, _) => !ready
+              ? const SizedBox.shrink()
+              : _Group(
+                  title: l.updateReady,
+                  children: [
+                    Text(
+                      l.updateInstallHint,
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        color: Palette.outline.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _Action(
+                      key: const Key('set-update'),
+                      label: l.updateInstall,
+                      onTap: () => unawaited(completeAppUpdate()),
+                    ),
+                  ],
+                ),
+        ),
         _Group(
           children: [
             _Slider(

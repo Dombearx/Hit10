@@ -1888,6 +1888,8 @@
   },
   "updateReady": "A new version is ready",
   "updateRestart": "Restart",
+  "updateInstall": "Install the new version",
+  "updateInstallHint": "The game restarts and keeps your progress. Otherwise it installs by itself when you leave the game.",
   "@springsIntro": {
     "placeholders": {
       "mult": {
