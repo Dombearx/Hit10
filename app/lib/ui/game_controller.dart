@@ -100,6 +100,10 @@ class ClockSlot {
   final RoundEngine round;
   double mode = 1;
   bool blind = false;
+
+  /// When Blind hides this round's clock (game time), drawn at the start
+  /// of every round so switching Blind on mid-round has one too.
+  double? hideAt;
   int lastTickTenth = -1;
   double lastHeartbeat = -10;
 }
@@ -579,9 +583,9 @@ class GameController extends ChangeNotifier {
       // seen yet, so this round turns blind and pays for it at once. Later
       // it waits for the next round (R-TRYB-1, playtest 28: switched on
       // mid-round it looked as if it did nothing for two or three rounds).
-      final at = balance.blind.hideDigitsAt;
       final t = now();
       for (final c in clocks) {
+        final at = c.hideAt;
         if (c.round.phase == RoundPhase.running &&
             at != null &&
             c.round.gameTime(t) < at) {
@@ -793,6 +797,7 @@ class GameController extends ChangeNotifier {
         slot
           ..mode = engine.modeMultiplier()
           ..blind = engine.blindActive
+          ..hideAt = balance.blind.hideAt(_blindRng.nextDouble())
           ..lastTickTenth = -1;
         if (engine.goldenRound) sfx.play('coins');
         _roundStarts.add((slot.index, engine.goldenRound));
@@ -910,8 +915,8 @@ class GameController extends ChangeNotifier {
 
   /// Ticking in the last second and Zimna krew's heartbeat (docs/04 §3).
   /// Returns whether the clock is inside the bullet-time zone (U-19).
-  /// Blind mode (docs/02 §7) hides the clock from [ModeConfig.hideDigitsAt]
-  /// of game time: digits, progress ring, the bullet-time heartbeat and
+  /// Blind mode (docs/02 §7) hides the clock from [ClockSlot.hideAt]
+  /// (a random moment, 3.60–4.20) of game time: digits, progress ring, the bullet-time heartbeat and
   /// vignette. Ticking is a bought help and keeps going (playtest 22).
   /// Blind is on but a running round started without it (switched on
   /// after 4.00): the mode row says it starts with the next round.
@@ -919,8 +924,10 @@ class GameController extends ChangeNotifier {
       engine.blindActive &&
       clocks.any((c) => !c.blind && c.round.phase == RoundPhase.running);
 
+  final _blindRng = math.Random();
+
   bool blindHidden(ClockSlot slot, double gameTime) {
-    final at = balance.blind.hideDigitsAt;
+    final at = slot.hideAt;
     return slot.blind &&
         slot.round.phase == RoundPhase.running &&
         at != null &&

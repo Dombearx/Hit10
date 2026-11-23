@@ -4,7 +4,8 @@ import 'package:hit10/ui/game_controller.dart';
 
 import 'helpers.dart';
 
-/// Blind mode (docs/02 §7): everything that shows the time goes at 4.00.
+/// Blind mode (docs/02 §7): everything that shows the time goes at a
+/// moment drawn each round from 3.60…4.20.
 void main() {
   test('the clock is hidden from 4.00 of game time, only when blind', () {
     final c = GameController(
@@ -13,6 +14,7 @@ void main() {
     );
     final slot = c.clocks.first;
     slot.round.tap(0); // starts the round
+    slot.hideAt = 4.0;
     expect(c.blindHidden(slot, 4.5), isFalse); // not blind
     slot.blind = true;
     expect(c.blindHidden(slot, 3.99), isFalse);
@@ -34,6 +36,7 @@ void main() {
     slot.round.tap(0);
     slot
       ..blind = true
+      ..hideAt = 4.0
       ..mode = 3;
     expect(c.blindHidden(slot, 4.5), isTrue);
     c.setMode(blind: false);
@@ -52,6 +55,7 @@ void main() {
     final c = blindReady();
     final slot = c.clocks.first;
     slot.round.tap(c.now() - 2); // 2 s into the round
+    slot.hideAt = 4.0;
     expect(c.blindPending, isFalse);
     c.setMode(blind: true);
     expect(slot.blind, isTrue);
@@ -64,10 +68,18 @@ void main() {
     final c = blindReady();
     final slot = c.clocks.first;
     slot.round.tap(c.now() - 4.5); // the digits would already be gone
+    slot.hideAt = 4.0;
     c.setMode(blind: true);
     expect(slot.blind, isFalse);
     expect(slot.mode, 1);
     expect(c.blindHidden(slot, 4.8), isFalse);
     expect(c.blindPending, isTrue);
+  });
+
+  test('the hiding moment is drawn from 3.60…4.20', () {
+    final m = loadBalance().blind;
+    expect(m.hideAt(0), closeTo(3.6, 1e-9));
+    expect(m.hideAt(0.5), closeTo(3.9, 1e-9));
+    expect(m.hideAt(1), closeTo(4.2, 1e-9));
   });
 }
