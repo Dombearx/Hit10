@@ -367,10 +367,24 @@ class ModeConfig {
   ModeConfig(Map<String, Object?> j)
     : unlockPerfects = _i(j['unlockPerfects']),
       rewardMultiplier = _d(j['rewardMultiplier']),
-      hideDigitsAt = j['hideDigitsAt'] == null ? null : _d(j['hideDigitsAt']);
+      hideDigitsAt = j['hideDigitsAt'] == null ? null : _d(j['hideDigitsAt']),
+      hideDigitsTo = j['hideDigitsTo'] == null ? null : _d(j['hideDigitsTo']);
   final int unlockPerfects;
   final double rewardMultiplier;
+
+  /// Blind hides the clock at a moment drawn each round from
+  /// [hideDigitsAt]…[hideDigitsTo] (game time); without [hideDigitsTo]
+  /// always at [hideDigitsAt].
   final double? hideDigitsAt;
+  final double? hideDigitsTo;
+
+  /// The moment this round's clock goes, for a uniform [r] in 0…1.
+  double? hideAt(double r) {
+    final from = hideDigitsAt;
+    if (from == null) return null;
+    final to = hideDigitsTo ?? from;
+    return from + (to - from) * r;
+  }
 }
 
 class OfflineConfig {

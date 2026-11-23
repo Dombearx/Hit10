@@ -1326,7 +1326,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_modes =>
-      'Przełączniki nad sklepem zmieniają zasady rundy. Każdy pojawia się dopiero po odblokowaniu:\n• Na ślepo — od 4.00 cyfry i pasek znikają; trafienia płacą ×3 (z perkiem Śmiałek ×4)\n• Drugi zegar — dwa stopery naraz; lewa i prawa połowa ekranu to osobne zegary\n• Auto-kupiec — kupuje wskazany zegar do najbliższego progu, potem robi się pomarańczowy i czeka na kolejny wybór';
+      'Przełączniki nad sklepem zmieniają zasady rundy. Każdy pojawia się dopiero po odblokowaniu:\n• Na ślepo — gdzieś między 3.60 a 4.20 (za każdym razem kiedy indziej) cyfry i pasek znikają; trafienia płacą ×3 (z perkiem Śmiałek ×4)\n• Drugi zegar — dwa stopery naraz; lewa i prawa połowa ekranu to osobne zegary\n• Auto-kupiec — kupuje wskazany zegar do najbliższego progu, potem robi się pomarańczowy i czeka na kolejny wybór';
 
   @override
   String get help_season_t => 'Wydarzenia';
@@ -2973,7 +2973,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get rule_blindfold_desc =>
-      'Na ślepo jest zawsze włączone: cyfry znikają na ostatnią sekundę. Płaci jak zwykle.';
+      'Na ślepo jest zawsze włączone: cyfry znikają około sekundy przed celem. Płaci jak zwykle.';
 
   @override
   String get rule_blindfold_quote =>

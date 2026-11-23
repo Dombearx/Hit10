@@ -2261,7 +2261,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_modes.
   ///
   /// In en, this message translates to:
-  /// **'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys the clock you pick up to its next bonus, then turns orange and waits for your next pick'**
+  /// **'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — somewhere between 3.60 and 4.20 (a different moment each round) the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys the clock you pick up to its next bonus, then turns orange and waits for your next pick'**
   String get help_modes;
 
   /// No description provided for @help_season_t.
@@ -5225,7 +5225,7 @@ abstract class AppLocalizations {
   /// No description provided for @rule_blindfold_desc.
   ///
   /// In en, this message translates to:
-  /// **'Blind mode is always on: the digits vanish for the last second. It pays as usual.'**
+  /// **'Blind mode is always on: the digits vanish about a second before the target. It pays as usual.'**
   String get rule_blindfold_desc;
 
   /// No description provided for @rule_blindfold_quote.

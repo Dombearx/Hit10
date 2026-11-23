@@ -1331,7 +1331,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_modes =>
-      'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — from 4.00 the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys the clock you pick up to its next bonus, then turns orange and waits for your next pick';
+      'Toggles above the shop change the rules of a round. Each appears only once unlocked:\n• Blind — somewhere between 3.60 and 4.20 (a different moment each round) the digits and the ring disappear; hits pay ×3 (×4 with the Daredevil perk)\n• Second clock — two stopwatches at once; the left and right half of the screen are separate clocks\n• Auto-buyer — buys the clock you pick up to its next bonus, then turns orange and waits for your next pick';
 
   @override
   String get help_season_t => 'Events';
@@ -2973,7 +2973,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rule_blindfold_desc =>
-      'Blind mode is always on: the digits vanish for the last second. It pays as usual.';
+      'Blind mode is always on: the digits vanish about a second before the target. It pays as usual.';
 
   @override
   String get rule_blindfold_quote =>

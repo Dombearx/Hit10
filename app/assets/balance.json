@@ -296,7 +296,8 @@
   "modes": {
     "blind": {
       "unlockPerfects": 100,
-      "hideDigitsAt": 4.0,
+      "hideDigitsAt": 3.6,
+      "hideDigitsTo": 4.2,
       "rewardMultiplier": 3
     }
   },
