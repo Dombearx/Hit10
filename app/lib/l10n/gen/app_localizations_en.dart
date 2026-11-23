@@ -2806,6 +2806,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateRestart => 'Restart';
 
   @override
+  String get updateInstall => 'Install the new version';
+
+  @override
+  String get updateInstallHint =>
+      'The game restarts and keeps your progress. Otherwise it installs by itself when you leave the game.';
+
+  @override
   String get help_springs_t => 'Mainsprings and clock mastery';
 
   @override

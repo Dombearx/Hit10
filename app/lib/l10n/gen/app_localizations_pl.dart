@@ -2803,6 +2803,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get updateRestart => 'Uruchom ponownie';
 
   @override
+  String get updateInstall => 'Zainstaluj nową wersję';
+
+  @override
+  String get updateInstallHint =>
+      'Gra uruchomi się ponownie, postęp zostaje. Jeśli nie klikniesz, wersja zainstaluje się sama, gdy wyjdziesz z gry.';
+
+  @override
   String get help_springs_t => 'Sprężyny i mistrzostwo zegarów';
 
   @override

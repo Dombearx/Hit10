@@ -4934,6 +4934,18 @@ abstract class AppLocalizations {
   /// **'Restart'**
   String get updateRestart;
 
+  /// No description provided for @updateInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Install the new version'**
+  String get updateInstall;
+
+  /// No description provided for @updateInstallHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The game restarts and keeps your progress. Otherwise it installs by itself when you leave the game.'**
+  String get updateInstallHint;
+
   /// No description provided for @help_springs_t.
   ///
   /// In en, this message translates to:

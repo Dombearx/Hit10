@@ -839,6 +839,8 @@
   "dialProgress": "Zarobione łącznie: {have} z {need}",
   "updateReady": "Nowa wersja jest gotowa",
   "updateRestart": "Uruchom ponownie",
+  "updateInstall": "Zainstaluj nową wersję",
+  "updateInstallHint": "Gra uruchomi się ponownie, postęp zostaje. Jeśli nie klikniesz, wersja zainstaluje się sama, gdy wyjdziesz z gry.",
   "help_springs_t": "Sprężyny i mistrzostwo zegarów",
   "help_springs": "Sprężyny działają od pierwszego cofnięcia czasu (spirala u góry).\n• Nakręcają się same: jedna na dobę, także gdy nie grasz. Mieści się najwyżej 10.\n• Trafienie równo 5.00 dokręca 15 minut z zapasu. Zapas mieści 2 godziny i odnawia się w 4 godziny.\n• Pierwsze równo 5.00 po godzinie przerwy dokręca całą godzinę.\nSprężynami płacisz za mistrzostwo zegara: stopień 1 kosztuje 1 Sprężynę, stopień 2 — 2 i tak do stopnia 5. Każdy stopień mnoży dochód tego zegara ×1,5 na zawsze — także po cofnięciu czasu i w nowej pętli. Stopnie 3 i 5 dają tytuł mistrza.",
   "help_dials_t": "Tarcze zegara",

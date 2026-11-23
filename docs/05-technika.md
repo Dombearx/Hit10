@@ -18,6 +18,15 @@
   (`SCHEDULE_EXACT_ALARM`), bo kilkuminutowe przesunięcie nie przeszkadza.
   Każdy rodzaj przypomnienia ma osobny kanał Androida (02 R-POW-1…3).
 - Ocena w sklepie: `in_app_review` (okno Google Play, 02 R-OCENA-1).
+- Aktualizacje: `in_app_update`, tryb elastyczny. Przy starcie okno
+  Google Play (najwyżej raz na uruchomienie), pobieranie w tle. Pobrana
+  wersja czeka do instalacji: komunikat „Nowa wersja jest gotowa” z
+  przyciskiem restartu (inny komunikat go nie kasuje, wraca po nim),
+  czerwona kropka na zębatce i wiersz w ustawieniach. Sprawdzenie
+  pobranej wersji także przy każdym powrocie do gry. Jeśli gracz nie
+  kliknie, wersja instaluje się po cichu, gdy wyjdzie z gry (po
+  zapisie), ale nie w trakcie reklamy, okna oceny ani otwartego okna
+  czy arkusza.
 - Zapis w chmurze: `games_services` (Play Games Saved Games, T-35).
 - Raporty o awariach: `firebase_crashlytics` (T-30).
 - Tłumaczenia: `flutter_localizations` + ARB (`gen-l10n`).
