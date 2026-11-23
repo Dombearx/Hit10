@@ -220,6 +220,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   /// form, if the law needs one here and it was never answered (T-33).
   bool _adConsentAsked = false;
 
+  /// The paradox sheet: Chronons, the rewind and the perks.
+  void _openPerks() {
+    controller.tipActed('prestige');
+    showPrestige(
+      context,
+      controller,
+    ).then((_) => _maybeShowOffline(review: true));
+  }
+
   /// Windows that wait for a quiet moment, one after another: the prologue
   /// (after a new player's first Tik), "welcome back" (offline income and
   /// the daily bonus together), a new season, the end of a loop, and the
@@ -481,16 +490,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             showAchievements(context, controller),
                         onStats: () => showStats(context, controller),
                         onPrestige: () {
-                          controller.tipActed('prestige');
                           // Only when up: opening it earlier must not
                           // use up the new-loop tip.
                           if (controller.pendingTip == 'loop') {
                             controller.tipActed('loop');
                           }
-                          showPrestige(
-                            context,
-                            controller,
-                          ).then((_) => _maybeShowOffline(review: true));
+                          _openPerks();
                         },
                         onSettings: () => showSettings(context, controller),
                         onHelp: () => showHelp(context, controller),
@@ -605,13 +610,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         builder: (context, _) => NextGoalBar(
                           controller: controller,
                           onTap: (goal) {
-                            if (goal.kind == GoalKind.prestige ||
-                                goal.kind == GoalKind.perk) {
-                              controller.tipActed('prestige');
-                              showPrestige(
-                                context,
-                                controller,
-                              ).then((_) => _maybeShowOffline(review: true));
+                            if (goal.kind == GoalKind.unlockClock) {
+                              _openPerks();
+                            } else if (goal.kind == GoalKind.newLoop) {
+                              if (controller.pendingTip == 'loop') {
+                                controller.tipActed('loop');
+                              }
+                              showChronicle(context, controller);
                             } else {
                               setState(() {
                                 _tab = 0;
@@ -660,6 +665,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                   ? GeneratorList(
                                       controller: controller,
                                       amount: _amount,
+                                      onOpenPerks: _openPerks,
                                     )
                                   : SkillList(controller: controller),
                             ),

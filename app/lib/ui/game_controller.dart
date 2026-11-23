@@ -108,7 +108,7 @@ class ClockSlot {
 /// that the stopwatch starts by itself from now on.
 enum TutorialStep { aim, earned, buyGrandpa, grandpaInfo, autoStart, done }
 
-enum GoalKind { bonus, newClock, prestige, perk, loopBonus }
+enum GoalKind { bonus, newClock, unlockClock, newLoop }
 
 /// What [GameController.nextGoal] points the player at.
 class NextGoal {
@@ -121,15 +121,14 @@ class NextGoal {
   });
   final GoalKind kind;
 
-  /// The perk it is about: the one to save Shards for ([GoalKind.perk]) or
-  /// the one a paradox now would pay for ([GoalKind.prestige]).
+  /// The perk that unlocks the clock ([GoalKind.unlockClock]).
   final String? perk;
 
-  /// The clock it is about (not for [GoalKind.prestige]).
+  /// The clock it is about (not for [GoalKind.newLoop]).
   final String? generator;
 
   /// Progress: clocks owned of the bonus' threshold, Tiks of the price, or
-  /// Shards (with those a paradox would add) of the perk's.
+  /// Shards (with those a paradox would add) of the key perk's.
   final double have;
   final double need;
 
@@ -1626,25 +1625,16 @@ class GameController extends ChangeNotifier {
 
   // --------------------------------------------------------- next goal --
 
-  /// Every clock the player can buy in this run is bought. The first time
-  /// that is everything up to the Time Machine (the cat needs a perk).
-  /// Until then the goal bar does not point at a paradox (R-TUT-7b): it
-  /// does not say when one pays best. The paradox tip still shows as soon
-  /// as a paradox is possible.
-  bool get allClocksBought => balance.generators.every(
-    (g) => !econ.generatorUnlocked(g.id) || econ.owned(g.id) > 0,
-  );
-
-  /// The one thing to aim for next, shown over the shop (R-TUT-7). Until
-  /// the first paradox: the first clock's first bonus, then each new
-  /// clock (the first paradox is the player's call: a coach tip says it
-  /// is ready, the bar does not push it). After it: a paradox that doubles the
-  /// Chronons, the next new clock, the next perk (or the paradox that
-  /// pays for it), then the clock bonus closest to done. Null when there
-  /// is nothing to show.
+  /// The one thing to aim for next, shown over the shop (R-TUT-7a): only
+  /// the road to Chronos, never another perk or the moment of a paradox.
+  /// Until the first paradox it starts with the first clock's first bonus.
+  /// Then each new clock; with every clock within reach bought, the
+  /// Shards for the perk that unlocks the next one ("unlock clock 13"; that
+  /// a paradox pays them is the player's to find out); with Chronos bought,
+  /// a new loop. Null when there is nothing to show.
   NextGoal? get nextGoal {
     if (!state.tutorialDone || replaying) return null;
-    final gain = econ.prestigeGain();
+    if (state.loopGoal) return const NextGoal(GoalKind.newLoop);
     if (state.prestiges == 0) {
       final first = balance.generators.first.id;
       final bonus = econ.nextMilestone(first);
@@ -1656,11 +1646,6 @@ class GameController extends ChangeNotifier {
           need: bonus.toDouble(),
         );
       }
-    } else if (!state.rewindPending &&
-        gain >= 5 &&
-        gain >= state.chronons &&
-        allClocksBought) {
-      return const NextGoal(GoalKind.prestige);
     }
     for (final g in balance.generators) {
       if (econ.owned(g.id) > 0 || !econ.generatorUnlocked(g.id)) continue;
@@ -1671,55 +1656,30 @@ class GameController extends ChangeNotifier {
         need: econ.generatorCost(g.id),
       );
     }
-    if (state.prestiges == 0) return null;
-    // The goal is reached: each bonus of its clock pays a Mainspring
-    // (R-PETLA-2a).
-    final goalClock = balance.loops.goal;
-    final nextBonus = econ.nextMilestone(goalClock);
-    if (state.loopGoal &&
-        nextBonus != null &&
-        econ.owned(goalClock) > 0 &&
-        econ.milestonesReached(goalClock) >= state.loopBonusPaid) {
-      return NextGoal(
-        GoalKind.loopBonus,
-        generator: goalClock,
-        have: econ.owned(goalClock).toDouble(),
-        need: nextBonus.toDouble(),
-      );
-    }
-    // The cheapest perk within reach of the tree.
-    PerkConfig? perk;
-    for (final p in balance.prestige.perks) {
-      if (!engine.perkAvailable(p.id)) continue;
-      if (perk == null || p.cost < perk.cost) perk = p;
-    }
-    if (perk != null) {
-      final have = state.shards.toDouble();
-      // Affordable only with what a paradox would add: that is the goal.
-      if (have < perk.cost && have + gain >= perk.cost) {
-        return NextGoal(GoalKind.prestige, perk: perk.id);
-      }
-      return NextGoal(
-        GoalKind.perk,
-        perk: perk.id,
-        have: have + gain,
-        need: perk.cost.toDouble(),
-      );
-    }
-    // Everything is unlocked: the clock bonus closest to done.
-    NextGoal? best;
+    final locked = lockedClock;
+    if (locked == null) return null;
+    final perk = balance.perk(locked.requiresPerk!);
+    return NextGoal(
+      GoalKind.unlockClock,
+      generator: locked.id,
+      perk: perk.id,
+      // The Shards a paradox would add count too: the bar fills in play.
+      have: state.shards + econ.prestigeGain().toDouble(),
+      need: perk.cost.toDouble(),
+    );
+  }
+
+  /// The first clock still behind a perk, once every clock before it is
+  /// bought: the shop shows it locked, with where its key is (R-PETLA-1).
+  GeneratorConfig? get lockedClock {
     for (final g in balance.generators) {
-      final next = econ.nextMilestone(g.id);
-      if (next == null) continue;
-      final goal = NextGoal(
-        GoalKind.bonus,
-        generator: g.id,
-        have: econ.owned(g.id).toDouble(),
-        need: next.toDouble(),
-      );
-      if (best == null || goal.progress > best.progress) best = goal;
+      if (econ.generatorUnlocked(g.id)) {
+        if (econ.owned(g.id) == 0) return null;
+        continue;
+      }
+      return g.requiresPerk == null ? null : g;
     }
-    return best;
+    return null;
   }
 
   /// "OK" on Grandpa's step and the last one, and on every step of a

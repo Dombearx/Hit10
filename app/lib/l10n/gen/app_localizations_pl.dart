@@ -201,6 +201,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get lockedHint => 'Kup poprzedni zegar, aby odkryć';
 
   @override
+  String get lockedKeyHint =>
+      'Zamknięty — klucz znajdziesz wśród perków paradoksu';
+
+  @override
   String get upgradesTitle => 'Ulepszenia';
 
   @override
@@ -1194,22 +1198,15 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get goalPrestigeDouble => 'Cel: cofnij czas — podwoisz Chronony';
-
-  @override
-  String goalPrestigePerk(String name) {
-    return 'Cel: cofnij czas — starczy na perk $name';
+  String goalUnlockClock(int n, String have, String need) {
+    return 'Cel: odblokuj $n. zegar — $have/$need Okruchów';
   }
 
   @override
-  String goalPerk(String name, String have, String need) {
-    return 'Cel: perk $name — $have/$need Okruchów';
-  }
+  String get goalNewLoopChapter => 'Cel: nowa pętla — kolejny rozdział';
 
   @override
-  String goalPerkBuy(String name) {
-    return 'Cel: kup perk — $name';
-  }
+  String get goalNewLoop => 'Cel: nowa pętla';
 
   @override
   String get statMultTitle => 'Mnożniki dochodu';
@@ -2956,11 +2953,6 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String chronicleLoopTime(String time, int count) {
     return 'W tej pętli: $time gry, paradoksy: $count';
-  }
-
-  @override
-  String goalLoopBonus(String name, String have, String need) {
-    return 'Cel: $name $have/$need → +1 Sprężyna';
   }
 
   @override

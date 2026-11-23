@@ -87,6 +87,7 @@
   },
   "lockedName": "???",
   "lockedHint": "Buy the previous clock to reveal",
+  "lockedKeyHint": "Locked — the key is among the paradox perks",
   "upgradesTitle": "Upgrades",
   "upgradeRequires": "Needs {count} owned",
   "@upgradeRequires": {
@@ -1013,20 +1014,11 @@
       }
     }
   },
-  "goalPrestigeDouble": "Goal: turn back time — it doubles your Chronons",
-  "goalPrestigePerk": "Goal: turn back time — enough for {name}",
-  "@goalPrestigePerk": {
+  "goalUnlockClock": "Goal: unlock clock #{n} — {have}/{need} shards",
+  "@goalUnlockClock": {
     "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goalPerk": "Goal: perk {name} — {have}/{need} shards",
-  "@goalPerk": {
-    "placeholders": {
-      "name": {
-        "type": "String"
+      "n": {
+        "type": "int"
       },
       "have": {
         "type": "String"
@@ -1036,14 +1028,8 @@
       }
     }
   },
-  "goalPerkBuy": "Goal: buy the perk — {name}",
-  "@goalPerkBuy": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
+  "goalNewLoopChapter": "Goal: a new loop — the next chapter",
+  "goalNewLoop": "Goal: a new loop",
   "statMultTitle": "Income multipliers",
   "statMultChronons": "Chronons ({count})",
   "@statMultChronons": {
@@ -2011,20 +1997,6 @@
       },
       "count": {
         "type": "int"
-      }
-    }
-  },
-  "goalLoopBonus": "Goal: {name} {have}/{need} → +1 Mainspring",
-  "@goalLoopBonus": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "have": {
-        "type": "String"
-      },
-      "need": {
-        "type": "String"
       }
     }
   },

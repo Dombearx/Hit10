@@ -674,32 +674,34 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   że Chronony na stałe przyspieszają dochód, a perki za Okruchy zostają
   po każdym resecie. Ten dymek nie znika sam — czeka na zamknięcie albo
   otwarcie ekranu paradoksu.
-- **R-TUT-7b (bez podpowiadania momentu paradoksu):** dopóki w tym
-  przejściu jest zegar, który gracz mógłby kupić, a jeszcze go nie ma,
-  pasek celu nie wskazuje paradoksu („cofnij czas”). Za pierwszym razem
-  taki cel może się więc pojawić dopiero po kupnie Maszyny czasu,
-  ostatniego zegara przed kotem Schrödingera, który wymaga perku. Gracz
-  sam decyduje, kiedy paradoks się opłaca; gra nie prowadzi go za rękę.
-  Dymek przy wirze (R-TUT-7) zostaje bez zmian: pojawia się, gdy tylko
-  paradoks jest możliwy, bo uczy, że taka opcja istnieje.
-- **R-TUT-7a (cel po pierwszym paradoksie):** pasek zostaje na całą grę
-  (13 §5.5; wcześniej znikał i gracz po paradoksie nie miał żadnego
-  wskazanego celu). Zawsze jeden cel, w tej kolejności:
-  1. paradoks, gdy co najmniej podwaja Chronony („Cel: cofnij czas —
-     podwoisz Chronony”), ale dopiero gdy gracz ma już każdy zegar
-     dostępny w tym przejściu (R-TUT-7b);
-  2. następny zegar, którego gracz w tym przejściu jeszcze nie ma;
-  3. najtańszy dostępny perk: „Cel: perk Szybki start — 2/5 Okruchów”
-     (liczą się też Okruchy, które dałby paradoks teraz); gdy starczy
-     dopiero z paradoksem — „Cel: cofnij czas — starczy na perk …”, a gdy
-     gracz już ma Okruchy — „Cel: kup perk — …”;
-  4. gdy wszystko jest odblokowane: bonus zegara najbliższy zdobycia.
+- **R-TUT-7b (bez podpowiadania momentu paradoksu):** pasek celu nigdy
+  nie wskazuje paradoksu („cofnij czas”). Gracz sam decyduje, kiedy
+  paradoks się opłaca, i sam odkrywa, że Okruchy na klucz do zegara daje
+  właśnie paradoks. Dymek przy wirze (R-TUT-7) zostaje bez zmian: pojawia
+  się, gdy tylko paradoks jest możliwy, bo uczy, że taka opcja istnieje.
+- **R-TUT-7a (cel przez całą grę):** pasek zostaje na całą grę (13 §5.5)
+  i pokazuje tylko drogę do Chronosa, celu pętli (R-PETLA-1). Nigdy nie
+  wskazuje innych perków. Zawsze jeden cel, w tej kolejności:
+  1. przed pierwszym paradoksem: pierwszy bonus Dziadka (R-TUT-7);
+  2. następny zegar, którego gracz w tym przejściu jeszcze nie ma
+     („Cel: nowy zegar — …”);
+  3. gdy gracz ma już każdy dostępny zegar, a następny wymaga perku:
+     „Cel: odblokuj 13. zegar — 12/25 Okruchów”. Pasek wypełniają Okruchy
+     (liczą się też te, które dałby paradoks teraz). Nazwy perku ani
+     zegara pasek nie podaje. Po kupnie kota tak samo: „Cel: odblokuj
+     14. zegar — …/500 Okruchów” (Ołtarz Chronosa);
+  4. po kupnie Chronosa (cel pętli osiągnięty): „Cel: nowa pętla —
+     kolejny rozdział”, a po całej historii (R-PETLA-8) „Cel: nowa pętla”.
 
-  Po osiągnięciu celu pętli (§16) przed perkami idzie następny bonus
-  Chronosa: „Cel: Chronos 7/10 → +1 Sprężyna” (R-PETLA-2a).
-
-  Cel z perkiem albo paradoksem otwiera ekran paradoksu. Gdy wszystkie
-  bonusy są zdobyte, paska nie ma.
+  Cel z kluczem do zegara otwiera ekran paradoksu, cel nowej pętli —
+  Kronikę, pozostałe — zakładkę Zegary.
+- **R-TUT-7c (zegar za perkiem):** gdy gracz ma każdy zegar przed
+  zegarem wymagającym perku, sklep pokazuje na końcu listy jego kartę
+  z kłódką: sylwetka, „???”, „Zamknięty — klucz znajdziesz wśród perków
+  paradoksu”. Dotknięcie otwiera ekran paradoksu. Zegary dalej (Chronos
+  przed kupnem kota) zostają niewidoczne. Wcześniej taki zegar w ogóle się
+  nie pokazywał i gracz nie wiedział, że perk „Pudełko z kotem” coś
+  w sklepie otwiera (playtest).
 - **R-TUT-6:** Karta zegara, którego gracz jeszcze nie ma, mówi najpierw,
   ile zarabia („+0,1/s za sztukę”), dopiero potem żart. Przycisk
   umiejętności mówi, co kupuje („Kup poz. 3”), a nie „Poziom 2/10”.

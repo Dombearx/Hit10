@@ -201,6 +201,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lockedHint => 'Buy the previous clock to reveal';
 
   @override
+  String get lockedKeyHint => 'Locked — the key is among the paradox perks';
+
+  @override
   String get upgradesTitle => 'Upgrades';
 
   @override
@@ -1200,23 +1203,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get goalPrestigeDouble =>
-      'Goal: turn back time — it doubles your Chronons';
-
-  @override
-  String goalPrestigePerk(String name) {
-    return 'Goal: turn back time — enough for $name';
+  String goalUnlockClock(int n, String have, String need) {
+    return 'Goal: unlock clock #$n — $have/$need shards';
   }
 
   @override
-  String goalPerk(String name, String have, String need) {
-    return 'Goal: perk $name — $have/$need shards';
-  }
+  String get goalNewLoopChapter => 'Goal: a new loop — the next chapter';
 
   @override
-  String goalPerkBuy(String name) {
-    return 'Goal: buy the perk — $name';
-  }
+  String get goalNewLoop => 'Goal: a new loop';
 
   @override
   String get statMultTitle => 'Income multipliers';
@@ -2958,11 +2953,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String chronicleLoopTime(String time, int count) {
     return 'In this loop: $time of play, $count paradoxes';
-  }
-
-  @override
-  String goalLoopBonus(String name, String have, String need) {
-    return 'Goal: $name $have/$need → +1 Mainspring';
   }
 
   @override

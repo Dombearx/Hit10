@@ -88,9 +88,10 @@ void main() {
     expect(find.byKey(const Key('loop-end')), findsNothing);
     expect(c.state.loopEndSeen, isTrue);
     expect(c.state.loop, 1);
-    // Staying pays: the goal bar points at Chronos' next bonus.
-    expect(c.nextGoal!.kind, GoalKind.loopBonus);
-    expect(find.byKey(const Key('next-goal-loopBonus')), findsOneWidget);
+    // The goal now is only the next loop, the next chapter.
+    expect(c.nextGoal!.kind, GoalKind.newLoop);
+    expect(find.byKey(const Key('next-goal-newLoop')), findsOneWidget);
+    expect(find.text('Cel: nowa pętla — kolejny rozdział'), findsOneWidget);
   });
 
   testWidgets('the Chronicle starts the next loop under Chronos\' rule', (
