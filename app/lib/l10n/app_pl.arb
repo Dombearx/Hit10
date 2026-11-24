@@ -671,7 +671,7 @@
   "adOfferGoldenReward": "Złoty zegarek od razu",
   "adOfferGoldenDetail": "Po reklamie przyleci złoty zegarek. Złap go, a następna runda da losową premię: Szał, Fart albo Gorącą rękę.",
   "adOfferBagTitle": "Worek Tików",
-  "adOfferBagDetail": "Od razu tyle, ile twoje zegary zarabiają w {minutes} min.",
+  "adOfferBagDetail": "Od razu tyle, ile twoje zegary zarabiają w {minutes} min (bez Szału i Turbo).",
   "adNoReward": "Reklama nie została obejrzana do końca — bez nagrody. Możesz spróbować ponownie.",
   "adDoneTurbo": "Turbo włączone! ×2 jeszcze przez {time}.",
   "adDoneGolden": "Złoty zegarek leci — złap go!",

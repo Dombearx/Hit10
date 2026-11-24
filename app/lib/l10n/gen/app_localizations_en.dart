@@ -2190,7 +2190,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String adOfferBagDetail(int minutes) {
-    return 'Right away, as much as your clocks earn in $minutes min.';
+    return 'Right away, as much as your clocks earn in $minutes min (without Frenzy and Turbo).';
   }
 
   @override

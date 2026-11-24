@@ -2187,7 +2187,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String adOfferBagDetail(int minutes) {
-    return 'Od razu tyle, ile twoje zegary zarabiają w $minutes min.';
+    return 'Od razu tyle, ile twoje zegary zarabiają w $minutes min (bez Szału i Turbo).';
   }
 
   @override
