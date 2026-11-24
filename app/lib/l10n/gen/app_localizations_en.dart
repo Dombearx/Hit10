@@ -2668,6 +2668,39 @@ class AppLocalizationsEn extends AppLocalizations {
       'Through the crack you can see yesterday\'s 5.00.';
 
   @override
+  String get dial_spring => 'Mainspring';
+
+  @override
+  String get dial_spring_desc => 'Wound up. Literally.';
+
+  @override
+  String get dial_master => 'Master\'s';
+
+  @override
+  String get dial_master_desc =>
+      'Grandpa says he regulated it himself. Grandma says it was the watchmaker.';
+
+  @override
+  String get dial_grandmaster => 'Grandmaster\'s';
+
+  @override
+  String get dial_grandmaster_desc =>
+      'Engraved on the back: \"Do not touch. Grandpa.\"';
+
+  @override
+  String get dial_hourglass => 'Hourglass';
+
+  @override
+  String get dial_hourglass_desc => 'You stayed. So did time.';
+
+  @override
+  String get dial_calendar => 'Calendar';
+
+  @override
+  String get dial_calendar_desc =>
+      'A hundred teatimes. Grandpa was late for every one.';
+
+  @override
   String springWound(String minutes) {
     return 'Mainspring +$minutes min';
   }
@@ -2779,7 +2812,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dialHint =>
-      'The first faces unlock as you earn Ticks. The last six are trophies: one for each Time Loop you finish.';
+      'You earn faces on several tracks at once. Each one shows what the next face takes.';
 
   @override
   String dialLocked(String amount) {
@@ -2819,7 +2852,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_dials =>
-      'Dial faces change only how the stopwatch looks, not your results. You unlock more by earning more Ticks; the last six are trophies for finished Time Loops. Pick one with the dial button at the top of the screen.';
+      'Dial faces change only how the stopwatch looks, not your results. You earn them on several tracks at once: Ticks in the first days, clock mastery, Time Loops, a feat for the patient, and days in the game. Pick one with the dial button at the top of the screen.';
 
   @override
   String springsRefund(int count) {
@@ -2828,6 +2861,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dialLockedSeal => 'Loop trophy';
+
+  @override
+  String get dialTrack_earned => 'Earnings';
+
+  @override
+  String get dialTrack_mastery => 'Clock mastery';
+
+  @override
+  String get dialTrack_loops => 'Time Loops';
+
+  @override
+  String get dialTrack_feat => 'Feat';
+
+  @override
+  String get dialTrack_loyalty => 'Loyalty';
+
+  @override
+  String dialLockedTiers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mastery tiers',
+      one: '1 mastery tier',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dialLockedLoop => 'Get Chronos';
+
+  @override
+  String dialLockedChronos(int count) {
+    return '$count Chronos in one loop';
+  }
+
+  @override
+  String dialLockedDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0 with the daily bonus claimed';
+  }
+
+  @override
+  String dialProgressCount(String have, String need) {
+    return '$have of $need';
+  }
 
   @override
   String loopNumber(int n) {

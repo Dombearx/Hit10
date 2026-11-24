@@ -68,5 +68,10 @@ import 'gen/app_localizations.dart';
   'cosmic' => (l.dial_cosmic, l.dial_cosmic_desc),
   'golden' => (l.dial_golden, l.dial_golden_desc),
   'rift' => (l.dial_rift, l.dial_rift_desc),
+  'spring' => (l.dial_spring, l.dial_spring_desc),
+  'master' => (l.dial_master, l.dial_master_desc),
+  'grandmaster' => (l.dial_grandmaster, l.dial_grandmaster_desc),
+  'hourglass' => (l.dial_hourglass, l.dial_hourglass_desc),
+  'calendar' => (l.dial_calendar, l.dial_calendar_desc),
   _ => null,
 };

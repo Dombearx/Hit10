@@ -1395,6 +1395,8 @@ class GameController extends ChangeNotifier {
   /// A new Time Loop (R-PETLA-3; the UI confirms first).
   bool startLoop() {
     if (!state.loopGoal) return false;
+    // A face for Chronos owned in this loop is kept before they reset.
+    _announceDials();
     pause();
     _rebuildClocks();
     if (!engine.startLoop(_wallMs())) return false;

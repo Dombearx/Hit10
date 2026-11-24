@@ -16,6 +16,11 @@ enum DialDeco {
   neon,
   stars,
   rift,
+  spiral,
+  guilloche,
+  laurel,
+  hourglass,
+  dateWindow,
 }
 
 /// The look of one stopwatch face (docs/12 §3.3). Drawn in code like the
@@ -175,6 +180,52 @@ const dialSkins = <String, DialSkin>{
     digits: Color(0xFFFFFFFF),
     dark: true,
     deco: DialDeco.rift,
+  ),
+  'spring': DialSkin(
+    face: Color(0xFFF4F1EA),
+    faceEdge: Color(0xFFD9D2C3),
+    track: Color(0xFFCFC6B4),
+    tick: Color(0xFF3D4A5C),
+    rim: Color(0xFF3D4A5C),
+    digits: Color(0xFF2B3442),
+    deco: DialDeco.spiral,
+  ),
+  'master': DialSkin(
+    face: Color(0xFFE9EEF5),
+    faceEdge: Color(0xFFB9C4D4),
+    track: Color(0xFFA9B6C8),
+    tick: Color(0xFF1F3A5F),
+    rim: Color(0xFF1F3A5F),
+    digits: Color(0xFF16304F),
+    deco: DialDeco.guilloche,
+  ),
+  'grandmaster': DialSkin(
+    face: Color(0xFF14365A),
+    faceEdge: Color(0xFF081A2E),
+    track: Color(0xFF244A72),
+    tick: Color(0xFFF2D27A),
+    rim: Color(0xFF040E1A),
+    digits: Color(0xFFFFF3D1),
+    dark: true,
+    deco: DialDeco.laurel,
+  ),
+  'hourglass': DialSkin(
+    face: Color(0xFFF6E7C8),
+    faceEdge: Color(0xFFD9B77E),
+    track: Color(0xFFCDA86C),
+    tick: Color(0xFF5B3A14),
+    rim: Color(0xFF5B3A14),
+    digits: Color(0xFF462C0E),
+    deco: DialDeco.hourglass,
+  ),
+  'calendar': DialSkin(
+    face: Color(0xFFFFFFFF),
+    faceEdge: Color(0xFFF1ECE4),
+    track: Color(0xFFE6DED2),
+    tick: Color(0xFF8A2E2E),
+    rim: Color(0xFF2B2D42),
+    digits: Color(0xFF2B2D42),
+    deco: DialDeco.dateWindow,
   ),
 };
 
@@ -344,6 +395,120 @@ void _paintDeco(
             ..strokeWidth = r * 0.02
             ..color = Palette.neonCyan.withValues(alpha: 0.8),
         );
+    case DialDeco.spiral:
+      // A mainspring, uncoiling slowly.
+      stroke
+        ..strokeWidth = r * 0.02
+        ..color = const Color(0x993D4A5C);
+      final coil = Path();
+      for (var i = 0; i <= 160; i++) {
+        final t = i / 160;
+        final a = time * 0.4 + t * math.pi * 2 * 4;
+        final p = c + Offset(math.cos(a), math.sin(a)) * r * (0.08 + 0.8 * t);
+        i == 0 ? coil.moveTo(p.dx, p.dy) : coil.lineTo(p.dx, p.dy);
+      }
+      canvas.drawPath(coil, stroke);
+    case DialDeco.guilloche:
+      // Engine-turned waves, as on a watchmaker's best dial.
+      stroke
+        ..strokeWidth = r * 0.008
+        ..color = const Color(0x401F3A5F);
+      for (var k = 0; k < 6; k++) {
+        final wave = Path();
+        final base = r * (0.3 + 0.11 * k);
+        for (var i = 0; i <= 120; i++) {
+          final a = i / 120 * math.pi * 2;
+          final rr = base + r * 0.025 * math.sin(a * 18 + k);
+          final p = c + Offset(math.cos(a), math.sin(a)) * rr;
+          i == 0 ? wave.moveTo(p.dx, p.dy) : wave.lineTo(p.dx, p.dy);
+        }
+        canvas.drawPath(wave..close(), stroke);
+      }
+    case DialDeco.laurel:
+      // A golden laurel along the lower rim, glinting.
+      final g = 0.5 + 0.5 * math.sin(time * 1.5);
+      final leaf = Paint()
+        ..color = const Color(0xFFF2D27A).withValues(alpha: 0.55 + 0.25 * g);
+      for (final side in [-1.0, 1.0]) {
+        for (var i = 0; i < 7; i++) {
+          final a = math.pi / 2 + side * (0.35 + i * 0.27);
+          final at = c + Offset(math.cos(a), math.sin(a)) * r * 0.8;
+          canvas.save();
+          canvas.translate(at.dx, at.dy);
+          canvas.rotate(a + side * 0.6);
+          canvas.drawOval(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: r * 0.13,
+              height: r * 0.05,
+            ),
+            leaf,
+          );
+          canvas.restore();
+        }
+      }
+    case DialDeco.hourglass:
+      // An hourglass below the digits, its sand running.
+      final at = c.translate(0, r * 0.6);
+      final w = r * 0.12, h = r * 0.15;
+      final glass = Path()
+        ..moveTo(at.dx - w, at.dy - h)
+        ..lineTo(at.dx + w, at.dy - h)
+        ..lineTo(at.dx - w, at.dy + h)
+        ..lineTo(at.dx + w, at.dy + h)
+        ..close();
+      final fall = (time * 0.2) % 1;
+      final sand = Paint()..color = const Color(0xAAC9922E);
+      canvas
+        ..drawPath(
+          Path()
+            ..moveTo(at.dx - w * (1 - fall), at.dy - h * (1 - fall))
+            ..lineTo(at.dx + w * (1 - fall), at.dy - h * (1 - fall))
+            ..lineTo(at.dx, at.dy)
+            ..close(),
+          sand,
+        )
+        ..drawPath(
+          Path()
+            ..moveTo(at.dx, at.dy + h * (1 - fall))
+            ..lineTo(at.dx + w * fall, at.dy + h)
+            ..lineTo(at.dx - w * fall, at.dy + h)
+            ..close(),
+          sand,
+        )
+        ..drawPath(
+          glass,
+          stroke
+            ..strokeWidth = r * 0.015
+            ..color = const Color(0xFF5B3A14),
+        );
+    case DialDeco.dateWindow:
+      // A date window below the digits, as on a calendar watch: always 5.
+      final box = Rect.fromCenter(
+        center: c.translate(0, r * 0.6),
+        width: r * 0.22,
+        height: r * 0.18,
+      );
+      canvas
+        ..drawRect(box, Paint()..color = const Color(0xFFF7F3EC))
+        ..drawRect(
+          box,
+          stroke
+            ..strokeWidth = r * 0.012
+            ..color = const Color(0xFF8A2E2E),
+        );
+      final tp = TextPainter(
+        text: TextSpan(
+          text: '5',
+          style: TextStyle(
+            fontSize: r * 0.14,
+            fontWeight: FontWeight.w800,
+            color: const Color(0xFF8A2E2E),
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, box.center - Offset(tp.width / 2, tp.height / 2));
   }
 }
 

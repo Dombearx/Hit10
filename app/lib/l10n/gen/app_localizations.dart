@@ -4748,6 +4748,66 @@ abstract class AppLocalizations {
   /// **'Through the crack you can see yesterday\'s 5.00.'**
   String get dial_rift_desc;
 
+  /// No description provided for @dial_spring.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainspring'**
+  String get dial_spring;
+
+  /// No description provided for @dial_spring_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Wound up. Literally.'**
+  String get dial_spring_desc;
+
+  /// No description provided for @dial_master.
+  ///
+  /// In en, this message translates to:
+  /// **'Master\'s'**
+  String get dial_master;
+
+  /// No description provided for @dial_master_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandpa says he regulated it himself. Grandma says it was the watchmaker.'**
+  String get dial_master_desc;
+
+  /// No description provided for @dial_grandmaster.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandmaster\'s'**
+  String get dial_grandmaster;
+
+  /// No description provided for @dial_grandmaster_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Engraved on the back: \"Do not touch. Grandpa.\"'**
+  String get dial_grandmaster_desc;
+
+  /// No description provided for @dial_hourglass.
+  ///
+  /// In en, this message translates to:
+  /// **'Hourglass'**
+  String get dial_hourglass;
+
+  /// No description provided for @dial_hourglass_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'You stayed. So did time.'**
+  String get dial_hourglass_desc;
+
+  /// No description provided for @dial_calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get dial_calendar;
+
+  /// No description provided for @dial_calendar_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A hundred teatimes. Grandpa was late for every one.'**
+  String get dial_calendar_desc;
+
   /// No description provided for @springWound.
   ///
   /// In en, this message translates to:
@@ -4901,7 +4961,7 @@ abstract class AppLocalizations {
   /// No description provided for @dialHint.
   ///
   /// In en, this message translates to:
-  /// **'The first faces unlock as you earn Ticks. The last six are trophies: one for each Time Loop you finish.'**
+  /// **'You earn faces on several tracks at once. Each one shows what the next face takes.'**
   String get dialHint;
 
   /// No description provided for @dialLocked.
@@ -4967,7 +5027,7 @@ abstract class AppLocalizations {
   /// No description provided for @help_dials.
   ///
   /// In en, this message translates to:
-  /// **'Dial faces change only how the stopwatch looks, not your results. You unlock more by earning more Ticks; the last six are trophies for finished Time Loops. Pick one with the dial button at the top of the screen.'**
+  /// **'Dial faces change only how the stopwatch looks, not your results. You earn them on several tracks at once: Ticks in the first days, clock mastery, Time Loops, a feat for the patient, and days in the game. Pick one with the dial button at the top of the screen.'**
   String get help_dials;
 
   /// No description provided for @springsRefund.
@@ -4981,6 +5041,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loop trophy'**
   String get dialLockedSeal;
+
+  /// No description provided for @dialTrack_earned.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get dialTrack_earned;
+
+  /// No description provided for @dialTrack_mastery.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock mastery'**
+  String get dialTrack_mastery;
+
+  /// No description provided for @dialTrack_loops.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Loops'**
+  String get dialTrack_loops;
+
+  /// No description provided for @dialTrack_feat.
+  ///
+  /// In en, this message translates to:
+  /// **'Feat'**
+  String get dialTrack_feat;
+
+  /// No description provided for @dialTrack_loyalty.
+  ///
+  /// In en, this message translates to:
+  /// **'Loyalty'**
+  String get dialTrack_loyalty;
+
+  /// No description provided for @dialLockedTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 mastery tier} other{{count} mastery tiers}}'**
+  String dialLockedTiers(int count);
+
+  /// No description provided for @dialLockedLoop.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Chronos'**
+  String get dialLockedLoop;
+
+  /// No description provided for @dialLockedChronos.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Chronos in one loop'**
+  String dialLockedChronos(int count);
+
+  /// No description provided for @dialLockedDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}} with the daily bonus claimed'**
+  String dialLockedDays(int count);
+
+  /// No description provided for @dialProgressCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{have} of {need}'**
+  String dialProgressCount(String have, String need);
 
   /// No description provided for @loopNumber.
   ///

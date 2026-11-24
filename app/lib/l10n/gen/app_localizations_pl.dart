@@ -2664,6 +2664,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String get dial_rift_desc => 'Przez szczelinę widać wczorajsze 5.00.';
 
   @override
+  String get dial_spring => 'Sprężynka';
+
+  @override
+  String get dial_spring_desc => 'Nakręcona. Dosłownie.';
+
+  @override
+  String get dial_master => 'Mistrzowska';
+
+  @override
+  String get dial_master_desc =>
+      'Dziadek mówi, że sam ją wyregulował. Babcia mówi, że to był zegarmistrz.';
+
+  @override
+  String get dial_grandmaster => 'Arcymistrzowska';
+
+  @override
+  String get dial_grandmaster_desc =>
+      'Na spodzie wygrawerowano: „Nie dotykać. Dziadek”.';
+
+  @override
+  String get dial_hourglass => 'Klepsydra';
+
+  @override
+  String get dial_hourglass_desc => 'Zostałeś. Czas też.';
+
+  @override
+  String get dial_calendar => 'Kalendarzowa';
+
+  @override
+  String get dial_calendar_desc =>
+      'Sto podwieczorków. Dziadek spóźnił się na wszystkie.';
+
+  @override
   String springWound(String minutes) {
     return 'Sprężyna +$minutes min';
   }
@@ -2778,7 +2811,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get dialHint =>
-      'Pierwsze tarcze odblokowujesz, zarabiając Tiki. Ostatnie sześć to trofea: po jednej za każdą ukończoną pętlę czasu.';
+      'Tarcze zdobywasz na kilku ścieżkach naraz. Na każdej widać, co da następną.';
 
   @override
   String dialLocked(String amount) {
@@ -2818,7 +2851,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get help_dials =>
-      'Tarcze zmieniają tylko wygląd stopera, nie wyniki. Kolejne odblokowujesz, zarabiając coraz więcej Tików; sześć ostatnich to trofea za ukończone pętle czasu. Wybierasz je przyciskiem z tarczą u góry ekranu.';
+      'Tarcze zmieniają tylko wygląd stopera, nie wyniki. Zdobywasz je na kilku ścieżkach naraz: zarobkami w pierwszych dniach, mistrzostwem zegarów, kolejnymi pętlami czasu, wyczynem dla wytrwałych i dniami w grze. Wybierasz je przyciskiem z tarczą u góry ekranu.';
 
   @override
   String springsRefund(int count) {
@@ -2827,6 +2860,64 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get dialLockedSeal => 'Trofeum pętli';
+
+  @override
+  String get dialTrack_earned => 'Zarobki';
+
+  @override
+  String get dialTrack_mastery => 'Mistrzostwo zegarów';
+
+  @override
+  String get dialTrack_loops => 'Pętle czasu';
+
+  @override
+  String get dialTrack_feat => 'Wyczyn';
+
+  @override
+  String get dialTrack_loyalty => 'Wierność';
+
+  @override
+  String dialLockedTiers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stopni',
+      few: '$count stopnie',
+      one: '1 stopień',
+    );
+    return '$_temp0 mistrzostwa';
+  }
+
+  @override
+  String get dialLockedLoop => 'Zdobądź Chronosa';
+
+  @override
+  String dialLockedChronos(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Chronosów',
+      few: '$count Chronosy',
+      one: '1 Chronos',
+    );
+    return '$_temp0 w jednej pętli';
+  }
+
+  @override
+  String dialLockedDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dni',
+      one: '1 dzień',
+    );
+    return '$_temp0 z odebraną dzienną premią';
+  }
+
+  @override
+  String dialProgressCount(String have, String need) {
+    return '$have z $need';
+  }
 
   @override
   String loopNumber(int n) {

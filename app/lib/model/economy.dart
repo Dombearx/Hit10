@@ -374,44 +374,58 @@ class Economy {
   bool clockLevelable(String id) =>
       springsUnlocked && s.everOwned.contains(id) && clockLevelCost(id) != null;
 
-  // ------------------------------------------------- dials (docs/12 §3.3) --
+  // ---------------------------------------------- dials (docs/17 §5) --
 
-  /// A face is unlocked by the Tiki earned in all runs, or by the seal of
-  /// its Time Loop (R-PETLA-5); one unlocked under the old thresholds
-  /// stays, also when its threshold moved up (R-TARCZA-1).
+  /// Mastery tiers bought on all clocks (R-SPR-5).
+  int get masteryTiers => s.clockLevels.values.fold(0, (a, x) => a + x);
+
+  /// Where [d]'s track stands now, in the unit of [DialConfig.need].
+  double dialHave(DialConfig d) => switch (d.track) {
+    DialTrack.earned => s.lifetime.earnedEver,
+    DialTrack.mastery => masteryTiers.toDouble(),
+    DialTrack.loops => s.loopsDone.toDouble(),
+    DialTrack.feat => owned('chronos').toDouble(),
+    DialTrack.loyalty => s.lifetime.dailyClaims.toDouble(),
+  };
+
+  /// A face is unlocked when its track reaches it (a seal: its Time Loop
+  /// finished, R-PETLA-5). One unlocked once stays, also when its rule
+  /// changed since or its count fell (Chronos in a new loop; R-TARCZA-1).
   bool dialUnlocked(DialConfig d) =>
       s.dialsSeen.contains(d.id) ||
-      (d.seal == null ? s.lifetime.earnedEver >= d.earned : sealed(d.seal!));
+      (d.seal != null ? sealed(d.seal!) : dialHave(d) >= d.need);
 
   List<DialConfig> get unlockedDials => [
     for (final d in b.dials)
       if (dialUnlocked(d)) d,
   ];
 
-  /// The next face to unlock, or null when all are.
-  DialConfig? get nextDial {
+  /// The tracks in the order of their first face in the balance file.
+  List<DialTrack> get dialTracks =>
+      <DialTrack>{for (final d in b.dials) d.track}.toList();
+
+  /// The next locked face on [track], or null when the track is done.
+  DialConfig? nextDialOn(DialTrack track) {
     for (final d in b.dials) {
-      if (!dialUnlocked(d)) return d;
+      if (d.track == track && !dialUnlocked(d)) return d;
     }
     return null;
   }
 
-  /// How far the way to [nextDial] is done, 0..1, from the last unlocked
-  /// face below it: a straight share of the lifetime Tiki between the two
-  /// thresholds, so the fill agrees with "1K / 1M" under it (a log scale
-  /// showed half full at 1K of 1M).
-  double get nextDialProgress {
-    final next = nextDial;
-    if (next == null) return 1;
-    if (next.seal != null) return 0;
+  /// How far the way to [d] is done, 0..1, from the last unlocked face
+  /// below it on its track: a straight share, so the fill agrees with
+  /// "1K / 1M" next to it (a log scale showed half full at 1K of 1M).
+  /// A seal has no count: 0.
+  double dialProgress(DialConfig d) {
+    if (dialUnlocked(d)) return 1;
+    if (d.seal != null) return 0;
     var prev = 0.0;
-    for (final d in unlockedDials) {
-      if (d.seal == null && d.earned < next.earned && d.earned > prev) {
-        prev = d.earned;
+    for (final u in unlockedDials) {
+      if (u.track == d.track && u.seal == null && u.need < d.need) {
+        prev = math.max(prev, u.need);
       }
     }
-    final have = s.lifetime.earnedEver;
-    return ((have - prev) / (next.earned - prev)).clamp(0.0, 1.0);
+    return ((dialHave(d) - prev) / (d.need - prev)).clamp(0.0, 1.0);
   }
 
   /// The face to draw: the chosen one if unlocked, else the classic.

@@ -1,3 +1,4 @@
+import 'package:hit10/balance/balance.dart';
 import 'package:hit10/engine/ad_offers.dart';
 import 'package:hit10/engine/game_engine.dart';
 import 'package:hit10/model/achievements.dart';
@@ -247,41 +248,83 @@ void main() {
     });
   });
 
-  group('dial faces (docs/12 §3.3)', () {
-    test('unlocked by Tiki earned in all runs, in order', () {
-      expect(e.econ.unlockedDials.map((d) => d.id), ['classic']);
-      s.lifetime.earnedEver = b.dials[3].earned;
-      expect(e.econ.unlockedDials, hasLength(4));
-      expect(e.econ.nextDial, b.dials[4]);
-      // The last six are the seals' trophies (R-PETLA-5), not for Tiki.
+  group('dial faces (docs/17 §5)', () {
+    DialConfig dial(String id) => b.dials.firstWhere((d) => d.id == id);
+    List<String> ids(Iterable<DialConfig> ds) => [for (final d in ds) d.id];
+
+    test('17 faces on five tracks, the classic from the start', () {
+      expect(b.dials, hasLength(17));
+      expect(e.econ.dialTracks, DialTrack.values);
+      expect(ids(e.econ.unlockedDials), ['classic']);
+      // The last mastery face is every tier of every clock (R-SPR-5).
+      expect(dial('grandmaster').tiers, b.generators.length * sp.maxLevel);
+    });
+
+    test('Tiki earned open the first four only', () {
       s.lifetime.earnedEver = 1e300;
-      expect(e.econ.nextDial!.seal, 'blindfold');
-      expect(e.econ.nextDialProgress, 0);
-      s.seals.add('blindfold');
-      expect(e.econ.nextDial!.seal, 'inflation');
-      // One unlocked under the old thresholds stays.
-      s.dialsSeen.add('rift');
-      expect(e.econ.unlockedDials.map((d) => d.id), contains('rift'));
+      expect(ids(e.econ.unlockedDials), [
+        'classic',
+        'wood',
+        'porcelain',
+        'brass',
+      ]);
+      expect(e.econ.nextDialOn(DialTrack.earned), isNull);
+    });
+
+    test('mastery tiers in total', () {
+      s.clockLevels.addAll({'grandpa': 3, 'cuckoo': 1});
+      expect(e.econ.masteryTiers, 4);
+      expect(e.econ.nextDialOn(DialTrack.mastery)!.id, 'spring');
+      expect(e.econ.dialProgress(dial('spring')), closeTo(0.8, 1e-9));
+      s.clockLevels['metronome'] = 1;
+      expect(e.econ.dialUnlocked(dial('spring')), isTrue);
+      // The next one fills from the last below it: 5 of 5..30.
+      expect(e.econ.nextDialOn(DialTrack.mastery)!.id, 'swiss');
+      expect(e.econ.dialProgress(dial('swiss')), 0);
+    });
+
+    test('the first loop, then the seals (R-PETLA-5)', () {
+      expect(e.econ.nextDialOn(DialTrack.loops)!.id, 'station');
+      s.loopsDone = 1;
+      expect(e.econ.dialUnlocked(dial('station')), isTrue);
+      expect(e.econ.nextDialOn(DialTrack.loops)!.seal, 'blindfold');
+      expect(e.econ.dialProgress(dial('quartz')), 0);
       s.seals.addAll(b.loops.rules.map((r) => r.id));
-      expect(e.econ.nextDial, isNull);
+      expect(e.econ.nextDialOn(DialTrack.loops), isNull);
+    });
+
+    test('100 Chronos in one loop stay after the loop resets them', () {
+      s.owned['chronos'] = 50;
+      expect(e.econ.dialProgress(dial('hourglass')), closeTo(0.5, 1e-9));
+      s.owned['chronos'] = 100;
+      expect(e.econ.dialUnlocked(dial('hourglass')), isTrue);
+      s.dialsSeen.add('hourglass'); // the controller marks it each second
+      s.owned['chronos'] = 0;
+      expect(e.econ.dialUnlocked(dial('hourglass')), isTrue);
+    });
+
+    test('days with the daily bonus, no streak needed', () {
+      s.lifetime.dailyClaims = 99;
+      expect(e.econ.dialUnlocked(dial('calendar')), isFalse);
+      s.lifetime.dailyClaims = 100;
+      expect(e.econ.dialUnlocked(dial('calendar')), isTrue);
     });
 
     test('the next face fills linearly between the two thresholds', () {
-      final wood = b.dials[1].earned;
-      final porcelain = b.dials[2].earned;
+      final wood = dial('wood').earned;
+      final porcelain = dial('porcelain').earned;
       s.lifetime.earnedEver = wood / 1000;
-      expect(e.econ.nextDialProgress, closeTo(0.001, 1e-9));
+      expect(e.econ.dialProgress(dial('wood')), closeTo(0.001, 1e-9));
       s.lifetime.earnedEver = wood + (porcelain - wood) / 4;
-      expect(e.econ.nextDialProgress, closeTo(0.25, 1e-9));
+      expect(e.econ.dialProgress(dial('porcelain')), closeTo(0.25, 1e-9));
     });
 
-    test('an earned face stays after its threshold moved up', () {
-      s.lifetime.earnedEver = b.dials[3].earned;
-      s.dialsSeen.add(b.dials[5].id);
-      expect(e.econ.dialUnlocked(b.dials[5]), isTrue);
-      // The next one is still the first locked face, from the last below it.
-      expect(e.econ.nextDial, b.dials[4]);
-      expect(e.econ.nextDialProgress, 0);
+    test('a face unlocked under an old rule stays (R-TARCZA-1)', () {
+      s.dialsSeen.addAll(['station', 'swiss']);
+      expect(e.econ.dialUnlocked(dial('station')), isTrue);
+      expect(e.econ.dialUnlocked(dial('swiss')), isTrue);
+      expect(e.econ.nextDialOn(DialTrack.mastery)!.id, 'spring');
+      expect(e.econ.nextDialOn(DialTrack.loops)!.seal, 'blindfold');
     });
 
     test('a locked or unknown choice draws the classic face', () {
