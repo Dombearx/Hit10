@@ -79,6 +79,8 @@ void main() {
     expect(find.byKey(const Key('loop-end')), findsOneWidget);
     expect(find.text('Czas pokonany!'), findsOneWidget);
     expect(find.text('Rozdział 1: Wezwany'), findsOneWidget);
+    // The first loop has no seal: its face comes with the chapter.
+    expect(find.text('Tarcza zegara: Dworcowa'), findsOneWidget);
     // What Chronos brings next, its seal still a mystery.
     expect(find.text('Zepsuty stoper'), findsOneWidget);
     expect(find.text('Pieczęć za jej ukończenie: ???'), findsOneWidget);
@@ -179,6 +181,28 @@ void main() {
     expect(find.text('Drożyzna'), findsOneWidget); // the next rule
     expect(c.state.seals, {'blindfold'});
     expect(c.econ.unlockedDials.map((d) => d.id), contains('quartz'));
+  });
+
+  testWidgets('the dial gallery: one next face per track (docs/17 §5)', (
+    tester,
+  ) async {
+    final s = late()..clockLevels.addAll({'grandpa': 2});
+    final c = await pumpGame(tester, s);
+    await tester.tap(find.byKey(const Key('open-dials')));
+    await tester.pumpAndSettle();
+    for (final t in ['earned', 'mastery', 'loops', 'feat', 'loyalty']) {
+      expect(find.byKey(Key('dial-track-$t')), findsOneWidget);
+    }
+    expect(find.text('5 stopni mistrzostwa'), findsOneWidget);
+    expect(find.text('2 z 5'), findsOneWidget);
+    expect(find.text('Zdobądź Chronosa'), findsOneWidget);
+    expect(find.text('100 dni z odebraną dzienną premią'), findsOneWidget);
+    // The feat stays a mystery until the first Chronos.
+    expect(find.text('100 Chronosów w jednej pętli'), findsNothing);
+    c.state.loopsDone = 1;
+    c.notifyListeners();
+    await tester.pumpAndSettle();
+    expect(find.text('100 Chronosów w jednej pętli'), findsOneWidget);
   });
 
   testWidgets('Mainsprings refunded for the old levels are said once', (

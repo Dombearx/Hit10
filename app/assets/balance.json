@@ -611,13 +611,18 @@
     {"id": "wood", "earned": 1e6},
     {"id": "porcelain", "earned": 1e10},
     {"id": "brass", "earned": 1e12},
-    {"id": "station", "earned": 1e17},
-    {"id": "swiss", "earned": 1e23},
+    {"id": "spring", "tiers": 5},
+    {"id": "swiss", "tiers": 30},
+    {"id": "master", "tiers": 50},
+    {"id": "grandmaster", "tiers": 70},
+    {"id": "station", "loops": 1},
     {"id": "quartz", "seal": "blindfold"},
     {"id": "atomic", "seal": "inflation"},
     {"id": "neon", "seal": "noGold"},
     {"id": "cosmic", "seal": "shortFuse"},
     {"id": "golden", "seal": "precision"},
-    {"id": "rift", "seal": "insomnia"}
+    {"id": "rift", "seal": "insomnia"},
+    {"id": "hourglass", "chronosInLoop": 100},
+    {"id": "calendar", "dailyClaims": 100}
   ]
 }

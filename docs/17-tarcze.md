@@ -1,7 +1,7 @@
 # 17 — Tarcze: kiedy i za co
 
-Stan: **propozycja** (24.11.2026). Nic z tego nie jest jeszcze w grze ani
-w zasadach 02. Obecne zasady: 02 R-TARCZA-1/2, R-PETLA-5. Powód: progi
+Stan: **zrobione** (24.11.2026) bez tarczy za 365 dni (decyzja: odpada),
+więc tarcz jest 17. Zasady: 02 R-TARCZA-1/2, R-PETLA-5. Powód: progi
 tarcz z 03 §4.3 policzono symulacją bez Pętli czasu. Z pętlami dwie z nich
 wypadają w innym miejscu niż zakładano. Przy nowej szacie graficznej
 (interaktywne tarcze, sceny fabuły) to dobry moment, żeby ułożyć
@@ -136,15 +136,15 @@ Wnioski:
 
 | | Teraz | Propozycja |
 |---|---|---|
-| Na start gry | 12 | **18** (sezony dają motywy, nie tarcze, §6) |
-| Gracz B po D7 / D30 / D90 / D365 | 5 / 6 / 11 / 11 | 5 / 7 / 14 / 17 |
+| Na start gry | 12 | **17** (sezony dają motywy, nie tarcze, §6) |
+| Gracz B po D7 / D30 / D90 / D365 | 5 / 6 / 11 / 11 | 5 / 7 / 14 / 16 |
 | Gracz bez pętli po D365 | 6 | 12 |
-| Ostatnia tarcza gracza B | D76 | D104, potem 100 i 365 dni gry |
+| Ostatnia tarcza gracza B | D76 | D104, potem 100 dni gry |
 
-Dlaczego ok. 18:
+Dlaczego ok. 17:
 - W pierwszym tygodniu nowa tarcza co 1–3 dni, potem co ok. 2 tygodnie
   do D90, potem raz na kwartał. Między nimi motywy sezonowe (§6). To zgodne z praktyką 1 (§2).
-- Każda tarcza w nowej szacie to rysunek i animacja. 18 to rozsądny
+- Każda tarcza w nowej szacie to rysunek i animacja. 17 to rozsądny
   koszt na premierę, a aktualizacje (np. nowe pętle, ścieżka osiągnięć)
   dokładają po kilka. Kolekcja może rosnąć po premierze, a zmniejszyć
   się nie może.
@@ -172,7 +172,6 @@ dla całej gry, bo ścieżki idą równolegle.
 | 15 | **nowa** | Mistrzostwo | wszystkie 70 stopni (wszystkie tytuły) | 180 | 104 | 65 | 163 |
 | 16 | **nowa** | Wyczyn | **100 Chronosów w jednej pętli** | – | – | – | 27 |
 | 17 | **nowa** | Wierność | 100 dni z odebraną dzienną premią | 100+ | 100+ | 100+ | 100+ |
-| 18 | **nowa** | Wierność | 365 dni z odebraną dzienną premią | 365+ | 365+ | 365+ | 365+ |
 
 (E, gracz zostający, dostaje 100 Chronosów w D34, F w D20.)
 
@@ -192,9 +191,9 @@ Uzasadnienie po kolei:
 - **16: odpowiedź na „grinduję albo idę dalej”.** Opcjonalna, widoczna
   od pierwszego Chronosa jako „Zostań w pętli: 100 Chronosów”. Bez kary
   za pominięcie: gracz może po nią wrócić w dowolnej pętli.
-- **17–18: czas rzeczywisty, nie dni z rzędu.** Liczą się dni z odebraną
+- **17: czas rzeczywisty, nie dni z rzędu.** Liczą się dni z odebraną
   premią, bez wymogu serii, więc przerwa niczego nie zabiera (jak
-  R-SPR-4). Kolekcja ma koniec po roku, a nie po D104.
+  R-SPR-4). Tarcza za 365 dni odpadła (decyzja z 24.11.2026).
 
 **Odrzucone:**
 - Zarobki powyżej 1ab: patrz §1.
@@ -222,17 +221,21 @@ Do ustalenia razem z nową grafiką:
 - Złota Sekunda w każdym motywie zachowuje sylwetkę, złoty blask
   i dźwięk.
 
-## 7. Co trzeba zmienić przy wdrożeniu
+## 7. Wdrożenie (24.11.2026)
 
-- `balance.json` `dials`: nowe typy warunków (`tiers`, `loopsDone`,
-  `chronosInLoop`, `dailyClaims`, `season`) obok `earned` i `seal`.
-- 02 R-TARCZA-1/2: ścieżki i najbliższa tarcza na każdej ścieżce.
-  Odblokowana tarcza zostaje na zawsze (już jest w R-TARCZA-1), więc
-  gracze, którzy mają Dworcową i Szwajcarkę z obecnych progów, ich
-  nie tracą.
-- 03 §4.3: stare dni tarcz zastąpić tabelą z §3.
-- Testy: każda tarcza osiągalna dla graczy A–G. Wyjątkami są trofea
-  pętli dla F i G oraz 100 Chronosów dla A–D, bo wymagają wyboru gracza.
+- `balance.json` `dials`: warunki `earned`, `tiers`, `loops`, `seal`,
+  `chronosInLoop`, `dailyClaims`, po jednym na tarczę. Sprawdzanie pliku
+  pilnuje, żeby na każdej ścieżce kolejna tarcza wymagała więcej, a
+  stopni nie było więcej niż istnieje.
+- `Economy`: `dialHave`, `dialUnlocked`, `nextDialOn(ścieżka)`,
+  `dialProgress`. Galeria (`dials_screen.dart`) ma sekcję na ścieżkę.
+- Nowe tarcze (Sprężynka, Mistrzowska, Arcymistrzowska, Klepsydra,
+  Kalendarzowa) są na razie rysowane kodem, jak reszta. Docelowy wygląd
+  przyjdzie z nową szatą graficzną.
+- Ekran końca pierwszej pętli pokazuje „Tarcza zegara: Dworcowa”.
+- Odblokowane tarcze zostają (`dialsSeen`), więc gracze z Dworcową
+  i Szwajcarką z dawnych progów ich nie tracą. Gracze, którzy mają już
+  np. 5 stopni, dostaną przy wczytaniu toast za każdą nową tarczę.
 
 Do sprawdzenia po premierze: rzeczywisty rozkład dni ukończenia pętli 1
 (D11–D37 w symulacji) oraz to, ilu graczy zostaje po 100 Chronosów.

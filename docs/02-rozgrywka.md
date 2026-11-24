@@ -922,23 +922,37 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   i żart (PL/EN, `tools/l10n/masters.py`; teksty i identyfikatory
   osiągnięć mają dawne klucze 5 i 10), osiągnięcie +1%. Przed zdobyciem
   widać tylko „Stopień 3: ???”.
-- **R-TARCZA-1:** 12 tarcz zegara (wygląd stopera, rysowany kodem:
-  kolory i dekoracja). Pierwsze sześć odblokowuje suma Tików zarobionych
-  w całej grze (`lifetime.earnedEver`): 0, 1M, 10B, 1T, 100aa, 100ac.
-  Progi tak, żeby tarcze wypadały w punktach kontrolnych retencji (D1,
-  D2, D7, ok. D21, ok. D45 dla gracza 3 × 3 min; 03 §4.3), z rosnącymi
-  odstępami. Ostatnie sześć to trofea pętli czasu (R-PETLA-5): po jednej
-  za pieczęć każdej zasady. Odblokowana tarcza zostaje na zawsze, także
-  gdy jej próg później wzrósł (dawne 100T i 10aa, a wcześniej 1ab …
-  1ad). Nowa tarcza: toast „Nowa tarcza zegara”.
-- **R-TARCZA-2:** Wybór przyciskiem z tarczą w nagłówku: odblokowane
-  tarcze z nazwą, następna zablokowana jako „?” z progiem („Zarób łącznie
-  1T”) albo „Trofeum pętli”, dalsze jako „???”. Następna wypełnia się jak
-  wskazówka zegara (od godziny 12, zgodnie z ruchem wskazówek), liniowo:
-  udział zarobków między progiem poprzedniej tarczy a jej progiem, tak
-  samo jak napis „1K / 1M” nad galerią. Pod galerią żart wybranej
-  tarczy. Złota runda zawsze wygląda po swojemu (złota tarcza), a ciemne
-  tarcze mają jasne cyfry i jaśniejsze kolory wyników.
+- **R-TARCZA-1:** 17 tarcz zegara (wygląd stopera, rysowany kodem:
+  kolory i dekoracja) na pięciu ścieżkach (docs/17 §5, symulacje 17 §3).
+  Każda ma jeden warunek w `balance.json` (`dials`):
+
+  | Ścieżka | Tarcze | Warunek |
+  |---|---|---|
+  | Zarobki | Klasyczna, Drewniak, Porcelana babci, Mosiądz | Tiki zarobione w całej grze (`lifetime.earnedEver`): 0, 1M, 10B, 1T |
+  | Mistrzostwo zegarów | Sprężynka, Szwajcarka, Mistrzowska, Arcymistrzowska | stopnie mistrzostwa wszystkich zegarów razem (R-SPR-5): 5, 30, 50, 70 (wszystkie) |
+  | Pętle czasu | Dworcowa, potem Kwarcówka … Pęknięta czasoprzestrzeń | ukończona pierwsza pętla (R-PETLA-1), potem pieczęć każdej zasady (R-PETLA-5) |
+  | Wyczyn | Klepsydra | 100 Chronosów naraz w jednej pętli (powyżej 50 nie ma już bonusów Chronosa, więc to wybór: zostać czy iść dalej) |
+  | Wierność | Kalendarzowa | 100 dni z odebraną dzienną premią, bez wymogu serii |
+
+  Zarobki liczą się tylko do 1T, bo nowa pętla zeruje Tiki zarobione
+  łącznie i dalsze progi nagradzałyby niegranie pętli (17 §1). Odblokowana
+  tarcza zostaje na zawsze, także gdy jej warunek się zmienił (dawne
+  progi za zarobki: Dworcowa 100aa, Szwajcarka 100ac) albo licznik spadł
+  (Chronosy w nowej pętli; gra zapamiętuje tarczę co sekundę i przed
+  nową pętlą). Nowa tarcza: toast „Nowa tarcza zegara”. Sezony nie dają
+  tarcz, tylko motywy (17 §6).
+- **R-TARCZA-2:** Wybór przyciskiem z tarczą w nagłówku. Galeria ma
+  sekcję na każdą ścieżkę: odblokowane tarcze z nazwą, następna
+  zablokowana z warunkiem („Zarób 1T”, „30 stopni mistrzostwa”,
+  „Zdobądź Chronosa”, „Trofeum pętli”, „100 Chronosów w jednej pętli”,
+  „100 dni z odebraną dzienną premią”) i postępem nad nią („Zarobione
+  łącznie: 1K z 1M”, „12 z 30”), dalsze jako „???”. Następna wypełnia się
+  jak wskazówka zegara (od godziny 12, zgodnie z ruchem wskazówek),
+  liniowo: udział licznika między warunkiem poprzedniej tarczy na tej
+  ścieżce a jej warunkiem. Trofea pieczęci nie mają postępu. Wyczyn jest
+  „???” do pierwszego Chronosa. Pod galerią żart wybranej tarczy. Złota
+  runda zawsze wygląda po swojemu (złota tarcza), a ciemne tarcze mają
+  jasne cyfry i jaśniejsze kolory wyników.
 
 ## 16. Pętla czasu (cel gry i gra po nim)
 
@@ -951,8 +965,8 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   (zapisy sprzed pętli).
 - **R-PETLA-2 (zakończenie):** Ekran „Czas pokonany!” pokazuje się raz,
   po oknach offline i dziennej premii: numer pętli, czas gry i liczba
-  paradoksów w niej, nowy rozdział Kroniki, zdobyta pieczęć i tarcza (od
-  drugiej pętli), zapowiedź następnej zasady z pieczęcią jako „???”.
+  paradoksów w niej, nowy rozdział Kroniki, zdobyta pieczęć i tarcza (w
+  pierwszej pętli Dworcowa, od drugiej tarcza pieczęci), zapowiedź następnej zasady z pieczęcią jako „???”.
   Dwa przyciski: „Zostaję jeszcze” i „Nowa pętla”. Nic nie wymusza
   resetu.
 - **R-PETLA-2a (bonusy Chronosa):** Każdy bonus Chronosa zdobyty w tej
@@ -982,7 +996,7 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
 - **R-PETLA-5 (co daje ukończenie):** rozdział Kroniki, pieczęć zasady
   tej pętli, tarcza zegara przypisana do tej pieczęci (R-TARCZA-1)
   i zapowiedź następnej zasady. Pierwsza pętla nie ma zasady, więc daje
-  rozdział i zapowiedź.
+  rozdział, tarczę Dworcową i zapowiedź.
 - **R-PETLA-6 (tempo):** druga pętla 50–65% czasu pierwszej, kolejne
   ok. 4–6 dni, nie mniej niż ok. 3 (03 §4.4).
 - **R-PETLA-7 (Kronika):** jeden ekran, otwierany z karty na górze ekranu

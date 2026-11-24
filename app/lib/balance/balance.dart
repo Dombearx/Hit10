@@ -597,16 +597,75 @@ class SpringsConfig {
   int costOf(int level) => level;
 }
 
-/// A stopwatch face: unlocked by Tiki earned in total (docs/12 §3.3) or,
-/// with [seal], by finishing the Time Loop of that rule (R-PETLA-5).
+/// The ways to a stopwatch face (docs/17 §5). Each track shows its own
+/// next face in the gallery (R-TARCZA-2).
+enum DialTrack {
+  /// Tiki earned in all runs (`earned`): the first days only (docs/17 §1).
+  earned,
+
+  /// Clock mastery tiers in total (`tiers`, R-SPR-5).
+  mastery,
+
+  /// The story: Time Loops finished (`loops`) and their seals (`seal`,
+  /// R-PETLA-5).
+  loops,
+
+  /// Chronos owned in one loop (`chronosInLoop`): for staying on.
+  feat,
+
+  /// Days the daily bonus was claimed (`dailyClaims`), no streak needed.
+  loyalty,
+}
+
+/// A stopwatch face and what unlocks it (docs/17 §5): one of `earned`,
+/// `tiers`, `loops`, `seal`, `chronosInLoop`, `dailyClaims`. A face with
+/// none of them (the classic) is there from the start.
 class DialConfig {
   DialConfig(Map<String, Object?> j)
     : id = j['id']! as String,
       earned = j['earned'] == null ? 0 : _d(j['earned']),
-      seal = j['seal'] as String?;
+      seal = j['seal'] as String?,
+      tiers = j['tiers'] == null ? 0 : _i(j['tiers']),
+      loops = j['loops'] == null ? 0 : _i(j['loops']),
+      chronosInLoop = j['chronosInLoop'] == null ? 0 : _i(j['chronosInLoop']),
+      dailyClaims = j['dailyClaims'] == null ? 0 : _i(j['dailyClaims']),
+      conditions = const [
+        'earned',
+        'seal',
+        'tiers',
+        'loops',
+        'chronosInLoop',
+        'dailyClaims',
+      ].where(j.containsKey).length;
   final String id;
   final double earned;
   final String? seal;
+  final int tiers;
+  final int loops;
+  final int chronosInLoop;
+  final int dailyClaims;
+
+  /// How many unlock keys the entry has (the balance check wants one).
+  final int conditions;
+
+  DialTrack get track => seal != null || loops > 0
+      ? DialTrack.loops
+      : tiers > 0
+      ? DialTrack.mastery
+      : chronosInLoop > 0
+      ? DialTrack.feat
+      : dailyClaims > 0
+      ? DialTrack.loyalty
+      : DialTrack.earned;
+
+  /// The count the face needs on its track (0 for a seal and the classic).
+  double get need => switch (track) {
+    DialTrack.earned => earned,
+    DialTrack.mastery => tiers.toDouble(),
+    DialTrack.loops => loops.toDouble(),
+    DialTrack.feat => chronosInLoop.toDouble(),
+    DialTrack.loyalty => dailyClaims.toDouble(),
+  };
 }
 
 /// One changed rule of a Time Loop and the seal finishing it gives
@@ -939,18 +998,32 @@ class Balance {
       e.add('loops goal "${loops.goal}" is not a generator');
     }
     unique('dial', dials.map((d) => d.id));
-    if (dials.isEmpty || dials.first.earned != 0 || dials.first.seal != null) {
+    if (dials.isEmpty ||
+        dials.first.track != DialTrack.earned ||
+        dials.first.earned != 0) {
       e.add('the first dial must be free (earned 0)');
     }
-    for (var i = 1; i < dials.length; i++) {
-      final d = dials[i];
+    for (final d in dials) {
+      if (d.conditions > 1) e.add('dial "${d.id}": one condition only');
+    }
+    // On each track a face needs more than the one before it (docs/17 §5).
+    final last = <DialTrack, double>{};
+    for (final d in dials.skip(1)) {
       if (d.seal != null) {
         if (!loops.rules.any((r) => r.id == d.seal)) {
           e.add('dial "${d.id}": unknown loop rule "${d.seal}"');
         }
-      } else if (dials[i - 1].seal != null || d.earned <= dials[i - 1].earned) {
+        continue;
+      }
+      final before = last[d.track] ?? (d.track == DialTrack.earned ? 0 : -1);
+      if (d.need <= before) {
         e.add('dial "${d.id}" must need more than the previous one');
       }
+      last[d.track] = d.need;
+    }
+    final maxTiers = generators.length * springs.maxLevel;
+    if (dials.any((d) => d.tiers > maxTiers)) {
+      e.add('a dial needs more mastery tiers than there are ($maxTiers)');
     }
     if (ads.turboMaxStock < ads.turboDuration) {
       e.add('ads turbo maxStock must be ≥ duration');

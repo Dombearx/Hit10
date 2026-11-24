@@ -1711,6 +1711,16 @@
   "dial_golden_desc": "Solid gold. Well, almost.",
   "dial_rift": "Spacetime Rift",
   "dial_rift_desc": "Through the crack you can see yesterday's 5.00.",
+  "dial_spring": "Mainspring",
+  "dial_spring_desc": "Wound up. Literally.",
+  "dial_master": "Master's",
+  "dial_master_desc": "Grandpa says he regulated it himself. Grandma says it was the watchmaker.",
+  "dial_grandmaster": "Grandmaster's",
+  "dial_grandmaster_desc": "Engraved on the back: \"Do not touch. Grandpa.\"",
+  "dial_hourglass": "Hourglass",
+  "dial_hourglass_desc": "You stayed. So did time.",
+  "dial_calendar": "Calendar",
+  "dial_calendar_desc": "A hundred teatimes. Grandpa was late for every one.",
   "springWound": "Mainspring +{minutes} min",
   "@springWound": {
     "placeholders": {
@@ -1851,7 +1861,7 @@
     }
   },
   "dialTitle": "Dial face",
-  "dialHint": "The first faces unlock as you earn Ticks. The last six are trophies: one for each Time Loop you finish.",
+  "dialHint": "You earn faces on several tracks at once. Each one shows what the next face takes.",
   "dialLocked": "Earn {amount}",
   "@dialLocked": {
     "placeholders": {
@@ -1886,7 +1896,7 @@
   "help_springs_t": "Mainsprings and clock mastery",
   "help_springs": "Mainsprings work from your first rewind (the spiral at the top).\n• They wind themselves: one a day, even while you're away. At most 10 fit.\n• A hit on exactly 5.00 winds 15 minutes from the reserve. The reserve holds 2 hours and refills in 4 hours.\n• The first exactly-5.00 after an hour's break winds a whole hour.\nMainsprings pay for clock mastery: tier 1 costs 1 Mainspring, tier 2 costs 2, and so on up to tier 5. Each tier multiplies that clock's income ×1.5 for good — also after a rewind and in a new loop. Tiers 3 and 5 give a master's title.",
   "help_dials_t": "Dial faces",
-  "help_dials": "Dial faces change only how the stopwatch looks, not your results. You unlock more by earning more Ticks; the last six are trophies for finished Time Loops. Pick one with the dial button at the top of the screen.",
+  "help_dials": "Dial faces change only how the stopwatch looks, not your results. You earn them on several tracks at once: Ticks in the first days, clock mastery, Time Loops, a feat for the patient, and days in the game. Pick one with the dial button at the top of the screen.",
   "springsRefund": "Clock levels are now 5 mastery tiers, each worth more. The {count} Mainsprings you had spent are back — spend them again.",
   "@springsRefund": {
     "placeholders": {
@@ -1896,6 +1906,47 @@
     }
   },
   "dialLockedSeal": "Loop trophy",
+  "dialTrack_earned": "Earnings",
+  "dialTrack_mastery": "Clock mastery",
+  "dialTrack_loops": "Time Loops",
+  "dialTrack_feat": "Feat",
+  "dialTrack_loyalty": "Loyalty",
+  "dialLockedTiers": "{count, plural, =1{1 mastery tier} other{{count} mastery tiers}}",
+  "@dialLockedTiers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dialLockedLoop": "Get Chronos",
+  "dialLockedChronos": "{count} Chronos in one loop",
+  "@dialLockedChronos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dialLockedDays": "{count, plural, =1{1 day} other{{count} days}} with the daily bonus claimed",
+  "@dialLockedDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dialProgressCount": "{have} of {need}",
+  "@dialProgressCount": {
+    "placeholders": {
+      "have": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
   "loopNumber": "Loop {n}",
   "@loopNumber": {
     "placeholders": {

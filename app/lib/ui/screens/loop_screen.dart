@@ -253,6 +253,19 @@ class _LoopEnd extends StatelessWidget {
                         color: const Color(0xFFFFF1C4),
                       ),
                     ],
+                    // The first loop has no seal, its face comes with the
+                    // chapter (docs/17 §5).
+                    for (final d in c.balance.dials)
+                      if (d.loops == s.loop)
+                        Padding(
+                          key: const Key('loop-end-dial'),
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            l.loopRewardDial(dialTexts(l, d.id)?.$1 ?? d.id),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ),
                     const SizedBox(height: 8),
                     _nextLoopCard(context, c),
                     if (bonusesLeft > 0)
