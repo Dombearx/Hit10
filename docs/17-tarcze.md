@@ -136,16 +136,16 @@ Wnioski:
 
 | | Teraz | Propozycja |
 |---|---|---|
-| Na start gry | 12 | **18** stałych + 2 sezonowe = **20** |
-| Gracz B po D7 / D30 / D90 / D365 | 5 / 6 / 11 / 11 | 5 / 7 / 14 / 17 (+ sezonowe) |
-| Gracz bez pętli po D365 | 6 | 12 (+ sezonowe) |
+| Na start gry | 12 | **18** (sezony dają motywy, nie tarcze, §6) |
+| Gracz B po D7 / D30 / D90 / D365 | 5 / 6 / 11 / 11 | 5 / 7 / 14 / 17 |
+| Gracz bez pętli po D365 | 6 | 12 |
 | Ostatnia tarcza gracza B | D76 | D104, potem 100 i 365 dni gry |
 
-Dlaczego ok. 20:
+Dlaczego ok. 18:
 - W pierwszym tygodniu nowa tarcza co 1–3 dni, potem co ok. 2 tygodnie
-  do D90, potem raz na kwartał i sezony. To zgodne z praktyką 1 (§2).
-- Każda tarcza w nowej szacie to rysunek i animacja. 20 to rozsądny
-  koszt na premierę, a kolejne sezony (5 czeka w 02 §14) i aktualizacje
+  do D90, potem raz na kwartał. Między nimi motywy sezonowe (§6). To zgodne z praktyką 1 (§2).
+- Każda tarcza w nowej szacie to rysunek i animacja. 18 to rozsądny
+  koszt na premierę, a aktualizacje (np. nowe pętle, ścieżka osiągnięć)
   dokładają po kilka. Kolekcja może rosnąć po premierze, a zmniejszyć
   się nie może.
 - Mniej niż ok. 15 zostawia dziurę między D16 a D44 albo kończy kolekcję
@@ -153,7 +153,8 @@ Dlaczego ok. 20:
 
 ## 5. Rekomendacja: pięć ścieżek
 
-Galeria (R-TARCZA-2) dzieli się na ścieżki. **Każda ścieżka pokazuje
+Galeria (R-TARCZA-2) dzieli się na ścieżki: Start, Mistrzostwo, Fabuła,
+Wyczyn, Wierność. **Każda ścieżka pokazuje
 swoją najbliższą tarczę z postępem** (praktyka 2), a nie jedną „następną”
 dla całej gry, bo ścieżki idą równolegle.
 
@@ -172,8 +173,6 @@ dla całej gry, bo ścieżki idą równolegle.
 | 16 | **nowa** | Wyczyn | **100 Chronosów w jednej pętli** | – | – | – | 27 |
 | 17 | **nowa** | Wierność | 100 dni z odebraną dzienną premią | 100+ | 100+ | 100+ | 100+ |
 | 18 | **nowa** | Wierność | 365 dni z odebraną dzienną premią | 365+ | 365+ | 365+ | 365+ |
-| 19 | **nowa** | Sezon | Boże Narodzenie (cel R-SEZ-2) | grudzień | | | |
-| 20 | **nowa** | Sezon | Sylwester (cel R-SEZ-2) | grudzień | | | |
 
 (E, gracz zostający, dostaje 100 Chronosów w D34, F w D20.)
 
@@ -196,9 +195,6 @@ Uzasadnienie po kolei:
 - **17–18: czas rzeczywisty, nie dni z rzędu.** Liczą się dni z odebraną
   premią, bez wymogu serii, więc przerwa niczego nie zabiera (jak
   R-SPR-4). Kolekcja ma koniec po roku, a nie po D104.
-- **19–20: sezony.** Tarcza za cel wydarzenia, na stałe. W czasie
-  wydarzenia oprawa sezonowa idzie na wierzch (R-SEZ-1), ale nie zabiera
-  wybranej tarczy. Każdy włączony później sezon dokłada jedną tarczę.
 
 **Odrzucone:**
 - Zarobki powyżej 1ab: patrz §1.
@@ -219,8 +215,10 @@ Do ustalenia razem z nową grafiką:
   i kolorów wyników) i motyw (tło, wygląd Złotej Sekundy, efekty
   trafień). Każda tarcza ma motyw w parze jako zestaw, a przełącznik
   „dopasuj motyw do tarczy” jest domyślnie włączony.
-- Sezon podmienia tylko motyw, nigdy tarczę. Nagroda za sezon to zestaw:
-  tarcza i motyw sezonowy na stałe.
+- **Ustalone (24.11.2026): sezony dają motywy, nie tarcze.** W czasie
+  wydarzenia motyw sezonowy idzie na wierzch (R-SEZ-1) i nie zabiera
+  wybranej tarczy. Za cel wydarzenia (R-SEZ-2) motyw zostaje na stałe
+  do włączenia w każdej chwili. Kto przegapi, zdobędzie go za rok.
 - Złota Sekunda w każdym motywie zachowuje sylwetkę, złoty blask
   i dźwięk.
 
