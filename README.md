@@ -25,5 +25,6 @@ w tych plikach.
 | [13-petla-gry.md](docs/13-petla-gry.md) | gra po końcu treści: symulacje, porównanie z innymi grami, skąd wzięły się Pętla czasu i mistrzostwo zegarów (zrobione; zasady w 02 §15–§16) |
 | [14-wyzwania.md](docs/14-wyzwania.md) | wyzwania dzienne i tygodniowe: pula pomysłów, wybrany zestaw, symulacja trudności (zrobione; zasady w 02 §18) |
 | [16-fabula.md](docs/16-fabula.md) | fabuła: przesłanka, głosy postaci, zasady pisania, gdzie i kiedy pojawia się historia, format scen w tłumaczeniach |
+| [17-tarcze.md](docs/17-tarcze.md) | tarcze zegara: kiedy i za co, porównanie z innymi grami, symulacje 7 graczy z pętlami (propozycja) |
 
 [`design/`](design/README.md) to symulator balansu użyty do ustalenia liczb w 03.

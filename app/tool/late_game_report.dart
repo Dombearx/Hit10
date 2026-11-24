@@ -78,6 +78,9 @@ class Player {
   final bool loops;
   final double stayDays;
 
+  /// Stays the full [stayDays] even once every bonus is paid (docs/17).
+  bool forceStay = false;
+
   /// One line per finished loop: number, rules, days and hours played to
   /// the goal and to the exit, paradoxes, mastery tiers at its start.
   final loopLog = <String>[];
@@ -109,7 +112,7 @@ class Player {
     if (!loops || !s.loopGoal) return;
     final all =
         s.loopBonusPaid >= e.econ.milestoneThresholds(b.loops.goal).length;
-    if (!all && days - (_goalDay ?? days) < stayDays) return;
+    if ((forceStay || !all) && days - (_goalDay ?? days) < stayDays) return;
     String d(double v) => v.toStringAsFixed(1);
     loopLog.add(
       '${'${s.loop}'.padLeft(4)}  ${(s.loopRules.isEmpty ? '—' : s.loopRules.join('+')).padRight(10)}'
