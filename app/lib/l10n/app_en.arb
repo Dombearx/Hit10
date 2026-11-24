@@ -1429,7 +1429,7 @@
   "adOfferGoldenReward": "A golden clock right away",
   "adOfferGoldenDetail": "After the ad a golden clock flies in. Catch it and the next round gives a random bonus: Frenzy, Lucky or Hot Hand.",
   "adOfferBagTitle": "Bag of Ticks",
-  "adOfferBagDetail": "Right away, as much as your clocks earn in {minutes} min.",
+  "adOfferBagDetail": "Right away, as much as your clocks earn in {minutes} min (without Frenzy and Turbo).",
   "@adOfferBagDetail": {
     "placeholders": {
       "minutes": {

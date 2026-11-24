@@ -3923,7 +3923,7 @@ abstract class AppLocalizations {
   /// No description provided for @adOfferBagDetail.
   ///
   /// In en, this message translates to:
-  /// **'Right away, as much as your clocks earn in {minutes} min.'**
+  /// **'Right away, as much as your clocks earn in {minutes} min (without Frenzy and Turbo).'**
   String adOfferBagDetail(int minutes);
 
   /// No description provided for @adNoReward.
