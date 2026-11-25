@@ -1133,7 +1133,7 @@ abstract class AppLocalizations {
   /// No description provided for @ach_hidden_boiledEgg_desc.
   ///
   /// In en, this message translates to:
-  /// **'100 grandmas'**
+  /// **'74 grandmas'**
   String get ach_hidden_boiledEgg_desc;
 
   /// No description provided for @ach_exact.

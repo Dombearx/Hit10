@@ -105,6 +105,15 @@ void main() {
     expect(unlock(), contains('hidden_atomic'));
   });
 
+  test('soft-boiled: 74 grandmas, not a grandma threshold of its own', () {
+    final a = b.achievements;
+    expect(a.ownedThresholdsFor(1), isNot(contains(a.boiledEggGrandmas)));
+    s.owned['grandma'] = a.boiledEggGrandmas - 1;
+    expect(unlock(), isNot(contains('hidden_boiledEgg')));
+    s.owned['grandma'] = a.boiledEggGrandmas;
+    expect(unlock(), contains('hidden_boiledEgg'));
+  });
+
   test('later clocks count fewer pieces (R-OSIAG-2c)', () {
     final ids = all.map((a) => a.id).toSet();
     expect(

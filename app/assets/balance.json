@@ -340,7 +340,7 @@
     "prestigeThresholds": [1, 5, 10, 25, 50],
     "impatientEarlyTaps": 100,
     "napMissedRounds": 2,
-    "boiledEggGrandmas": 100,
+    "boiledEggGrandmas": 74,
     "tenthDayPerfects": 10,
     "exactThresholds": [1, 100, 1000, 10000],
     "roundThresholds": [100, 1000, 10000, 100000],

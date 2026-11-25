@@ -629,7 +629,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get ach_hidden_boiledEgg => 'Jajko na miękko';
 
   @override
-  String get ach_hidden_boiledEgg_desc => '100 babć';
+  String get ach_hidden_boiledEgg_desc => '74 babcie';
 
   @override
   String ach_exact(String count) {

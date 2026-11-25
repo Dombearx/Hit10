@@ -632,7 +632,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ach_hidden_boiledEgg => 'Soft-boiled';
 
   @override
-  String get ach_hidden_boiledEgg_desc => '100 grandmas';
+  String get ach_hidden_boiledEgg_desc => '74 grandmas';
 
   @override
   String ach_exact(String count) {
