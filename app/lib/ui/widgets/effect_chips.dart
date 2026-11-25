@@ -19,19 +19,29 @@ class EffectChips extends StatelessWidget {
       return '${t ~/ 60}:${(t % 60).toString().padLeft(2, '0')}';
     }
 
+    // At 0:00 a chip stays, faded, while a round that started inside the
+    // effect is still running: that round gets it (R-ZLOTA-7).
+    final frenzy = l.chipFrenzy(
+      formatNumber(controller.balance.golden.effect('frenzy').multiplier),
+    );
     final chips = <Widget>[
-      if (e.frenzyLeft > 0)
+      if (e.frenzyLeft > 0 || e.frenzyLastRound)
         _Chip(
           key: const Key('chip-frenzy'),
-          text:
-              '${l.chipFrenzy(formatNumber(controller.balance.golden.effect('frenzy').multiplier))} · ${clock(e.frenzyLeft)}',
+          text: e.frenzyLeft > 0
+              ? '$frenzy · ${clock(e.frenzyLeft)}'
+              : '$frenzy · ${l.chipLastRound}',
           color: Palette.neonMagenta,
+          faded: e.frenzyLeft <= 0,
         ),
-      if (e.hotHandLeft > 0)
+      if (e.hotHandLeft > 0 || e.hotHandLastRound)
         _Chip(
           key: const Key('chip-hothand'),
-          text: '${l.chipHotHand} · ${clock(e.hotHandLeft)}',
+          text: e.hotHandLeft > 0
+              ? '${l.chipHotHand} · ${clock(e.hotHandLeft)}'
+              : '${l.chipHotHand} · ${l.chipLastRound}',
           color: Palette.perfectDeep,
+          faded: e.hotHandLeft <= 0,
         ),
     ];
     if (chips.isEmpty) return const SizedBox.shrink();
@@ -43,12 +53,22 @@ class EffectChips extends StatelessWidget {
 }
 
 class _Chip extends StatelessWidget {
-  const _Chip({super.key, required this.text, required this.color});
+  const _Chip({
+    super.key,
+    required this.text,
+    required this.color,
+    this.faded = false,
+  });
   final String text;
   final Color color;
+  final bool faded;
 
   @override
   Widget build(BuildContext context) {
+    return Opacity(opacity: faded ? 0.6 : 1, child: _box());
+  }
+
+  Widget _box() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       decoration: BoxDecoration(

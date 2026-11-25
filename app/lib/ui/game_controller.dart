@@ -548,7 +548,7 @@ class GameController extends ChangeNotifier {
     for (final c in clocks) {
       if (c.round.phase != RoundPhase.waiting) {
         c.round.cancel();
-        engine.onRoundCancelled();
+        engine.onRoundCancelled(c.index);
       }
     }
     clocks
@@ -732,7 +732,7 @@ class GameController extends ChangeNotifier {
     sfx.music(
       engine.goldenRound
           ? MusicTrack.golden
-          : engine.frenzyLeft > 0
+          : engine.frenzyLeft > 0 || engine.frenzyLastRound
           ? MusicTrack.frenzy
           : MusicTrack.calm,
     );
@@ -793,17 +793,21 @@ class GameController extends ChangeNotifier {
           syncSeason(); // a session can cross midnight
           syncChallenges();
         }
-        engine.onRoundStart();
+        final ticket = engine.onRoundStart(slot.index);
         slot
           ..mode = engine.modeMultiplier()
           ..blind = engine.blindActive
           ..hideAt = balance.blind.hideAt(_blindRng.nextDouble())
           ..lastTickTenth = -1;
-        if (engine.goldenRound) sfx.play('coins');
-        _roundStarts.add((slot.index, engine.goldenRound));
+        if (ticket.golden) sfx.play('coins');
+        _roundStarts.add((slot.index, ticket.golden));
         notifyListeners();
       case RoundGraded(:final grade, :final gameTime):
-        final o = engine.resolveRound(grade, mode: slot.mode);
+        final o = engine.resolveRound(
+          grade,
+          mode: slot.mode,
+          clock: slot.index,
+        );
         ads.onRound(o, _wallMs());
         _trackAccuracy();
         _trackTutorial();
@@ -2018,7 +2022,7 @@ class GameController extends ChangeNotifier {
     for (final c in clocks) {
       if (c.round.phase != RoundPhase.waiting) {
         c.round.cancel();
-        engine.onRoundCancelled();
+        engine.onRoundCancelled(c.index);
         changed = true;
       }
     }

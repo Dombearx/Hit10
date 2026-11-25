@@ -21,6 +21,21 @@ class GoldenOutcome {
   final double amount;
 }
 
+/// What a round took with it when it started (R-ZLOTA-7): the golden
+/// round belongs to one clock, and a Frenzy or Hot hand running at the
+/// start still counts for that round if its timer ends mid-round.
+class RoundTicket {
+  const RoundTicket({
+    this.golden = false,
+    this.frenzy = false,
+    this.hotHand = false,
+  });
+  static const none = RoundTicket();
+  final bool golden;
+  final bool frenzy;
+  final bool hotHand;
+}
+
 /// Everything that happened when a round was graded (docs/02 §3).
 class RoundOutcome {
   const RoundOutcome({
@@ -36,6 +51,8 @@ class RoundOutcome {
     required this.hotHand,
     this.golden,
     this.jackpot = 0,
+    this.frenzyGrace = false,
+    this.hotHandGrace = false,
   });
 
   /// The grade before Luck / Hot hand.
@@ -53,6 +70,11 @@ class RoundOutcome {
 
   /// Tiki of the 10.00 jackpot in [payout] (0 = none).
   final double jackpot;
+
+  /// The Frenzy / Hot hand timer ran out during this round, but the round
+  /// started inside it and still got the bonus (R-ZLOTA-7).
+  final bool frenzyGrace;
+  final bool hotHandGrace;
 }
 
 /// Offline income waiting for the player to collect it (R-OFF-1…2).
@@ -100,9 +122,23 @@ class GameEngine {
   /// so an app update or restart does not lose it.
   bool get goldenArmed => s.goldenArmed && !goldenRound;
 
-  /// The round in progress is golden (not saved: a round cut off by a
-  /// restart leaves the golden round armed for the next one).
-  bool goldenRound = false;
+  /// What each clock's round in progress took at its start (not saved: a
+  /// round cut off by a restart leaves the golden round armed for the
+  /// next one, R-ZLOTA-6).
+  final Map<int, RoundTicket> _tickets = {};
+
+  /// The ticket of [clock]'s round in progress.
+  RoundTicket ticket(int clock) => _tickets[clock] ?? RoundTicket.none;
+
+  /// A round in progress on some clock is golden.
+  bool get goldenRound => _tickets.values.any((t) => t.golden);
+
+  /// The Frenzy / Hot hand timer is over, but a round that started inside
+  /// it is still running and will get the bonus (R-ZLOTA-7).
+  bool get frenzyLastRound =>
+      frenzyLeft <= 0 && _tickets.values.any((t) => t.frenzy);
+  bool get hotHandLastRound =>
+      hotHandLeft <= 0 && _tickets.values.any((t) => t.hotHand);
 
   double get frenzyLeft => s.frenzyLeft;
   set frenzyLeft(double v) => s.frenzyLeft = v;
@@ -225,12 +261,20 @@ class GameEngine {
     goldenVisibleLeft = b.golden.visibleFor;
   }
 
-  void onRoundStart() {
-    if (goldenArmed) goldenRound = true;
+  /// [clock]'s round starts: it takes the golden round if one is armed
+  /// and no other clock holds it, and a ticket for the effects running
+  /// now (R-ZLOTA-7).
+  RoundTicket onRoundStart([int clock = 0]) {
+    _tickets.remove(clock);
+    return _tickets[clock] = RoundTicket(
+      golden: goldenArmed,
+      frenzy: frenzyLeft > 0,
+      hotHand: hotHandLeft > 0,
+    );
   }
 
   /// A round was abandoned (pause): an armed golden round stays armed.
-  void onRoundCancelled() => goldenRound = false;
+  void onRoundCancelled([int clock = 0]) => _tickets.remove(clock);
 
   GoldenOutcome _resolveGolden(Tier tier) {
     s.goldenArmed = false;
@@ -272,16 +316,14 @@ class GameEngine {
 
   /// Applies Luck, Hot hand, the combo and the Shield, pays out and records
   /// statistics (docs/02 §2–§3, §6). [mode] is the risk-mode multiplier.
-  RoundOutcome resolveRound(Grade g, {double mode = 1}) {
+  RoundOutcome resolveRound(Grade g, {double mode = 1, int clock = 0}) {
+    final ticket = _tickets.remove(clock) ?? RoundTicket.none;
     // No touch at all is a skipped round, not a miss (playtest 08): looking
     // at the shop or putting the phone down costs nothing but the round.
     if (g.missKind == MissKind.noTap) {
       s.lifetime.missedInARow++;
       GoldenOutcome? golden;
-      if (goldenRound) {
-        goldenRound = false;
-        golden = _resolveGolden(Tier.miss);
-      }
+      if (ticket.golden) golden = _resolveGolden(Tier.miss);
       final combo = comboMultiplier();
       return RoundOutcome(
         raw: g,
@@ -299,7 +341,9 @@ class GameEngine {
     }
     var tier = g.tier;
     var bumped = false;
-    final hot = hotHandLeft > 0 && tier != Tier.miss;
+    // R-ZLOTA-7: a round that started inside Hot hand keeps it to the end.
+    final hotGrace = ticket.hotHand && hotHandLeft <= 0;
+    final hot = (hotHandLeft > 0 || ticket.hotHand) && tier != Tier.miss;
     if (hot) {
       tier = Tier.perfect;
     } else if ((tier == Tier.great || tier == Tier.good) &&
@@ -345,26 +389,32 @@ class GameEngine {
       }
     }
     final combo = comboMultiplier();
-    // The 10.00 jackpot goes by the raw tap: Luck and Hot hand don't win it.
-    final jackpot = isJackpot(g) ? jackpotAmount() * combo * mode : 0.0;
-    // Hot hand also multiplies what the hit pays (playtest 25: turning
-    // hits into PERFECTs alone was worth a second of income).
-    final hotPay = hot ? b.golden.effect('hotHand').multiplier : 1.0;
-    final payout =
-        hitPayout(
-              Grade(tier, g.error, g.missKind, g.close),
-              combo: combo,
-              mode: mode,
-            ) *
-            hotPay +
-        jackpot;
+    // R-ZLOTA-7: a round that started inside a Frenzy is paid as in it,
+    // even if the timer ran out mid-round. Passive income is not.
+    final frenzyGrace = ticket.frenzy && frenzy == 1;
+    final keptFrenzy = frenzy;
+    if (frenzyGrace) frenzy = b.golden.effect('frenzy').multiplier;
+    final double jackpot, payout;
+    try {
+      // The 10.00 jackpot goes by the raw tap: Luck and Hot hand don't win.
+      jackpot = isJackpot(g) ? jackpotAmount() * combo * mode : 0.0;
+      // Hot hand also multiplies what the hit pays (playtest 25: turning
+      // hits into PERFECTs alone was worth a second of income).
+      final hotPay = hot ? b.golden.effect('hotHand').multiplier : 1.0;
+      payout =
+          hitPayout(
+                Grade(tier, g.error, g.missKind, g.close),
+                combo: combo,
+                mode: mode,
+              ) *
+              hotPay +
+          jackpot;
+    } finally {
+      frenzy = keptFrenzy;
+    }
     s.earn(payout);
     _recordStats(g, tier);
-    GoldenOutcome? golden;
-    if (goldenRound) {
-      goldenRound = false;
-      golden = _resolveGolden(tier);
-    }
+    final golden = ticket.golden ? _resolveGolden(tier) : null;
     return RoundOutcome(
       raw: g,
       tier: tier,
@@ -378,6 +428,8 @@ class GameEngine {
       hotHand: hot,
       golden: golden,
       jackpot: jackpot,
+      frenzyGrace: frenzyGrace && payout > 0,
+      hotHandGrace: hotGrace && hot,
     );
   }
 
@@ -692,7 +744,7 @@ class GameEngine {
     s.shieldCharges = maxShieldCharges();
     goldenVisibleLeft = 0;
     s.goldenArmed = false;
-    goldenRound = false;
+    _tickets.clear();
     frenzyLeft = 0;
     hotHandLeft = 0;
     frenzy = 1;
@@ -778,7 +830,7 @@ class GameEngine {
     s.shieldCharges = maxShieldCharges();
     goldenVisibleLeft = 0;
     s.goldenArmed = false;
-    goldenRound = false;
+    _tickets.clear();
     frenzyLeft = 0;
     hotHandLeft = 0;
     frenzy = 1;

@@ -308,6 +308,29 @@ Generator A dostaje +1% za każdą sztukę B, a B dostaje +0.1% za każdą sztuk
   grę) ich nie zabiera: złota runda czeka na następną rundę, także gdy
   restart przerwał ją w trakcie (playtest: po złapaniu zegarka
   i aktualizacji złota runda przepadała).
+- **R-ZLOTA-7 (bilet rundy):** runda bierze przy starcie „bilet” i liczy
+  się według niego do oceny (playtest: licznik Szału kończył się w trakcie
+  rundy i brakowało chwili).
+  - Runda, która wystartowała w czasie Szału albo Gorącej ręki, dostaje
+    ten efekt także wtedy, gdy licznik dojdzie do 0 w trakcie rundy.
+    Runda, która wystartowała po końcu efektu, go nie dostaje. Szał
+    z biletu działa tylko na wypłatę za trafienie: dochód pasywny kończy
+    się z licznikiem.
+  - Złota runda należy do jednego zegara: do pierwszej rundy, która
+    wystartowała po złapaniu zegarka. Tylko ona rozlicza efekt. Drugi
+    zegar gra w tym czasie zwykłą rundę (wcześniej flaga była wspólna:
+    złote mogły być obie tarcze, a efekt rozliczała ta, która skończyła
+    pierwsza).
+  - Przy dwóch zegarach każdy bierze bilet osobno, przy swoim starcie.
+    Licznik nie stoi na 0:00, dopóki trwa runda: przy dwóch zegarach
+    przesuniętych o pół rundy któraś runda trwa zawsze.
+  - Oprawa: tarcza z biletem Szału zachowuje neonową poświatę, a z biletem
+    Gorącej ręki ma pomarańczowy pierścień, do oceny rundy. Po 0:00 chip
+    efektu zostaje przygaszony z napisem „ostatnia runda”, aż ostatnia
+    runda z biletem zostanie oceniona. Tło i muzyka Szału trwają tak samo.
+    Trafienie, które dostało efekt po końcu licznika, pokazuje „NA STYK!”.
+  - Zapas to najwyżej jedna runda na zegar (3.7–5.7 s). Bilet nie jest
+    w zapisie: runda przerwana restartem i tak się nie liczy.
 
 ## 7. Tryby ryzyka
 

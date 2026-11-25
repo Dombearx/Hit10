@@ -45,6 +45,7 @@ class ArenaLabels {
     required this.shieldSaved,
     this.springWound,
     this.springEmpty,
+    this.justInTime,
   });
   final String perfect;
   final String great;
@@ -70,6 +71,10 @@ class ArenaLabels {
 
   /// "Winding reserve empty": the exact hit wound nothing (R-SPR-3).
   final String? springEmpty;
+
+  /// "Just in time!": Frenzy or Hot hand ran out mid-round but the round
+  /// still got it (R-ZLOTA-7).
+  final String? justInTime;
 }
 
 /// The stopwatch arena (docs/04 §1, §3). Pure drawing: all game decisions
@@ -588,6 +593,17 @@ class Stage extends Component {
     }
     final o = f.outcome;
     final small = label(Palette.dial, r * 0.13);
+    final inTime = game.labels.justInTime;
+    if ((o.frenzyGrace || o.hotHandGrace) && inTime != null) {
+      pop(
+        PopText(
+          text: inTime,
+          style: label(Palette.perfect, r * 0.13),
+          at: Vector2(c.x, c.y + r * 0.52),
+          life: 1.2,
+        ),
+      );
+    }
     if (o.bumpedByLuck) {
       pop(
         PopText(
@@ -856,7 +872,10 @@ class Dial extends Component {
         map != null &&
         engine.econ.level('bulletTime') > 0 &&
         map.inFocusZone(t);
-    final golden = engine.goldenRound;
+    // What this clock's round took at its start (R-ZLOTA-7): the golden
+    // round is one clock's, and so is a Frenzy or Hot hand kept to the end.
+    final ticket = engine.ticket(index);
+    final golden = ticket.golden;
     // The chosen face (docs/12 §3.3); a golden round keeps its own look.
     final skin = golden ? dialSkins['classic']! : dialSkin(ctrl.econ.dialId);
 
@@ -880,8 +899,9 @@ class Dial extends Component {
       );
     }
 
-    // Frenzy: neon halo pulsing behind the dial.
-    if (engine.frenzy > 1) {
+    // Frenzy: neon halo pulsing behind the dial; it stays on a round that
+    // started inside the Frenzy until that round is graded.
+    if (engine.frenzy > 1 || ticket.frenzy) {
       // Gradient halo: a blur filter would be redrawn every frame. Calm
       // mode: a still, fainter halo (no colour cycling, no throbbing).
       final p = calm ? 0.5 : 0.5 + 0.5 * math.sin(_time * 7);
@@ -1000,6 +1020,14 @@ class Dial extends Component {
         scale: hidden && !calm ? 1 + 0.06 * math.sin(_time * 6) : throb,
       );
     };
+    // Hot hand: an orange ring on a round that started inside it, kept
+    // until that round is graded (R-ZLOTA-7).
+    if (ticket.hotHand && running && !golden) {
+      final p = calm ? 0.5 : 0.5 + 0.5 * math.sin(_time * 6);
+      _outline.color = Palette.perfectDeep.withValues(alpha: 0.6 + 0.4 * p);
+      canvas.drawCircle(c, r * 1.04, _outline);
+      _outline.color = skin.rim;
+    }
     if (golden && running) {
       final p = calm ? 0.5 : 0.5 + 0.5 * math.sin(_time * 6);
       _outline.color = Palette.perfect.withValues(alpha: 0.6 + 0.4 * p);

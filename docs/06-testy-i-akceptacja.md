@@ -16,7 +16,7 @@ kryteria z sekcji 3, a `make check` przechodzi.
 | Wypłata | wzór R-WYPLATA-1 na przykładach liczonych ręcznie (w tym Echo × combo × tryb) | R-WYPLATA-1 |
 | Ceny | pojedyncze, ×10, ×100, MAX (k = największe, na które stać; k+1 już nie) | R-GEN-1/2 |
 | Dochód | zysk okien dla σ = 0, małego i dużego σ; synergie; ulepszenia; G | 03 §2, R-GEN-6 |
-| Złota Sekunda | interwał (z Złotym dotykiem i perkiem), siła wg progu, limit Fartu do 10% konta, nakładanie efektów | R-ZLOTA-1…4 |
+| Złota Sekunda | interwał (z Złotym dotykiem i perkiem), siła wg progu, limit Fartu do 10% konta, nakładanie efektów, bilet rundy (efekt do końca rundy, złota runda jednego zegara) | R-ZLOTA-1…4, R-ZLOTA-7 |
 | Offline | limit, wydajność, perki, ujemny czas → 0, bez Szału; czas i treść powiadomienia, anulowanie przy powrocie | R-OFF-1…4 |
 | Prestiż | wzór Chrononów, przyrost, co się zeruje, a co zostaje, perki Pamięci mięśniowej | R-PRES-1…5 |
 | Osiągnięcia | każde osiągnięcie ma test warunku (generowany z tabeli) | R-OSIAG-1/2 |

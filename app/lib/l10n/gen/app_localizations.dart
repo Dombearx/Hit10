@@ -884,6 +884,18 @@ abstract class AppLocalizations {
   /// **'Hot hand'**
   String get chipHotHand;
 
+  /// No description provided for @chipLastRound.
+  ///
+  /// In en, this message translates to:
+  /// **'last round'**
+  String get chipLastRound;
+
+  /// No description provided for @justInTime.
+  ///
+  /// In en, this message translates to:
+  /// **'JUST IN TIME!'**
+  String get justInTime;
+
   /// No description provided for @comboLabel.
   ///
   /// In en, this message translates to:

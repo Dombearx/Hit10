@@ -72,6 +72,8 @@ void registerQaHook(GameController c) {
         'shield': s.shieldCharges,
         'frenzyLeft': c.engine.frenzyLeft,
         'hotHandLeft': c.engine.hotHandLeft,
+        'frenzyLastRound': c.engine.frenzyLastRound,
+        'hotHandLastRound': c.engine.hotHandLastRound,
         'goldenVisible': c.engine.goldenVisibleLeft,
         'goldenArmed': c.engine.goldenArmed,
         'goldenRound': c.engine.goldenRound,

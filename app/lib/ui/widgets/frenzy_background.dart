@@ -47,7 +47,8 @@ class _FrenzyBackgroundState extends State<FrenzyBackground>
   void _onChange() {
     final theme = widget.controller.themeId;
     if (theme != _theme) setState(() => _theme = theme);
-    final on = widget.controller.engine.frenzyLeft > 0;
+    final e = widget.controller.engine;
+    final on = e.frenzyLeft > 0 || e.frenzyLastRound;
     if (on && !_pulse.isAnimating) _pulse.repeat();
     if (!on && _pulse.isAnimating) {
       _pulse.stop();
