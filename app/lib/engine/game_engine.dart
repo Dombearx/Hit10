@@ -1052,7 +1052,11 @@ class GameEngine {
       b.daily.floorPerDay * day,
       passive() * 60 * b.daily.minutes[day - 1],
     );
-    return DailyBonus(key, day, amount, grace: grace);
+    // The week's last day also brings a Mainspring, once they exist.
+    final springs = day == days && econ.springsUnlocked
+        ? b.daily.lastDaySprings
+        : 0;
+    return DailyBonus(key, day, amount, springs: springs, grace: grace);
   }
 
   // --------------------------------------------- challenges (02 §18) --
@@ -1232,6 +1236,7 @@ class GameEngine {
 
   void claimDaily(DailyBonus d) {
     s.earn(d.amount);
+    s.springs += d.springs; // a gift: may go over the stock's cap (R-SPR-4)
     s.dailyKey = d.key;
     s.dailyStreak = d.day;
     s.lifetime.dailyClaims++;
@@ -1266,12 +1271,20 @@ class ChallengePay {
   final double bonus;
 }
 
-/// The daily bonus on offer: streak [day] (1–7) pays [amount]. [grace]:
-/// yesterday was missed and this week's grace day kept the streak.
+/// The daily bonus on offer: streak [day] (1–7) pays [amount] and, on the
+/// last day, [springs] Mainsprings. [grace]: yesterday was missed and this
+/// week's grace day kept the streak.
 class DailyBonus {
-  const DailyBonus(this.key, this.day, this.amount, {this.grace = false});
+  const DailyBonus(
+    this.key,
+    this.day,
+    this.amount, {
+    this.springs = 0,
+    this.grace = false,
+  });
   final int key;
   final int day;
   final double amount;
+  final int springs;
   final bool grace;
 }

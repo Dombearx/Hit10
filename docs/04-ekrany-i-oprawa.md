@@ -263,7 +263,9 @@ zostały te same (`trophy`, `fire`…).
 
 - **U-34:** **„Witaj z powrotem”** (02 R-OFF-2, R-DZIEN-1): dochód offline
   i dzienna premia w jednym oknie — kwota offline (z ×2 za reklamę),
-  pod nią seria 7 dni z kwotą premii i ewentualną informacją o dniu łaski,
+  pod nią seria 7 dni z kwotą premii i ewentualną informacją o dniu łaski
+  (po pierwszym paradoksie kafelek 7. dnia ma ikonę Sprężyny zamiast
+  numeru, a w 7. dzień pod kwotą jest „+1” ze Sprężyną, R-DZIEN-2),
   linijka o nowym wydarzeniu, jeden przycisk „Odbierz wszystko”. Gdy jest
   tylko jedno z dwojga, okno ma jego tytuł („Gdy cię nie było…” albo
   „Dzienna premia”). Kolejność okien przy starcie: zapis w chmurze

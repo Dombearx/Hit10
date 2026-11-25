@@ -2117,7 +2117,7 @@ abstract class AppLocalizations {
   /// No description provided for @tip_springs.
   ///
   /// In en, this message translates to:
-  /// **'Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever.'**
+  /// **'Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever. Every 7th day of the daily bonus brings one more.'**
   String get tip_springs;
 
   /// No description provided for @tip_loop.
@@ -3851,8 +3851,8 @@ abstract class AppLocalizations {
   /// No description provided for @dailyHint.
   ///
   /// In en, this message translates to:
-  /// **'Come back every day — the bonus grows for {total} days. One missed day a week is forgiven.'**
-  String dailyHint(int total);
+  /// **'Come back every day — the bonus grows for {total} days{spring, select, yes{, and the last one brings a Mainspring} other{}}. One missed day a week is forgiven.'**
+  String dailyHint(int total, String spring);
 
   /// No description provided for @adOfferHow.
   ///
