@@ -728,6 +728,12 @@ przyciemnienie i obwódki przepuszczają dotyk); wszystko da się pominąć.
   z dochodem offline, jeśli jest, R-OFF-2).
 - **R-DZIEN-2:** Dzień N płaci `max(25·N, dochód pasywny × minuty[N])`,
   gdzie minuty = 5, 10, 15, 20, 30, 45, 60. Po 7. dniu seria wraca do 1.
+  7. dzień daje też **1 Sprężynę** (`daily.lastDaySprings`), gdy Sprężyny
+  już są (po pierwszym paradoksie, R-SPR-1), także ponad limit magazynu
+  (R-SPR-4). Wcześniej 7. dzień płaci samą walutę, a kafelek nie zapowiada
+  nagrody, której gracz nie mógłby dostać. Cykl ma przez to finał, więc
+  powrót do dnia 1 czyta się jak nowy tydzień, a nie strata; waluta
+  tygodnia zostaje ta sama (185 min dochodu pasywnego).
 - **R-DZIEN-3:** Pominięty dzień (kalendarzowy, czas lokalny) zaczyna serię
   od 1 — z wyjątkiem **dnia łaski**: jeden pominięty dzień na tydzień
   (7 odbiorów) seria wybacza, a okno mówi „Ominął cię jeden dzień —
@@ -897,7 +903,8 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
 - **R-SPR-4:** Gotowe Sprężyny odkładają się do 10 (najdroższy stopień
   mistrzostwa kosztuje 5). Przy pełnym magazynie sprężyna się nie
   nakręca. Prezenty (zwrot z R-SPR-5a, bonusy Chronosa z R-PETLA-2a)
-  mogą wyjść ponad limit.
+  mogą wyjść ponad limit; tak samo Sprężyna z 7. dnia dziennej premii
+  (R-DZIEN-2).
   Wcześniej było 7: symulacja pokazała, że gracz odkładający na poziom 8
   stał miesiącami z pełnym magazynem i nie mógł go kupić.
   Przy pełnym magazynie „równo 5.00” nic nie dokręca i **nie zabiera

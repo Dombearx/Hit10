@@ -121,9 +121,14 @@ class SeasonConfig {
 class DailyConfig {
   DailyConfig(Map<String, Object?> j)
     : minutes = [for (final m in j['minutes']! as List) _d(m)],
-      floorPerDay = _d(j['floorPerDay']);
+      floorPerDay = _d(j['floorPerDay']),
+      lastDaySprings = _i(j['lastDaySprings']);
   final List<double> minutes;
   final double floorPerDay;
+
+  /// Mainsprings the streak's last day adds, once they are unlocked
+  /// (R-DZIEN-2).
+  final int lastDaySprings;
 }
 
 /// Daily and weekly challenges (docs/02 §18).

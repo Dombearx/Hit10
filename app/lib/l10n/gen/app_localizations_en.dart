@@ -1244,7 +1244,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tip_springs =>
-      'Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever.';
+      'Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever. Every 7th day of the daily bonus brings one more.';
 
   @override
   String get tip_loop =>
@@ -2144,8 +2144,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String dailyHint(int total) {
-    return 'Come back every day — the bonus grows for $total days. One missed day a week is forgiven.';
+  String dailyHint(int total, String spring) {
+    String _temp0 = intl.Intl.selectLogic(spring, {
+      'yes': ', and the last one brings a Mainspring',
+      'other': '',
+    });
+    return 'Come back every day — the bonus grows for $total days$_temp0. One missed day a week is forgiven.';
   }
 
   @override

@@ -137,6 +137,25 @@ void main() {
     expect(c.pendingDaily, isNull);
   });
 
+  testWidgets('day 7 of the daily bonus shows and pays a Mainspring', (
+    tester,
+  ) async {
+    final now = DateTime.now();
+    final s = GameState()
+      ..tutorialDone = true
+      ..prestiges = 1
+      ..dailyKey = dateKey(DateTime(now.year, now.month, now.day - 1))
+      ..dailyStreak = 6;
+    final c = await pumpGame(tester, state: s);
+    await tester.pump(const Duration(seconds: 1));
+    expect(c.pendingDaily!.day, 7);
+    expect(find.byKey(const Key('daily-day-spring')), findsOneWidget);
+    expect(find.byKey(const Key('daily-springs')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('welcome-collect')));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(c.state.springs, c.balance.daily.lastDaySprings);
+  });
+
   testWidgets('offline income and the daily bonus share one window', (
     tester,
   ) async {

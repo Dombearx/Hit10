@@ -156,6 +156,35 @@ void main() {
       expect(e.dailyFor(plus(8))!.grace, isTrue);
     });
 
+    test('day 7 brings a Mainspring once they exist (R-DZIEN-2)', () {
+      s.tutorialDone = true;
+      // Before the first paradox: no Mainsprings, day 7 pays Tiki only.
+      for (var i = 0; i < 7; i++) {
+        final d = e.dailyFor(plus(i))!;
+        expect(d.springs, 0);
+        e.claimDaily(d);
+      }
+      expect(s.springs, 0);
+      s.prestiges = 1;
+      for (var i = 7; i < 14; i++) {
+        final d = e.dailyFor(plus(i))!;
+        expect(d.springs, d.day == 7 ? b.daily.lastDaySprings : 0);
+        e.claimDaily(d);
+      }
+      expect(s.springs, b.daily.lastDaySprings);
+    });
+
+    test("day 7's Mainspring goes past a full stock", () {
+      s
+        ..tutorialDone = true
+        ..prestiges = 1
+        ..springs = b.springs.maxStock
+        ..dailyKey = dateKey(plus(-1))
+        ..dailyStreak = 6;
+      e.claimDaily(e.dailyFor(plus(0))!);
+      expect(s.springs, b.springs.maxStock + b.daily.lastDaySprings);
+    });
+
     test('pays minutes of passive income once the clocks earn', () {
       s.tutorialDone = true;
       s.owned['grandma'] = 100;

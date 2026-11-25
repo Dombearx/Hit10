@@ -542,7 +542,8 @@
       45,
       60
     ],
-    "floorPerDay": 25
+    "floorPerDay": 25,
+    "lastDaySprings": 1
   },
   "challenges": {
     "unlockPlaySeconds": 180,

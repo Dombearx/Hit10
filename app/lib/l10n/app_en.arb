@@ -1052,7 +1052,7 @@
   "statMultTotal": "Together",
   "tutorialGotIt": "OK",
   "tutorialAutoStart": "From now on the stopwatch starts by itself: right after each result, the next round begins.",
-  "tip_springs": "Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever.",
+  "tip_springs": "Mainsprings! They wind by themselves, one a day. Spend them on clock mastery: it stays forever. Every 7th day of the daily bonus brings one more.",
   "tip_loop": "A new loop: everything from zero, but Mainsprings and mastery stay.",
   "tip_loopRule": "A new loop: everything from zero, but Mainsprings and mastery stay. Chronos' rule: {rule}.",
   "@tip_loopRule": {
@@ -1376,7 +1376,7 @@
   "settingsAdPrivacy": "Ad privacy choices",
   "dailyTitle": "Daily bonus",
   "dailyDay": "Day {day} of {total}",
-  "dailyHint": "Come back every day — the bonus grows for {total} days. One missed day a week is forgiven.",
+  "dailyHint": "Come back every day — the bonus grows for {total} days{spring, select, yes{, and the last one brings a Mainspring} other{}}. One missed day a week is forgiven.",
   "@dailyDay": {
     "placeholders": {
       "day": {
@@ -1391,6 +1391,9 @@
     "placeholders": {
       "total": {
         "type": "int"
+      },
+      "spring": {
+        "type": "String"
       }
     }
   },

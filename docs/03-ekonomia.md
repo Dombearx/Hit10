@@ -10,7 +10,7 @@ przedmiotów i ich liczby są w [02-rozgrywka.md](02-rozgrywka.md).
 | **Tiki** | Tiki / Ticks | trafienia, generatory, Fart, offline | umiejętności, generatory (bonusy za liczbę sztuk i synergie są darmowe) |
 | **Chronony** | Chronony / Chronons | prestiż | nie wydaje się ich: +2% każdy, do końca pętli czasu (02 §16) |
 | **Okruchy czasu** | Okruchy / Shards | prestiż (tyle, ile nowych Chrononów) | perki; zerują się z nową pętlą |
-| **Sprężyny** | Sprężyny / Mainsprings | czas rzeczywisty (1 na dobę), „równo 5.00” z zapasu dokręcania (02 §15), bonusy Chronosa (R-PETLA-2a) | mistrzostwo zegarów; nie przepadają nigdy |
+| **Sprężyny** | Sprężyny / Mainsprings | czas rzeczywisty (1 na dobę), „równo 5.00” z zapasu dokręcania (02 §15), bonusy Chronosa (R-PETLA-2a), 7. dzień dziennej premii (R-DZIEN-2) | mistrzostwo zegarów; nie przepadają nigdy |
 
 Wszystkie kwoty to liczby zmiennoprzecinkowe (`double`), co wystarcza do ok.
 1e308. **E-1:** Ceny i stan konta nigdy nie są zaokrąglane w logice, tylko
@@ -244,6 +244,9 @@ poziom z najlepszym zyskiem na Sprężynę (odkłada na niego).
 - ok. 1.24 Sprężyny dziennie (452 w rok), z czego ok. 6 h dziennie
   z trafień: przy 3 krótkich sesjach limit z R-SPR-3 jest prawie zawsze
   wybrany. Przy limicie 10 przepada 25 h w rok.
+- 7. dzień dziennej premii (R-DZIEN-2) dokłada 1 Sprężynę na tydzień
+  (ok. 0.14 dziennie, ok. 52 w rok) graczowi, który wraca codziennie.
+  Tabela powyżej jest sprzed tej zmiany.
 - Wszystkie poziomy to ok. 1.6 roku, tytuły co 2–5 tygodni przez cały rok.
 - Pod koniec roku dochód ok. 2× większy niż bez poziomów. W połowie gry
   różnica bywa większa (dzień 30: 1926 zamiast 1114 Chrononów), bo

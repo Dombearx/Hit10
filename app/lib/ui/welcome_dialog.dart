@@ -15,6 +15,7 @@ import 'widgets/buy_button.dart';
 import 'widgets/choice_dialog.dart';
 import 'widgets/emoji_card.dart';
 import 'widgets/res_text.dart';
+import 'widgets/springs.dart';
 import 'widgets/story_scene.dart';
 
 /// "Welcome back" (R-OFF-2, R-DZIEN-1, docs/04 U-34): what the clocks
@@ -320,11 +321,36 @@ class _DailyPart extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             for (var i = 1; i <= days; i++)
-              _DayTile(day: i, state: i.compareTo(d.day)),
+              _DayTile(
+                day: i,
+                state: i.compareTo(d.day),
+                // The last day's Mainspring shows once they exist.
+                spring: i == days && controller.econ.springsUnlocked,
+              ),
           ],
         ),
         const SizedBox(height: 8),
         _Amount(controller: controller, amount: d.amount),
+        if (d.springs > 0)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              key: const Key('daily-springs'),
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '+${d.springs}',
+                  style: const TextStyle(
+                    fontFamily: Fonts.display,
+                    fontSize: 24,
+                    color: Palette.perfectDeep,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                const SpringIcon(size: 26),
+              ],
+            ),
+          ),
         if (d.grace)
           Padding(
             padding: const EdgeInsets.only(bottom: 2),
@@ -339,17 +365,23 @@ class _DailyPart extends StatelessWidget {
               ),
             ),
           ),
-        Text(l.dailyHint(days), textAlign: TextAlign.center, style: muted),
+        Text(
+          l.dailyHint(days, controller.econ.springsUnlocked ? 'yes' : 'no'),
+          textAlign: TextAlign.center,
+          style: muted,
+        ),
       ],
     );
   }
 }
 
 /// One day of the streak: done (<0), today (0) or still ahead (>0).
+/// [spring]: the day also brings a Mainspring, drawn in place of its number.
 class _DayTile extends StatelessWidget {
-  const _DayTile({required this.day, required this.state});
+  const _DayTile({required this.day, required this.state, this.spring = false});
   final int day;
   final int state;
+  final bool spring;
 
   @override
   Widget build(BuildContext context) {
@@ -369,14 +401,18 @@ class _DayTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Palette.outline, width: today ? 2.5 : 1.5),
       ),
-      child: Text(
-        done ? '✓' : '$day',
-        style: TextStyle(
-          fontFamily: Fonts.display,
-          fontSize: today ? 17 : 14,
-          color: Palette.outline.withValues(alpha: today || done ? 1 : 0.5),
-        ),
-      ),
+      child: spring && !done
+          ? SpringIcon(key: Key('daily-day-spring'), size: today ? 26 : 22)
+          : Text(
+              done ? '✓' : '$day',
+              style: TextStyle(
+                fontFamily: Fonts.display,
+                fontSize: today ? 17 : 14,
+                color: Palette.outline.withValues(
+                  alpha: today || done ? 1 : 0.5,
+                ),
+              ),
+            ),
     );
   }
 }

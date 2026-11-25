@@ -1239,7 +1239,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tip_springs =>
-      'Sprężyny! Nakręcają się same, jedna na dobę. Wydaj je na mistrzostwo zegarów — zostaje na zawsze.';
+      'Sprężyny! Nakręcają się same, jedna na dobę. Wydaj je na mistrzostwo zegarów — zostaje na zawsze. Co 7. dzień dziennej premii dostajesz jeszcze jedną.';
 
   @override
   String get tip_loop =>
@@ -2140,8 +2140,12 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String dailyHint(int total) {
-    return 'Wracaj codziennie — przez $total dni premia rośnie. Jeden dzień przerwy w tygodniu seria wybacza.';
+  String dailyHint(int total, String spring) {
+    String _temp0 = intl.Intl.selectLogic(spring, {
+      'yes': ', a ostatni daje Sprężynę',
+      'other': '',
+    });
+    return 'Wracaj codziennie — przez $total dni premia rośnie$_temp0. Jeden dzień przerwy w tygodniu seria wybacza.';
   }
 
   @override
