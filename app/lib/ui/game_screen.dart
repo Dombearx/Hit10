@@ -129,6 +129,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       shieldSaved: l.shieldSaved,
       springWound: l.springWound,
       springEmpty: l.springEmpty,
+      justInTime: l.justInTime,
     );
   }
 

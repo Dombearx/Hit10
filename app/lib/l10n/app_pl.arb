@@ -158,6 +158,8 @@
   "goldenHotHand": "GORĄCA RĘKA!",
   "chipFrenzy": "Szał ×{mult}",
   "chipHotHand": "Gorąca ręka",
+  "chipLastRound": "ostatnia runda",
+  "justInTime": "NA STYK!",
   "comboLabel": "COMBO",
   "streakLabel": "seria {count}/{target}",
   "luckyBump": "FART!",

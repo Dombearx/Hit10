@@ -476,6 +476,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chipHotHand => 'Hot hand';
 
   @override
+  String get chipLastRound => 'last round';
+
+  @override
+  String get justInTime => 'JUST IN TIME!';
+
+  @override
   String get comboLabel => 'COMBO';
 
   @override

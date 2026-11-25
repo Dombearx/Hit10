@@ -475,6 +475,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get chipHotHand => 'Gorąca ręka';
 
   @override
+  String get chipLastRound => 'ostatnia runda';
+
+  @override
+  String get justInTime => 'NA STYK!';
+
+  @override
   String get comboLabel => 'COMBO';
 
   @override
