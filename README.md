@@ -26,5 +26,6 @@ w tych plikach.
 | [14-wyzwania.md](docs/14-wyzwania.md) | wyzwania dzienne i tygodniowe: pula pomysłów, wybrany zestaw, symulacja trudności (zrobione; zasady w 02 §18) |
 | [16-fabula.md](docs/16-fabula.md) | fabuła: przesłanka, głosy postaci, zasady pisania, gdzie i kiedy pojawia się historia, format scen w tłumaczeniach |
 | [17-tarcze.md](docs/17-tarcze.md) | tarcze zegara: kiedy i za co, porównanie z innymi grami, symulacje 7 graczy z pętlami (propozycja) |
+| [18-cechy-zegarow.md](docs/18-cechy-zegarow.md) | cechy zegarów za tytuły mistrzowskie: symulacje ok. 40 cech, budżet, 2–3 propozycje na zegar z rekomendacją (propozycja) |
 
 [`design/`](design/README.md) to symulator balansu użyty do ustalenia liczb w 03.
