@@ -155,6 +155,10 @@ Map<String, Object?> encodeSave(SaveData d) {
     'springAdCount': s.springAdCount,
     'clockLevels': s.clockLevels,
     'springsRefunded': s.springsRefunded,
+    'chrononGift': s.chrononGift,
+    'expressCount': s.expressCount,
+    'warmUpHits': s.warmUpHits,
+    'warmUpMultiplier': s.warmUpMultiplier,
     'loop': s.loop,
     'loopRules': s.loopRules,
     'seals': s.seals.toList(),
@@ -298,6 +302,10 @@ SaveData _decodeCurrent(Map<String, Object?> j) {
     ..springAdDay = _i(j['springAdDay'])
     ..springAdCount = _i(j['springAdCount'])
     ..springsRefunded = _i(j['springsRefunded'])
+    ..chrononGift = _i(j['chrononGift'])
+    ..expressCount = _i(j['expressCount'])
+    ..warmUpHits = _i(j['warmUpHits'])
+    ..warmUpMultiplier = _d(j['warmUpMultiplier'], 1)
     ..loop = math.max(1, _i(j['loop'], 1))
     ..loopsDone = _i(j['loopsDone'])
     ..loopGoal = j['loopGoal'] == true

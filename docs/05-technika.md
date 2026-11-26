@@ -337,6 +337,8 @@ Limit wynosi 500 różnych nazw zdarzeń i 25 właściwości gracza.
   | `unlock_achievement` | `achievement_id` | które osiągnięcia są za łatwe lub za trudne |
   | `season_complete` | `season` | wydarzenia sezonowe |
   | `clock_level` | `id`, `level`, `springs` | mistrzostwo (02 R-SPR-5): który zegar gracze podnoszą — wczesne, późne czy tylko ostatni |
+  | `trait_unlock` | `id`, `tier` | cechy zegarów (02 R-CECHA): które cechy gracze biorą najpierw (docs/18 §3.3 zakłada kolejność `levelOrder`) |
+  | `cuckoo` | `half` | ile Złotych Sekund przynosi Kukułka: czy sesje w ogóle trafiają na pełną godzinę |
   | `loop_done` | `loop`, `rule`, `play_min`, `paradoxes` | pętle czasu (02 §16): ilu graczy dochodzi do Chronosa i po jakim czasie w porównaniu z 03 §4.4 |
   | `loop_start` | `loop`, `rule`, `springs` | ilu graczy po Chronosie zaczyna następną pętlę |
   | `dial_unlock` | `id` | tarcze (12 §3.3): kiedy padają w porównaniu z `idle_sim.dart` |

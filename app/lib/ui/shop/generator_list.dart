@@ -548,16 +548,22 @@ Future<void> showGeneratorInfo(
                   ),
                 ),
               const SizedBox(height: 12),
-              // Mainspring level (docs/12 R-SPR-5).
-              if (clockLevelCard(context, c, id) case final lv?) ...[
-                lv,
-                const SizedBox(height: 12),
-              ],
-              // Every bonus with its name and joke (R-ULEP-2), not only
-              // the toast when it is reached (playtest 25).
+              // Mainspring level and the clock's traits (docs/12 R-SPR-5,
+              // docs/18), then every bonus with its name and joke
+              // (R-ULEP-2, playtest 25): one scroll, so two traits with
+              // their jokes never push the card off a small screen.
               Flexible(
                 child: SingleChildScrollView(
-                  child: _GeneratorBonuses(controller: c, id: id),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (clockLevelCard(context, c, id) case final lv?) ...[
+                        lv,
+                        const SizedBox(height: 12),
+                      ],
+                      _GeneratorBonuses(controller: c, id: id),
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -1,6 +1,6 @@
 # 18 — Cechy zegarów: co dają tytuły mistrzowskie
 
-Stan: **propozycja, cechy wybrane** (26.11.2026). Symulacje: `app/tool/trait_report.dart`.
+Stan: **zrobione** (26.11.2026), zasady w 02 R-CECHA. Symulacje: `app/tool/trait_report.dart`.
 Dotyczy 02 R-SPR-6 (tytuły na stopniach 3 i 5).
 
 ## 1. Problem
@@ -146,7 +146,7 @@ tytuł zostaje.
 | Zegar | Stopień 3 | Stopień 5 (dodatkowo) |
 |---|---|---|
 | Dziadek z zegarkiem | limit offline +4 h | dochód offline +10% |
-| Babcia z minutnikiem | seria dziennej premii wybacza 1 opuszczony dzień | 7. dzień premii: 3 Sprężyny zamiast 1 |
+| Babcia z minutnikiem | jeden opuszczony dzień nigdy nie przerywa serii (dziś raz w tygodniu, R-DZIEN-3; przy wdrożeniu okazało się, że „1 dzień” już jest, więc cecha znosi limit) | 7. dzień premii: 3 Sprężyny zamiast 1 |
 | Kukułka | o pełnej godzinie w czasie gry wylatuje Złota Sekunda | także o wpół do |
 | Metronom | zapas dokręcania odnawia się 1.5× szybciej | zapas dokręcania ×2 |
 | Zegarmistrz | perki −10% | perki −20% razem |

@@ -61,36 +61,66 @@ class HitFeedback {
 
 /// A free bonus that just switched on (R-ULEP-1, R-SYN-1): generator
 /// milestone [index] (0-based) of [generator], or synergy [synergy].
+/// What a clock trait announces with a toast (docs/18).
+enum TraitNotice { unlocked, cuckoo, warmUp, express, loopChronons }
+
 class MilestoneEvent {
   const MilestoneEvent.generator(String this.generator, this.index)
     : synergy = null,
       dial = null,
-      loopSprings = 0;
+      loopSprings = 0,
+      trait = null,
+      value = 0,
+      text = '';
   const MilestoneEvent.synergy(String this.synergy)
     : generator = null,
       index = 0,
       dial = null,
-      loopSprings = 0;
+      loopSprings = 0,
+      trait = null,
+      value = 0,
+      text = '';
 
   /// A new stopwatch face (docs/12 §3.3).
   const MilestoneEvent.dial(String this.dial)
     : generator = null,
       synergy = null,
       index = 0,
-      loopSprings = 0;
+      loopSprings = 0,
+      trait = null,
+      value = 0,
+      text = '';
 
   /// Mainsprings for bonuses of the loop's goal clock (R-PETLA-2a).
   const MilestoneEvent.loopBonus(this.loopSprings)
     : generator = null,
       synergy = null,
       dial = null,
-      index = 0;
+      index = 0,
+      trait = null,
+      value = 0,
+      text = '';
+
+  /// Clock [generator]'s trait at work: [index] is the trait tier for
+  /// [TraitNotice.unlocked]; [value] and [text] what the toast shows.
+  const MilestoneEvent.trait(
+    String this.generator,
+    TraitNotice this.trait, {
+    this.index = 0,
+    this.value = 0,
+    this.text = '',
+  }) : synergy = null,
+       dial = null,
+       loopSprings = 0;
 
   final int loopSprings;
   final String? generator;
   final int index;
   final String? synergy;
   final String? dial;
+  final TraitNotice? trait;
+  final double value;
+  final String text;
 }
 
 /// One stopwatch and what was fixed when its round started (R-TRYB-1).
@@ -773,6 +803,7 @@ class GameController extends ChangeNotifier {
       _checkLoop();
       _windSprings();
       _announceDials();
+      _checkCuckoo();
       checkTips();
     }
     _sinceSave += dt;
@@ -808,6 +839,12 @@ class GameController extends ChangeNotifier {
           mode: slot.mode,
           clock: slot.index,
         );
+        // The Station clock's Express (docs/18).
+        if (o.golden?.express ?? false) {
+          _milestones.add(
+            const MilestoneEvent.trait('stationClock', TraitNotice.express),
+          );
+        }
         ads.onRound(o, _wallMs());
         _trackAccuracy();
         _trackTutorial();
@@ -965,6 +1002,30 @@ class GameController extends ChangeNotifier {
   }
 
   /// The player tapped the flying golden clock (R-ZLOTA-1).
+  /// The local hour (and half hour) the Cuckoo last called at.
+  int _cuckooKey = 0;
+
+  /// The Cuckoo's trait (docs/18): on the full hour, and on the half hour
+  /// at tier 5, an extra Golden Second flies out while the game is played.
+  void _checkCuckoo() {
+    if (!state.tutorialDone || replaying) return;
+    final now = _localNow();
+    final half = now.minute == 30 && econ.cuckooOnHalfHour;
+    if (!(now.minute == 0 && econ.cuckooOnHour) && !half) return;
+    final key = dateKey(now) * 100 + now.hour * 2 + (half ? 1 : 0);
+    if (key == _cuckooKey) return;
+    _cuckooKey = key;
+    if (!engine.cuckooGolden()) return;
+    _log('cuckoo', {'half': half ? 1 : 0});
+    _milestones.add(
+      MilestoneEvent.trait(
+        'cuckoo',
+        TraitNotice.cuckoo,
+        text: '${now.hour}:${half ? '30' : '00'}',
+      ),
+    );
+  }
+
   void claimGolden() {
     if (!engine.claimGolden()) return;
     _log('golden_catch');
@@ -1332,8 +1393,17 @@ class GameController extends ChangeNotifier {
 
   /// Raises clock [id] one level for Mainsprings (R-SPR-5).
   BuyResult levelClock(String id) {
+    final tierBefore = econ.traitTier(id);
     final r = engine.levelClock(id);
     if (r == BuyResult.ok) {
+      // A master title brings the clock's trait (docs/18).
+      final tier = econ.traitTier(id);
+      if (tier > tierBefore) {
+        _milestones.add(
+          MilestoneEvent.trait(id, TraitNotice.unlocked, index: tier),
+        );
+        _log('trait_unlock', {'id': id, 'tier': tier});
+      }
       _log('clock_level', {
         'id': id,
         'level': econ.clockLevel(id),
@@ -1406,6 +1476,16 @@ class GameController extends ChangeNotifier {
     if (!engine.startLoop(_wallMs())) return false;
     // The perks are gone, and the second clock with them.
     _rebuildClocks();
+    // The Time machine's Chronons to start with (docs/18).
+    if (econ.loopStartChronons > 0) {
+      _milestones.add(
+        MilestoneEvent.trait(
+          'timeMachine',
+          TraitNotice.loopChronons,
+          value: econ.loopStartChronons.toDouble(),
+        ),
+      );
+    }
     _replanChallenges();
     ads.rescue = null;
     _log('loop_start', {
@@ -1678,7 +1758,7 @@ class GameController extends ChangeNotifier {
       perk: perk.id,
       // The Shards a paradox would add count too: the bar fills in play.
       have: state.shards + econ.prestigeGain().toDouble(),
-      need: perk.cost.toDouble(),
+      need: econ.perkCost(perk.id).toDouble(),
     );
   }
 
@@ -1910,8 +1990,17 @@ class GameController extends ChangeNotifier {
         s != null &&
         state.tutorialDone &&
         !state.tipsSeen.contains('season:${s.key}');
-    if (state.lastSeenMs > 0) {
-      engine.onReturn((_wallMs() - state.lastSeenMs) / 1000);
+    if (state.lastSeenMs > 0 &&
+        engine.onReturn((_wallMs() - state.lastSeenMs) / 1000)) {
+      // "Na start!" (Sprint judge, docs/18).
+      _milestones.add(
+        MilestoneEvent.trait(
+          'sprintJudge',
+          TraitNotice.warmUp,
+          index: state.warmUpHits,
+          value: state.warmUpMultiplier,
+        ),
+      );
     }
     _checkLoop(); // also a save from before the loops
     pendingOffline = engine.offlineSince(_wallMs());
@@ -2075,7 +2164,7 @@ class GameController extends ChangeNotifier {
     // The winding reserve (R-POW-1): after a paradox, when at least half
     // of it was used and refilling takes a while.
     if (econ.springsUnlocked &&
-        engine.springReserveAt(nowMs) <= balance.springs.hitReserve / 2) {
+        engine.springReserveAt(nowMs) <= econ.hitReserve() / 2) {
       final fullIn = engine.springReserveFullIn(nowMs);
       if (fullIn.isFinite && fullIn >= 30 * 60) {
         candidates[NotificationKind.reserveFull] = now.add(

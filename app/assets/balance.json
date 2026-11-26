@@ -594,6 +594,25 @@
     "titleLevels": [3, 5],
     "titleKeys": [5, 10]
   },
+  "traits": {
+    "grandpa": [{"offlineCapHours": 4}, {"offlineEfficiency": 0.10}],
+    "grandma": [{"graceEveryDay": 1}, {"lastDaySprings": 3}],
+    "cuckoo": [{"onHour": 1}, {"onHalfHour": 1}],
+    "metronome": [{"reserveRefill": 1.5}, {"reserve": 2}],
+    "watchmaker": [{"perkCost": 0.9}, {"perkCost": 0.8}],
+    "sprintJudge": [
+      {"warmUpHits": 10, "warmUpAwaySeconds": 3600, "warmUpMax": 9},
+      {"warmUpHits": 25}
+    ],
+    "stationClock": [{"goldenOften": 1.1}, {"expressEvery": 5, "expressStrength": 2}],
+    "quartz": [{"clocks": 0.10}, {"syncPerClock": 0.01}],
+    "atomic": [{"secondsPerSpring": 79200}, {"secondsPerSpring": 72000}],
+    "gps": [{"dailyAllSpring": 0.5}, {"weeklySprings": 1}],
+    "pulsar": [{"goldenStrength": 1.15}, {"frenzyDuration": 1.5}],
+    "timeMachine": [{"loopChronons": 10}, {"loopChronons": 25}],
+    "schrodinger": [{"coinChance": 0.5, "coinBonus": 0.10}, {"coinBonus": 0.20}],
+    "chronos": [{"chronosPerkCost": 400}, {"goalBonusSprings": 2}]
+  },
   "loops": {
     "goal": "chronos",
     "goalBonusSprings": 1,

@@ -2422,295 +2422,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'A Golden Second appears every 10 minutes on average. Each level cuts that by 30 s and makes its effects (Frenzy, Lucky, Hot hand) 5% stronger.';
 
   @override
-  String get master_grandpa_5 => 'Retired Watchmaker';
-
-  @override
-  String get master_grandpa_5_desc =>
-      'Fixes the neighbours\' watches. Free, with a lecture.';
-
-  @override
-  String get master_grandpa_10 => 'Grandpa Knows Best';
-
-  @override
-  String get master_grandpa_10_desc => 'And he\'s right. Sadly.';
-
-  @override
-  String get master_grandma_5 => 'The Perfect Egg';
-
-  @override
-  String get master_grandma_5_desc => 'Not a second too long. Not one.';
-
-  @override
-  String get master_grandma_10 => 'Turbo Grandma';
-
-  @override
-  String get master_grandma_10_desc => 'The egg timer is scared of her.';
-
-  @override
-  String get master_cuckoo_5 => 'Cuckoo with a Degree';
-
-  @override
-  String get master_cuckoo_5_desc =>
-      'Cuckoos on time. Insists on being called Doctor.';
-
-  @override
-  String get master_cuckoo_10 => 'Celebrity Cuckoo';
-
-  @override
-  String get master_cuckoo_10_desc =>
-      'Leaves the little house only for interviews.';
-
-  @override
-  String get master_metronome_5 => 'Tick Virtuoso';
-
-  @override
-  String get master_metronome_5_desc => 'Tick. Tock. Applause.';
-
-  @override
-  String get master_metronome_10 => 'Philharmonic Metronome';
-
-  @override
-  String get master_metronome_10_desc => 'Conducts the conductor.';
-
-  @override
-  String get master_watchmaker_5 => 'Golden Loupe';
-
-  @override
-  String get master_watchmaker_5_desc => 'Sees atoms. And the dust on them.';
-
-  @override
-  String get master_watchmaker_10 => 'Guild Master';
-
-  @override
-  String get master_watchmaker_10_desc =>
-      'Even sundials come to him for advice.';
-
-  @override
-  String get master_sprintJudge_5 => 'Eagle-eyed Judge';
-
-  @override
-  String get master_sprintJudge_5_desc =>
-      'Spots a false start before the runner thinks of it.';
-
-  @override
-  String get master_sprintJudge_10 => 'Olympic Judge';
-
-  @override
-  String get master_sprintJudge_10_desc =>
-      'Gold-plated whistle. Patience not included.';
-
-  @override
-  String get master_stationClock_5 => 'Train on Time';
-
-  @override
-  String get master_stationClock_5_desc =>
-      'Passengers don\'t believe it. They take photos.';
-
-  @override
-  String get master_stationClock_10 => 'Zero-delay Station';
-
-  @override
-  String get master_stationClock_10_desc =>
-      '\"Subject to change\" is now in a museum.';
-
-  @override
-  String get master_quartz_5 => 'Flawless Crystal';
-
-  @override
-  String get master_quartz_5_desc =>
-      'Vibrates exactly 32,768 times. We checked.';
-
-  @override
-  String get master_quartz_10 => 'Royal Quartz';
-
-  @override
-  String get master_quartz_10_desc => 'Worn at court instead of a crown.';
-
-  @override
-  String get master_atomic_5 => 'Atom of Calm';
-
-  @override
-  String get master_atomic_5_desc => 'Electrons tiptoe around it.';
-
-  @override
-  String get master_atomic_10 => 'The Standard Second';
-
-  @override
-  String get master_atomic_10_desc => 'A second lasts as long as it says.';
-
-  @override
-  String get master_gps_5 => 'Never-lost Satellite';
-
-  @override
-  String get master_gps_5_desc => 'Never says \"make a U-turn when possible\".';
-
-  @override
-  String get master_gps_10 => 'Lord of the Orbit';
-
-  @override
-  String get master_gps_10_desc => 'Other satellites set themselves by it.';
-
-  @override
-  String get master_pulsar_5 => 'Pulsar with Rhythm';
-
-  @override
-  String get master_pulsar_5_desc => 'The universe taps its foot along.';
-
-  @override
-  String get master_pulsar_10 => 'Lighthouse of the Galaxy';
-
-  @override
-  String get master_pulsar_10_desc => 'Alien ships set their watches by it.';
-
-  @override
-  String get master_timeMachine_5 => 'Return Ticket';
-
-  @override
-  String get master_timeMachine_5_desc => 'Back before it leaves. Never late.';
-
-  @override
-  String get master_timeMachine_10 => 'Perfect Loop';
-
-  @override
-  String get master_timeMachine_10_desc => 'Met itself. Both hit 5.00.';
-
-  @override
-  String get master_schrodinger_5 => 'Observed Cat';
-
-  @override
-  String get master_schrodinger_5_desc =>
-      'Hits when you look. When you don\'t, too.';
-
-  @override
-  String get master_schrodinger_10 => 'Cat in Both Boxes';
-
-  @override
-  String get master_schrodinger_10_desc =>
-      'Asleep and on target at once. Purrs in superposition.';
-
-  @override
-  String get master_chronos_5 => 'Chronos on Holiday';
-
-  @override
-  String get master_chronos_5_desc =>
-      'Time flows on its own, and still on the dot.';
-
-  @override
-  String get master_chronos_10 => 'Lord of All Seconds';
-
-  @override
-  String get master_chronos_10_desc =>
-      'Even the second that just passed was his.';
-
-  @override
-  String get dial_classic => 'Classic';
-
-  @override
-  String get dial_classic_desc => 'White, clean, reliable.';
-
-  @override
-  String get dial_wood => 'Woodgrain';
-
-  @override
-  String get dial_wood_desc => 'Smells like Grandpa\'s workshop.';
-
-  @override
-  String get dial_porcelain => 'Grandma\'s Porcelain';
-
-  @override
-  String get dial_porcelain_desc => 'From the good china. Don\'t drop it.';
-
-  @override
-  String get dial_brass => 'Brass';
-
-  @override
-  String get dial_brass_desc => 'Shines like a town hall door handle.';
-
-  @override
-  String get dial_station => 'Station';
-
-  @override
-  String get dial_station_desc =>
-      'Big, so you can see the delay from far away.';
-
-  @override
-  String get dial_swiss => 'Swiss';
-
-  @override
-  String get dial_swiss_desc => 'Red, precise and a little smug.';
-
-  @override
-  String get dial_quartz => 'Quartz LCD';
-
-  @override
-  String get dial_quartz_desc => 'Green digits, like an 80s alarm clock.';
-
-  @override
-  String get dial_atomic => 'Atomic';
-
-  @override
-  String get dial_atomic_desc =>
-      'Glows faintly blue. Apparently that\'s normal.';
-
-  @override
-  String get dial_neon => 'Neon';
-
-  @override
-  String get dial_neon_desc => 'For playing after midnight.';
-
-  @override
-  String get dial_cosmic => 'Cosmic';
-
-  @override
-  String get dial_cosmic_desc => 'Stars behind, seconds in front.';
-
-  @override
-  String get dial_golden => 'Golden';
-
-  @override
-  String get dial_golden_desc => 'Solid gold. Well, almost.';
-
-  @override
-  String get dial_rift => 'Spacetime Rift';
-
-  @override
-  String get dial_rift_desc =>
-      'Through the crack you can see yesterday\'s 5.00.';
-
-  @override
-  String get dial_spring => 'Mainspring';
-
-  @override
-  String get dial_spring_desc => 'Wound up. Literally.';
-
-  @override
-  String get dial_master => 'Master\'s';
-
-  @override
-  String get dial_master_desc =>
-      'Grandpa says he regulated it himself. Grandma says it was the watchmaker.';
-
-  @override
-  String get dial_grandmaster => 'Grandmaster\'s';
-
-  @override
-  String get dial_grandmaster_desc =>
-      'Engraved on the back: \"Do not touch. Grandpa.\"';
-
-  @override
-  String get dial_hourglass => 'Hourglass';
-
-  @override
-  String get dial_hourglass_desc => 'You stayed. So did time.';
-
-  @override
-  String get dial_calendar => 'Calendar';
-
-  @override
-  String get dial_calendar_desc =>
-      'A hundred teatimes. Grandpa was late for every one.';
-
-  @override
   String springWound(String minutes) {
     return 'Mainspring +$minutes min';
   }
@@ -3655,4 +3366,564 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get welcomeLine_7 =>
       'grandpa: Grandma has never once been late. Fifty years. It\'s not normal.';
+
+  @override
+  String get master_grandpa_5 => 'Retired Watchmaker';
+
+  @override
+  String get master_grandpa_5_desc =>
+      'Fixes the neighbours\' watches. Free, with a lecture.';
+
+  @override
+  String get master_grandpa_10 => 'Grandpa Knows Best';
+
+  @override
+  String get master_grandpa_10_desc => 'And he\'s right. Sadly.';
+
+  @override
+  String get master_grandma_5 => 'The Perfect Egg';
+
+  @override
+  String get master_grandma_5_desc => 'Not a second too long. Not one.';
+
+  @override
+  String get master_grandma_10 => 'Turbo Grandma';
+
+  @override
+  String get master_grandma_10_desc => 'The egg timer is scared of her.';
+
+  @override
+  String get master_cuckoo_5 => 'Cuckoo with a Degree';
+
+  @override
+  String get master_cuckoo_5_desc =>
+      'Cuckoos on time. Insists on being called Doctor.';
+
+  @override
+  String get master_cuckoo_10 => 'Celebrity Cuckoo';
+
+  @override
+  String get master_cuckoo_10_desc =>
+      'Leaves the little house only for interviews.';
+
+  @override
+  String get master_metronome_5 => 'Tick Virtuoso';
+
+  @override
+  String get master_metronome_5_desc => 'Tick. Tock. Applause.';
+
+  @override
+  String get master_metronome_10 => 'Philharmonic Metronome';
+
+  @override
+  String get master_metronome_10_desc => 'Conducts the conductor.';
+
+  @override
+  String get master_watchmaker_5 => 'Golden Loupe';
+
+  @override
+  String get master_watchmaker_5_desc => 'Sees atoms. And the dust on them.';
+
+  @override
+  String get master_watchmaker_10 => 'Guild Master';
+
+  @override
+  String get master_watchmaker_10_desc =>
+      'Even sundials come to him for advice.';
+
+  @override
+  String get master_sprintJudge_5 => 'Eagle-eyed Judge';
+
+  @override
+  String get master_sprintJudge_5_desc =>
+      'Spots a false start before the runner thinks of it.';
+
+  @override
+  String get master_sprintJudge_10 => 'Olympic Judge';
+
+  @override
+  String get master_sprintJudge_10_desc =>
+      'Gold-plated whistle. Patience not included.';
+
+  @override
+  String get master_stationClock_5 => 'Train on Time';
+
+  @override
+  String get master_stationClock_5_desc =>
+      'Passengers don\'t believe it. They take photos.';
+
+  @override
+  String get master_stationClock_10 => 'Zero-delay Station';
+
+  @override
+  String get master_stationClock_10_desc =>
+      '\"Subject to change\" is now in a museum.';
+
+  @override
+  String get master_quartz_5 => 'Flawless Crystal';
+
+  @override
+  String get master_quartz_5_desc =>
+      'Vibrates exactly 32,768 times. We checked.';
+
+  @override
+  String get master_quartz_10 => 'Royal Quartz';
+
+  @override
+  String get master_quartz_10_desc => 'Worn at court instead of a crown.';
+
+  @override
+  String get master_atomic_5 => 'Atom of Calm';
+
+  @override
+  String get master_atomic_5_desc => 'Electrons tiptoe around it.';
+
+  @override
+  String get master_atomic_10 => 'The Standard Second';
+
+  @override
+  String get master_atomic_10_desc => 'A second lasts as long as it says.';
+
+  @override
+  String get master_gps_5 => 'Never-lost Satellite';
+
+  @override
+  String get master_gps_5_desc => 'Never says \"make a U-turn when possible\".';
+
+  @override
+  String get master_gps_10 => 'Lord of the Orbit';
+
+  @override
+  String get master_gps_10_desc => 'Other satellites set themselves by it.';
+
+  @override
+  String get master_pulsar_5 => 'Pulsar with Rhythm';
+
+  @override
+  String get master_pulsar_5_desc => 'The universe taps its foot along.';
+
+  @override
+  String get master_pulsar_10 => 'Lighthouse of the Galaxy';
+
+  @override
+  String get master_pulsar_10_desc => 'Alien ships set their watches by it.';
+
+  @override
+  String get master_timeMachine_5 => 'Return Ticket';
+
+  @override
+  String get master_timeMachine_5_desc => 'Back before it leaves. Never late.';
+
+  @override
+  String get master_timeMachine_10 => 'Perfect Loop';
+
+  @override
+  String get master_timeMachine_10_desc => 'Met itself. Both hit 5.00.';
+
+  @override
+  String get master_schrodinger_5 => 'Observed Cat';
+
+  @override
+  String get master_schrodinger_5_desc =>
+      'Hits when you look. When you don\'t, too.';
+
+  @override
+  String get master_schrodinger_10 => 'Cat in Both Boxes';
+
+  @override
+  String get master_schrodinger_10_desc =>
+      'Asleep and on target at once. Purrs in superposition.';
+
+  @override
+  String get master_chronos_5 => 'Chronos on Holiday';
+
+  @override
+  String get master_chronos_5_desc =>
+      'Time flows on its own, and still on the dot.';
+
+  @override
+  String get master_chronos_10 => 'Lord of All Seconds';
+
+  @override
+  String get master_chronos_10_desc =>
+      'Even the second that just passed was his.';
+
+  @override
+  String get trait_grandpa_1 => 'After-Lunch Nap';
+
+  @override
+  String trait_grandpa_1_desc(String a) {
+    return 'Offline income limit +$a.';
+  }
+
+  @override
+  String get trait_grandpa_2 => 'Snores in Time';
+
+  @override
+  String trait_grandpa_2_desc(String a) {
+    return 'Offline income +$a.';
+  }
+
+  @override
+  String get trait_grandma_1 => 'Grandma Remembers';
+
+  @override
+  String get trait_grandma_1_desc =>
+      'A single missed day never breaks the daily bonus streak, not just once a week.';
+
+  @override
+  String get trait_grandma_2 => 'Sunday Dinner';
+
+  @override
+  String trait_grandma_2_desc(String a) {
+    return 'Day 7 of the daily bonus gives $a Mainsprings instead of 1.';
+  }
+
+  @override
+  String get trait_cuckoo_1 => 'Cuckoo on the Hour';
+
+  @override
+  String get trait_cuckoo_1_desc =>
+      'On every full hour while you play, an extra Golden Second flies out.';
+
+  @override
+  String get trait_cuckoo_2 => 'Half-Past Cuckoo';
+
+  @override
+  String get trait_cuckoo_2_desc => 'The cuckoo also comes out at half past.';
+
+  @override
+  String get trait_metronome_1 => 'Steady Tempo';
+
+  @override
+  String trait_metronome_1_desc(String a) {
+    return 'The winding reserve refills $a faster.';
+  }
+
+  @override
+  String get trait_metronome_2 => 'Longer Bar';
+
+  @override
+  String trait_metronome_2_desc(String a) {
+    return 'The winding reserve is $a bigger.';
+  }
+
+  @override
+  String get trait_watchmaker_1 => 'Mr Henry\'s Discount';
+
+  @override
+  String trait_watchmaker_1_desc(String a) {
+    return 'Perks cost $a less.';
+  }
+
+  @override
+  String get trait_watchmaker_2 => 'Friend of the Trade';
+
+  @override
+  String trait_watchmaker_2_desc(String a) {
+    return 'Perks cost $a less in all.';
+  }
+
+  @override
+  String get trait_sprintJudge_1 => 'On Your Marks!';
+
+  @override
+  String trait_sprintJudge_1_desc(String a, String b, String c) {
+    return 'After a break of $a or more, your first $b hits pay ×(1 + hours away), up to $c.';
+  }
+
+  @override
+  String get trait_sprintJudge_2 => 'Long Sprint';
+
+  @override
+  String trait_sprintJudge_2_desc(String a) {
+    return '“On Your Marks!” covers $a hits.';
+  }
+
+  @override
+  String get trait_stationClock_1 => 'On Schedule';
+
+  @override
+  String trait_stationClock_1_desc(String a) {
+    return 'Golden Seconds come $a more often.';
+  }
+
+  @override
+  String get trait_stationClock_2 => 'Express';
+
+  @override
+  String trait_stationClock_2_desc(String a) {
+    return 'Every ${a}th Golden Second you catch has double the effect.';
+  }
+
+  @override
+  String get trait_quartz_1 => 'Quartz Accuracy';
+
+  @override
+  String trait_quartz_1_desc(String a) {
+    return 'All clocks earn +$a.';
+  }
+
+  @override
+  String get trait_quartz_2 => 'Synchronisation';
+
+  @override
+  String trait_quartz_2_desc(String a, String b) {
+    return '+$a to all clocks for every clock at mastery tier 5 (now +$b).';
+  }
+
+  @override
+  String get trait_atomic_1 => 'To the Second';
+
+  @override
+  String trait_atomic_1_desc(String a) {
+    return 'A Mainspring winds in $a instead of 24 h.';
+  }
+
+  @override
+  String get trait_atomic_2 => 'Half-Life';
+
+  @override
+  String trait_atomic_2_desc(String a) {
+    return 'A Mainspring winds in $a.';
+  }
+
+  @override
+  String get trait_gps_1 => 'Route Planned';
+
+  @override
+  String trait_gps_1_desc(String a) {
+    return 'All three daily challenges wind $a of a Mainspring on top.';
+  }
+
+  @override
+  String get trait_gps_2 => 'Destination Reached';
+
+  @override
+  String trait_gps_2_desc(String a) {
+    return 'The weekly challenge gives +$a Mainspring.';
+  }
+
+  @override
+  String get trait_pulsar_1 => 'Signal from Space';
+
+  @override
+  String trait_pulsar_1_desc(String a) {
+    return 'Golden Second effects are $a stronger.';
+  }
+
+  @override
+  String get trait_pulsar_2 => 'Long Pulse';
+
+  @override
+  String trait_pulsar_2_desc(String a) {
+    return 'Frenzy lasts $a longer.';
+  }
+
+  @override
+  String get trait_timeMachine_1 => 'Return Ticket';
+
+  @override
+  String trait_timeMachine_1_desc(String a) {
+    return 'A new loop starts with $a Chronons and Shards.';
+  }
+
+  @override
+  String get trait_timeMachine_2 => 'Hand Luggage';
+
+  @override
+  String trait_timeMachine_2_desc(String a) {
+    return 'A new loop starts with $a Chronons and Shards.';
+  }
+
+  @override
+  String get trait_schrodinger_1 => 'Alive or Not?';
+
+  @override
+  String trait_schrodinger_1_desc(String a, String b) {
+    return 'At a paradox, a coin toss: $a chance of +$b Chronons.';
+  }
+
+  @override
+  String get trait_schrodinger_2 => 'Nine Lives';
+
+  @override
+  String trait_schrodinger_2_desc(String a) {
+    return 'A won toss gives +$a Chronons.';
+  }
+
+  @override
+  String get trait_chronos_1 => 'Friends with Time';
+
+  @override
+  String trait_chronos_1_desc(String a, String b) {
+    return 'The “Chronos” perk costs $a instead of $b Shards.';
+  }
+
+  @override
+  String get trait_chronos_2 => 'Generous Time';
+
+  @override
+  String trait_chronos_2_desc(String a) {
+    return 'Every Chronos bonus gives $a Mainsprings instead of 1.';
+  }
+
+  @override
+  String get dial_classic => 'Classic';
+
+  @override
+  String get dial_classic_desc => 'White, clean, reliable.';
+
+  @override
+  String get dial_wood => 'Woodgrain';
+
+  @override
+  String get dial_wood_desc => 'Smells like Grandpa\'s workshop.';
+
+  @override
+  String get dial_porcelain => 'Grandma\'s Porcelain';
+
+  @override
+  String get dial_porcelain_desc => 'From the good china. Don\'t drop it.';
+
+  @override
+  String get dial_brass => 'Brass';
+
+  @override
+  String get dial_brass_desc => 'Shines like a town hall door handle.';
+
+  @override
+  String get dial_station => 'Station';
+
+  @override
+  String get dial_station_desc =>
+      'Big, so you can see the delay from far away.';
+
+  @override
+  String get dial_swiss => 'Swiss';
+
+  @override
+  String get dial_swiss_desc => 'Red, precise and a little smug.';
+
+  @override
+  String get dial_quartz => 'Quartz LCD';
+
+  @override
+  String get dial_quartz_desc => 'Green digits, like an 80s alarm clock.';
+
+  @override
+  String get dial_atomic => 'Atomic';
+
+  @override
+  String get dial_atomic_desc =>
+      'Glows faintly blue. Apparently that\'s normal.';
+
+  @override
+  String get dial_neon => 'Neon';
+
+  @override
+  String get dial_neon_desc => 'For playing after midnight.';
+
+  @override
+  String get dial_cosmic => 'Cosmic';
+
+  @override
+  String get dial_cosmic_desc => 'Stars behind, seconds in front.';
+
+  @override
+  String get dial_golden => 'Golden';
+
+  @override
+  String get dial_golden_desc => 'Solid gold. Well, almost.';
+
+  @override
+  String get dial_rift => 'Spacetime Rift';
+
+  @override
+  String get dial_rift_desc =>
+      'Through the crack you can see yesterday\'s 5.00.';
+
+  @override
+  String traitTier(String level) {
+    return 'Tier $level';
+  }
+
+  @override
+  String traitHidden(String level) {
+    return 'Revealed at tier $level';
+  }
+
+  @override
+  String get traitActive => 'Active';
+
+  @override
+  String get traitsTitle => 'Clock traits';
+
+  @override
+  String traitToastNew(String clock) {
+    return 'New trait · $clock';
+  }
+
+  @override
+  String traitCuckooToast(String time) {
+    return 'Cuckoo · $time';
+  }
+
+  @override
+  String get traitCuckooTitle => 'Cuckoo! A Golden Second';
+
+  @override
+  String get traitWarmUpToast => 'On Your Marks! · Sprint Judge';
+
+  @override
+  String traitWarmUpTitle(int hits, String mult) {
+    return 'Hits: $hits × $mult';
+  }
+
+  @override
+  String get traitExpressToast => 'Express · Station Clock';
+
+  @override
+  String get traitExpressTitle => 'Double Golden Second!';
+
+  @override
+  String get traitLoopToast => 'Time Machine';
+
+  @override
+  String traitLoopTitle(int count) {
+    return 'To start the loop: +$count ✦';
+  }
+
+  @override
+  String traitExpressCount(int count, int every) {
+    return 'Towards the Express: $count/$every';
+  }
+
+  @override
+  String chipWarmUp(String mult, int hits) {
+    return 'On Your Marks! $mult · $hits left';
+  }
+
+  @override
+  String coinWon(int count) {
+    return 'The cat lives! Toss won: +$count ✦';
+  }
+
+  @override
+  String get coinLost => 'The cat… not this time. Toss lost.';
+
+  @override
+  String coinChance(String chance, String bonus) {
+    return 'Schrödinger\'s Cat: $chance chance of +$bonus Chronons';
+  }
+
+  @override
+  String traitGpsPaid(String time) {
+    return 'Route Planned: Mainspring +$time';
+  }
+
+  @override
+  String perkDiscount(String pct) {
+    return 'Watchmaker: perks −$pct';
+  }
 }

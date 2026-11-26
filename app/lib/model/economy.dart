@@ -167,10 +167,15 @@ class Economy {
   int shieldCharges() => ruleOn('shortFuse') ? 0 : level('shield');
 
   /// Golden Touch: interval multiplier (<1 = more often) and strength.
+  /// The Station clock's trait comes on top (docs/18).
   double goldenIntervalFactor() =>
-      1 - _per('goldenTouch') * level('goldenTouch');
+      (1 - _per('goldenTouch') * level('goldenTouch')) /
+      (trait('stationClock', 'goldenOften') ?? 1);
+
+  /// The Pulsar's trait comes on top (docs/18).
   double goldenStrengthFactor() =>
-      1 + _per('goldenTouch') * level('goldenTouch');
+      (1 + _per('goldenTouch') * level('goldenTouch')) *
+      (trait('pulsar', 'goldenStrength') ?? 1);
 
   TimeMap timeMap() {
     final r = b.round;
@@ -330,7 +335,8 @@ class Economy {
       math.pow(milestoneMultiplier(id), milestonesReached(id)) *
       _synergyFactor(id) *
       windowGain(id) *
-      clockLevelFactor(id);
+      clockLevelFactor(id) *
+      clocksTraitFactor();
 
   // ------------------------------------------- clock levels (R-SPR-5) --
 
@@ -373,6 +379,114 @@ class Economy {
   /// Clock [id] can take a level at all (bought once, not maxed).
   bool clockLevelable(String id) =>
       springsUnlocked && s.everOwned.contains(id) && clockLevelCost(id) != null;
+
+  // --------------------------------------- clock traits (docs/18, R-CECHA) --
+
+  /// Trait tiers clock [id] holds: 0, 1 (its first master title) or 2.
+  int traitTier(String id) {
+    final lv = clockLevel(id);
+    return b.springs.titleLevels.where((t) => lv >= t).length;
+  }
+
+  /// Trait parameter [key] of clock [id]: the highest tier reached that
+  /// names it, or null while none does (R-CECHA-1).
+  double? trait(String id, String key) {
+    for (var i = traitTier(id) - 1; i >= 0; i--) {
+      final v = b.traits.of(id, i)[key];
+      if (v != null) return v;
+    }
+    return null;
+  }
+
+  /// Clocks at their last title tier ("Synchronisation" counts them).
+  int get clocksAtTopTier => b.generators
+      .where((g) => traitTier(g.id) >= b.springs.titleLevels.length)
+      .length;
+
+  /// Quartz: every clock's income ×(1 + 10%), and 1% more for each clock
+  /// at its last tier once Quartz is there itself.
+  double clocksTraitFactor() =>
+      1 +
+      (trait('quartz', 'clocks') ?? 0) +
+      (trait('quartz', 'syncPerClock') ?? 0) * clocksAtTopTier;
+
+  /// Atomic clock: real seconds that wind one Mainspring.
+  double secondsPerSpring() =>
+      trait('atomic', 'secondsPerSpring') ?? b.springs.secondsPerSpring;
+
+  /// Metronome: the winding reserve and how fast it refills (R-SPR-3).
+  double hitReserve() =>
+      b.springs.hitReserve * (trait('metronome', 'reserve') ?? 1);
+  double hitReserveRefill() =>
+      b.springs.hitReserveRefill * (trait('metronome', 'reserveRefill') ?? 1);
+
+  /// Real seconds an empty reserve takes to fill up.
+  double reserveRefillSeconds() {
+    final r = hitReserveRefill();
+    return r > 0 ? hitReserve() / r : double.infinity;
+  }
+
+  /// Shards perk [id] costs: Chronos's own perk is cheaper with Chronos's
+  /// trait, every perk with the Watchmaker's.
+  int perkCost(String id) {
+    final p = b.perk(id);
+    final base = id == 'unlockChronos'
+        ? trait('chronos', 'chronosPerkCost') ?? p.cost.toDouble()
+        : p.cost.toDouble();
+    return (base * (trait('watchmaker', 'perkCost') ?? 1) - 1e-9).ceil();
+  }
+
+  /// Mainsprings each bonus of the loop's goal clock pays (R-PETLA-2a).
+  int goalBonusSprings() =>
+      trait('chronos', 'goalBonusSprings')?.round() ?? b.loops.goalBonusSprings;
+
+  /// Grandma: a single missed day never breaks the daily streak (not
+  /// only once a week, R-DZIEN-3).
+  bool get graceEveryDay => (trait('grandma', 'graceEveryDay') ?? 0) > 0;
+
+  /// Mainsprings the daily bonus's last day gives.
+  int dailyLastDaySprings() =>
+      trait('grandma', 'lastDaySprings')?.round() ?? b.daily.lastDaySprings;
+
+  /// Pulsar: Frenzy lasts this much longer.
+  double frenzyDurationFactor() => trait('pulsar', 'frenzyDuration') ?? 1;
+
+  /// Station clock: every n-th Golden Second caught is twice as strong
+  /// ("Express"); 0 without it.
+  int get expressEvery => trait('stationClock', 'expressEvery')?.round() ?? 0;
+
+  /// Sprint judge ("Na start!"): hits after a break that pay more, the
+  /// break it takes and the most they pay.
+  int get warmUpHits => trait('sprintJudge', 'warmUpHits')?.round() ?? 0;
+
+  /// The pay of a warm-up hit after [awaySeconds]: ×(1 + hours away), at
+  /// most `warmUpMax`; 1 without the trait or after a short break.
+  double warmUpMultiplier(double awaySeconds) {
+    final need = trait('sprintJudge', 'warmUpAwaySeconds');
+    if (warmUpHits <= 0 || need == null || awaySeconds < need) return 1;
+    return math.min(
+      trait('sprintJudge', 'warmUpMax') ?? 1,
+      1 + awaySeconds / 3600,
+    );
+  }
+
+  /// Time machine: Chronons (and Shards) a new loop starts with.
+  int get loopStartChronons =>
+      trait('timeMachine', 'loopChronons')?.round() ?? 0;
+
+  /// Schrödinger's cat: the chance and size of the paradox's coin.
+  double get coinChance => trait('schrodinger', 'coinChance') ?? 0;
+  double get coinBonus => trait('schrodinger', 'coinBonus') ?? 0;
+
+  /// GPS: Mainsprings (a share of one) for all three daily challenges.
+  double get dailyAllSpring => trait('gps', 'dailyAllSpring') ?? 0;
+
+  /// GPS: Mainsprings the weekly challenge adds.
+  int get weeklyTraitSprings => trait('gps', 'weeklySprings')?.round() ?? 0;
+
+  /// Cuckoo: a Golden Second on the full hour, and on the half hour.
+  bool get cuckooOnHour => (trait('cuckoo', 'onHour') ?? 0) > 0;
+  bool get cuckooOnHalfHour => (trait('cuckoo', 'onHalfHour') ?? 0) > 0;
 
   // ---------------------------------------------- dials (docs/17 §5) --
 
@@ -468,8 +582,10 @@ class Economy {
   }
 
   /// Chronons a prestige right now would add.
+  /// Chronons given on top of the Tiki (Time machine, Schrödinger's coin)
+  /// count as earned, so the next paradox does not take them back.
   int prestigeGain() =>
-      math.max(0, chrononsTotalFor(s.earnedTotal) - s.chronons);
+      math.max(0, chrononsTotalFor(s.earnedTotal) + s.chrononGift - s.chronons);
 }
 
 class TierOdds {

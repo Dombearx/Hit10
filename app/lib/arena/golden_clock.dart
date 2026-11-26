@@ -17,7 +17,12 @@ class GoldenClock extends PositionComponent {
     required this.fromLeft,
     this.calm = false,
     this.item,
+    this.express = false,
   }) : super(anchor: Anchor.center);
+
+  /// The Station clock's Express (docs/18): this one, caught, is twice as
+  /// strong; it wears a "×2" tag.
+  final bool express;
 
   /// A season's item (docs/02 §14) drawn instead of the golden clock.
   final ui.Image? item;
@@ -125,8 +130,42 @@ class GoldenClock extends PositionComponent {
     } else {
       _drawClock(canvas, r);
     }
+    if (express) _drawExpressTag(canvas, r);
     if (alpha < 1) canvas.restore();
     canvas.restore();
+  }
+
+  TextPainter? _tag;
+
+  /// A red "×2" tag on the lower right of the clock.
+  void _drawExpressTag(Canvas canvas, double r) {
+    final tag = _tag ??= TextPainter(
+      text: TextSpan(
+        text: '×2',
+        style: TextStyle(
+          fontFamily: Fonts.display,
+          fontSize: r * 0.62,
+          color: const Color(0xFFFFFFFF),
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    final c = Offset(r * 0.85, r * 0.7);
+    final box = Rect.fromCenter(
+      center: c,
+      width: tag.width + r * 0.4,
+      height: tag.height + r * 0.1,
+    );
+    final rr = RRect.fromRectAndRadius(box, Radius.circular(r * 0.3));
+    canvas.drawRRect(rr, Paint()..color = const Color(0xFFE53935));
+    canvas.drawRRect(
+      rr,
+      Paint()
+        ..color = Palette.outline
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = r * 0.09,
+    );
+    tag.paint(canvas, c - Offset(tag.width / 2, tag.height / 2));
   }
 
   /// Slowly turning sun rays behind the clock.
