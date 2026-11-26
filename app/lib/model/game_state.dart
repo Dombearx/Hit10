@@ -59,6 +59,18 @@ class GameState {
   /// (docs/13 §5.3); the UI says so once and clears it.
   int springsRefunded = 0;
 
+  // ------------------------------------ clock traits (docs/18, R-CECHA) --
+  /// Chronons this loop got on top of the Tiki (Time machine, the cat's
+  /// coin): the next paradox counts them as earned.
+  int chrononGift = 0;
+
+  /// Golden Seconds caught towards the next "Express" (Station clock).
+  int expressCount = 0;
+
+  /// "Na start!" (Sprint judge): hits left that pay ×[warmUpMultiplier].
+  int warmUpHits = 0;
+  double warmUpMultiplier = 1;
+
   /// Clocks bought at least once in any run: only those can be levelled.
   final Set<String> everOwned = {};
 

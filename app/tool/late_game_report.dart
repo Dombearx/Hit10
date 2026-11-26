@@ -131,7 +131,7 @@ class Player {
     _goalHours = null;
   }
 
-  final Balance b;
+  Balance b; // trait_report.dart swaps it as clock traits come in
   final GameState s;
 
   /// Called after every session (its purchases done), with the day.

@@ -11,6 +11,7 @@ import '../catalog.dart';
 import '../dial_skins.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import '../trait_text.dart';
 import '../theme.dart';
 import 'burst.dart';
 import 'emoji_card.dart';
@@ -91,6 +92,49 @@ class _AchievementToastsState extends State<AchievementToasts> {
     super.dispose();
   }
 
+  /// A clock trait at work (docs/18): the clock's art, what happened.
+  (Object?, String, String, String) _traitLook(
+    BuildContext context,
+    MilestoneEvent m,
+  ) {
+    final l = AppLocalizations.of(context);
+    final c = widget.controller;
+    final f = Fmt.of(context, c);
+    final art = generatorArt[m.generator]!;
+    return switch (m.trait!) {
+      TraitNotice.unlocked => (
+        art,
+        l.traitToastNew(generatorName(l, m.generator!)),
+        traitText(l, f, c.econ, m.generator!, m.index).$1,
+        '★',
+      ),
+      TraitNotice.cuckoo => (
+        art,
+        l.traitCuckooToast(m.text),
+        l.traitCuckooTitle,
+        '',
+      ),
+      TraitNotice.warmUp => (
+        art,
+        l.traitWarmUpToast,
+        l.traitWarmUpTitle(m.index, f.mult(m.value)),
+        '',
+      ),
+      TraitNotice.express => (
+        art,
+        l.traitExpressToast,
+        l.traitExpressTitle,
+        '×2',
+      ),
+      TraitNotice.loopChronons => (
+        art,
+        l.traitLoopToast,
+        l.traitLoopTitle(m.value.round()),
+        '',
+      ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = _current;
@@ -114,6 +158,8 @@ class _AchievementToastsState extends State<AchievementToasts> {
           l.loopBonusToastBody(m.loopSprings),
           '',
         ),
+      (achievement: null, bonus: final MilestoneEvent m) when m.trait != null =>
+        _traitLook(context, m),
       (achievement: final AchievementDef a, bonus: _) => (
         achievementArt(a),
         _extra > 0 ? l.achievementsUnlocked(_extra + 1) : l.achievementUnlocked,

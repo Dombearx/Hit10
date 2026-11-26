@@ -70,6 +70,12 @@ class _Prestige extends StatelessWidget {
           style: const TextStyle(fontFamily: Fonts.display, fontSize: 20),
         ),
         const SizedBox(height: 4),
+        // Schrödinger's cat: the coin of this paradox (docs/18).
+        if (controller.engine.lastCoin != null) ...[
+          const SizedBox(height: 8),
+          _CoinResult(controller: controller),
+        ],
+        const SizedBox(height: 4),
         ResText(
           l.prestigePendingBody,
           textAlign: TextAlign.center,
@@ -162,6 +168,22 @@ class _Prestige extends StatelessWidget {
                         ),
                       ),
                     ],
+                    if (gain > 0 && c.econ.coinChance > 0)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: ResText(
+                          l.coinChance(
+                            '${(c.econ.coinChance * 100).round()}%',
+                            '${(c.econ.coinBonus * 100).round()}%',
+                          ),
+                          key: const Key('prestige-coin-chance'),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
                     const SizedBox(height: 10),
                     BuyButton(
                       key: const Key('prestige-go'),
@@ -178,10 +200,58 @@ class _Prestige extends StatelessWidget {
           l.perksTitle,
           style: const TextStyle(fontFamily: Fonts.display, fontSize: 22),
         ),
+        // The Watchmaker's trait: the prices below are already lower.
+        if (c.econ.trait('watchmaker', 'perkCost') case final k?)
+          ResText(
+            l.perkDiscount('${((1 - k) * 100).round()}%'),
+            key: const Key('perk-discount'),
+            style: const TextStyle(
+              fontSize: 12.5,
+              fontWeight: FontWeight.w700,
+              color: Palette.great,
+            ),
+          ),
         const SizedBox(height: 6),
         for (final p in c.balance.prestige.perks)
           _PerkTile(controller: c, id: p.id),
       ],
+    );
+  }
+}
+
+/// The cat's coin (docs/18): won or lost, with the cat.
+class _CoinResult extends StatelessWidget {
+  const _CoinResult({required this.controller});
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final won = controller.engine.lastCoin ?? 0;
+    return Container(
+      key: const Key('prestige-coin'),
+      padding: const EdgeInsets.fromLTRB(8, 6, 12, 6),
+      decoration: BoxDecoration(
+        color: won > 0 ? const Color(0xFFFFF3C4) : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Palette.outline, width: 2),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          EmojiCard(art: generatorArt['schrodinger']!, size: 34),
+          const SizedBox(width: 8),
+          Flexible(
+            child: ResText(
+              won > 0 ? l.coinWon(won) : l.coinLost,
+              style: const TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -294,9 +364,10 @@ class _PerkTile extends StatelessWidget {
             const SizedBox(width: 6),
             BuyButton(
               key: Key('perk-$id'),
-              price: owned ? l.perkOwned : '${cfg.cost}',
+              price: owned ? l.perkOwned : '${c.econ.perkCost(id)}',
               res: owned ? null : Res.shard,
-              enabled: !owned && available && c.state.shards >= cfg.cost,
+              enabled:
+                  !owned && available && c.state.shards >= c.econ.perkCost(id),
               minWidth: 72,
               onPressed: () => c.buyPerk(id) == BuyResult.ok,
             ),

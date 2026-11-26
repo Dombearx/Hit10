@@ -13,9 +13,17 @@ enum GoldenEffect { frenzy, lucky, hotHand }
 
 /// What a golden round gave (R-ZLOTA-2/3).
 class GoldenOutcome {
-  const GoldenOutcome(this.effect, this.strength, this.amount);
+  const GoldenOutcome(
+    this.effect,
+    this.strength,
+    this.amount, {
+    this.express = false,
+  });
   final GoldenEffect? effect; // null = "it escaped!" (miss)
   final double strength;
+
+  /// The Station clock's "Express": this one was twice as strong.
+  final bool express;
 
   /// Seconds of effect for Frenzy/Hot hand, Tiki for Lucky.
   final double amount;
@@ -53,7 +61,12 @@ class RoundOutcome {
     this.jackpot = 0,
     this.frenzyGrace = false,
     this.hotHandGrace = false,
+    this.warmUp = 1,
   });
+
+  /// "Na start!" (Sprint judge): what this hit's pay was multiplied by
+  /// (1 = not a warm-up hit).
+  final double warmUp;
 
   /// The grade before Luck / Hot hand.
   final Grade raw;
@@ -145,7 +158,17 @@ class GameEngine {
   double get hotHandLeft => s.hotHandLeft;
   set hotHandLeft(double v) => s.hotHandLeft = v;
 
+  /// What was left of the regular wait when the Cuckoo sent a Golden
+  /// Second: it is extra, the regular one still comes (docs/18).
+  double? _goldenResume;
+
   void _scheduleGolden() {
+    final resume = _goldenResume;
+    if (resume != null) {
+      _goldenResume = null;
+      s.goldenNextAt = s.playSeconds + resume;
+      return;
+    }
     final g = b.golden;
     var interval =
         g.intervalMin + rng.nextDouble() * (g.intervalMax - g.intervalMin);
@@ -181,9 +204,32 @@ class GameEngine {
   /// items still fly: a missed event must cost nothing (R-SEZ-3).
   bool get goldenBlocked => econ.ruleOn('noGold') && !_seasonRunning;
 
-  /// The player is back after [awaySeconds]: with the seal of "cloudy
-  /// day" a golden second comes within half a minute (R-PETLA-5).
-  void onReturn(double awaySeconds) {
+  /// The Cuckoo (docs/18): a Golden Second on the full (half) hour, on
+  /// top of the regular ones. Returns whether one came.
+  bool cuckooGolden() {
+    if (goldenBlocked || !goldenEnabled) return false;
+    if (goldenVisibleLeft > 0 || goldenArmed || goldenRound) return false;
+    _goldenResume = math.max(0, s.goldenNextAt - s.playSeconds);
+    goldenVisibleLeft = b.golden.visibleFor;
+    return true;
+  }
+
+  /// The player is back after [awaySeconds]: "Na start!" starts (Sprint
+  /// judge; returns whether it did), and with the seal of "cloudy day" a
+  /// golden second comes within half a minute (R-PETLA-5).
+  bool onReturn(double awaySeconds) {
+    final warm = econ.warmUpMultiplier(awaySeconds);
+    if (warm > 1) {
+      s
+        ..warmUpHits = econ.warmUpHits
+        ..warmUpMultiplier = warm;
+    }
+    _sealReturn(awaySeconds);
+    return warm > 1;
+  }
+
+  /// The Golden Second after a break with the seal of "cloudy day".
+  void _sealReturn(double awaySeconds) {
     if (!econ.sealed('noGold') || goldenBlocked) return;
     final seal = b.loops.rule('noGold').seal;
     if (awaySeconds < seal['awaySeconds']!) return;
@@ -281,8 +327,19 @@ class GameEngine {
     _scheduleGolden();
     if (tier == Tier.miss) return const GoldenOutcome(null, 0, 0);
     s.lifetime.goldenCaught++;
-    final strength =
+    var strength =
         b.golden.tierStrength[tier.name]! * econ.goldenStrengthFactor();
+    // "Express" (Station clock): every n-th one caught twice as strong.
+    var express = false;
+    final every = econ.expressEvery;
+    if (every > 0) {
+      s.expressCount++;
+      if (s.expressCount >= every) {
+        s.expressCount = 0;
+        express = true;
+        strength *= econ.trait('stationClock', 'expressStrength') ?? 1;
+      }
+    }
     final total = b.golden.effects.fold<double>(0, (a, e) => a + e.weight);
     var r = rng.nextDouble() * total;
     var pick = b.golden.effects.last;
@@ -295,20 +352,35 @@ class GameEngine {
     }
     switch (pick.id) {
       case 'frenzy':
-        final secs = pick.duration * strength;
+        final secs = pick.duration * strength * econ.frenzyDurationFactor();
         frenzyLeft += secs; // the same effect again extends it (R-ZLOTA-4)
         frenzy = pick.multiplier;
-        return GoldenOutcome(GoldenEffect.frenzy, strength, secs);
+        return GoldenOutcome(
+          GoldenEffect.frenzy,
+          strength,
+          secs,
+          express: express,
+        );
       case 'lucky':
         // No cap on the bank (playtest 25): the player spends as they go,
         // so "10 % of what you have" made it worth almost nothing.
         final amount = strength * passive() * pick.productionSeconds;
         s.earn(amount);
-        return GoldenOutcome(GoldenEffect.lucky, strength, amount);
+        return GoldenOutcome(
+          GoldenEffect.lucky,
+          strength,
+          amount,
+          express: express,
+        );
       default:
         final secs = pick.duration * strength;
         hotHandLeft += secs;
-        return GoldenOutcome(GoldenEffect.hotHand, strength, secs);
+        return GoldenOutcome(
+          GoldenEffect.hotHand,
+          strength,
+          secs,
+          express: express,
+        );
     }
   }
 
@@ -394,7 +466,8 @@ class GameEngine {
     final frenzyGrace = ticket.frenzy && frenzy == 1;
     final keptFrenzy = frenzy;
     if (frenzyGrace) frenzy = b.golden.effect('frenzy').multiplier;
-    final double jackpot, payout;
+    final double jackpot;
+    double payout;
     try {
       // The 10.00 jackpot goes by the raw tap: Luck and Hot hand don't win.
       jackpot = isJackpot(g) ? jackpotAmount() * combo * mode : 0.0;
@@ -411,6 +484,13 @@ class GameEngine {
           jackpot;
     } finally {
       frenzy = keptFrenzy;
+    }
+    // "Na start!" (Sprint judge): the first hits after a break pay more.
+    var warmUp = 1.0;
+    if (s.warmUpHits > 0 && tier != Tier.miss) {
+      warmUp = s.warmUpMultiplier;
+      payout *= warmUp;
+      s.warmUpHits--;
     }
     s.earn(payout);
     _recordStats(g, tier);
@@ -430,6 +510,7 @@ class GameEngine {
       jackpot: jackpot,
       frenzyGrace: frenzyGrace && payout > 0,
       hotHandGrace: hotGrace && hot,
+      warmUp: warmUp,
     );
   }
 
@@ -697,8 +778,16 @@ class GameEngine {
   /// between (Muscle memory, Head start, Shield) already shape the new run.
   int beginPrestige() {
     if (s.rewindPending) return 0;
-    final gain = econ.prestigeGain();
+    var gain = econ.prestigeGain();
     if (gain < 1) return 0;
+    // Schrödinger's cat (docs/18): a coin for more Chronons.
+    lastCoin = null;
+    if (econ.coinChance > 0) {
+      final bonus = math.max(1, (gain * econ.coinBonus).round());
+      lastCoin = rng.nextDouble() < econ.coinChance ? bonus : 0;
+      s.chrononGift += lastCoin!;
+      gain += lastCoin!;
+    }
     s.chronons += gain;
     s.shards += gain;
     s.prestiges++;
@@ -711,6 +800,14 @@ class GameEngine {
     s.rewindPending = true;
     return gain;
   }
+
+  /// The next Golden Second caught is the Station clock's Express.
+  bool get nextGoldenExpress =>
+      econ.expressEvery > 0 && s.expressCount == econ.expressEvery - 1;
+
+  /// The cat's coin at the last paradox: Chronons won, 0 when lost, null
+  /// without the trait.
+  int? lastCoin;
 
   /// Second half of the paradox: resets the run. No-op unless
   /// [beginPrestige] ran.
@@ -780,7 +877,7 @@ class GameEngine {
     if (s.loopGoal) {
       final have = econ.milestonesReached(goal);
       if (have > s.loopBonusPaid) {
-        springs = (have - s.loopBonusPaid) * b.loops.goalBonusSprings;
+        springs = (have - s.loopBonusPaid) * econ.goalBonusSprings();
         s
           ..loopBonusPaid = have
           ..springs += springs; // a gift: may go over the stock's cap
@@ -801,8 +898,10 @@ class GameEngine {
       ..earnedThisRun = 0
       ..earnedTotal = 0
       ..peakTiki = 0
-      ..chronons = 0
-      ..shards = 0
+      // Time machine (docs/18): a few Chronons to start the loop with.
+      ..chronons = econ.loopStartChronons
+      ..shards = econ.loopStartChronons
+      ..chrononGift = econ.loopStartChronons
       ..comboStreak = 0
       ..shieldProgress = 0
       ..runTaps = 0
@@ -848,7 +947,7 @@ class GameEngine {
 
   BuyResult buyPerk(String id) {
     if (!perkAvailable(id)) return BuyResult.unavailable;
-    final cost = b.perk(id).cost;
+    final cost = econ.perkCost(id);
     if (s.shards < cost) return BuyResult.tooExpensive;
     s.shards -= cost;
     s.perks.add(id);
@@ -871,10 +970,10 @@ class GameEngine {
   /// The winding reserve at [nowMs] (R-SPR-3): what exact hits may still
   /// wind. It refills by itself; a clock set back refills nothing.
   double springReserveAt(int nowMs) {
-    final c = b.springs;
-    if (s.springReserveMs <= 0) return c.hitReserve;
+    final max = econ.hitReserve();
+    if (s.springReserveMs <= 0) return max;
     final away = math.max(0, nowMs - s.springReserveMs) / 1000;
-    return math.min(c.hitReserve, s.springReserve + away * c.hitReserveRefill);
+    return math.min(max, s.springReserve + away * econ.hitReserveRefill());
   }
 
   void _syncReserve(int nowMs) {
@@ -885,12 +984,10 @@ class GameEngine {
 
   /// Seconds until the reserve is full again (0 when it is).
   double springReserveFullIn(int nowMs) {
-    final c = b.springs;
-    final missing = c.hitReserve - springReserveAt(nowMs);
+    final missing = econ.hitReserve() - springReserveAt(nowMs);
     if (missing <= 0) return 0;
-    return c.hitReserveRefill > 0
-        ? missing / c.hitReserveRefill
-        : double.infinity;
+    final refill = econ.hitReserveRefill();
+    return refill > 0 ? missing / refill : double.infinity;
   }
 
   /// The stock is full: the spring winds nothing until one is spent
@@ -902,7 +999,7 @@ class GameEngine {
     final c = b.springs;
     final free = c.maxStock - s.springs;
     if (free <= 0) return 0;
-    return free * c.secondsPerSpring - s.springProgress;
+    return free * econ.secondsPerSpring() - s.springProgress;
   }
 
   /// An exact hit (the dial read 5.00) winds [SpringsConfig.hitSeconds]
@@ -924,16 +1021,17 @@ class GameEngine {
   /// Fills the reserve up at once (the "wind it" ad, R-SPR-3b).
   void refillSpringReserve(int nowMs) {
     s
-      ..springReserve = b.springs.hitReserve
+      ..springReserve = econ.hitReserve()
       ..springReserveMs = nowMs;
   }
 
   int _windSeconds(double secs) {
     final c = b.springs;
     var ready = 0;
+    final per = econ.secondsPerSpring();
     s.springProgress += secs;
-    while (s.springProgress >= c.secondsPerSpring && s.springs < c.maxStock) {
-      s.springProgress -= c.secondsPerSpring;
+    while (s.springProgress >= per && s.springs < c.maxStock) {
+      s.springProgress -= per;
       s.springs++;
       s.lifetime.springsWound++;
       ready++;
@@ -949,7 +1047,7 @@ class GameEngine {
   /// Share of the next Mainspring wound (0..1), 1 when the stock is full.
   double springFraction() => s.springs >= b.springs.maxStock
       ? 1
-      : (s.springProgress / b.springs.secondsPerSpring).clamp(0.0, 1.0);
+      : (s.springProgress / econ.secondsPerSpring()).clamp(0.0, 1.0);
 
   /// Raises clock [id] one level for Mainsprings (R-SPR-5).
   BuyResult levelClock(String id) {
@@ -1025,6 +1123,8 @@ class GameEngine {
     if (econ.sealed('insomnia')) {
       hours += b.loops.rule('insomnia').seal['offlineCapHours']!;
     }
+    // Grandpa sleeps longer (docs/18).
+    hours += econ.trait('grandpa', 'offlineCapHours') ?? 0;
     return hours * 3600;
   }
 
@@ -1035,6 +1135,8 @@ class GameEngine {
         e = math.max(e, b.perk(id).params['efficiency']!);
       }
     }
+    // Grandpa (docs/18): a little more, also past 100%.
+    e *= 1 + (econ.trait('grandpa', 'offlineEfficiency') ?? 0);
     // "Insomnia" (R-PETLA-4): the clocks barely work while away.
     if (econ.ruleOn('insomnia')) {
       e = math.min(e, b.loops.rule('insomnia').params['offlineEfficiency']!);
@@ -1093,8 +1195,9 @@ class GameEngine {
       day = s.dailyStreak % days + 1;
     } else if (s.dailyKey == daysAgo(2) &&
         s.dailyStreak > 0 &&
-        !s.dailyGraceUsed) {
-      // One missed day keeps the streak, once a week (R-DZIEN-3).
+        (!s.dailyGraceUsed || econ.graceEveryDay)) {
+      // One missed day keeps the streak, once a week (R-DZIEN-3); with
+      // Grandma's trait every time (docs/18).
       day = s.dailyStreak % days + 1;
       grace = true;
     } else {
@@ -1106,7 +1209,7 @@ class GameEngine {
     );
     // The week's last day also brings a Mainspring, once they exist.
     final springs = day == days && econ.springsUnlocked
-        ? b.daily.lastDaySprings
+        ? econ.dailyLastDaySprings()
         : 0;
     return DailyBonus(key, day, amount, springs: springs, grace: grace);
   }
@@ -1229,8 +1332,9 @@ class GameEngine {
         : math.max(cfg.dailyFloor, passive() * 60 * cfg.dailyMinutes);
   }
 
-  int challengeSprings(Challenge c) =>
-      c.weekly && econ.springsUnlocked ? b.challenges.weeklySprings : 0;
+  int challengeSprings(Challenge c) => c.weekly && econ.springsUnlocked
+      ? b.challenges.weeklySprings + econ.weeklyTraitSprings
+      : 0;
 
   /// The bonus for all three daily challenges in one day.
   double challengeBonusTiki() {
@@ -1253,6 +1357,7 @@ class GameEngine {
     s.springs += springs;
     if (tiki > 0) s.earn(tiki);
     var bonus = 0.0;
+    var wound = 0.0;
     final daily = dailyChallenges;
     if (!c.weekly &&
         challengeBonusOpen &&
@@ -1261,8 +1366,18 @@ class GameEngine {
       bonus = challengeBonusTiki();
       s.earn(bonus);
       s.challengeBonusDay = s.challengeDay;
+      // GPS (docs/18): half a Mainspring wound on top.
+      if (econ.springsUnlocked && econ.dailyAllSpring > 0) {
+        wound = econ.dailyAllSpring * econ.secondsPerSpring();
+        _windSeconds(wound);
+      }
     }
-    return ChallengePay(tiki: tiki, springs: springs, bonus: bonus);
+    return ChallengePay(
+      tiki: tiki,
+      springs: springs,
+      bonus: bonus,
+      springSeconds: wound,
+    );
   }
 
   /// Today's free re-roll is still there.
@@ -1315,9 +1430,17 @@ int weekKey(DateTime d) =>
 
 /// What claiming a challenge paid (docs/02 §18).
 class ChallengePay {
-  const ChallengePay({this.tiki = 0, this.springs = 0, this.bonus = 0});
+  const ChallengePay({
+    this.tiki = 0,
+    this.springs = 0,
+    this.bonus = 0,
+    this.springSeconds = 0,
+  });
   final double tiki;
   final int springs;
+
+  /// Seconds of Mainspring the GPS's trait wound for all three (docs/18).
+  final double springSeconds;
 
   /// The all-three bonus, when this claim completed the day.
   final double bonus;

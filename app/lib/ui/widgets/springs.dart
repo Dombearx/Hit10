@@ -7,6 +7,7 @@ import '../../engine/ad_offers.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../../l10n/master_texts.dart';
+import '../trait_text.dart';
 import '../catalog.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -125,7 +126,7 @@ class SpringHitState {
     final e = c.engine;
     final now = c.wallMs();
     final maxPips = sp.hitSeconds > 0
-        ? (sp.hitReserve / sp.hitSeconds).round()
+        ? (c.econ.hitReserve() / sp.hitSeconds).round()
         : 0;
     if (e.springsFull) return SpringHitState._(true, 0, maxPips);
     final left = e.springReserveAt(now);
@@ -308,7 +309,7 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
         final s = c.state;
         final sp = c.balance.springs;
         final full = s.springs >= sp.maxStock;
-        final next = sp.secondsPerSpring - s.springProgress;
+        final next = c.econ.secondsPerSpring() - s.springProgress;
         final dim = TextStyle(
           fontSize: 13.5,
           color: Palette.outline.withValues(alpha: 0.75),
@@ -402,18 +403,11 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: Palette.outline, width: 2),
                   ),
-                  child: Row(
-                    children: [
-                      EmojiCard(art: generatorArt[id]!, size: 44),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: ClockLevelSection(
-                          controller: c,
-                          id: id,
-                          showName: true,
-                        ),
-                      ),
-                    ],
+                  child: ClockLevelSection(
+                    controller: c,
+                    id: id,
+                    showName: true,
+                    leading: EmojiCard(art: generatorArt[id]!, size: 40),
                   ),
                 ),
               ),
@@ -424,17 +418,25 @@ Future<void> showSpringsSheet(BuildContext context, GameController c) {
   );
 }
 
-/// One clock's Mainspring level: level, bonus, next title and the button
-/// (the workshop sheet and the clock's full card, R-SPR-5/6).
+/// One clock's Mainspring level: level, bonus, the two traits and the
+/// button (the workshop sheet and the clock's full card, R-SPR-5/6,
+/// docs/18 §4). The tier-3 trait shows from the start; the tier-5 one only
+/// once tier 3 is reached. A title's name and joke come when it is bought.
 class ClockLevelSection extends StatelessWidget {
   const ClockLevelSection({
     super.key,
     required this.controller,
     required this.id,
     this.showName = false,
+    this.leading,
   });
   final GameController controller;
   final String id;
+
+  /// Before the name and level (the clock's picture in the workshop).
+  final Widget? leading;
+
+  /// In the workshop list: the clock's name on top, no jokes (14 rows).
   final bool showName;
 
   @override
@@ -447,19 +449,13 @@ class ClockLevelSection extends StatelessWidget {
     final can =
         c.econ.clockLevelable(id) && cost != null && c.state.springs >= cost;
     final mult = Fmt.of(context, c).mult(c.econ.clockLevelFactor(id));
-    // The next title: its name stays a surprise until it is reached.
-    final nextTitle = sp.titleLevels.where((t) => t > level).firstOrNull;
-    final lastTitle = sp.titleLevels.where((t) => t <= level).lastOrNull;
-    final reached = lastTitle == null
-        ? null
-        : masterTexts(l, id, sp.titleKeyAt(lastTitle)!);
     final small = TextStyle(
       fontSize: 12.5,
       color: Palette.outline.withValues(alpha: 0.7),
     );
-    return Row(
-      key: Key('clock-level-$id'),
+    final head = Row(
       children: [
+        if (leading != null) ...[leading!, const SizedBox(width: 10)],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -482,17 +478,6 @@ class ClockLevelSection extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              if (reached != null)
-                Text(
-                  '★ ${reached.$1}',
-                  style: const TextStyle(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                    color: Palette.perfectText,
-                  ),
-                ),
-              if (nextTitle != null)
-                Text(l.clockLevelTitleAt('$nextTitle', '???'), style: small),
             ],
           ),
         ),
@@ -531,7 +516,264 @@ class ClockLevelSection extends StatelessWidget {
           ),
       ],
     );
+    return Column(
+      key: Key('clock-level-$id'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        head,
+        for (final (i, at) in sp.titleLevels.indexed) ...[
+          const SizedBox(height: 6),
+          TraitRow(
+            controller: c,
+            id: id,
+            tier: i + 1,
+            level: at,
+            // The second tier's trait stays hidden until the first is in.
+            hidden: i > 0 && level < sp.titleLevels[i - 1],
+            joke: !showName,
+          ),
+        ],
+      ],
+    );
   }
+}
+
+/// One trait of a clock (docs/18): its tier, name and what it does.
+/// Three looks: hidden (tier 5 before tier 3: only "Tier 5" and a lock),
+/// to come (white card), at work (gold card with the title and a tick).
+class TraitRow extends StatelessWidget {
+  const TraitRow({
+    super.key,
+    required this.controller,
+    required this.id,
+    required this.tier,
+    required this.level,
+    required this.hidden,
+    required this.joke,
+  });
+  final GameController controller;
+  final String id;
+
+  /// 1 or 2: which of the clock's traits.
+  final int tier;
+
+  /// The mastery tier it comes with.
+  final int level;
+  final bool hidden;
+
+  /// Shows the title's joke once it is won (the full card).
+  final bool joke;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller;
+    final l = AppLocalizations.of(context);
+    final f = Fmt.of(context, c);
+    final active = c.econ.clockLevel(id) >= level;
+    final dim = Palette.outline.withValues(alpha: 0.55);
+    final badge = Container(
+      width: 26,
+      height: 26,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: active
+            ? _springGold
+            : hidden
+            ? Palette.outline.withValues(alpha: 0.08)
+            : Colors.white,
+        border: Border.all(color: hidden ? dim : Palette.outline, width: 2),
+      ),
+      child: hidden
+          ? Icon(Icons.lock_rounded, size: 14, color: dim)
+          : active
+          ? const Icon(Icons.check_rounded, size: 16, color: Palette.outline)
+          : Text(
+              '$level',
+              style: const TextStyle(fontFamily: Fonts.display, fontSize: 13),
+            ),
+    );
+    if (hidden) {
+      return Container(
+        key: Key('trait-$id-$tier'),
+        padding: const EdgeInsets.fromLTRB(8, 6, 10, 6),
+        decoration: BoxDecoration(
+          color: Palette.outline.withValues(alpha: 0.04),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: dim.withValues(alpha: 0.35), width: 1.5),
+        ),
+        child: Row(
+          children: [
+            badge,
+            const SizedBox(width: 8),
+            Text(
+              l.traitTier('$level'),
+              style: TextStyle(
+                fontFamily: Fonts.display,
+                fontSize: 13.5,
+                color: dim,
+              ),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                l.traitHidden('${_prevLevel(c)}'),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.end,
+                style: TextStyle(fontSize: 12, color: dim),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    final (name, text) = traitText(l, f, c.econ, id, tier);
+    final title = active
+        ? masterTexts(l, id, c.balance.springs.titleKeyAt(level)!)
+        : null;
+    final every = c.econ.expressEvery;
+    return Container(
+      key: Key('trait-$id-$tier'),
+      padding: const EdgeInsets.fromLTRB(8, 7, 10, 8),
+      decoration: BoxDecoration(
+        color: active ? const Color(0xFFFFF3C4) : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: active
+              ? Palette.outline
+              : Palette.outline.withValues(alpha: 0.4),
+          width: active ? 2 : 1.5,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          badge,
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (title != null)
+                  Text(
+                    '★ ${title.$1}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: Palette.perfectText,
+                    ),
+                  ),
+                if (title != null && joke)
+                  Text(
+                    title.$2,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                      color: Palette.outline.withValues(alpha: 0.7),
+                    ),
+                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        active ? name : '${l.traitTier('$level')} · $name',
+                        style: const TextStyle(
+                          fontFamily: Fonts.display,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    if (active) ...[
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 1,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Palette.great,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          l.traitActive,
+                          style: const TextStyle(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 1),
+                Text(
+                  text,
+                  style: const TextStyle(fontSize: 12.5, height: 1.25),
+                ),
+                // Express: how far the next double one is.
+                if (active && id == 'stationClock' && tier == 2 && every > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: _ExpressPips(
+                      count: c.state.expressCount,
+                      every: every,
+                      label: l.traitExpressCount(c.state.expressCount, every),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// The tier the hidden trait waits for (the one before it).
+  int _prevLevel(GameController c) {
+    final t = c.balance.springs.titleLevels;
+    final i = t.indexOf(level);
+    return i > 0 ? t[i - 1] : level;
+  }
+}
+
+/// "Towards the Express: 3/5" with five pips (Station clock, docs/18).
+class _ExpressPips extends StatelessWidget {
+  const _ExpressPips({
+    required this.count,
+    required this.every,
+    required this.label,
+  });
+  final int count;
+  final int every;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    key: const Key('express-pips'),
+    children: [
+      for (var i = 0; i < every; i++) ...[
+        Container(
+          width: 9,
+          height: 9,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: i < count ? Palette.perfect : Colors.white,
+            border: Border.all(color: Palette.outline, width: 1.2),
+          ),
+        ),
+        const SizedBox(width: 3),
+      ],
+      const SizedBox(width: 4),
+      Text(
+        label,
+        style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700),
+      ),
+    ],
+  );
 }
 
 /// The level section for a clock's full card, or a note before the first
@@ -595,7 +837,10 @@ class SpringReserveCard extends StatelessWidget {
                 ),
               ),
               Text(
-                l.springsReserve(f.duration(left), f.duration(sp.hitReserve)),
+                l.springsReserve(
+                  f.duration(left),
+                  f.duration(c.econ.hitReserve()),
+                ),
                 key: const Key('spring-reserve-left'),
                 style: const TextStyle(
                   fontSize: 13.5,
@@ -608,8 +853,8 @@ class SpringReserveCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
             child: LinearProgressIndicator(
-              value: sp.hitReserve > 0
-                  ? (left / sp.hitReserve).clamp(0.0, 1.0)
+              value: c.econ.hitReserve() > 0
+                  ? (left / c.econ.hitReserve()).clamp(0.0, 1.0)
                   : 0,
               minHeight: 10,
               backgroundColor: Palette.outline.withValues(alpha: 0.15),
@@ -624,7 +869,7 @@ class SpringReserveCard extends StatelessWidget {
                   )
                 : l.springsReserveHow(
                     f.duration(sp.hitSeconds),
-                    f.duration(sp.reserveRefillSeconds),
+                    f.duration(c.econ.reserveRefillSeconds()),
                   ),
             style: TextStyle(
               fontSize: 13,

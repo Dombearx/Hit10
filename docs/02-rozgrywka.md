@@ -950,8 +950,43 @@ w Cookie Clickerze. Liczby w pliku balansu (`springs`, `dials`).
   („Wydane Sprężyny (39) wróciły do ciebie”). Zdobyte tytuły zostają.
 - **R-SPR-6:** Stopnie 3 i 5 każdego zegara to tytuł mistrzowski: nazwa
   i żart (PL/EN, `tools/l10n/masters.py`; teksty i identyfikatory
-  osiągnięć mają dawne klucze 5 i 10), osiągnięcie +1%. Przed zdobyciem
-  widać tylko „Stopień 3: ???”.
+  osiągnięć mają dawne klucze 5 i 10), osiągnięcie +1% i **cecha zegara**
+  (R-CECHA). Nazwa i żart pojawiają się dopiero po zdobyciu, bez znaków
+  zapytania.
+- **R-CECHA-1 (cechy zegarów, docs/18):** każdy tytuł daje cechę: małą
+  zasadę gry związaną z zegarem. Cecha stopnia 5 **dodaje się** do cechy
+  stopnia 3 (gdy obie mają ten sam parametr, liczy się wartość stopnia 5,
+  np. „perki −20% razem”). Liczby w `balance.json` (`traits`), teksty
+  w `tools/l10n/masters.py` (liczby wstawia aplikacja z pliku balansu).
+- **R-CECHA-2 (widoczność):** w sekcji mistrzostwa (warsztat Sprężyn
+  i pełna karta zegara) pod poziomem są dwa wiersze: „Stopień 3” z nazwą
+  i opisem cechy, widoczny od początku, i „Stopień 5” — do zdobycia
+  stopnia 3 tylko szary napis z kłódką („Odsłoni się po stopniu 3”), potem
+  nazwa i opis. Zdobyta cecha ma złote tło, ptaszek, „★ tytuł” i znaczek
+  „Działa”; na pełnej karcie także żart. Zdobycie: toast „Nowa cecha ·
+  zegar” z nazwą cechy.
+- **R-CECHA-3 (lista):**
+
+  | Zegar | Stopień 3 | Stopień 5 (dodatkowo) |
+  |---|---|---|
+  | Dziadek | limit offline +4 h | dochód offline +10% (także ponad 100%) |
+  | Babcia | jeden opuszczony dzień nigdy nie przerywa serii dziennej premii (R-DZIEN-3 bez limitu raz w tygodniu) | 7. dzień premii: 3 Sprężyny zamiast 1 |
+  | Kukułka | o pełnej godzinie (czas lokalny), gdy gra jest otwarta, wylatuje dodatkowa Złota Sekunda; zwykła przychodzi dalej w swoim czasie; nie w pętli „Pochmurny dzień”, nie gdy inna jest na ekranie; toast „Kukułka · 15:00” | także o wpół do |
+  | Metronom | zapas dokręcania odnawia się ×1.5 szybciej | zapas ×2 |
+  | Zegarmistrz | perki −10% (cena w górę do pełnych Okruchów) | −20% razem; nad perkami napis „Zegarmistrz: perki −20%” |
+  | Sędzia sprintu | **Na start!**: po co najmniej 1 h przerwy pierwsze 10 trafień płaci ×(1 + godziny nieobecności), najwyżej ×9; pudło nie zużywa; zielony znaczek „Na start! ×4 · 7” przy efektach, toast przy powrocie | 25 trafień |
+  | Zegar dworcowy | Złota Sekunda 10% częściej | **Ekspres**: co 5. złapana Złota Sekunda ma podwójną siłę; ta, która będzie Ekspresem, leci z czerwoną plakietką „×2”, licznik „Do Ekspresu: 3/5” w cesze, toast „Podwójna Złota Sekunda!” |
+  | Zegar kwarcowy | wszystkie zegary +10% | **Synchronizacja**: +1% do wszystkich zegarów za każdy zegar ze stopniem 5 (najwyżej +14%) |
+  | Zegar atomowy | Sprężyna co 22 h zamiast 24 | co 20 h |
+  | Satelita GPS | komplet trzech wyzwań dziennych nakręca dodatkowo pół Sprężyny (12 h; przy pełnym magazynie nic) | wyzwanie tygodnia +1 Sprężyna |
+  | Pulsar | siła Złotej Sekundy +15% | Szał trwa 50% dłużej |
+  | Maszyna czasu | nowa pętla zaczyna się z 10 Chrononami i 10 Okruchami; toast „Maszyna czasu” | z 25 |
+  | Kot Schrödingera | rzut monetą przy paradoksie: 50% na +10% Chrononów (co najmniej 1); ekran paradoksu zapowiada szansę i pokazuje wynik z kotem | wygrana +20% |
+  | Chronos | perk „Chronos” 400 Okruchów zamiast 500 | każdy bonus Chronosa (R-PETLA-2a) daje 2 Sprężyny |
+
+- **R-CECHA-4 (Chronony w prezencie):** Chronony z Maszyny czasu i z rzutu
+  Kota liczą się jak zarobione (`chrononGift`): następny paradoks ich nie
+  odbiera. Nowa pętla zeruje licznik i zaczyna od prezentu Maszyny.
 - **R-TARCZA-1:** 17 tarcz zegara (wygląd stopera, rysowany kodem:
   kolory i dekoracja) na pięciu ścieżkach (docs/17 §5, symulacje 17 §3).
   Każda ma jeden warunek w `balance.json` (`dials`):
@@ -1028,7 +1063,9 @@ paradoksu), Chronony i Okruchy pętlę, Sprężyny całą grę.
   i zapowiedź następnej zasady. Pierwsza pętla nie ma zasady, więc daje
   rozdział, tarczę Dworcową i zapowiedź.
 - **R-PETLA-6 (tempo):** druga pętla 50–65% czasu pierwszej, kolejne
-  ok. 4–6 dni, nie mniej niż ok. 3 (03 §4.4).
+  ok. 4–6 dni, nie mniej niż ok. 3 (03 §4.4). Granica dotyczy fabuły:
+  po niej pełne mistrzostwo i cechy zegarów (R-CECHA) skracają pętle do
+  ok. 1.7 dnia, i to jest w porządku (decyzja 26.11.2026, docs/18 §3.3).
 - **R-PETLA-7 (Kronika):** jeden ekran, otwierany z karty na górze ekranu
   paradoksu (od pierwszego Chronosa) i ze znaczka pętli: bieżąca pętla
   (zasada, cel, czas), zapowiedź następnej i przycisk „Nowa pętla” (gdy

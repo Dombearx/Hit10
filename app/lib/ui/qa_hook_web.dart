@@ -243,6 +243,15 @@ void registerQaHook(GameController c) {
           c.state.clockLevels[e.key] = (e.value as num).toInt();
         }
       }
+      // Clock traits (docs/18).
+      if (m['everOwned'] case final List<dynamic> g) {
+        c.state.everOwned.addAll(g.cast<String>());
+      }
+      if (m['warmUpHits'] case final num v) c.state.warmUpHits = v.toInt();
+      if (m['warmUpMultiplier'] case final num v) {
+        c.state.warmUpMultiplier = v.toDouble();
+      }
+      if (m['expressCount'] case final num v) c.state.expressCount = v.toInt();
       if (m['earnedEver'] case final num v) {
         c.state.lifetime.earnedEver = v.toDouble();
       }

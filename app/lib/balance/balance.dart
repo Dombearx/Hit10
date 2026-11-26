@@ -723,6 +723,31 @@ class UiConfig {
   final double generatorPopupsPerSecond;
 }
 
+/// Clock traits (docs/18 §4, R-CECHA): what each clock's master titles
+/// add to the game. Per clock two parameter maps: the first comes with the
+/// first title tier (`springs.titleLevels[0]`), the second with the
+/// second and adds to it; a key in both takes the second's value (a total,
+/// not a step: "perks −20% in all").
+class TraitsConfig {
+  TraitsConfig(Map<String, Object?> j)
+    : tiers = {
+        for (final e in j.entries)
+          e.key: [
+            for (final t in e.value! as List)
+              {for (final p in _m(t).entries) p.key: _d(p.value)},
+          ],
+      };
+
+  /// Clock → [tier I params, tier II params].
+  final Map<String, List<Map<String, double>>> tiers;
+
+  /// The parameters of clock [id]'s trait tier [tier] (0 or 1).
+  Map<String, double> of(String id, int tier) {
+    final t = tiers[id];
+    return t == null || tier >= t.length ? const {} : t[tier];
+  }
+}
+
 class Balance {
   Balance._(Map<String, Object?> j)
     : version = _i(j['version']),
@@ -748,6 +773,7 @@ class Balance {
       seasons = SeasonsConfig(_m(j['seasons'])),
       jackpot = JackpotConfig(_m(j['jackpot'])),
       springs = SpringsConfig(_m(j['springs'])),
+      traits = TraitsConfig(_m(j['traits'])),
       loops = LoopsConfig(_m(j['loops'])),
       dials = _ml(j['dials']).map(DialConfig.new).toList(growable: false),
       ui = UiConfig(_m(j['ui']));
@@ -795,6 +821,7 @@ class Balance {
   final SeasonsConfig seasons;
   final JackpotConfig jackpot;
   final SpringsConfig springs;
+  final TraitsConfig traits;
   final LoopsConfig loops;
   final List<DialConfig> dials;
   final UiConfig ui;
@@ -997,6 +1024,18 @@ class Balance {
     }
     if (sp.titleKeys.length != sp.titleLevels.length) {
       e.add('springs titleKeys: one for each of titleLevels');
+    }
+    // Each clock's two traits, one per master title (docs/18 §4).
+    for (final id in traits.tiers.keys) {
+      if (!generators.any((g) => g.id == id)) {
+        e.add('traits: "$id" is not a generator');
+      }
+    }
+    for (final g in generators) {
+      final t = traits.tiers[g.id];
+      if (t == null || t.length != sp.titleLevels.length) {
+        e.add('traits "${g.id}": one entry per title level');
+      }
     }
     unique('loop rule', loops.rules.map((r) => r.id));
     if (!generators.any((g) => g.id == loops.goal)) {

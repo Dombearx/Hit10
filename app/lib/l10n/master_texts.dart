@@ -68,10 +68,77 @@ import 'gen/app_localizations.dart';
   'cosmic' => (l.dial_cosmic, l.dial_cosmic_desc),
   'golden' => (l.dial_golden, l.dial_golden_desc),
   'rift' => (l.dial_rift, l.dial_rift_desc),
-  'spring' => (l.dial_spring, l.dial_spring_desc),
-  'master' => (l.dial_master, l.dial_master_desc),
-  'grandmaster' => (l.dial_grandmaster, l.dial_grandmaster_desc),
-  'hourglass' => (l.dial_hourglass, l.dial_hourglass_desc),
-  'calendar' => (l.dial_calendar, l.dial_calendar_desc),
   _ => null,
 };
+
+/// Name and text of clock [generator]'s trait [tier] (1 at the first
+/// master title, 2 at the second; docs/18). [args] fill {a}, {b}, {c}.
+(String, String)? traitTexts(
+  AppLocalizations l,
+  String generator,
+  int tier,
+  List<String> args,
+) {
+  String a(int i) => i < args.length ? args[i] : '';
+  return switch ((generator, tier)) {
+    ('grandpa', 1) => (l.trait_grandpa_1, l.trait_grandpa_1_desc(a(0))),
+    ('grandpa', 2) => (l.trait_grandpa_2, l.trait_grandpa_2_desc(a(0))),
+    ('grandma', 1) => (l.trait_grandma_1, l.trait_grandma_1_desc),
+    ('grandma', 2) => (l.trait_grandma_2, l.trait_grandma_2_desc(a(0))),
+    ('cuckoo', 1) => (l.trait_cuckoo_1, l.trait_cuckoo_1_desc),
+    ('cuckoo', 2) => (l.trait_cuckoo_2, l.trait_cuckoo_2_desc),
+    ('metronome', 1) => (l.trait_metronome_1, l.trait_metronome_1_desc(a(0))),
+    ('metronome', 2) => (l.trait_metronome_2, l.trait_metronome_2_desc(a(0))),
+    ('watchmaker', 1) => (
+      l.trait_watchmaker_1,
+      l.trait_watchmaker_1_desc(a(0)),
+    ),
+    ('watchmaker', 2) => (
+      l.trait_watchmaker_2,
+      l.trait_watchmaker_2_desc(a(0)),
+    ),
+    ('sprintJudge', 1) => (
+      l.trait_sprintJudge_1,
+      l.trait_sprintJudge_1_desc(a(0), a(1), a(2)),
+    ),
+    ('sprintJudge', 2) => (
+      l.trait_sprintJudge_2,
+      l.trait_sprintJudge_2_desc(a(0)),
+    ),
+    ('stationClock', 1) => (
+      l.trait_stationClock_1,
+      l.trait_stationClock_1_desc(a(0)),
+    ),
+    ('stationClock', 2) => (
+      l.trait_stationClock_2,
+      l.trait_stationClock_2_desc(a(0)),
+    ),
+    ('quartz', 1) => (l.trait_quartz_1, l.trait_quartz_1_desc(a(0))),
+    ('quartz', 2) => (l.trait_quartz_2, l.trait_quartz_2_desc(a(0), a(1))),
+    ('atomic', 1) => (l.trait_atomic_1, l.trait_atomic_1_desc(a(0))),
+    ('atomic', 2) => (l.trait_atomic_2, l.trait_atomic_2_desc(a(0))),
+    ('gps', 1) => (l.trait_gps_1, l.trait_gps_1_desc(a(0))),
+    ('gps', 2) => (l.trait_gps_2, l.trait_gps_2_desc(a(0))),
+    ('pulsar', 1) => (l.trait_pulsar_1, l.trait_pulsar_1_desc(a(0))),
+    ('pulsar', 2) => (l.trait_pulsar_2, l.trait_pulsar_2_desc(a(0))),
+    ('timeMachine', 1) => (
+      l.trait_timeMachine_1,
+      l.trait_timeMachine_1_desc(a(0)),
+    ),
+    ('timeMachine', 2) => (
+      l.trait_timeMachine_2,
+      l.trait_timeMachine_2_desc(a(0)),
+    ),
+    ('schrodinger', 1) => (
+      l.trait_schrodinger_1,
+      l.trait_schrodinger_1_desc(a(0), a(1)),
+    ),
+    ('schrodinger', 2) => (
+      l.trait_schrodinger_2,
+      l.trait_schrodinger_2_desc(a(0)),
+    ),
+    ('chronos', 1) => (l.trait_chronos_1, l.trait_chronos_1_desc(a(0), a(1))),
+    ('chronos', 2) => (l.trait_chronos_2, l.trait_chronos_2_desc(a(0))),
+    _ => null,
+  };
+}

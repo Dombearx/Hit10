@@ -249,7 +249,11 @@ class _Card extends StatelessWidget {
     if (pay.bonus <= 0) return;
     showGameSnack(
       ScaffoldMessenger.of(context),
-      text: l.challengeBonusPaid(f.n(pay.bonus)),
+      // The GPS's half Mainspring comes with the all-three bonus (docs/18).
+      text: pay.springSeconds > 0
+          ? '${l.challengeBonusPaid(f.n(pay.bonus))}\n'
+                '${l.traitGpsPaid(f.duration(pay.springSeconds))}'
+          : l.challengeBonusPaid(f.n(pay.bonus)),
       art: const EmojiArt('trophy', Color(0xFFFFE29A)),
     );
   }

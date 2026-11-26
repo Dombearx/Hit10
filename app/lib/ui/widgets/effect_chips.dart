@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 import '../../model/number_format.dart';
+import '../format.dart';
 import '../game_controller.dart';
 import '../theme.dart';
 
@@ -42,6 +43,16 @@ class EffectChips extends StatelessWidget {
               : '${l.chipHotHand} · ${l.chipLastRound}',
           color: Palette.perfectDeep,
           faded: e.hotHandLeft <= 0,
+        ),
+      // "Na start!" (Sprint judge, docs/18): the hits left that pay more.
+      if (controller.state.warmUpHits > 0)
+        _Chip(
+          key: const Key('chip-warmup'),
+          text: l.chipWarmUp(
+            Fmt.of(context, controller).mult(controller.state.warmUpMultiplier),
+            controller.state.warmUpHits,
+          ),
+          color: Palette.great,
         ),
     ];
     if (chips.isEmpty) return const SizedBox.shrink();

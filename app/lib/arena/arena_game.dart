@@ -185,6 +185,7 @@ class ArenaGame extends FlameGame {
         fromLeft: _goldenFromLeft,
         calm: stage.reduceMotion,
         item: _emoji[seasonLooks[controller.season?.id]?.item],
+        express: controller.engine.nextGoldenExpress,
       );
       _golden = g;
       stage.add(g);
