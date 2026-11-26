@@ -23,6 +23,8 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:hit10/balance/balance.dart';
+import 'package:hit10/engine/game_engine.dart';
+import 'package:hit10/sim/simulator.dart';
 import 'package:hit10/model/game_state.dart';
 import 'package:hit10/model/settings.dart';
 import 'package:hit10/persistence/save_codec.dart';
@@ -55,6 +57,7 @@ class TraitRun {
   var chrononsBefore = 0;
   var extra = 0.0;
   var sessionsPlayed = 0;
+  var sigma = 0.04;
 
   /// This session is the first of a new loop (set before the hooks).
   var newLoop = false;
@@ -946,6 +949,18 @@ void main(List<String> args) {
   final only = opt('only', '').split(',').where((x) => x.isNotEmpty).toSet();
   final snapPath = opt('snap', '');
   final json = File('assets/balance.json').readAsStringSync();
+  if (args.contains('--real')) {
+    realRun(
+      json,
+      sessions,
+      minutes,
+      sigma,
+      int.parse(opt('days', '120')),
+      !args.contains('--today'),
+      opt('without', ''),
+    );
+    return;
+  }
   final base = Balance.fromJsonString(json);
 
   // Loop 1 on today's rules, once (or read from --snap).
@@ -1035,4 +1050,278 @@ void main(List<String> args) {
       '  | ${t.text}',
     );
   }
+}
+
+// ------------------------------------------------- the real game (--real) --
+
+/// One clock's traits: [i] at tier 3, [ii] added at tier 5 (docs/18 §4).
+class ClockTraits {
+  const ClockTraits(this.clock, this.i, this.ii);
+  final String clock;
+  final Trait i;
+  final Trait ii;
+}
+
+/// Extra pay of the first [hits] hits after a break: ×(1 + hours away),
+/// at most ×9 ("Na start!", docs/18).
+void Function(TraitRun, GameState, double) warmUp(int hits) => (r, s, p) {
+  if (r.away < 3600) return;
+  final sim = Simulator(r.b, SimConfig(sigma: r.sigma), state: s);
+  final perHit = (sim.totalIncome(false) - p) * sim.econ.roundSeconds();
+  final extra = perHit * hits * (math.min(9.0, 1 + r.away / 3600) - 1);
+  s.earn(extra);
+  r.extra += extra;
+};
+
+final chosenAll = <ClockTraits>[
+  ClockTraits(
+    'grandpa',
+    const Trait('', '', 'offline cap +4 h (3 sessions a day: never reached)'),
+    Trait('', '', 'offline +10%', edit: (j) => offlineTimes(j, 1.10)),
+  ),
+  ClockTraits(
+    'grandma',
+    const Trait(
+      '',
+      '',
+      'the daily streak forgives a day (the bot never misses)',
+    ),
+    Trait(
+      '',
+      '',
+      '7th day 3 Mainsprings',
+      edit: (j) => m(j['daily'])['lastDaySprings'] = 3,
+    ),
+  ),
+  ClockTraits(
+    'cuckoo',
+    // A session of 11 min holds a full hour 18% of the time, a half 37%.
+    Trait(
+      '',
+      '',
+      'golden on the hour',
+      edit: (j) => goldenOften(j, 1 + 0.18 / 1.1),
+    ),
+    Trait(
+      '',
+      '',
+      'and on the half hour',
+      edit: (j) => goldenOften(j, (1 + 0.37 / 1.1) / (1 + 0.18 / 1.1)),
+    ),
+  ),
+  ClockTraits(
+    'metronome',
+    Trait('', '', 'reserve refill ×1.5', edit: (j) => reserveTimes(j, 1, 1.5)),
+    Trait('', '', 'reserve ×2', edit: (j) => reserveTimes(j, 2, 1)),
+  ),
+  ClockTraits(
+    'watchmaker',
+    Trait('', '', 'perks −10%', edit: (j) => perksTimes(j, 0.90)),
+    Trait('', '', 'perks −20% in all', edit: (j) => perksTimes(j, 0.80 / 0.90)),
+  ),
+  ClockTraits(
+    'sprintJudge',
+    Trait('', '', 'Na start!: 10 hits', session: warmUp(10)),
+    Trait('', '', 'Na start!: 25 hits in all', session: warmUp(15)),
+  ),
+  ClockTraits(
+    'stationClock',
+    Trait('', '', 'golden 10% more often', edit: (j) => goldenOften(j, 1.10)),
+    // Every 5th caught one twice as strong: +20% on average.
+    Trait('', '', 'Express', edit: (j) => goldenStrong(j, 1.2)),
+  ),
+  ClockTraits(
+    'quartz',
+    Trait('', '', 'clocks +10%', edit: (j) => clocksTimes(j, 1.10)),
+    const Trait('', '', 'Synchronisation: +1% a clock at tier 5 (below)'),
+  ),
+  ClockTraits(
+    'atomic',
+    Trait(
+      '',
+      '',
+      'a Mainspring in 22 h',
+      edit: (j) => m(j['springs'])['secondsPerSpring'] = 79200,
+    ),
+    Trait(
+      '',
+      '',
+      'in 20 h',
+      edit: (j) => m(j['springs'])['secondsPerSpring'] = 72000,
+    ),
+  ),
+  ClockTraits(
+    'gps',
+    // All three daily challenges done every day (the bot plays none):
+    // half a Mainspring, one every second day.
+    Trait(
+      '',
+      '',
+      'all dailies: ½ Mainspring',
+      session: springsWhen(1, (r) => r.sessionsPlayed % (2 * r.sessions) == 0),
+    ),
+    Trait(
+      '',
+      '',
+      'weekly +1 Mainspring',
+      session: springsWhen(1, (r) => r.sessionsPlayed % (7 * r.sessions) == 0),
+    ),
+  ),
+  ClockTraits(
+    'pulsar',
+    Trait('', '', 'golden effects +15%', edit: (j) => goldenStrong(j, 1.15)),
+    Trait(
+      '',
+      '',
+      'Frenzy 50% longer',
+      edit: (j) => goldenEffect(j, 'frenzy', 'duration', (v) => v * 1.5),
+    ),
+  ),
+  ClockTraits(
+    'timeMachine',
+    Trait('', '', 'a loop starts with 10 Chronons', session: carryFlat(10)),
+    Trait('', '', '+15 more', session: carryFlat(15)),
+  ),
+  ClockTraits(
+    'schrodinger',
+    // The coin: half the paradoxes pay +10% (+20% at tier 5).
+    Trait('', '', 'coin: 50% for +10%', edit: (j) => chrononsTimes(j, 1.05)),
+    Trait(
+      '',
+      '',
+      'coin: 50% for +20%',
+      edit: (j) => chrononsTimes(j, 1.10 / 1.05),
+    ),
+  ),
+  ClockTraits(
+    'chronos',
+    Trait('', '', 'Chronos perk 400', edit: (j) => chronosPerk(j, 400)),
+    Trait(
+      '',
+      '',
+      'Chronos bonus 2 Mainsprings',
+      edit: (j) => m(j['loops'])['goalBonusSprings'] = 2,
+    ),
+  ),
+];
+
+/// The order a player who reads the cards levels the clocks in: tier 3
+/// everywhere first, then tier 5 (Chronos once it is there).
+const levelOrder = [
+  'quartz',
+  'stationClock',
+  'chronos',
+  'timeMachine',
+  'cuckoo',
+  'atomic',
+  'watchmaker',
+  'schrodinger',
+  'pulsar',
+  'metronome',
+  'gps',
+  'sprintJudge',
+  'grandpa',
+  'grandma',
+];
+
+void realRun(
+  String json,
+  int sessions,
+  double minutes,
+  double sigma,
+  int days,
+  bool traitsOn, [
+  String without = '',
+]) {
+  final chosen = [
+    for (final c in chosenAll)
+      if (c.clock != without) c,
+  ];
+  final cache = <String, Balance>{};
+  Balance balanceFor(GameState s) {
+    if (!traitsOn) {
+      return cache.putIfAbsent('', () => Balance.fromJsonString(json));
+    }
+    final lv = s.clockLevels;
+    final key = [for (final c in chosen) '${c.clock}${lv[c.clock] ?? 0}']
+        .join();
+    return cache.putIfAbsent(key, () {
+      final j = jsonDecode(json) as Json;
+      var at5 = 0;
+      for (final c in chosen) {
+        final l = lv[c.clock] ?? 0;
+        if (l >= 3) c.i.edit?.call(j);
+        if (l >= 5) {
+          c.ii.edit?.call(j);
+          at5++;
+        }
+      }
+      if ((lv['quartz'] ?? 0) >= 5) clocksTimes(j, 1 + 0.01 * at5);
+      return Balance.fromJsonString(jsonEncode(j));
+    });
+  }
+
+  final s = GameState()..tutorialDone = true;
+  final p = Player(
+    balanceFor(s),
+    s,
+    sessions: sessions,
+    minutes: minutes,
+    sigma: sigma,
+    loops: true,
+    spendSprings: !traitsOn,
+  );
+  final run = TraitRun(p.b, sessions, minutes)..sigma = sigma;
+  double? all3, all5;
+  var golden = 0, lastGolden = 0;
+  p.onSession = (st, day, passive) {
+    golden += st.lifetime.goldenCaught - lastGolden;
+    lastGolden = st.lifetime.goldenCaught;
+    run.sessionsPlayed++;
+    run.newLoop = run.lastLoop >= 0 && st.loop != run.lastLoop;
+    if (traitsOn) {
+      for (final c in chosen) {
+        final l = st.clockLevels[c.clock] ?? 0;
+        if (l >= 3) c.i.session?.call(run, st, passive);
+        if (l >= 5) c.ii.session?.call(run, st, passive);
+      }
+      // Spend: every clock to 3 in [levelOrder], then every one to 5.
+      final e = GameEngine(p.b, st);
+      for (final target in [3, 5]) {
+        for (final id in levelOrder) {
+          while ((st.clockLevels[id] ?? 0) < target &&
+              e.econ.clockLevelable(id) &&
+              e.levelClock(id) == BuyResult.ok) {}
+        }
+      }
+      p.b = balanceFor(st);
+    }
+    run.lastLoop = st.loop;
+    run.chrononsBefore = st.chronons;
+    final lv = st.clockLevels;
+    final n = run.b.generators.length;
+    if (all3 == null && lv.values.where((x) => x >= 3).length == n) all3 = day;
+    if (all5 == null && lv.values.where((x) => x >= 5).length == n) all5 = day;
+  };
+  while (p.day < days) {
+    p.playDay();
+  }
+  String f(double v) => v.toStringAsFixed(1);
+  final goals = [
+    for (final x in p.loopLog) double.parse(x.substring(16, 27).trim()),
+  ];
+  final exits = [
+    for (final x in p.loopLog) double.parse(x.substring(35, 46).trim()),
+  ];
+  var t = 0.0;
+  final ends = [for (final e in exits) t += e];
+  stdout.writeln(
+    'REAL ${traitsOn ? 'traits' : 'today '} without ${without.isEmpty ? '—' : without} σ ${(sigma * 1000).toStringAsFixed(1)}  '
+    'loops ${p.loopLog.length} by day $days  goal days ${goals.map(f).join(' ')}\n'
+    '     loop ends on day ${ends.map(f).join(' ')}\n'
+    '     tiers ${s.clockLevels.values.fold(0, (a, x) => a + x)}  all at 3: day ${all3 == null ? '—' : f(all3!)}'
+    '  all at 5: day ${all5 == null ? '—' : f(all5!)}  wound ${s.lifetime.springsWound}'
+    '  golden/session ${(golden / (days * sessions)).toStringAsFixed(2)}'
+    '  warm-up ${(100 * run.extra / s.lifetime.earnedEver).toStringAsFixed(2)}% of all Tiki',
+  );
 }

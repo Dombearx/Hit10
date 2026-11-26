@@ -1,6 +1,6 @@
 # 18 — Cechy zegarów: co dają tytuły mistrzowskie
 
-Stan: **propozycja** (25.11.2026). Symulacje: `app/tool/trait_report.dart`.
+Stan: **propozycja, cechy wybrane** (26.11.2026). Symulacje: `app/tool/trait_report.dart`.
 Dotyczy 02 R-SPR-6 (tytuły na stopniach 3 i 5).
 
 ## 1. Problem
@@ -96,54 +96,84 @@ stopniowo):
 | baza | 32.6 d | — | 3.0–4.0 d |
 | pierwsza wersja, stopień 3 | 26.0 d | −20% | 2.3–3.0 d |
 | pierwsza wersja, stopień 5 | 17.8 d | −45% | 1.3–2.0 d |
-| **rekomendacja (§4), stopień 3** | **28.4 d** | **−13%** | 3.0–3.7 d |
-| rekomendacja, stopień 5, Kukułka przy każdym powrocie | 20.3 d | −38% | 1.7–2.3 d |
-| **rekomendacja, stopień 5 (§4)** | **21.9 d** | **−33%** | 2.0–2.3 d |
+| **pierwsza rekomendacja, stopień 3** | **28.4 d** | **−13%** | 3.0–3.7 d |
+| pierwsza rekomendacja, stopień 5, Kukułka przy każdym powrocie | 20.3 d | −38% | 1.7–2.3 d |
+| **pierwsza rekomendacja, stopień 5** | **21.9 d** | **−33%** | 2.0–2.3 d |
 
 Stopień 3 wszystkich zegarów mieści się w R-PETLA-6. Stopień 5 wszystkich
 skraca późne pętle do ok. 2 dni, ale gracz ma go dopiero ok. 85. dnia, czyli
 po fabule, gdy sam wybiera zasady pętli (R-PETLA-8) i bije rekordy. Decyzja
 w §5.
 
-## 4. Cechy: 2–3 propozycje na zegar i rekomendacja
+### 3.3 Wybrany zestaw w prawdziwej grze (`trait_report.dart --real`)
 
-Opisy robocze; nazwy cech i żarty do napisania w `tools/l10n/masters.py`.
-„Nie w symulacji” = wygoda, której bot nie pokaże (łapie każdą Złotą
-Sekundę, gra codziennie, nie gra wyzwań).
+Nowa gra, 150 dni, 3 ziarna. Gracz z cechami sam wydaje Sprężyny: najpierw
+stopień 3 wszystkich zegarów (kolejność w `levelOrder`), potem stopień 5.
+Cecha działa od chwili, gdy zegar ma swój stopień; stopień 5 **dodaje się**
+do stopnia 3. Gracz „dziś” wydaje Sprężyny po staremu (na największy
+dochód). Średnie z 3 ziaren:
 
-| Zegar | Propozycje | Wynik | **Rekomendacja: I (stopień 3) / II (stopień 5)** |
-|---|---|---|---|
-| **Dziadek z zegarkiem** (śpi) | a) limit offline +4 h · b) offline +10…30% · c) Bezsenność łagodniejsza | a) nie w symulacji (liczy się dla gracza, który wpada raz dziennie) · b) 0…−7% · c) tylko jedna pętla | **I: limit offline +4 h. II: dochód offline +10%.** |
-| **Babcia z minutnikiem** (pilnuje) | a) seria dziennej premii wybacza 1 opuszczony dzień w tygodniu · b) 7. dzień premii: 3 Sprężyny · c) premia ×2 | a) nie w symulacji · b) +3 stopnie na 40 dni · c) −2%, niewidoczne | **I: seria wybacza 1 dzień. II: 7. dzień daje 3 Sprężyny.** |
-| **Kukułka** (wylatuje o pełnej) | a) o pełnej godzinie w czasie gry wylatuje Złota Sekunda · b) Złota Sekunda po powrocie · c) kuku za Tiki | a) ok. +10% Złotych Sekund · b) −5% raz na sesję; to samo daje pieczęć Promyk, więc raz dziennie · c) 0 | **I: kuku o pełnej godzinie. II: pierwsza sesja dnia: Złota Sekunda w 30 s.** |
-| **Metronom** (rytm) | a) zapas dokręcania odnawia się 1.5× szybciej · b) zapas ×2 · c) combo (limit, krok, Tarcza) | a) 0 · b) +10% Sprężyn · c) 0 | **I: zapas odnawia się ×1.5. II: zapas ×2 i odnawia się ×2.** Combo odpada. |
-| **Zegarmistrz** (rzemieślnik) | a) perki taniej · b) zegary −10% · c) umiejętności −50% | a) −2…−3% · b) −1% · c) 0 | **I: perki −10%. II: perki −20%.** |
-| **Sędzia sprintu** (rekordy) | a) pętla szybsza od rekordu: Sprężyny · b) okno PERFEKT +2 ms · c) szersze okno 5.00 | a) +2…3 stopnie · b) 0 · c) −2% | **I: pętla poniżej rekordu: +1 Sprężyna. II: +2 i międzyczas w Kronice.** |
-| **Zegar dworcowy** (rozkład jazdy) | a) Złota Sekunda częściej · b) zostaje dłużej na ekranie · c) efekty +30% | a) −6% za 20% · b) nie w symulacji (realny gracz łapie więcej) · c) −2% | **I: Złota Sekunda 10% częściej. II: do tego zostaje 2× dłużej (12 → 24 s).** |
-| **Zegar kwarcowy** (na baterii, nie śpi) | a) Bezsenność: offline 35% / 50% zamiast 25% · b) wszystkie zegary +10% | a) −8% w tej pętli · b) −6%, ale to goły mnożnik | **I: Bezsenność 35%. II: Bezsenność 50%.** |
-| **Zegar atomowy** (dokładna sekunda) | a) Sprężyna szybciej (22 h / 20 h) · b) trafienie nakręca dłużej | a) +6% / +10% Sprężyn · b) 0 (ogranicza zapas) | **I: Sprężyna co 22 h. II: co 20 h.** |
-| **Satelita GPS** (wyznacza trasę) | a) raz dziennie zmień wyzwanie dzienne · b) wyzwanie tygodnia +1 Sprężyna | nie w symulacji / +1 stopień na 40 dni | **I: zmiana wyzwania dziennego. II: wyzwanie tygodnia +1 Sprężyna.** |
-| **Pulsar** (impuls) | a) efekty Złotej Sekundy mocniejsze · b) Szał dłuższy · c) impuls w sesji | a) −2% za 30% · b) 0 · c) 0 | **I: efekty Złotej Sekundy +15%. II: do tego Szał 50% dłużej.** Impuls odpada. |
-| **Maszyna czasu** (cofa) | a) nowa pętla z Chrononami: stała liczba · b) z % poprzedniej · c) paradoks zostawia więcej | a) 0 za 10, −4% za 25, −16% za 50 · b) −35% i więcej · c) 0 | **I: nowa pętla zaczyna z 10 Chrononami. II: z 25.** Procent odpada. |
-| **Kot Schrödingera** (żyje i nie żyje) | a) rzut monetą przy paradoksie: 50% na więcej Chrononów · b) pudła jako DOBRZE · c) Fart | a) −2…−4% · b), c) 0 | **I: 50% na +10% Chrononów. II: 50% na +20%.** Ekran paradoksu pokazuje rzut. |
-| **Chronos** (cel) | a) perk Chronos taniej · b) bonus Chronosa: 2 Sprężyny · c) Chronony +15% | a) −5% za połowę · b) −10%, Sprężyn +45% · c) −4% | **I: perk Chronos 400 zamiast 500. II: każdy bonus Chronosa 2 Sprężyny.** |
+| | Dziś | Z cechami |
+|---|---|---|
+| koniec fabuły (7 pętli) | dzień 55.3 | dzień 53.0 (−4%) |
+| pętle 2–7 do celu | 8.2 / 8.0 / 4.9 / 4.0 / 3.3 / 4.3 d | 7.2 / 7.4 / 4.8 / 4.0 / 3.0 / 3.2 d |
+| pętla po fabule do celu (dni 60–110) | 2.7 d | **1.7 d (−36%)** |
+| pętli do 110. dnia | 22 | 33 |
+| stopień 3 wszystkich zegarów | dzień 76 | dzień 39 |
+| stopień 5 wszystkich zegarów | dzień 78 | dzień 61 |
+| Złotych Sekund na sesję | 1.26 | 1.76 |
+| „Na start!” (Sędzia) | — | 4% wszystkich Tików |
 
-Z cech, które coś dają, rekomendacja bierze ok. połowę siły (§3.2:
-pierwsza wersja dawała −20% / −45%). Odpadają wszystkie cechy od pudeł,
-okien i combo, Tiki w sesji (kuku, impuls) i procent Chrononów.
+Co z tego wynika:
+- **Fabuła prawie się nie zmienia.** Cechy przychodzą stopniowo, a stopień
+  3 wszystkich zegarów gracz ma ok. 39. dnia, pod koniec fabuły.
+- **Pętle po fabule skracają się o ok. jedną trzecią.** Już dziś trwają
+  2.7 dnia, czyli poniżej „ok. 3 dni” z R-PETLA-6 (mistrzostwo ×7.6).
+- **Żaden zegar nie odpowiada za to sam.** Zestaw bez cech jednego zegara
+  (110 dni, 1 ziarno) daje pętle po fabule 1.68–1.87 d. Najwięcej dają
+  Kukułka (1.87), Pulsar (1.83), Maszyna czasu (1.82) i Kwarc (1.81).
+- **Po stopniu 5 wszystkich zegarów Sprężyny nie mają zastosowania**, dziś
+  ok. 78. dnia, z cechami ok. 61. To osobny temat na później.
 
-Karta zegara przed zdobyciem: „Stopień 3: ??? · nowa zdolność”, po: nazwa
-tytułu, żart i cecha. Osiągnięcie +1% zostaje.
+## 4. Wybrane cechy
+
+Ustalone 26.11.2026. Cecha stopnia 3 widoczna na karcie od początku;
+co daje stopień 5, widać dopiero po zdobyciu stopnia 3 (wcześniej szary
+„Stopień 5” z kłódką, bez znaków zapytania). Nazwa tytułu i żart pojawiają
+się po kupnie. Stopień 5 **dodaje się** do stopnia 3. Osiągnięcie +1% za
+tytuł zostaje.
+
+| Zegar | Stopień 3 | Stopień 5 (dodatkowo) |
+|---|---|---|
+| Dziadek z zegarkiem | limit offline +4 h | dochód offline +10% |
+| Babcia z minutnikiem | seria dziennej premii wybacza 1 opuszczony dzień | 7. dzień premii: 3 Sprężyny zamiast 1 |
+| Kukułka | o pełnej godzinie w czasie gry wylatuje Złota Sekunda | także o wpół do |
+| Metronom | zapas dokręcania odnawia się 1.5× szybciej | zapas dokręcania ×2 |
+| Zegarmistrz | perki −10% | perki −20% razem |
+| Sędzia sprintu | **Na start!**: po ≥1 h przerwy pierwsze 10 trafień płaci ×(1 + godziny nieobecności), najwyżej ×9 | Na start! obejmuje 25 trafień |
+| Zegar dworcowy | Złota Sekunda 10% częściej | **Ekspres**: co 5. złapana Złota Sekunda ma podwójny efekt (licznik przy Złotej Sekundzie / na karcie) |
+| Zegar kwarcowy | wszystkie zegary +10% | **Synchronizacja**: +1% do wszystkich zegarów za każdy zegar ze stopniem 5 (najwyżej +14%) |
+| Zegar atomowy | Sprężyna co 22 h zamiast 24 | co 20 h |
+| Satelita GPS | komplet trzech wyzwań dziennych jednego dnia: dodatkowo ½ Sprężyny | wyzwanie tygodnia: +1 Sprężyna |
+| Pulsar | efekty Złotej Sekundy +15% | Szał trwa 50% dłużej |
+| Maszyna czasu | nowa pętla zaczyna się z 10 Chrononami | z 25 |
+| Kot Schrödingera | rzut monetą przy paradoksie: 50% na +10% Chrononów | 50% na +20% |
+| Chronos | perk Chronos 400 Chrononów zamiast 500 | każdy bonus Chronosa daje 2 Sprężyny |
+
+Odrzucone (§3.1 i rozmowa): cechy od pudeł, okien i combo (gracz nie
+pudłuje), szersze okno 5.00 (podstawa gry), cechy jednej pętli (Kwarc
+i Bezsenność), Złota Sekunda po powrocie (dubluje pieczęć Promyk), Kukułka
+zawsze z Szałem (Szał nie zawsze jest najlepszy), Gorąca ręka dla Sędziego,
+procent Chrononów do nowej pętli (za mocne), zmiana wyzwania dziennego
+(już jest: R-WYZ-6).
 
 ## 5. Do decyzji
 
-1. **Stopień 5 wszystkich zegarów skraca późne pętle do ok. 2 dni
-   (−33%).** Albo przyjmujemy (to nagroda po ok. 85 dniach, po fabule; do
-   R-PETLA-6 dopisek „bez pełnego mistrzostwa”), albo tytuły II tylko
-   z wygodą i Sprężynami (bez Kukułki II, Chronosa II i Kota II), co
-   według §3.1 daje ok. −20%. Rekomendacja: przyjąć.
-2. **Kukułka II a pieczęć Promyk** (`noGold`): obie dają Złotą Sekundę po
-   powrocie. Propozycja: Kukułka raz dziennie po dowolnej przerwie,
-   Promyk co powrót po ≥1 h; razem przylatują dwie.
-3. Cechy „nie w symulacji” (seria, zmiana wyzwania, limit offline, dłużej
-   na ekranie) warto sprawdzić w analityce po wdrożeniu (`clock_level`).
+1. **Pętle po fabule: 2.7 → 1.7 dnia.** Fabuła bez zmian, a po niej
+   gracz sam wybiera zasady (R-PETLA-8) i bije rekordy, więc szybsze pętle
+   to widoczna nagroda za mistrzostwo. Rekomendacja: przyjąć i dopisać do
+   R-PETLA-6, że granica ok. 3 dni dotyczy fabuły. Jeśli pętle po fabule
+   mają zostać ≥2.3 dnia, trzeba osłabić ok. 4 zegary (Kukułka, Pulsar,
+   Maszyna czasu, Kwarc), bo żaden nie robi tego sam.
+2. Cechy, których bot nie pokazuje (limit offline, seria premii, wyzwania
+   dzienne), sprawdzić w analityce po wdrożeniu (`clock_level`).
