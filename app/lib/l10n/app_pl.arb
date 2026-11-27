@@ -332,7 +332,6 @@
   "modeAuto": "Auto-kupiec",
   "autoBuying": "{owned}/{until}",
   "autoDone": "✓ {until} · wybierz",
-  "autoPick": "Auto-kupiec: wybierz zegar",
   "autoSheetHint": "Kupuje wskazany zegar, jeden co {seconds} s, póki starcza Tików, aż do jego najbliższego progu. Potem czeka na Twój wybór.",
   "autoContinue": "Dalej: {clock} → {until}",
   "autoOff": "Wyłącz",

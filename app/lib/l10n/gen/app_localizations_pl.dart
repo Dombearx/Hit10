@@ -1086,9 +1086,6 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get autoPick => 'Auto-kupiec: wybierz zegar';
-
-  @override
   String autoSheetHint(String seconds) {
     return 'Kupuje wskazany zegar, jeden co $seconds s, póki starcza Tików, aż do jego najbliższego progu. Potem czeka na Twój wybór.';
   }
