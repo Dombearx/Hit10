@@ -7,7 +7,9 @@ import 'package:flutter/painting.dart';
 import '../ui/theme.dart';
 
 /// The flying golden clock (R-ZLOTA-1): crosses the top of the arena in a
-/// lazy wave for [life] seconds, glowing, trailing sparkles.
+/// lazy wave for [life] seconds, glowing, trailing sparkles. [elapsed] is
+/// how far into the flight it already is (a clock saved mid-flight goes on
+/// from there after a restart, R-ZLOTA-6, at its usual speed).
 class GoldenClock extends PositionComponent {
   GoldenClock({
     required this.arenaSize,
@@ -18,7 +20,11 @@ class GoldenClock extends PositionComponent {
     this.calm = false,
     this.item,
     this.express = false,
-  }) : super(anchor: Anchor.center);
+    double elapsed = 0,
+  }) : _t = elapsed,
+       super(anchor: Anchor.center) {
+    position = at(_t);
+  }
 
   /// The Station clock's Express (docs/18): this one, caught, is twice as
   /// strong; it wears a "×2" tag.
@@ -36,7 +42,7 @@ class GoldenClock extends PositionComponent {
   /// Calm mode (docs/04 U-6): it still flies its wave (it has to be
   /// caught), but without throbbing, rocking or turning rays.
   final bool calm;
-  double _t = 0;
+  double _t;
 
   /// Set when caught or expired: shrinks/fades out, then removes itself.
   double? _leaving;
