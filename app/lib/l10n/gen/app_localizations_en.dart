@@ -1091,9 +1091,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get autoPick => 'Auto buyer: pick a clock';
-
-  @override
   String autoSheetHint(String seconds) {
     return 'Buys the clock you pick, one every $seconds s while the Tiki last, up to its next bonus. Then it waits for your next pick.';
   }

@@ -56,10 +56,10 @@ class _AutoBuyerChipState extends State<AutoBuyerChip>
     final waiting = e.autoBuyerWaiting;
     final target = s.autoTarget;
     final String label;
-    if (!on) {
+    // On with no clock yet: just its name; the cart, the orange and the
+    // dot already say it waits for a pick (the sheet explains the rest).
+    if (!on || target == null) {
       label = l.modeAuto;
-    } else if (target == null) {
-      label = l.autoPick;
     } else if (waiting) {
       label = l.autoDone('${s.autoUntil}');
     } else {

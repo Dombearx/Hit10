@@ -35,7 +35,7 @@ void main() {
       ..modeBlind = true
       ..perks.addAll(['secondClock', 'autoBuyer'])
       ..secondClockOn = true
-      // On with no clock picked: "Auto buyer: pick a clock", its longest.
+      // On with no clock picked: orange, with the cart and the dot.
       ..autoBuyerOn = autoOn
       ..loop = 12
       ..loopRules.addAll(

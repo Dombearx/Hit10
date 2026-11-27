@@ -868,7 +868,6 @@
       }
     }
   },
-  "autoPick": "Auto buyer: pick a clock",
   "autoSheetHint": "Buys the clock you pick, one every {seconds} s while the Tiki last, up to its next bonus. Then it waits for your next pick.",
   "@autoSheetHint": {
     "placeholders": {

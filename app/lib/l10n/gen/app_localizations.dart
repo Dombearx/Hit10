@@ -1886,12 +1886,6 @@ abstract class AppLocalizations {
   /// **'✓ {until} · pick next'**
   String autoDone(String until);
 
-  /// No description provided for @autoPick.
-  ///
-  /// In en, this message translates to:
-  /// **'Auto buyer: pick a clock'**
-  String get autoPick;
-
   /// No description provided for @autoSheetHint.
   ///
   /// In en, this message translates to:
