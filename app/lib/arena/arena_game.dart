@@ -181,7 +181,12 @@ class ArenaGame extends FlameGame {
         arenaSize: size,
         dialTop: stage.center.y - stage.radius,
         radius: stage.radius * 0.2,
-        life: controller.engine.goldenVisibleLeft,
+        life: controller.balance.golden.visibleFor,
+        elapsed: math.max(
+          0,
+          controller.balance.golden.visibleFor -
+              controller.engine.goldenVisibleLeft,
+        ),
         fromLeft: _goldenFromLeft,
         calm: stage.reduceMotion,
         item: _emoji[seasonLooks[controller.season?.id]?.item],
