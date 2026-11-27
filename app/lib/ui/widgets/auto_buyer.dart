@@ -8,6 +8,7 @@ import '../game_controller.dart';
 import '../theme.dart';
 import 'alert_dot.dart';
 import 'emoji_card.dart';
+import 'mode_row.dart';
 
 /// The auto buyer's chip in the mode row (docs/02 §9.3). Off: a plain
 /// switch. Buying: green, the clock and how far to its bonus. Waiting:
@@ -69,44 +70,23 @@ class _AutoBuyerChipState extends State<AutoBuyerChip>
         : waiting
         ? Palette.perfectDeep
         : Palette.great;
-    final chip = AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
-      constraints: const BoxConstraints(minHeight: 36),
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Palette.outline, width: 2),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (on) ...[
-            Image.asset(EmojiArt.path('shopping_cart'), width: 16, height: 16),
-            const SizedBox(width: 4),
-          ],
-          // The clock by its picture: the names are too long for a chip.
-          if (on && target != null) ...[
-            Image.asset(
-              EmojiArt.path(generatorArt[target]!.main),
-              key: Key('mode-auto-clock-$target'),
-              width: 18,
-              height: 18,
-            ),
-            const SizedBox(width: 4),
-          ],
-          Text(
-            label,
-            key: const Key('mode-auto-label'),
-            style: TextStyle(
-              fontFamily: Fonts.display,
-              fontSize: 13,
-              color: on ? Colors.white : Palette.outline,
-            ),
+    final chip = ModeChip(
+      label: label,
+      labelKey: const Key('mode-auto-label'),
+      color: color,
+      textColor: on ? Colors.white : Palette.outline,
+      leading: [
+        if (on)
+          Image.asset(EmojiArt.path('shopping_cart'), width: 16, height: 16),
+        // The clock by its picture: the names are too long for a chip.
+        if (on && target != null)
+          Image.asset(
+            EmojiArt.path(generatorArt[target]!.main),
+            key: Key('mode-auto-clock-$target'),
+            width: 18,
+            height: 18,
           ),
-        ],
-      ),
+      ],
     );
     return GestureDetector(
       key: Key('mode-auto${waiting ? '-waiting' : ''}'),
